@@ -1,0 +1,221 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminLayout from "./layouts/AdminLayout";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import ServiceCategory from "./pages/ServiceCategory";
+import SecondCategory from "./pages/SecondCategory";
+import ServiceFAQ from "./pages/ServiceFAQ";
+import ResultCategory from "./pages/ResultCategory";
+import ResultInner from "./pages/ResultInner";
+import VideoCategory from "./pages/VideoCategory";
+import VideoInner from "./pages/VideoInner";
+import Gallery from "./pages/Gallery";
+import Testimonials from "./pages/Testimonials";
+import UserList from "./pages/UserList";
+import RoleList from "./pages/RoleList";
+import PermissionMenu from "./pages/PermissionMenu";
+import Menu from "./pages/Menu";
+import Operation from "./pages/Operation";
+import MenuOperation from "./pages/MenuOperation";
+import Callback from "./pages/Callback";
+import Contact from "./pages/Contact";
+import Blogs from "./pages/Blogs";
+import Appointment from "./pages/Appointment";
+import PlaceholderPage from "./pages/PlaceholderPage";
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route path="services" element={<Navigate to="/services/categories" replace />} />
+        <Route path="results" element={<Navigate to="/results/categories" replace />} />
+        <Route path="videos" element={<Navigate to="/videos/categories" replace />} />
+        <Route path="users" element={<Navigate to="/users/list" replace />} />
+        <Route path="menu" element={<Navigate to="/users/menus" replace />} />
+        <Route path="contacts" element={<Navigate to="/leads/contact" replace />} />
+        <Route path="appointment" element={<Navigate to="/leads/appointment" replace />} />
+        <Route
+          path="dashboard"
+          element={
+            <ProtectedRoute permission="dashboard">
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="seo"
+          element={
+            <ProtectedRoute permission="seo">
+              <PlaceholderPage title="SEO" />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="services/categories"
+          element={
+            <ProtectedRoute permission="services">
+              <ServiceCategory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="services/second-categories"
+          element={
+            <ProtectedRoute permission="services">
+              <SecondCategory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="services/faqs"
+          element={
+            <ProtectedRoute permission="services">
+              <ServiceFAQ />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="results/categories"
+          element={
+            <ProtectedRoute permission="result">
+              <ResultCategory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="results/list"
+          element={
+            <ProtectedRoute permission="result">
+              <ResultInner />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="videos/categories"
+          element={
+            <ProtectedRoute permission="video">
+              <VideoCategory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="videos/list"
+          element={
+            <ProtectedRoute permission="video">
+              <VideoInner />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="blogs"
+          element={
+            <ProtectedRoute permission="blog">
+              <Blogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="gallery"
+          element={
+            <ProtectedRoute permission="gallery">
+              <Gallery />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="testimonials"
+          element={
+            <ProtectedRoute permission="testimonial">
+              <Testimonials />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="users/list"
+          element={
+            <ProtectedRoute permission="users">
+              <UserList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="users/roles"
+          element={
+            <ProtectedRoute permission="users">
+              <RoleList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="users/permissions"
+          element={
+            <ProtectedRoute permission="users">
+              <PermissionMenu />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="users/menus"
+          element={
+            <ProtectedRoute permission="users">
+              <Menu />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="users/operations"
+          element={
+            <ProtectedRoute permission="users">
+              <Operation />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="users/menu-operations"
+          element={
+            <ProtectedRoute permission="users">
+              <MenuOperation />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="leads/callback"
+          element={
+            <ProtectedRoute permission="users">
+              <Callback />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="leads/contact"
+          element={
+            <ProtectedRoute permission="users">
+              <Contact />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="leads/appointment"
+          element={
+            <ProtectedRoute permission="users">
+              <Appointment />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+export default App;

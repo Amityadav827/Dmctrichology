@@ -1,0 +1,29 @@
+{
+  "name": "dmc-trichology-admin-backend",
+  "version": "1.0.0",
+  "description": "Production-ready backend for DMC Trichology Admin Panel",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "mongo": "node scripts/startMongoMemory.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node utils/seedData.js",
+    "bootstrap": "node utils/bootstrapDemoData.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express-rate-limit": "^7.4.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.3",
+    "mongodb-memory-server": "^10.1.4",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
