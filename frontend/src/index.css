@@ -63,3 +63,25 @@ textarea {
     --tw-bg-opacity: 1;
     background-color: #ffffff;
 }
+
+/* React Quill Dark Mode Adjustments */
+.dark .ql-toolbar.ql-snow {
+  border-color: #334155;
+  background-color: #1e293b;
+}
+.dark .ql-container.ql-snow {
+  border-color: #334155;
+  color: #f1f5f9;
+}
+.dark .ql-snow .ql-stroke {
+  stroke: #94a3b8;
+}
+.dark .ql-snow .ql-fill, .dark .ql-snow .ql-stroke.ql-fill {
+  fill: #94a3b8;
+}
+.dark .ql-snow .ql-picker {
+  color: #94a3b8;
+}
+.dark .ql-editor.ql-blank::before {
+  color: #64748b;
+}

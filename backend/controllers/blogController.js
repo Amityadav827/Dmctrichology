@@ -2,7 +2,22 @@ const Blog = require("../models/Blog");
 
 const createBlog = async (req, res, next) => {
   try {
-    const blog = await Blog.create(req.body);
+    const blogData = { ...req.body };
+
+    if (req.files) {
+      if (req.files.blogImage && req.files.blogImage[0]) {
+        blogData.blogImage = `/uploads/${req.files.blogImage[0].filename}`;
+      }
+      if (req.files.bannerImage && req.files.bannerImage[0]) {
+        blogData.bannerImage = `/uploads/${req.files.bannerImage[0].filename}`;
+      }
+    }
+
+    if (blogData.tags && typeof blogData.tags === 'string') {
+      blogData.tags = blogData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+    }
+
+    const blog = await Blog.create(blogData);
 
     return res.status(201).json({
       success: true,
@@ -47,7 +62,22 @@ const getBlogById = async (req, res, next) => {
 
 const updateBlog = async (req, res, next) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+    const updateData = { ...req.body };
+
+    if (req.files) {
+      if (req.files.blogImage && req.files.blogImage[0]) {
+        updateData.blogImage = `/uploads/${req.files.blogImage[0].filename}`;
+      }
+      if (req.files.bannerImage && req.files.bannerImage[0]) {
+        updateData.bannerImage = `/uploads/${req.files.bannerImage[0].filename}`;
+      }
+    }
+
+    if (updateData.tags && typeof updateData.tags === 'string') {
+      updateData.tags = updateData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+    }
+
+    const blog = await Blog.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
       runValidators: true,
     });
