@@ -10,15 +10,15 @@ import {
 // Premium Active/Inactive State Logic
 const getNavClass = ({ isActive }) =>
   isActive
-    ? "flex items-center gap-3 rounded-xl bg-gradient-to-r from-gradientStart/20 to-gradientEnd/20 dark:from-gradientStart/40 dark:to-primary/30 border border-gradientStart/30 dark:border-primary/50 px-3 py-2.5 text-sm font-semibold text-primary dark:text-white shadow-[0_0_15px_rgba(0,229,255,0.15)] transition-all duration-300"
-    : "flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-slate-200 hover:scale-[1.02] transition-all duration-300";
+    ? "flex items-center gap-3 rounded-xl bg-gradient-to-r from-gradientStart/20 to-gradientEnd/20 border border-gradientStart/30 px-3 py-2.5 text-sm font-semibold text-primary shadow-[0_0_15px_rgba(0,229,255,0.15)] transition-all duration-300"
+    : "flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-sm font-medium text-slate-600 hover hover hover transition-all duration-300";
 
 function Sidebar() {
   return (
-    <aside className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-darkCard/60 backdrop-blur-xl shadow-panel transition-colors duration-300">
+    <aside className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white/60 backdrop-blur-xl shadow-panel transition-colors duration-300">
       
       {/* Brand Logo Header */}
-      <div className="m-4 rounded-2xl bg-slate-900 dark:bg-[#0B0F19] border border-slate-800 p-5 shadow-inner">
+      <div className="m-4 rounded-2xl bg-slate-900 border border-slate-800 p-5 shadow-inner">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-gradientStart to-gradientEnd shadow-glow">
             <span className="text-lg font-bold text-white">D</span>
@@ -53,7 +53,7 @@ function Sidebar() {
 
         {hasPermission("users") && (
           <div className="pt-4 pb-1">
-            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Leads & Contact</p>
+            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Leads & Contact</p>
             <div className="space-y-1">
               <NavLink to="/leads/callback" className={getNavClass}><PhoneCall size={18} /> Request Callback</NavLink>
               <NavLink to="/leads/contact" className={getNavClass}><Mail size={18} /> Contact Leads</NavLink>
@@ -70,7 +70,7 @@ function Sidebar() {
 
         {hasPermission("services") && (
           <div className="pt-4 pb-1">
-            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Services</p>
+            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Services</p>
             <div className="space-y-1">
               <NavLink to="/services/categories" className={getNavClass}><Scissors size={18} /> View Category</NavLink>
               <NavLink to="/services/second-categories" className={getNavClass}><Layers size={18} /> Second Category</NavLink>
@@ -81,7 +81,7 @@ function Sidebar() {
 
         {hasPermission("result") && (
           <div className="pt-4 pb-1">
-            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Results</p>
+            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Results</p>
             <div className="space-y-1">
               <NavLink to="/results/categories" className={getNavClass}><Activity size={18} /> Result Category</NavLink>
               <NavLink to="/results/list" className={getNavClass}><List size={18} /> Result List</NavLink>
@@ -91,7 +91,7 @@ function Sidebar() {
 
         {hasPermission("video") && (
           <div className="pt-4 pb-1">
-            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Videos</p>
+            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Videos</p>
             <div className="space-y-1">
               <NavLink to="/videos/categories" className={getNavClass}><Video size={18} /> Video Category</NavLink>
               <NavLink to="/videos/list" className={getNavClass}><PlayCircle size={18} /> Video List</NavLink>
@@ -101,7 +101,7 @@ function Sidebar() {
 
         {hasPermission("gallery") && (
           <div className="pt-4 pb-1">
-            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Media</p>
+            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Media</p>
             <div className="space-y-1">
               <NavLink to="/gallery" className={getNavClass}><ImageIcon size={18} /> Gallery</NavLink>
             </div>
@@ -110,7 +110,7 @@ function Sidebar() {
 
         {hasPermission("users") && (
           <div className="pt-4 pb-1">
-            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">System & Users</p>
+            <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">System & Users</p>
             <div className="space-y-1">
               <NavLink to="/users/list" className={getNavClass}><Users size={18} /> User List</NavLink>
               <NavLink to="/users/roles" className={getNavClass}><Shield size={18} /> Role List</NavLink>
@@ -127,3 +127,4 @@ function Sidebar() {
 }
 
 export default Sidebar;
+

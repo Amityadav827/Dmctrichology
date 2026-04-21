@@ -106,7 +106,7 @@ function PermissionMenu() {
               type="button"
               onClick={handleSave}
               disabled={saving || !selectedRoleId}
-              className="rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+              className="rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white disabled"
             >
               {saving ? "Saving..." : "Save Permissions"}
             </button>
@@ -118,3 +118,4 @@ function PermissionMenu() {
 }
 
 export default PermissionMenu;
+

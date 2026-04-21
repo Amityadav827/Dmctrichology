@@ -218,17 +218,17 @@ function Blogs() {
         {/* Preview Modal */}
         {showPreviewModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-white dark:bg-darkCard w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl flex flex-col relative">
-              <div className="sticky top-0 bg-white/90 dark:bg-darkCard/90 backdrop-blur-md p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center z-10">
-                <h2 className="text-xl font-bold text-ink dark:text-white">Preview: {formData.title || "Untitled Blog"}</h2>
+            <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl flex flex-col relative">
+              <div className="sticky top-0 bg-white/90 backdrop-blur-md p-4 border-b border-slate-200 flex justify-between items-center z-10">
+                <h2 className="text-xl font-bold text-ink">Preview: {formData.title || "Untitled Blog"}</h2>
                 <button onClick={() => setShowPreviewModal(false)} className="btn-primary">Close Preview</button>
               </div>
               <div className="p-8">
                 {bannerPreview && (
                   <img src={bannerPreview} alt="Banner" className="w-full h-64 object-cover rounded-xl mb-8" />
                 )}
-                <h1 className="text-4xl font-bold text-ink dark:text-white mb-4">{formData.title}</h1>
-                <div className="flex items-center gap-4 text-slate-500 mb-8 pb-8 border-b border-slate-100 dark:border-slate-800">
+                <h1 className="text-4xl font-bold text-ink mb-4">{formData.title}</h1>
+                <div className="flex items-center gap-4 text-slate-500 mb-8 pb-8 border-b border-slate-100">
                   <span>By {formData.author}</span>
                   <span>•</span>
                   <span>{new Date(formData.blogDate).toLocaleDateString()}</span>
@@ -238,21 +238,21 @@ function Blogs() {
                 {imagePreview && (
                   <img src={imagePreview} alt={formData.altTag} className="float-left w-1/3 rounded-xl mr-6 mb-4" />
                 )}
-                <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: formData.fullDescription }} />
+                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: formData.fullDescription }} />
               </div>
             </div>
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm items-start sm justify-between gap-4">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setView("list")}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm transition-all hover:bg-slate-50 hover:text-ink dark:bg-darkCard dark:text-slate-400 dark:hover:bg-darkHover dark:hover:text-slate-200"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm transition-all hover hover"
             >
               <ArrowLeft size={20} />
             </button>
-            <h2 className="text-2xl font-bold text-ink dark:text-white">
+            <h2 className="text-2xl font-bold text-ink">
               {editingId ? "Edit Blog" : "Add New Blog"}
             </h2>
           </div>
@@ -260,7 +260,7 @@ function Blogs() {
             <button
               type="button"
               onClick={() => setShowPreviewModal(true)}
-              className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink flex items-center gap-2 dark:border-slate-800 dark:bg-darkCard dark:text-slate-300 dark:hover:bg-darkHover"
+              className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover hover flex items-center gap-2"
             >
               <Eye size={16} /> Preview
             </button>
@@ -268,7 +268,7 @@ function Blogs() {
               type="button"
               onClick={(e) => handleSubmit(e, true)}
               disabled={submitting}
-              className="rounded-xl border border-coral text-coral bg-coral/5 px-5 py-2.5 text-sm font-medium shadow-sm transition-all hover:bg-coral/10"
+              className="rounded-xl border border-coral text-coral bg-coral/5 px-5 py-2.5 text-sm font-medium shadow-sm transition-all hover"
             >
               Save as Draft
             </button>
@@ -282,55 +282,55 @@ function Blogs() {
           </div>
         </div>
 
-        <form className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <form className="grid grid-cols-1 gap-6 lg">
           {/* Main Content Column */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg space-y-6">
             <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink dark:text-white">Basic Information</h3>
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Blog Title <span className="text-red-500">*</span></label>
+              <h3 className="mb-4 text-lg font-semibold text-ink">Basic Information</h3>
+              <div className="grid gap-5 sm">
+                <div className="space-y-1.5 sm">
+                  <label className="text-sm font-medium text-slate-700">Blog Title <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
                     placeholder="Enter blog title..."
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                     required
                   />
                 </div>
                 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Author Name <span className="text-red-500">*</span></label>
+                  <label className="text-sm font-medium text-slate-700">Author Name <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="author"
                     value={formData.author}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                     required
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Blog Date</label>
+                  <label className="text-sm font-medium text-slate-700">Blog Date</label>
                   <input
                     type="date"
                     name="blogDate"
                     value={formData.blogDate}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                   />
                 </div>
                 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Show Type</label>
+                  <label className="text-sm font-medium text-slate-700">Show Type</label>
                   <select
                     name="showType"
                     value={formData.showType}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                   >
                     <option value="Inside">Inside</option>
                     <option value="Outside">Outside</option>
@@ -338,12 +338,12 @@ function Blogs() {
                 </div>
                 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Layout Type</label>
+                  <label className="text-sm font-medium text-slate-700">Layout Type</label>
                   <select
                     name="layoutType"
                     value={formData.layoutType}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                   >
                     <option value="Left">Left</option>
                     <option value="Right">Right</option>
@@ -353,11 +353,11 @@ function Blogs() {
             </div>
 
             <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink dark:text-white">Content Details</h3>
+              <h3 className="mb-4 text-lg font-semibold text-ink">Content Details</h3>
               <div className="space-y-6">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Blog Full Description <span className="text-red-500">*</span></label>
-                  <div className="bg-white dark:bg-darkBg rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                  <label className="text-sm font-medium text-slate-700">Blog Full Description <span className="text-red-500">*</span></label>
+                  <div className="bg-white rounded-xl overflow-hidden border border-slate-200">
                     <ReactQuill 
                       theme="snow" 
                       modules={modules}
@@ -369,8 +369,8 @@ function Blogs() {
                 </div>
 
                 <div className="space-y-1.5 pt-12">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Blog Short Description</label>
-                  <div className="bg-white dark:bg-darkBg rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                  <label className="text-sm font-medium text-slate-700">Blog Short Description</label>
+                  <div className="bg-white rounded-xl overflow-hidden border border-slate-200">
                     <ReactQuill 
                       theme="snow" 
                       modules={modules}
@@ -382,8 +382,8 @@ function Blogs() {
                 </div>
 
                 <div className="space-y-1.5 pt-12">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Admin Description</label>
-                  <div className="bg-white dark:bg-darkBg rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                  <label className="text-sm font-medium text-slate-700">Admin Description</label>
+                  <div className="bg-white rounded-xl overflow-hidden border border-slate-200">
                     <ReactQuill 
                       theme="snow" 
                       modules={modules}
@@ -400,15 +400,15 @@ function Blogs() {
           {/* Sidebar Column */}
           <div className="space-y-6">
             <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink dark:text-white">Publishing</h3>
+              <h3 className="mb-4 text-lg font-semibold text-ink">Publishing</h3>
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-darkBg rounded-xl border border-slate-200 dark:border-slate-700">
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Status</span>
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <span className="text-sm font-medium text-slate-700">Status</span>
                   <select
                     name="status"
                     value={formData.status}
                     onChange={handleChange}
-                    className="bg-transparent text-sm font-semibold text-ink outline-none dark:text-white"
+                    className="bg-transparent text-sm font-semibold text-ink outline-none"
                   >
                     <option value="Published">Published</option>
                     <option value="Draft">Draft</option>
@@ -418,11 +418,11 @@ function Blogs() {
             </div>
 
             <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink dark:text-white">Media Assets</h3>
+              <h3 className="mb-4 text-lg font-semibold text-ink">Media Assets</h3>
               <div className="space-y-5">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Blog Image</label>
-                  <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 transition dark:border-slate-700 dark:bg-darkBg dark:hover:bg-darkHover flex justify-center items-center h-40 cursor-pointer group">
+                  <label className="text-sm font-medium text-slate-700">Blog Image</label>
+                  <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover transition flex justify-center items-center h-40 cursor-pointer group">
                     <input
                       type="file"
                       accept="image/*"
@@ -432,7 +432,7 @@ function Blogs() {
                     {imagePreview ? (
                       <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="flex flex-col items-center text-slate-400 group-hover:text-coral transition-colors">
+                      <div className="flex flex-col items-center text-slate-400 group-hover transition-colors">
                         <ImageIcon size={28} className="mb-2" />
                         <span className="text-sm font-medium">Click to upload image</span>
                       </div>
@@ -441,8 +441,8 @@ function Blogs() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Banner Image</label>
-                  <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 transition dark:border-slate-700 dark:bg-darkBg dark:hover:bg-darkHover flex justify-center items-center h-28 cursor-pointer group">
+                  <label className="text-sm font-medium text-slate-700">Banner Image</label>
+                  <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover transition flex justify-center items-center h-28 cursor-pointer group">
                     <input
                       type="file"
                       accept="image/*"
@@ -452,7 +452,7 @@ function Blogs() {
                     {bannerPreview ? (
                       <img src={bannerPreview} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="flex flex-col items-center text-slate-400 group-hover:text-coral transition-colors">
+                      <div className="flex flex-col items-center text-slate-400 group-hover transition-colors">
                         <span className="text-sm font-medium">Upload Banner Image</span>
                       </div>
                     )}
@@ -460,79 +460,79 @@ function Blogs() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Image Alt Tag</label>
+                  <label className="text-sm font-medium text-slate-700">Image Alt Tag</label>
                   <input
                     type="text"
                     name="altTag"
                     value={formData.altTag}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                   />
                 </div>
               </div>
             </div>
             
             <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink dark:text-white">SEO & Taxonomy</h3>
+              <h3 className="mb-4 text-lg font-semibold text-ink">SEO & Taxonomy</h3>
               <div className="space-y-5">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Tags (Comma separated)</label>
+                  <label className="text-sm font-medium text-slate-700">Tags (Comma separated)</label>
                   <input
                     type="text"
                     name="tags"
                     value={formData.tags}
                     onChange={handleChange}
                     placeholder="hair loss, transplant, care"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Title Tag</label>
+                  <label className="text-sm font-medium text-slate-700">Title Tag</label>
                   <input
                     type="text"
                     name="metaTitle"
                     value={formData.metaTitle}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                   />
                 </div>
                 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Meta Keyword</label>
+                  <label className="text-sm font-medium text-slate-700">Meta Keyword</label>
                   <textarea
                     name="metaKeywords"
                     value={formData.metaKeywords}
                     onChange={handleChange}
                     rows="2"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 transition focus focus focus"
                   ></textarea>
                 </div>
                 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Meta Description</label>
+                  <label className="text-sm font-medium text-slate-700">Meta Description</label>
                   <textarea
                     name="metaDescription"
                     value={formData.metaDescription}
                     onChange={handleChange}
                     rows="3"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 transition focus focus focus"
                   ></textarea>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Canonical URL</label>
+                  <label className="text-sm font-medium text-slate-700">Canonical URL</label>
                   <input
                     type="text"
                     name="canonicalUrl"
                     value={formData.canonicalUrl}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                   />
                 </div>
                 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex justify-between">
+                  <label className="text-sm font-medium text-slate-700 flex justify-between">
                     <span>URL Slug</span>
                     <span className="text-xs text-slate-400 font-normal">Auto-generates if empty</span>
                   </label>
@@ -542,7 +542,7 @@ function Blogs() {
                     value={formData.slug}
                     onChange={handleChange}
                     placeholder="my-awesome-blog-post"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus:border-coral focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-darkBg dark:text-slate-100 dark:focus:border-coral"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
                   />
                 </div>
               </div>
@@ -555,32 +555,32 @@ function Blogs() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h2 className="text-2xl font-bold text-ink dark:text-white">Blogs</h2>
+      <div className="flex flex-col sm items-start sm justify-between gap-4">
+        <h2 className="text-2xl font-bold text-ink">Blogs</h2>
         <button onClick={handleAddNew} className="btn-primary">
           <Plus size={20} />
           Create New Blog
         </button>
       </div>
       
-      <div className="card-glass p-2 sm:p-4">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
-          <div className="relative w-full sm:w-80">
+      <div className="card-glass p-2 sm">
+        <div className="flex flex-col sm items-center justify-between gap-4 mb-4">
+          <div className="relative w-full sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input 
               type="text"
               placeholder="Search by title or author..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2 outline-none focus:border-coral text-sm transition-colors"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 outline-none focus text-sm transition-colors"
             />
           </div>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex items-center gap-2 w-full sm">
             <Filter size={18} className="text-slate-400" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-slate-50 dark:bg-darkBg border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 outline-none focus:border-coral text-sm transition-colors w-full sm:w-auto"
+              className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 outline-none focus text-sm transition-colors w-full sm"
             >
               <option value="All">All Statuses</option>
               <option value="Published">Published</option>
@@ -603,16 +603,16 @@ function Blogs() {
             <tr key={item._id}>
               <td className="px-5 py-4">
                 {item.blogImage ? (
-                  <div className="h-10 w-10 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
+                  <div className="h-10 w-10 overflow-hidden rounded-lg bg-slate-100">
                     <img src={`${api.defaults.baseURL.replace('/api', '')}${item.blogImage}`} alt={item.altTag || "blog"} className="h-full w-full object-cover" />
                   </div>
                 ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
                     <ImageIcon size={20} />
                   </div>
                 )}
               </td>
-              <td className="px-5 py-4 font-semibold text-ink dark:text-white max-w-[200px] truncate" title={item.title}>
+              <td className="px-5 py-4 font-semibold text-ink max-w-[200px] truncate" title={item.title}>
                 {item.title}
               </td>
               <td className="px-5 py-4">{item.author}</td>
@@ -620,7 +620,7 @@ function Blogs() {
                 {item.blogDate ? new Date(item.blogDate).toLocaleDateString() : "-"}
               </td>
               <td className="px-5 py-4">
-                <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${item.status === 'Published' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400'}`}>
+                <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${item.status === 'Published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                   {item.status || 'Published'}
                 </span>
               </td>
@@ -628,14 +628,14 @@ function Blogs() {
                 <div className="flex justify-end gap-2">
                   <button
                     onClick={() => handleEdit(item)}
-                    className="p-2 text-slate-400 transition-colors hover:text-coral dark:hover:text-primary bg-white dark:bg-darkBg rounded-lg border border-slate-200 dark:border-slate-700/50 shadow-sm"
+                    className="p-2 text-slate-400 transition-colors hover bg-white rounded-lg border border-slate-200 shadow-sm"
                     title="Edit Blog"
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
                     onClick={() => handleDelete(item._id)}
-                    className="p-2 text-slate-400 transition-colors hover:text-red-500 dark:hover:text-red-400 bg-white dark:bg-darkBg rounded-lg border border-slate-200 dark:border-slate-700/50 shadow-sm"
+                    className="p-2 text-slate-400 transition-colors hover bg-white rounded-lg border border-slate-200 shadow-sm"
                     title="Delete Blog"
                   >
                     <Trash2 size={16} />
@@ -646,10 +646,10 @@ function Blogs() {
           ))}
           {currentItems.length === 0 && (
             <tr>
-              <td colSpan="6" className="py-12 text-center text-slate-500 dark:text-slate-400">
+              <td colSpan="6" className="py-12 text-center text-slate-500">
                 <div className="flex flex-col items-center gap-3">
-                  <div className="p-3 bg-slate-100 dark:bg-darkBg rounded-full">
-                    <Search size={24} className="text-slate-400 dark:text-slate-500" />
+                  <div className="p-3 bg-slate-100 rounded-full">
+                    <Search size={24} className="text-slate-400" />
                   </div>
                   <p>No blogs found matching your criteria.</p>
                 </div>
@@ -661,7 +661,7 @@ function Blogs() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-between mt-4 px-2">
-            <span className="text-sm text-slate-500 dark:text-slate-400">
+            <span className="text-sm text-slate-500">
               Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredItems.length)} of {filteredItems.length} entries
             </span>
             <div className="flex gap-1">
@@ -672,7 +672,7 @@ function Blogs() {
                   className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium transition-colors ${
                     currentPage === i + 1 
                       ? 'bg-coral text-white' 
-                      : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 dark:bg-darkBg dark:border-slate-700 dark:text-slate-300 dark:hover:bg-darkHover'
+                      : 'bg-white text-slate-600 hover border border-slate-200'
                   }`}
                 >
                   {i + 1}
@@ -687,3 +687,5 @@ function Blogs() {
 }
 
 export default Blogs;
+
+

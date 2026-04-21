@@ -10,7 +10,7 @@ function ToggleButton({ status, onClick, loading }) {
         active
           ? "bg-emerald-100 text-emerald-700"
           : "bg-rose-100 text-rose-700"
-      } disabled:cursor-not-allowed disabled:opacity-60`}
+      } disabled disabled`}
     >
       {loading ? "..." : active ? "Active" : "Inactive"}
     </button>
@@ -18,3 +18,4 @@ function ToggleButton({ status, onClick, loading }) {
 }
 
 export default ToggleButton;
+

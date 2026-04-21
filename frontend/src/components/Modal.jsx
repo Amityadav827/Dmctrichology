@@ -37,7 +37,7 @@ function Modal({ open, title, children, onClose, onSubmit, submitLabel, loading 
             <button
               type="submit"
               disabled={loading}
-              className="rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white disabled disabled"
             >
               {loading ? "Please wait..." : submitLabel}
             </button>
@@ -49,3 +49,4 @@ function Modal({ open, title, children, onClose, onSubmit, submitLabel, loading 
 }
 
 export default Modal;
+

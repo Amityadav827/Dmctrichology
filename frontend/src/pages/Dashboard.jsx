@@ -46,30 +46,30 @@ function Dashboard() {
       {/* Welcome Section */}
       <div className="flex items-center justify-between card-glass p-6">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Welcome back! 👋</h2>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Here is what's happening with your clinic today.</p>
+          <h2 className="text-2xl font-bold text-slate-900">Welcome back! 👋</h2>
+          <p className="text-slate-500 mt-1">Here is what's happening with your clinic today.</p>
         </div>
-        <div className="hidden md:flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <div className="hidden md h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Activity size={24} />
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 md xl">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.label} className="card-glass p-6 group hover:-translate-y-1 transition-all duration-300">
+            <div key={card.label} className="card-glass p-6 group hover transition-all duration-300">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">{card.label}</p>
-                  <p className="mt-2 text-4xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">{card.value}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{card.label}</p>
+                  <p className="mt-2 text-4xl font-bold text-slate-900 group-hover transition-colors">{card.value}</p>
                 </div>
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-tr ${card.color} text-white shadow-glow group-hover:scale-110 transition-transform`}>
+                <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-tr ${card.color} text-white shadow-glow group-hover transition-transform`}>
                   <Icon size={20} />
                 </div>
               </div>
-              <div className="mt-4 flex items-center text-xs text-slate-500 dark:text-slate-400">
+              <div className="mt-4 flex items-center text-xs text-slate-500">
                 <TrendingUp size={14} className="text-emerald-500 mr-1" />
                 <span className="text-emerald-500 font-medium mr-1">+0%</span> from last month
               </div>
@@ -80,32 +80,32 @@ function Dashboard() {
 
       {/* Recent Users Section */}
       <div className="card-glass p-0 overflow-hidden">
-        <div className="p-6 border-b border-slate-200 dark:border-slate-800">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">Recent Users</h3>
+        <div className="p-6 border-b border-slate-200">
+          <h3 className="text-lg font-bold text-slate-900">Recent Users</h3>
         </div>
-        <div className="divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="divide-y divide-slate-100">
           {stats?.recentUsers && stats.recentUsers.length > 0 ? (
             stats.recentUsers.map((user) => (
               <div
                 key={user._id}
-                className="flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                className="flex items-center justify-between px-6 py-4 hover transition-colors"
               >
                 <div className="flex items-center gap-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-900 dark:text-white">{user.name}</p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">{user.email}</p>
+                    <p className="font-semibold text-slate-900">{user.name}</p>
+                    <p className="text-sm text-slate-500">{user.email}</p>
                   </div>
                 </div>
-                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">
                   {user.role?.name || "user"}
                 </span>
               </div>
             ))
           ) : (
-            <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+            <div className="p-8 text-center text-slate-500">
               No recent users found.
             </div>
           )}
@@ -116,3 +116,5 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+

@@ -141,7 +141,7 @@ function Menu() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Menu List</h3>
             <p className="mt-1 text-sm text-slate-500">Manage dynamic menu links and ordering.</p>
@@ -186,7 +186,7 @@ function Menu() {
                     type="button"
                     onClick={() => handleOrderSave(item._id)}
                     disabled={orderSavingId === item._id}
-                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white disabled:opacity-60"
+                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white disabled"
                   >
                     {orderSavingId === item._id ? "Saving..." : "Save"}
                   </button>
@@ -231,7 +231,7 @@ function Menu() {
         submitLabel={editingItem ? "Update Menu" : "Create Menu"}
         loading={saving}
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Menu Name</label>
             <input
@@ -277,4 +277,5 @@ function Menu() {
 }
 
 export default Menu;
+
 

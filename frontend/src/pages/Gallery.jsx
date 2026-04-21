@@ -148,7 +148,7 @@ function Gallery() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Gallery List</h3>
             <p className="mt-1 text-sm text-slate-500">
@@ -164,12 +164,12 @@ function Gallery() {
           </button>
         </div>
 
-        <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="mt-5 flex flex-col gap-3 md md md">
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search gallery by title"
-            className="w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-coral focus:bg-white"
+            className="w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus focus"
           />
           <button
             type="button"
@@ -201,9 +201,9 @@ function Gallery() {
                   <div className="group flex items-center gap-4">
                     <div className="overflow-hidden rounded-[20px] border border-slate-200 bg-white p-2">
                       <img
-                        src={`http://127.0.0.1:5000${item.image}`}
+                        src={`http${item.image}`}
                         alt={item.title || "Gallery"}
-                        className="h-20 w-24 rounded-2xl object-cover transition duration-300 group-hover:scale-110"
+                        className="h-20 w-24 rounded-2xl object-cover transition duration-300 group-hover"
                       />
                     </div>
                     <div>
@@ -241,7 +241,7 @@ function Gallery() {
             ))}
           </Table>
 
-          <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md md md">
             <p className="text-sm text-slate-500">
               Showing page {pagination.page} of {pagination.totalPages}
             </p>
@@ -250,7 +250,7 @@ function Gallery() {
                 type="button"
                 onClick={() => fetchItems(pagination.page - 1, query)}
                 disabled={pagination.page <= 1}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled:opacity-50"
+                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
               >
                 Previous
               </button>
@@ -258,7 +258,7 @@ function Gallery() {
                 type="button"
                 onClick={() => fetchItems(pagination.page + 1, query)}
                 disabled={pagination.page >= pagination.totalPages}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled:opacity-50"
+                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
               >
                 Next
               </button>
@@ -289,7 +289,7 @@ function Gallery() {
           <ImageUpload
             label={editingItem ? "Replace Image" : "Upload Images"}
             file={form.images}
-            previewUrl={editingItem ? `http://127.0.0.1:5000${editingItem.image}` : []}
+            previewUrl={editingItem ? `http${editingItem.image}` : []}
             multiple={!editingItem}
             helperText="Drag and drop one or more gallery images here"
             onFileChange={(files) =>
@@ -303,4 +303,5 @@ function Gallery() {
 }
 
 export default Gallery;
+
 

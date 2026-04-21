@@ -182,7 +182,7 @@ function VideoInner() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Video List</h3>
             <p className="mt-1 text-sm text-slate-500">
@@ -246,7 +246,7 @@ function VideoInner() {
               </td>
               <td className="px-5 py-4">
                 <img
-                  src={`http://127.0.0.1:5000${item.thumbnail}`}
+                  src={`http${item.thumbnail}`}
                   alt={item.title}
                   className="h-16 w-20 rounded-2xl object-cover"
                 />
@@ -265,7 +265,7 @@ function VideoInner() {
                     type="button"
                     onClick={() => handleOrderSave(item._id)}
                     disabled={orderSavingId === item._id}
-                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white disabled:opacity-60"
+                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white disabled"
                   >
                     {orderSavingId === item._id ? "Saving..." : "Save"}
                   </button>
@@ -310,7 +310,7 @@ function VideoInner() {
         submitLabel={editingItem ? "Update Video" : "Create Video"}
         loading={saving}
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Category</label>
             <select
@@ -336,14 +336,14 @@ function VideoInner() {
               required
             />
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <label className="mb-2 block text-sm font-semibold text-slate-700">Video URL</label>
             <input
               type="url"
               value={form.videoUrl}
               onChange={(event) => setForm((prev) => ({ ...prev, videoUrl: event.target.value }))}
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-              placeholder="https://youtube.com/watch?v=..."
+              placeholder="https?v=..."
               required
             />
           </div>
@@ -367,11 +367,11 @@ function VideoInner() {
               <option value="inactive">Inactive</option>
             </select>
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <ImageUpload
               label="Upload Thumbnail"
               file={form.thumbnail}
-              previewUrl={editingItem ? `http://127.0.0.1:5000${editingItem.thumbnail}` : ""}
+              previewUrl={editingItem ? `http${editingItem.thumbnail}` : ""}
               onFileChange={(file) => setForm((prev) => ({ ...prev, thumbnail: file }))}
             />
           </div>
@@ -382,4 +382,5 @@ function VideoInner() {
 }
 
 export default VideoInner;
+
 

@@ -47,7 +47,7 @@ function Login() {
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-gradientStart/20 blur-[120px]"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[120px]"></div>
 
-      <div className="relative z-10 w-full max-w-md p-8 sm:p-10 card-glass border-slate-700/50 bg-darkCard/60 backdrop-blur-2xl rounded-3xl shadow-2xl">
+      <div className="relative z-10 w-full max-w-md p-8 sm card-glass border-slate-700/50 bg-darkCard/60 backdrop-blur-2xl rounded-3xl shadow-2xl">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-gradientStart to-primary mb-6 shadow-lg shadow-primary/20">
             <Lock className="text-white w-8 h-8" />
@@ -67,7 +67,7 @@ function Login() {
                 type="email"
                 value={form.email}
                 onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
-                className="w-full rounded-xl border border-slate-700 bg-slate-800/50 pl-11 pr-4 py-3 text-white outline-none transition focus:border-primary focus:bg-slate-800 focus:ring-1 focus:ring-primary/50"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800/50 pl-11 pr-4 py-3 text-white outline-none transition focus focus focus focus"
                 placeholder="admin@dmc.com"
                 required
               />
@@ -77,7 +77,7 @@ function Login() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="block text-sm font-medium text-slate-300">Password</label>
-              <a href="#" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">Forgot password?</a>
+              <a href="#" className="text-xs font-medium text-primary hover transition-colors">Forgot password?</a>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -87,14 +87,14 @@ function Login() {
                 type={showPassword ? "text" : "password"}
                 value={form.password}
                 onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
-                className="w-full rounded-xl border border-slate-700 bg-slate-800/50 pl-11 pr-12 py-3 text-white outline-none transition focus:border-primary focus:bg-slate-800 focus:ring-1 focus:ring-primary/50"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800/50 pl-11 pr-12 py-3 text-white outline-none transition focus focus focus focus"
                 placeholder="••••••••"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-200 transition-colors focus:outline-none"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover transition-colors focus"
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -104,11 +104,11 @@ function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-gradient-to-r from-gradientStart to-primary px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100 mt-4"
+            className="w-full rounded-xl bg-gradient-to-r from-gradientStart to-primary px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/25 hover transition-all hover active disabled disabled disabled mt-4"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -123,3 +123,4 @@ function Login() {
 }
 
 export default Login;
+

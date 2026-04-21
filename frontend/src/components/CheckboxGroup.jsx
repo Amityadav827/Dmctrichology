@@ -8,7 +8,7 @@ function CheckboxGroup({ options, values, onChange }) {
   };
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-3 sm lg">
       {options.map((option) => (
         <label
           key={option.value}
@@ -28,3 +28,4 @@ function CheckboxGroup({ options, values, onChange }) {
 }
 
 export default CheckboxGroup;
+

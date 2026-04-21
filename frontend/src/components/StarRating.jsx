@@ -18,7 +18,7 @@ function StarRating({ value = 0, onChange, interactive = false }) {
             type="button"
             onClick={() => onChange?.(star)}
             className={`text-2xl transition ${
-              active ? "text-amber-400" : "text-slate-300 hover:text-amber-300"
+              active ? "text-amber-400" : "text-slate-300 hover"
             }`}
           >
             ★
@@ -30,3 +30,4 @@ function StarRating({ value = 0, onChange, interactive = false }) {
 }
 
 export default StarRating;
+

@@ -179,7 +179,7 @@ function ResultInner() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Result List</h3>
             <p className="mt-1 text-sm text-slate-500">
@@ -234,7 +234,7 @@ function ResultInner() {
               </td>
               <td className="px-5 py-4">
                 <img
-                  src={`http://127.0.0.1:5000${item.image}`}
+                  src={`http${item.image}`}
                   alt={item.title}
                   className="h-16 w-20 rounded-2xl object-cover"
                 />
@@ -253,7 +253,7 @@ function ResultInner() {
                     type="button"
                     onClick={() => handleOrderSave(item._id)}
                     disabled={orderSavingId === item._id}
-                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white disabled:opacity-60"
+                    className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white disabled"
                   >
                     {orderSavingId === item._id ? "Saving..." : "Save"}
                   </button>
@@ -298,7 +298,7 @@ function ResultInner() {
         submitLabel={editingItem ? "Update Result" : "Create Result"}
         loading={saving}
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Result Category</label>
             <select
@@ -344,11 +344,11 @@ function ResultInner() {
               <option value="inactive">Inactive</option>
             </select>
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <ImageUpload
               label="Upload Image"
               file={form.image}
-              previewUrl={editingItem ? `http://127.0.0.1:5000${editingItem.image}` : ""}
+              previewUrl={editingItem ? `http${editingItem.image}` : ""}
               onFileChange={(file) => setForm((prev) => ({ ...prev, image: file }))}
             />
           </div>
@@ -359,4 +359,5 @@ function ResultInner() {
 }
 
 export default ResultInner;
+
 

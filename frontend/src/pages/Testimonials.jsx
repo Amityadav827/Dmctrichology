@@ -135,7 +135,7 @@ function Testimonials() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Testimonials List</h3>
             <p className="mt-1 text-sm text-slate-500">
@@ -151,12 +151,12 @@ function Testimonials() {
           </button>
         </div>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-[1fr_220px_auto]">
+        <div className="mt-5 grid gap-3 md_220px_auto]">
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search by name or message"
-            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-coral focus:bg-white"
+            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus focus"
           />
           <select
             value={sourceFilter}
@@ -251,7 +251,7 @@ function Testimonials() {
             ))}
           </Table>
 
-          <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md md md">
             <p className="text-sm text-slate-500">
               Showing page {pagination.page} of {pagination.totalPages}
             </p>
@@ -260,7 +260,7 @@ function Testimonials() {
                 type="button"
                 onClick={() => fetchItems(pagination.page - 1, query, sourceFilter)}
                 disabled={pagination.page <= 1}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled:opacity-50"
+                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
               >
                 Previous
               </button>
@@ -268,7 +268,7 @@ function Testimonials() {
                 type="button"
                 onClick={() => fetchItems(pagination.page + 1, query, sourceFilter)}
                 disabled={pagination.page >= pagination.totalPages}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled:opacity-50"
+                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
               >
                 Next
               </button>
@@ -285,7 +285,7 @@ function Testimonials() {
         submitLabel={editingItem ? "Update Testimonial" : "Create Testimonial"}
         loading={saving}
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Source</label>
             <select
@@ -307,7 +307,7 @@ function Testimonials() {
               required
             />
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <label className="mb-2 block text-sm font-semibold text-slate-700">Designation</label>
             <input
               value={form.designation}
@@ -317,7 +317,7 @@ function Testimonials() {
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
             />
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <label className="mb-2 block text-sm font-semibold text-slate-700">Message</label>
             <textarea
               rows="5"
@@ -353,4 +353,5 @@ function Testimonials() {
 }
 
 export default Testimonials;
+
 

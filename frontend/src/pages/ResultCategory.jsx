@@ -149,7 +149,7 @@ function ResultCategory() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Result Category List</h3>
             <p className="mt-1 text-sm text-slate-500">
@@ -165,12 +165,12 @@ function ResultCategory() {
           </button>
         </div>
 
-        <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="mt-5 flex flex-col gap-3 md md md">
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search result category"
-            className="w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-coral focus:bg-white"
+            className="w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus focus"
           />
           <button
             type="button"
@@ -217,7 +217,7 @@ function ResultCategory() {
                       type="button"
                       onClick={() => handleOrderSave(item._id)}
                       disabled={orderSavingId === item._id}
-                      className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white disabled:opacity-60"
+                      className="rounded-xl bg-slate-900 px-3 py-2 text-xs font-semibold text-white disabled"
                     >
                       {orderSavingId === item._id ? "Saving..." : "Save"}
                     </button>
@@ -253,7 +253,7 @@ function ResultCategory() {
             ))}
           </Table>
 
-          <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md md md">
             <p className="text-sm text-slate-500">
               Showing page {pagination.page} of {pagination.totalPages}
             </p>
@@ -262,7 +262,7 @@ function ResultCategory() {
                 type="button"
                 onClick={() => fetchItems(pagination.page - 1, query)}
                 disabled={pagination.page <= 1}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled:opacity-50"
+                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
               >
                 Previous
               </button>
@@ -270,7 +270,7 @@ function ResultCategory() {
                 type="button"
                 onClick={() => fetchItems(pagination.page + 1, query)}
                 disabled={pagination.page >= pagination.totalPages}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled:opacity-50"
+                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
               >
                 Next
               </button>
@@ -287,7 +287,7 @@ function ResultCategory() {
         submitLabel={editingItem ? "Update Result Category" : "Create Result Category"}
         loading={saving}
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Category Name</label>
             <input
@@ -306,7 +306,7 @@ function ResultCategory() {
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
             />
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <label className="mb-2 block text-sm font-semibold text-slate-700">Description</label>
             <textarea
               rows="4"
@@ -317,7 +317,7 @@ function ResultCategory() {
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
             />
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <label className="mb-2 block text-sm font-semibold text-slate-700">Status</label>
             <select
               value={form.status}
@@ -335,4 +335,5 @@ function ResultCategory() {
 }
 
 export default ResultCategory;
+
 

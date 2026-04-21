@@ -108,7 +108,7 @@ function RoleList() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Role List</h3>
             <p className="mt-1 text-sm text-slate-500">Create roles and attach module permissions.</p>
@@ -205,4 +205,5 @@ function RoleList() {
 }
 
 export default RoleList;
+
 

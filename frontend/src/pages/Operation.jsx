@@ -119,7 +119,7 @@ function Operation() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Operation List</h3>
             <p className="mt-1 text-sm text-slate-500">Manage operation URLs and active states.</p>
@@ -190,7 +190,7 @@ function Operation() {
         submitLabel={editingItem ? "Update Operation" : "Create Operation"}
         loading={saving}
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Operation Name</label>
             <input
@@ -236,4 +236,5 @@ function Operation() {
 }
 
 export default Operation;
+
 

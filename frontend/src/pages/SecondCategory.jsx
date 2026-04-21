@@ -140,7 +140,7 @@ function SecondCategory() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Second Category</h3>
             <p className="mt-1 text-sm text-slate-500">
@@ -232,7 +232,7 @@ function SecondCategory() {
         submitLabel={editingItem ? "Update Second Category" : "Create Second Category"}
         loading={saving}
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Parent Category</label>
             <select
@@ -275,7 +275,7 @@ function SecondCategory() {
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
             />
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <label className="mb-2 block text-sm font-semibold text-slate-700">Status</label>
             <select
               value={form.status}
@@ -293,4 +293,5 @@ function SecondCategory() {
 }
 
 export default SecondCategory;
+
 

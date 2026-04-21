@@ -10,12 +10,12 @@ function FilterBar({
   statusOptions,
 }) {
   return (
-    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+    <div className="grid gap-3 md xl">
       <input
         value={search}
         onChange={(event) => onSearchChange(event.target.value)}
         placeholder="Search leads"
-        className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-coral focus:bg-white"
+        className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus focus"
       />
       <select
         value={status}
@@ -46,3 +46,4 @@ function FilterBar({
 }
 
 export default FilterBar;
+

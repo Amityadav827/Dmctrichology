@@ -168,7 +168,7 @@ function ServiceFAQ() {
   return (
     <div className="space-y-6">
       <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg lg lg">
           <div>
             <h3 className="text-2xl font-semibold text-ink">Service FAQ</h3>
             <p className="mt-1 text-sm text-slate-500">
@@ -184,7 +184,7 @@ function ServiceFAQ() {
           </button>
         </div>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
+        <div className="mt-5 grid gap-4 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Category</label>
             <select
@@ -282,7 +282,7 @@ function ServiceFAQ() {
         submitLabel={editingItem ? "Update FAQ" : "Create FAQ"}
         loading={saving}
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md">
           <div>
             <label className="mb-2 block text-sm font-semibold text-slate-700">Category</label>
             <select
@@ -314,7 +314,7 @@ function ServiceFAQ() {
               ))}
             </select>
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <label className="mb-2 block text-sm font-semibold text-slate-700">Question</label>
             <input
               value={form.question}
@@ -323,7 +323,7 @@ function ServiceFAQ() {
               required
             />
           </div>
-          <div className="md:col-span-2">
+          <div className="md">
             <label className="mb-2 block text-sm font-semibold text-slate-700">Answer</label>
             <textarea
               rows="5"
@@ -360,4 +360,5 @@ function ServiceFAQ() {
 }
 
 export default ServiceFAQ;
+
 

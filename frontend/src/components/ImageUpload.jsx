@@ -46,7 +46,7 @@ function ImageUpload({
         className={`flex cursor-pointer flex-col items-center justify-center rounded-[24px] border border-dashed px-6 py-8 text-center transition ${
           dragActive
             ? "border-coral bg-white"
-            : "border-slate-300 bg-slate-50 hover:border-coral hover:bg-white"
+            : "border-slate-300 bg-slate-50 hover hover"
         }`}
         onDragOver={(event) => {
           event.preventDefault();
@@ -73,7 +73,7 @@ function ImageUpload({
       </label>
 
       {Array.isArray(preview) && preview.length ? (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm lg">
           {preview.map((imageUrl, index) => (
             <div
               key={`${imageUrl}-${index}`}
@@ -97,3 +97,4 @@ function ImageUpload({
 }
 
 export default ImageUpload;
+
