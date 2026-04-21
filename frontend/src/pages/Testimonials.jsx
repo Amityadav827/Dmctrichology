@@ -241,7 +241,7 @@ function Testimonials() {
                       type="button"
                       onClick={() => handleDelete(item._id)}
                       disabled={actionId === item._id}
-                      className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-semibold text-rose-600 disabled:opacity-60"
+                      className="btn-danger"
                     >
                       Delete
                     </button>
@@ -353,3 +353,4 @@ function Testimonials() {
 }
 
 export default Testimonials;
+

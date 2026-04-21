@@ -10,8 +10,8 @@ import {
 // Premium Active/Inactive State Logic
 const getNavClass = ({ isActive }) =>
   isActive
-    ? "flex items-center gap-3 rounded-xl bg-gradient-to-r from-gradientStart/20 to-gradientEnd/20 border border-gradientStart/30 px-3 py-2.5 text-sm font-semibold text-primary shadow-sm transition-all duration-300"
-    : "flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white hover:scale-[1.02] transition-all duration-300";
+    ? "flex items-center gap-3 rounded-xl bg-gradient-to-r from-gradientStart/20 to-gradientEnd/20 dark:from-gradientStart/40 dark:to-primary/30 border border-gradientStart/30 dark:border-primary/50 px-3 py-2.5 text-sm font-semibold text-primary dark:text-white shadow-[0_0_15px_rgba(0,229,255,0.15)] transition-all duration-300"
+    : "flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-slate-200 hover:scale-[1.02] transition-all duration-300";
 
 function Sidebar() {
   return (

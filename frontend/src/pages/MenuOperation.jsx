@@ -245,7 +245,7 @@ function MenuOperationRow({ item, menuOptions, loading, onSave, onDelete }) {
           type="button"
           onClick={() => onDelete(item._id)}
           disabled={loading}
-          className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-semibold text-rose-600 disabled:opacity-60"
+          className="btn-danger"
         >
           Delete
         </button>
@@ -255,3 +255,4 @@ function MenuOperationRow({ item, menuOptions, loading, onSave, onDelete }) {
 }
 
 export default MenuOperation;
+
