@@ -146,10 +146,3 @@ textarea {
 .dark .ql-editor.ql-blank::before {
   color: #64748b;
 }
-
-
-
-
-button.p-2\.5.rounded-xl.border.border-slate-200.dark\:border-slate-800.text-slate-500.hover\:bg-slate-100.dark\:text-slate-400.dark\:hover\:bg-slate-800\/50.transition-all.shadow-sm.hover\:scale-105 {
-  display: none;
-}
