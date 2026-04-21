@@ -44,7 +44,7 @@ function Login() {
       <div className="w-full max-w-md rounded-[32px] border border-white/70 bg-white/90 p-8 shadow-panel">
         <p className="text-xs uppercase tracking-[0.35em] text-coral">DMC Trichology</p>
         <h1 className="mt-3 text-3xl font-semibold text-ink">Admin Login</h1>
-        <p className="mt-2 text-sm text-slate-500">Use your admin JWT credentials to enter.</p>
+        <p className="mt-2 text-sm text-slate-500">Sign in to access your administrative workspace.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
@@ -53,7 +53,7 @@ function Login() {
               type="email"
               value={form.email}
               onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-coral focus:bg-white"
+              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-black outline-none transition focus:border-coral focus:bg-white"
               required
             />
           </div>
@@ -64,7 +64,7 @@ function Login() {
               type="password"
               value={form.password}
               onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-coral focus:bg-white"
+              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-black outline-none transition focus:border-coral focus:bg-white"
               required
             />
           </div>

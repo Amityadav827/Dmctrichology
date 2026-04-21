@@ -61,5 +61,5 @@ textarea {
 /* Custom override for .bg-slate-50 */
 .bg-slate-50 {
     --tw-bg-opacity: 1;
-    background-color: rgb(0 0 0);
+    background-color: #ffffff;
 }
