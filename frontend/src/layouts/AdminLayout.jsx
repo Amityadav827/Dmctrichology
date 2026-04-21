@@ -5,22 +5,41 @@ import Sidebar from "../components/Sidebar";
 
 function AdminLayout() {
   return (
-    <div className="min-h-screen bg-lightBg text-slate-900 transition-colors duration-300">
-      <div className="mx-auto flex max-w-[1600px] flex-col gap-6 xl animate-fade-in p-4 md">
-        
-        {/* Sidebar Section */}
-        <div className="xl xl xl(100vh-3rem)] xl xl z-20">
-          <Sidebar />
-        </div>
+    <div style={{ minHeight: "100vh", backgroundColor: "#F8FAFC", display: "flex" }}>
+      {/* Sidebar */}
+      <aside
+        style={{
+          width: "260px",
+          minWidth: "260px",
+          height: "100vh",
+          position: "sticky",
+          top: 0,
+          overflowY: "auto",
+          backgroundColor: "#FFFFFF",
+          borderRight: "1px solid #E2E8F0",
+          boxShadow: "1px 0 0 #E2E8F0",
+          zIndex: 30,
+        }}
+        className="scrollbar-hide"
+      >
+        <Sidebar />
+      </aside>
 
-        {/* Main Content Section */}
-        <main className="flex-1 flex flex-col gap-6 min-w-0">
-          <Header />
-          
-          {/* Premium Glassmorphism Page Wrapper */}
-          <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-2xl shadow-panel border border-slate-200 p-6 transition-all duration-300">
-            <Outlet />
-          </div>
+      {/* Main area */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+        {/* Header */}
+        <Header />
+
+        {/* Page content */}
+        <main
+          style={{
+            flex: 1,
+            padding: "1.5rem",
+            maxWidth: "100%",
+          }}
+          className="animate-fade-in"
+        >
+          <Outlet />
         </main>
       </div>
     </div>
@@ -28,4 +47,3 @@ function AdminLayout() {
 }
 
 export default AdminLayout;
-

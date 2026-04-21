@@ -1,37 +1,30 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { clearAuth, getAuthUser } from "../utils/auth";
-import { LogOut, Sun, Moon, User } from "lucide-react";
+import { LogOut, User, Sun, Moon } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
 const titles = {
   "/dashboard": "Dashboard",
   "/seo": "SEO",
-  "/services": "Services",
-  "/results": "Results",
-  "/videos": "Videos",
-  "/users": "User List",
-  "/menu": "Menu List",
-  "/contacts": "Contact Us List",
-  "/appointment": "Appointment List",
   "/blogs": "Blogs",
-  "/services/categories": "List Services Category",
+  "/gallery": "Gallery",
+  "/testimonials": "Testimonials",
+  "/services/categories": "Service Categories",
   "/services/second-categories": "Second Category",
   "/services/faqs": "Service FAQ",
-  "/results/categories": "Result Category List",
+  "/results/categories": "Result Category",
   "/results/list": "Result List",
-  "/videos/categories": "Video Category List",
+  "/videos/categories": "Video Category",
   "/videos/list": "Video List",
-  "/gallery": "Gallery List",
-  "/testimonials": "Testimonials List",
   "/users/list": "User List",
   "/users/roles": "Role List",
-  "/users/permissions": "Permission Menu",
+  "/users/permissions": "Permissions",
   "/users/menus": "Menu List",
-  "/users/operations": "Operation List",
-  "/users/menu-operations": "Manage Menu Operation",
-  "/leads/callback": "Request A Callback",
-  "/leads/contact": "Contact Us List",
-  "/leads/appointment": "Appointment List",
+  "/users/operations": "Operations",
+  "/users/menu-operations": "Menu Operations",
+  "/leads/callback": "Request Callback",
+  "/leads/contact": "Contact Leads",
+  "/leads/appointment": "Appointments",
 };
 
 function Header() {
@@ -45,58 +38,143 @@ function Header() {
     navigate("/login");
   };
 
+  const pageTitle = titles[location.pathname] || "Dashboard";
+
   return (
-    <header className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-panel backdrop-blur-xl transition-colors duration-300 md md md z-10 sticky top-0">
-      
-      {/* Title Section */}
+    <header
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0.875rem 1.5rem",
+        backgroundColor: "#FFFFFF",
+        borderBottom: "1px solid #E2E8F0",
+        position: "sticky",
+        top: 0,
+        zIndex: 20,
+        gap: "1rem",
+      }}
+    >
+      {/* Page title */}
       <div>
-        <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-primary">
+        <p
+          style={{
+            fontSize: "0.65rem",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.12em",
+            color: "#2563EB",
+            margin: 0,
+          }}
+        >
           Admin Panel
         </p>
-        <h2 className="mt-1 text-2xl font-bold text-slate-900">
-          {titles[location.pathname] || "Services"}
+        <h2
+          style={{
+            fontSize: "1.25rem",
+            fontWeight: 700,
+            color: "#0F172A",
+            margin: 0,
+            marginTop: "2px",
+            lineHeight: 1.25,
+          }}
+        >
+          {pageTitle}
         </h2>
       </div>
 
-      {/* Actions Section */}
-      <div className="flex items-center gap-3">
-        
-        {/* Dark Mode Toggle */}
+      {/* Right actions */}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        {/* Theme toggle */}
         <button
           onClick={toggleTheme}
-          className="p-2.5 rounded-xl border border-slate-200 text-slate-500 hover transition-all shadow-sm hover"
           title="Toggle Theme"
+          style={{
+            padding: "0.5rem",
+            borderRadius: "8px",
+            border: "1px solid #E2E8F0",
+            background: "#FFFFFF",
+            color: "#475569",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "all 0.15s ease",
+          }}
         >
-          {isDarkMode ? (
-            <Sun size={18} className="text-amber-400" />
-          ) : (
-            <Moon size={18} />
-          )}
+          {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
         </button>
 
-        {/* User Info Card */}
-        <div className="hidden sm items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/50 py-2 px-3 shadow-sm">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-gradientStart to-gradientEnd flex items-center justify-center text-white shadow-glow">
-            <User size={16} />
+        {/* User info */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.625rem",
+            padding: "0.375rem 0.75rem",
+            background: "#F8FAFC",
+            border: "1px solid #E2E8F0",
+            borderRadius: "8px",
+          }}
+        >
+          <div
+            style={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "6px",
+              background: "linear-gradient(135deg, #2563EB, #0EA5E9)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <User size={14} color="#fff" />
           </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-700 leading-tight">
+          <div style={{ lineHeight: 1.3 }}>
+            <p
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: 600,
+                color: "#0F172A",
+                margin: 0,
+              }}
+            >
               {user?.name || "Admin User"}
             </p>
-            <p className="text-[10px] text-slate-500 leading-tight">
+            <p
+              style={{
+                fontSize: "0.7rem",
+                color: "#94A3B8",
+                margin: 0,
+              }}
+            >
               {user?.email || "admin@dmc.com"}
             </p>
           </div>
         </div>
 
-        {/* Logout Button */}
+        {/* Logout */}
         <button
           type="button"
           onClick={handleLogout}
-          className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 shadow-sm transition-all hover hover hover hover active"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.375rem",
+            padding: "0.5rem 0.875rem",
+            borderRadius: "8px",
+            border: "1px solid #E2E8F0",
+            background: "#FFFFFF",
+            color: "#475569",
+            fontSize: "0.8rem",
+            fontWeight: 500,
+            cursor: "pointer",
+            transition: "all 0.15s ease",
+          }}
         >
-          <LogOut size={16} />
-          <span className="hidden sm">Logout</span>
+          <LogOut size={15} />
+          <span>Logout</span>
         </button>
       </div>
     </header>
@@ -104,4 +182,3 @@ function Header() {
 }
 
 export default Header;
-

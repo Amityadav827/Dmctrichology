@@ -1,21 +1,52 @@
 function Table({ columns, children, stickyHeader = false }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-panel transition-all duration-300">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-slate-200">
-          <thead className={`bg-slate-50 ${stickyHeader ? "sticky top-0 z-10 backdrop-blur-md" : ""}`}>
+    <div
+      style={{
+        background: "#FFFFFF",
+        border: "1px solid #E2E8F0",
+        borderRadius: "12px",
+        overflow: "hidden",
+        boxShadow: "0 1px 3px rgba(15,23,42,0.06)",
+      }}
+    >
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ minWidth: "100%", borderCollapse: "collapse" }}>
+          <thead
+            style={{
+              backgroundColor: "#F8FAFC",
+              borderBottom: "1px solid #E2E8F0",
+              position: stickyHeader ? "sticky" : "static",
+              top: stickyHeader ? 0 : "auto",
+              zIndex: stickyHeader ? 10 : "auto",
+            }}
+          >
             <tr>
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={`px-5 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 ${column.align === 'right' ? 'text-right' : 'text-left'}`}
+                  style={{
+                    padding: "0.75rem 1.25rem",
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.07em",
+                    color: "#64748B",
+                    textAlign: column.align === "right" ? "right" : "left",
+                    whiteSpace: "nowrap",
+                  }}
                 >
                   {column.label}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 bg-white text-slate-700 [&>tr] [&>tr] hover&>tr]&>tr]&>tr(even)]">
+          <tbody
+            style={{
+              backgroundColor: "#FFFFFF",
+              color: "#334155",
+              fontSize: "0.875rem",
+            }}
+          >
             {children}
           </tbody>
         </table>
@@ -25,5 +56,3 @@ function Table({ columns, children, stickyHeader = false }) {
 }
 
 export default Table;
-
-

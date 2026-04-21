@@ -1,17 +1,34 @@
-const statusStyles = {
-  new: "bg-blue-100 text-blue-700",
-  contacted: "bg-orange-100 text-orange-700",
-  converted: "bg-emerald-100 text-emerald-700",
-  replied: "bg-amber-100 text-amber-700",
-  closed: "bg-slate-200 text-slate-700",
+const statusMap = {
+  new:       { bg: "#DBEAFE", color: "#1E40AF" },
+  contacted: { bg: "#FEF3C7", color: "#92400E" },
+  converted: { bg: "#D1FAE5", color: "#065F46" },
+  replied:   { bg: "#FEF3C7", color: "#92400E" },
+  closed:    { bg: "#F1F5F9", color: "#475569" },
+  confirmed: { bg: "#D1FAE5", color: "#065F46" },
+  completed: { bg: "#DCFCE7", color: "#14532D" },
+  cancelled: { bg: "#FEE2E2", color: "#991B1B" },
+  pending:   { bg: "#FEF9C3", color: "#854D0E" },
 };
 
 function StatusBadge({ status }) {
+  const normalized = (status || "").toLowerCase();
+  const style = statusMap[normalized] || { bg: "#F1F5F9", color: "#475569" };
+
   return (
     <span
-      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
-        statusStyles[status] || "bg-slate-100 text-slate-700"
-      }`}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        padding: "0.2rem 0.6rem",
+        borderRadius: "9999px",
+        fontSize: "0.7rem",
+        fontWeight: 700,
+        letterSpacing: "0.05em",
+        textTransform: "uppercase",
+        backgroundColor: style.bg,
+        color: style.color,
+        whiteSpace: "nowrap",
+      }}
     >
       {status}
     </span>
@@ -19,4 +36,3 @@ function StatusBadge({ status }) {
 }
 
 export default StatusBadge;
-

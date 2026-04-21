@@ -23,6 +23,18 @@ const statusOptions = [
   { label: "Cancelled", value: "cancelled" },
 ];
 
+const selectStyle = {
+  background: "#FFFFFF",
+  border: "1px solid #E2E8F0",
+  borderRadius: "8px",
+  padding: "0.5rem 0.875rem",
+  fontSize: "0.875rem",
+  color: "#334155",
+  outline: "none",
+  fontFamily: "inherit",
+  width: "100%",
+};
+
 function Appointment() {
   const [items, setItems] = useState([]);
   const [services, setServices] = useState([]);
@@ -57,7 +69,7 @@ function Appointment() {
     try {
       const response = await getServicesMaster();
       setServices(response.data || response);
-    } catch (error) {
+    } catch {
       setServices([]);
     }
   };
@@ -85,13 +97,8 @@ function Appointment() {
     }
   };
 
-  useEffect(() => {
-    fetchServices();
-  }, []);
-
-  useEffect(() => {
-    fetchItems(1);
-  }, [debouncedSearch, status, startDate, endDate, sortBy, sortOrder, quickFilter]);
+  useEffect(() => { fetchServices(); }, []);
+  useEffect(() => { fetchItems(1); }, [debouncedSearch, status, startDate, endDate, sortBy, sortOrder, quickFilter]);
 
   const updateInline = async (id, payload) => {
     setActionId(id);
@@ -107,10 +114,7 @@ function Appointment() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this appointment?")) {
-      return;
-    }
-
+    if (!window.confirm("Delete this appointment?")) return;
     setActionId(id);
     try {
       await deleteAppointment(id);
@@ -136,19 +140,32 @@ function Appointment() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg lg lg">
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+      {/* Top card */}
+      <div className="card" style={{ padding: "1.25rem" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "1rem",
+            marginBottom: "1.25rem",
+          }}
+        >
           <div>
-            <h3 className="text-2xl font-semibold text-ink">Appointment List</h3>
-            <p className="mt-1 text-sm text-slate-500">
+            <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>
+              Appointment List
+            </h3>
+            <p style={{ marginTop: "0.25rem", fontSize: "0.875rem", color: "#64748B", margin: "0.25rem 0 0" }}>
               Manage bookings, update services and export appointment leads.
             </p>
           </div>
           <ExportButton onClick={handleExport} loading={exporting} />
         </div>
 
-        <div className="mt-5 space-y-3">
+        {/* Filters */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <FilterBar
             search={search}
             onSearchChange={setSearch}
@@ -160,33 +177,30 @@ function Appointment() {
             onEndDateChange={setEndDate}
             statusOptions={statusOptions}
           />
-
-          <div className="grid gap-3 md">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+              gap: "0.75rem",
+            }}
+          >
             <select
               value={quickFilter}
-              onChange={(event) => setQuickFilter(event.target.value)}
-              className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
+              onChange={(e) => setQuickFilter(e.target.value)}
+              style={selectStyle}
             >
               <option value="">All Appointments</option>
               <option value="today">Today</option>
               <option value="week">This Week</option>
               <option value="pending">Pending</option>
             </select>
-            <select
-              value={sortBy}
-              onChange={(event) => setSortBy(event.target.value)}
-              className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-            >
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={selectStyle}>
               <option value="createdAt">Sort by Created Date</option>
               <option value="appointmentDate">Sort by Appointment Date</option>
               <option value="name">Sort by Name</option>
               <option value="service">Sort by Service</option>
             </select>
-            <select
-              value={sortOrder}
-              onChange={(event) => setSortOrder(event.target.value)}
-              className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-            >
+            <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={selectStyle}>
               <option value="desc">Descending</option>
               <option value="asc">Ascending</option>
             </select>
@@ -194,6 +208,7 @@ function Appointment() {
         </div>
       </div>
 
+      {/* Table */}
       {loading ? (
         <Loader label="Loading appointments..." />
       ) : (
@@ -205,19 +220,19 @@ function Appointment() {
               { key: "email", label: "Email" },
               { key: "mobile", label: "Mobile" },
               { key: "service", label: "Service" },
-              { key: "appointmentDate", label: "Appointment Date" },
+              { key: "appointmentDate", label: "Appt. Date" },
               { key: "message", label: "Message" },
               { key: "status", label: "Status" },
-              { key: "createdAt", label: "Created Date" },
+              { key: "createdAt", label: "Created" },
               { key: "actions", label: "Actions" },
             ]}
           >
             {items.map((item) => (
-              <tr key={item._id} className="text-sm text-slate-600">
-                <td className="px-5 py-4 font-semibold text-ink">{item.name}</td>
-                <td className="px-5 py-4">{item.email}</td>
-                <td className="px-5 py-4">{item.mobile}</td>
-                <td className="px-5 py-4">
+              <tr key={item._id} style={{ borderBottom: "1px solid #F1F5F9" }}>
+                <td style={{ padding: "0.875rem 1.25rem", fontWeight: 600, color: "#0F172A", whiteSpace: "nowrap" }}>{item.name}</td>
+                <td style={{ padding: "0.875rem 1.25rem", color: "#475569", fontSize: "0.8rem" }}>{item.email}</td>
+                <td style={{ padding: "0.875rem 1.25rem", color: "#475569", whiteSpace: "nowrap" }}>{item.mobile}</td>
+                <td style={{ padding: "0.875rem 1.25rem" }}>
                   <ServiceDropdown
                     value={item.service}
                     options={serviceOptions}
@@ -225,20 +240,34 @@ function Appointment() {
                     onChange={(value) => updateInline(item._id, { service: value })}
                   />
                 </td>
-                <td className="px-5 py-4">
+                <td style={{ padding: "0.875rem 1.25rem", whiteSpace: "nowrap", color: "#475569", fontSize: "0.875rem" }}>
                   {new Date(item.appointmentDate).toLocaleDateString()}
                 </td>
-                <td className="px-5 py-4 max-w-xs">
+                <td style={{ padding: "0.875rem 1.25rem", maxWidth: "180px" }}>
                   <button
                     type="button"
                     onClick={() => setMessageModal({ open: true, item })}
-                    className="truncate text-left text-slate-500 underline"
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "#2563EB",
+                      fontSize: "0.8rem",
+                      textDecoration: "underline",
+                      textAlign: "left",
+                      padding: 0,
+                      maxWidth: "160px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      display: "block",
+                    }}
                   >
-                    {item.message || "-"}
+                    {item.message || "—"}
                   </button>
                 </td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
+                <td style={{ padding: "0.875rem 1.25rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                     <StatusBadge status={item.status} />
                     <StatusDropdown
                       value={item.status}
@@ -248,8 +277,10 @@ function Appointment() {
                     />
                   </div>
                 </td>
-                <td className="px-5 py-4">{new Date(item.createdAt).toLocaleString()}</td>
-                <td className="px-5 py-4">
+                <td style={{ padding: "0.875rem 1.25rem", color: "#64748B", fontSize: "0.8rem", whiteSpace: "nowrap" }}>
+                  {new Date(item.createdAt).toLocaleDateString()}
+                </td>
+                <td style={{ padding: "0.875rem 1.25rem" }}>
                   <button
                     type="button"
                     onClick={() => handleDelete(item._id)}
@@ -261,9 +292,19 @@ function Appointment() {
                 </td>
               </tr>
             ))}
+            {items.length === 0 && (
+              <tr>
+                <td
+                  colSpan={9}
+                  style={{ padding: "3rem", textAlign: "center", color: "#94A3B8", fontSize: "0.875rem" }}
+                >
+                  No appointments found.
+                </td>
+              </tr>
+            )}
           </Table>
 
-          <Pagination pagination={pagination} onPageChange={fetchItems} />
+          <PaginationBar pagination={pagination} onPageChange={fetchItems} />
         </>
       )}
 
@@ -275,9 +316,20 @@ function Appointment() {
         submitLabel="Close"
         loading={false}
       >
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-ink">{messageModal.item?.name}</p>
-          <p className="rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-600">
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <p style={{ fontWeight: 600, color: "#0F172A", margin: 0 }}>{messageModal.item?.name}</p>
+          <p
+            style={{
+              background: "#F8FAFC",
+              border: "1px solid #E2E8F0",
+              borderRadius: "8px",
+              padding: "0.875rem",
+              fontSize: "0.875rem",
+              color: "#475569",
+              lineHeight: 1.7,
+              margin: 0,
+            }}
+          >
             {messageModal.item?.message || "No message provided"}
           </p>
         </div>
@@ -286,28 +338,42 @@ function Appointment() {
   );
 }
 
-function Pagination({ pagination, onPageChange }) {
+function PaginationBar({ pagination, onPageChange }) {
   return (
-    <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md md md">
-      <p className="text-sm text-slate-500">
-        Showing page {pagination.page} of {pagination.totalPages}
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        background: "#FFFFFF",
+        border: "1px solid #E2E8F0",
+        borderRadius: "12px",
+        padding: "0.875rem 1.25rem",
+        flexWrap: "wrap",
+        gap: "0.75rem",
+      }}
+    >
+      <p style={{ fontSize: "0.875rem", color: "#64748B", margin: 0 }}>
+        Page {pagination.page} of {pagination.totalPages}
       </p>
-      <div className="flex gap-2">
+      <div style={{ display: "flex", gap: "0.5rem" }}>
         <button
           type="button"
           onClick={() => onPageChange(pagination.page - 1)}
           disabled={pagination.page <= 1}
-          className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
+          className="btn-secondary"
+          style={{ padding: "0.375rem 0.875rem", fontSize: "0.8rem" }}
         >
-          Previous
+          ← Previous
         </button>
         <button
           type="button"
           onClick={() => onPageChange(pagination.page + 1)}
           disabled={pagination.page >= pagination.totalPages}
-          className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
+          className="btn-secondary"
+          style={{ padding: "0.375rem 0.875rem", fontSize: "0.8rem" }}
         >
-          Next
+          Next →
         </button>
       </div>
     </div>
@@ -315,5 +381,3 @@ function Pagination({ pagination, onPageChange }) {
 }
 
 export default Appointment;
-
-

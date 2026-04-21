@@ -2,11 +2,20 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../components/Loader";
 import api from "../api/client";
-import { 
-  Users, UserCheck, UserPlus, 
+import {
+  Users, UserCheck, UserPlus,
   Calendar, CalendarCheck, CalendarDays,
-  TrendingUp, Activity
+  TrendingUp, Activity,
 } from "lucide-react";
+
+const cardColors = [
+  { bg: "#EFF6FF", icon: "#2563EB", border: "#BFDBFE" },
+  { bg: "#F5F3FF", icon: "#7C3AED", border: "#DDD6FE" },
+  { bg: "#ECFDF5", icon: "#059669", border: "#A7F3D0" },
+  { bg: "#FFF7ED", icon: "#D97706", border: "#FDE68A" },
+  { bg: "#FDF2F8", icon: "#DB2777", border: "#FBCFE8" },
+  { bg: "#EFF6FF", icon: "#1D4ED8", border: "#93C5FD" },
+];
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -24,88 +33,196 @@ function Dashboard() {
         setLoading(false);
       }
     };
-
     fetchStats();
   }, []);
 
-  if (loading) {
-    return <Loader label="Loading dashboard..." />;
-  }
+  if (loading) return <Loader label="Loading dashboard..." />;
 
   const cards = [
-    { label: "Total Leads", value: stats?.totalLeads ?? 0, icon: Users, color: "from-blue-500 to-cyan-400" },
-    { label: "Today's Leads", value: stats?.todaysLeads ?? 0, icon: UserPlus, color: "from-purple-500 to-indigo-400" },
-    { label: "Converted Leads", value: stats?.convertedLeads ?? 0, icon: UserCheck, color: "from-emerald-500 to-teal-400" },
-    { label: "Total Appointments", value: stats?.totalAppointments ?? 0, icon: CalendarDays, color: "from-orange-500 to-amber-400" },
-    { label: "Today's Bookings", value: stats?.todaysAppointments ?? 0, icon: Calendar, color: "from-pink-500 to-rose-400" },
-    { label: "Completed Bookings", value: stats?.completedAppointments ?? 0, icon: CalendarCheck, color: "from-blue-600 to-indigo-500" },
+    { label: "Total Leads", value: stats?.totalLeads ?? 0, icon: Users },
+    { label: "Today's Leads", value: stats?.todaysLeads ?? 0, icon: UserPlus },
+    { label: "Converted Leads", value: stats?.convertedLeads ?? 0, icon: UserCheck },
+    { label: "Total Appointments", value: stats?.totalAppointments ?? 0, icon: CalendarDays },
+    { label: "Today's Bookings", value: stats?.todaysAppointments ?? 0, icon: Calendar },
+    { label: "Completed Bookings", value: stats?.completedAppointments ?? 0, icon: CalendarCheck },
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Welcome Section */}
-      <div className="flex items-center justify-between card-glass p-6">
+    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {/* Welcome banner */}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #2563EB, #0EA5E9)",
+          borderRadius: "12px",
+          padding: "1.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <div>
-          <h2 className="text-2xl font-bold text-slate-900">Welcome back! 👋</h2>
-          <p className="text-slate-500 mt-1">Here is what's happening with your clinic today.</p>
+          <h2 style={{ color: "#FFFFFF", fontSize: "1.25rem", fontWeight: 700, margin: 0 }}>
+            Welcome back! 👋
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.8)", marginTop: "0.25rem", fontSize: "0.875rem", margin: "0.25rem 0 0" }}>
+            Here's what's happening with your clinic today.
+          </p>
         </div>
-        <div className="hidden md h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <Activity size={24} />
+        <div
+          style={{
+            width: "48px",
+            height: "48px",
+            background: "rgba(255,255,255,0.2)",
+            borderRadius: "12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Activity size={24} color="#FFFFFF" />
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid gap-6 md xl">
-        {cards.map((card) => {
+      {/* Stats grid */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+          gap: "1rem",
+        }}
+      >
+        {cards.map((card, idx) => {
           const Icon = card.icon;
+          const palette = cardColors[idx % cardColors.length];
           return (
-            <div key={card.label} className="card-glass p-6 group hover transition-all duration-300">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{card.label}</p>
-                  <p className="mt-2 text-4xl font-bold text-slate-900 group-hover transition-colors">{card.value}</p>
-                </div>
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-tr ${card.color} text-white shadow-glow group-hover transition-transform`}>
-                  <Icon size={20} />
+            <div
+              key={card.label}
+              style={{
+                background: "#FFFFFF",
+                border: `1px solid ${palette.border}`,
+                borderRadius: "12px",
+                padding: "1.25rem",
+                boxShadow: "0 1px 3px rgba(15,23,42,0.06)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.75rem",
+                transition: "box-shadow 0.2s ease, transform 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = "0 4px 16px rgba(15,23,42,0.10)";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "0 1px 3px rgba(15,23,42,0.06)";
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <p style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#94A3B8", margin: 0 }}>
+                  {card.label}
+                </p>
+                <div
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "8px",
+                    background: palette.bg,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={18} color={palette.icon} />
                 </div>
               </div>
-              <div className="mt-4 flex items-center text-xs text-slate-500">
-                <TrendingUp size={14} className="text-emerald-500 mr-1" />
-                <span className="text-emerald-500 font-medium mr-1">+0%</span> from last month
+              <p style={{ fontSize: "2rem", fontWeight: 800, color: "#0F172A", margin: 0, lineHeight: 1 }}>
+                {card.value}
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.75rem", color: "#64748B" }}>
+                <TrendingUp size={13} color="#16A34A" />
+                <span style={{ color: "#16A34A", fontWeight: 600 }}>+0%</span>
+                <span>from last month</span>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Recent Users Section */}
-      <div className="card-glass p-0 overflow-hidden">
-        <div className="p-6 border-b border-slate-200">
-          <h3 className="text-lg font-bold text-slate-900">Recent Users</h3>
+      {/* Recent Users */}
+      <div
+        style={{
+          background: "#FFFFFF",
+          border: "1px solid #E2E8F0",
+          borderRadius: "12px",
+          overflow: "hidden",
+          boxShadow: "0 1px 3px rgba(15,23,42,0.06)",
+        }}
+      >
+        <div
+          style={{
+            padding: "1rem 1.25rem",
+            borderBottom: "1px solid #E2E8F0",
+          }}
+        >
+          <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Recent Users</h3>
         </div>
-        <div className="divide-y divide-slate-100">
+        <div>
           {stats?.recentUsers && stats.recentUsers.length > 0 ? (
             stats.recentUsers.map((user) => (
               <div
                 key={user._id}
-                className="flex items-center justify-between px-6 py-4 hover transition-colors"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "0.875rem 1.25rem",
+                  borderBottom: "1px solid #F1F5F9",
+                  transition: "background 0.12s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#F8FAFC")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold">
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <div
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "50%",
+                      background: "#EFF6FF",
+                      color: "#2563EB",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 700,
+                      fontSize: "0.875rem",
+                      flexShrink: 0,
+                    }}
+                  >
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-900">{user.name}</p>
-                    <p className="text-sm text-slate-500">{user.email}</p>
+                    <p style={{ fontWeight: 600, color: "#0F172A", margin: 0, fontSize: "0.875rem" }}>{user.name}</p>
+                    <p style={{ fontSize: "0.75rem", color: "#94A3B8", margin: 0 }}>{user.email}</p>
                   </div>
                 </div>
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <span
+                  style={{
+                    padding: "0.2rem 0.6rem",
+                    borderRadius: "9999px",
+                    background: "#F1F5F9",
+                    color: "#475569",
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.06em",
+                  }}
+                >
                   {user.role?.name || "user"}
                 </span>
               </div>
             ))
           ) : (
-            <div className="p-8 text-center text-slate-500">
+            <div style={{ padding: "2rem", textAlign: "center", color: "#94A3B8", fontSize: "0.875rem" }}>
               No recent users found.
             </div>
           )}
@@ -116,5 +233,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-

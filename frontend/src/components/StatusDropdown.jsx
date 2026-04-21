@@ -2,9 +2,20 @@ function StatusDropdown({ value, options, onChange, disabled = false }) {
   return (
     <select
       value={value}
-      onChange={(event) => onChange(event.target.value)}
+      onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
-      className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-700 disabled"
+      style={{
+        background: "#FFFFFF",
+        border: "1px solid #E2E8F0",
+        borderRadius: "6px",
+        padding: "0.25rem 0.5rem",
+        fontSize: "0.75rem",
+        color: "#334155",
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.6 : 1,
+        outline: "none",
+        fontFamily: "inherit",
+      }}
     >
       {options.map((option) => (
         <option key={option.value} value={option.value}>
@@ -16,4 +27,3 @@ function StatusDropdown({ value, options, onChange, disabled = false }) {
 }
 
 export default StatusDropdown;
-

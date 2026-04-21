@@ -9,18 +9,36 @@ function FilterBar({
   onEndDateChange,
   statusOptions,
 }) {
+  const fieldStyle = {
+    background: "#FFFFFF",
+    border: "1px solid #E2E8F0",
+    borderRadius: "8px",
+    padding: "0.5rem 0.875rem",
+    fontSize: "0.875rem",
+    color: "#0F172A",
+    outline: "none",
+    width: "100%",
+    fontFamily: "inherit",
+  };
+
   return (
-    <div className="grid gap-3 md xl">
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+        gap: "0.75rem",
+      }}
+    >
       <input
         value={search}
-        onChange={(event) => onSearchChange(event.target.value)}
-        placeholder="Search leads"
-        className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus focus"
+        onChange={(e) => onSearchChange(e.target.value)}
+        placeholder="Search leads..."
+        style={fieldStyle}
       />
       <select
         value={status}
-        onChange={(event) => onStatusChange(event.target.value)}
-        className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
+        onChange={(e) => onStatusChange(e.target.value)}
+        style={fieldStyle}
       >
         <option value="">All Statuses</option>
         {statusOptions.map((option) => (
@@ -32,18 +50,17 @@ function FilterBar({
       <input
         type="date"
         value={startDate}
-        onChange={(event) => onStartDateChange(event.target.value)}
-        className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
+        onChange={(e) => onStartDateChange(e.target.value)}
+        style={fieldStyle}
       />
       <input
         type="date"
         value={endDate}
-        onChange={(event) => onEndDateChange(event.target.value)}
-        className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
+        onChange={(e) => onEndDateChange(e.target.value)}
+        style={fieldStyle}
       />
     </div>
   );
 }
 
 export default FilterBar;
-

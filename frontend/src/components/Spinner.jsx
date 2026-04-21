@@ -1,8 +1,28 @@
 function Spinner({ label = "Loading..." }) {
   return (
-    <div className="flex items-center justify-center gap-3 py-12 text-slate-500">
-      <span className="h-4 w-4 animate-spin rounded-full border-2 border-coral border-t-transparent" />
-      <span className="text-sm font-medium">{label}</span>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "0.75rem",
+        padding: "3rem 0",
+        color: "#475569",
+      }}
+    >
+      <span
+        style={{
+          width: "1.25rem",
+          height: "1.25rem",
+          borderRadius: "50%",
+          border: "2px solid #E2E8F0",
+          borderTopColor: "#2563EB",
+          animation: "spin 0.7s linear infinite",
+          display: "inline-block",
+        }}
+      />
+      <span style={{ fontSize: "0.875rem", fontWeight: 500 }}>{label}</span>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

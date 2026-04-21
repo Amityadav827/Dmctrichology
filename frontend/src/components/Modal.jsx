@@ -1,43 +1,113 @@
 function Modal({ open, title, children, onClose, onSubmit, submitLabel, loading }) {
-  if (!open) {
-    return null;
-  }
+  if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-4">
-      <div className="w-full max-w-2xl rounded-[28px] bg-white p-6 shadow-panel">
-        <div className="mb-6 flex items-center justify-between">
-          <h3 className="text-2xl font-semibold text-ink">{title}</h3>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(15,23,42,0.45)",
+        padding: "1rem",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "600px",
+          backgroundColor: "#FFFFFF",
+          borderRadius: "16px",
+          padding: "1.5rem",
+          boxShadow: "0 20px 60px rgba(15,23,42,0.15)",
+          border: "1px solid #E2E8F0",
+        }}
+      >
+        {/* Header */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "1.25rem",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: "1.125rem",
+              fontWeight: 700,
+              color: "#0F172A",
+              margin: 0,
+            }}
+          >
+            {title}
+          </h3>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-500"
+            style={{
+              padding: "0.25rem 0.75rem",
+              borderRadius: "6px",
+              background: "#F1F5F9",
+              border: "none",
+              color: "#475569",
+              fontSize: "0.8rem",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
           >
-            Close
+            ✕
           </button>
         </div>
 
+        {/* Body */}
         <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            onSubmit();
-          }}
-          className="space-y-5"
+          onSubmit={(e) => { e.preventDefault(); onSubmit(); }}
         >
-          {children}
+          <div style={{ marginBottom: "1.25rem" }}>{children}</div>
 
-          <div className="flex justify-end gap-3 pt-2">
+          {/* Footer */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "0.75rem",
+              paddingTop: "1rem",
+              borderTop: "1px solid #E2E8F0",
+            }}
+          >
             <button
               type="button"
               onClick={onClose}
-              className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600"
+              style={{
+                padding: "0.5rem 1.25rem",
+                borderRadius: "8px",
+                border: "1px solid #E2E8F0",
+                background: "#FFFFFF",
+                color: "#475569",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                cursor: "pointer",
+              }}
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white disabled disabled"
+              style={{
+                padding: "0.5rem 1.25rem",
+                borderRadius: "8px",
+                background: "linear-gradient(135deg, #2563EB, #0EA5E9)",
+                border: "none",
+                color: "#FFFFFF",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.7 : 1,
+              }}
             >
               {loading ? "Please wait..." : submitLabel}
             </button>
@@ -49,4 +119,3 @@ function Modal({ open, title, children, onClose, onSubmit, submitLabel, loading 
 }
 
 export default Modal;
-

@@ -214,81 +214,62 @@ function Blogs() {
 
   if (view === "form") {
     return (
-      <div className="animate-fade-in space-y-6 pb-12">
+      <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "1.5rem", paddingBottom: "3rem" }}>
         {/* Preview Modal */}
         {showPreviewModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl flex flex-col relative">
-              <div className="sticky top-0 bg-white/90 backdrop-blur-md p-4 border-b border-slate-200 flex justify-between items-center z-10">
-                <h2 className="text-xl font-bold text-ink">Preview: {formData.title || "Untitled Blog"}</h2>
+          <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.5)", padding: "1rem" }}>
+            <div style={{ background: "#FFFFFF", width: "100%", maxWidth: "900px", maxHeight: "90vh", borderRadius: "16px", overflowY: "auto", boxShadow: "0 25px 60px rgba(0,0,0,0.2)" }}>
+              <div style={{ position: "sticky", top: 0, background: "rgba(255,255,255,0.95)", padding: "1rem 1.5rem", borderBottom: "1px solid #E2E8F0", display: "flex", justifyContent: "space-between", alignItems: "center", zIndex: 10 }}>
+                <h2 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Preview: {formData.title || "Untitled Blog"}</h2>
                 <button onClick={() => setShowPreviewModal(false)} className="btn-primary">Close Preview</button>
               </div>
-              <div className="p-8">
-                {bannerPreview && (
-                  <img src={bannerPreview} alt="Banner" className="w-full h-64 object-cover rounded-xl mb-8" />
-                )}
-                <h1 className="text-4xl font-bold text-ink mb-4">{formData.title}</h1>
-                <div className="flex items-center gap-4 text-slate-500 mb-8 pb-8 border-b border-slate-100">
-                  <span>By {formData.author}</span>
-                  <span>•</span>
+              <div style={{ padding: "2rem" }}>
+                {bannerPreview && <img src={bannerPreview} alt="Banner" style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "12px", marginBottom: "1.5rem" }} />}
+                <h1 style={{ fontSize: "2rem", fontWeight: 800, color: "#0F172A", marginBottom: "1rem" }}>{formData.title}</h1>
+                <div style={{ display: "flex", gap: "1rem", color: "#64748B", marginBottom: "2rem", fontSize: "0.875rem" }}>
+                  <span>By {formData.author}</span><span>•</span>
                   <span>{new Date(formData.blogDate).toLocaleDateString()}</span>
-                  <span>•</span>
-                  <span className="bg-coral/10 text-coral px-2 py-1 rounded-md text-xs">{formData.showType}</span>
                 </div>
-                {imagePreview && (
-                  <img src={imagePreview} alt={formData.altTag} className="float-left w-1/3 rounded-xl mr-6 mb-4" />
-                )}
-                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: formData.fullDescription }} />
+                {imagePreview && <img src={imagePreview} alt={formData.altTag} style={{ float: "left", width: "33%", borderRadius: "12px", marginRight: "1.5rem", marginBottom: "1rem" }} />}
+                <div className="prose" dangerouslySetInnerHTML={{ __html: formData.fullDescription }} />
               </div>
             </div>
           </div>
         )}
 
-        <div className="flex flex-col sm items-start sm justify-between gap-4">
-          <div className="flex items-center gap-4">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <button
               onClick={() => setView("list")}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm transition-all hover hover"
+              style={{ width: "38px", height: "38px", borderRadius: "50%", background: "#FFFFFF", border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#475569" }}
             >
-              <ArrowLeft size={20} />
+              <ArrowLeft size={18} />
             </button>
-            <h2 className="text-2xl font-bold text-ink">
+            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>
               {editingId ? "Edit Blog" : "Add New Blog"}
             </h2>
           </div>
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => setShowPreviewModal(true)}
-              className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover hover flex items-center gap-2"
-            >
-              <Eye size={16} /> Preview
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <button type="button" onClick={() => setShowPreviewModal(true)} className="btn-secondary">
+              <Eye size={15} /> Preview
             </button>
-            <button
-              type="button"
-              onClick={(e) => handleSubmit(e, true)}
-              disabled={submitting}
-              className="rounded-xl border border-coral text-coral bg-coral/5 px-5 py-2.5 text-sm font-medium shadow-sm transition-all hover"
-            >
+            <button type="button" onClick={(e) => handleSubmit(e, true)} disabled={submitting}
+              style={{ padding: "0.5rem 1.25rem", borderRadius: "8px", border: "1px solid #2563EB", background: "#EFF6FF", color: "#2563EB", fontSize: "0.875rem", fontWeight: 600, cursor: "pointer" }}>
               Save as Draft
             </button>
-            <button
-              onClick={(e) => handleSubmit(e, false)}
-              disabled={submitting}
-              className="btn-primary"
-            >
+            <button onClick={(e) => handleSubmit(e, false)} disabled={submitting} className="btn-primary">
               {submitting ? "Saving..." : editingId ? "Update & Publish" : "Publish Blog"}
             </button>
           </div>
         </div>
 
-        <form className="grid grid-cols-1 gap-6 lg">
+        <form style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1.5rem" }}>
           {/* Main Content Column */}
-          <div className="lg space-y-6">
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
             <div className="card-glass p-6">
               <h3 className="mb-4 text-lg font-semibold text-ink">Basic Information</h3>
-              <div className="grid gap-5 sm">
-                <div className="space-y-1.5 sm">
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1.25rem" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.375rem" }}>
                   <label className="text-sm font-medium text-slate-700">Blog Title <span className="text-red-500">*</span></label>
                   <input
                     type="text"
@@ -296,7 +277,7 @@ function Blogs() {
                     value={formData.title}
                     onChange={handleChange}
                     placeholder="Enter blog title..."
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                     required
                   />
                 </div>
@@ -308,7 +289,7 @@ function Blogs() {
                     name="author"
                     value={formData.author}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                     required
                   />
                 </div>
@@ -320,7 +301,7 @@ function Blogs() {
                     name="blogDate"
                     value={formData.blogDate}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   />
                 </div>
                 
@@ -330,7 +311,7 @@ function Blogs() {
                     name="showType"
                     value={formData.showType}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   >
                     <option value="Inside">Inside</option>
                     <option value="Outside">Outside</option>
@@ -343,7 +324,7 @@ function Blogs() {
                     name="layoutType"
                     value={formData.layoutType}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   >
                     <option value="Left">Left</option>
                     <option value="Right">Right</option>
@@ -466,7 +447,7 @@ function Blogs() {
                     name="altTag"
                     value={formData.altTag}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   />
                 </div>
               </div>
@@ -483,7 +464,7 @@ function Blogs() {
                     value={formData.tags}
                     onChange={handleChange}
                     placeholder="hair loss, transplant, care"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   />
                 </div>
 
@@ -494,7 +475,7 @@ function Blogs() {
                     name="metaTitle"
                     value={formData.metaTitle}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   />
                 </div>
                 
@@ -505,7 +486,7 @@ function Blogs() {
                     value={formData.metaKeywords}
                     onChange={handleChange}
                     rows="2"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   ></textarea>
                 </div>
                 
@@ -516,7 +497,7 @@ function Blogs() {
                     value={formData.metaDescription}
                     onChange={handleChange}
                     rows="3"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   ></textarea>
                 </div>
 
@@ -527,7 +508,7 @@ function Blogs() {
                     name="canonicalUrl"
                     value={formData.canonicalUrl}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   />
                 </div>
                 
@@ -542,7 +523,7 @@ function Blogs() {
                     value={formData.slug}
                     onChange={handleChange}
                     placeholder="my-awesome-blog-post"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 transition focus focus focus"
+                    className="w-full form-input"
                   />
                 </div>
               </div>
@@ -554,33 +535,34 @@ function Blogs() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm items-start sm justify-between gap-4">
-        <h2 className="text-2xl font-bold text-ink">Blogs</h2>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {/* Page header */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+        <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Blogs</h2>
         <button onClick={handleAddNew} className="btn-primary">
-          <Plus size={20} />
-          Create New Blog
+          <Plus size={18} /> Create New Blog
         </button>
       </div>
-      
-      <div className="card-glass p-2 sm">
-        <div className="flex flex-col sm items-center justify-between gap-4 mb-4">
-          <div className="relative w-full sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input 
+
+      {/* Filters + Table card */}
+      <div className="card" style={{ padding: "1.25rem" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1.25rem" }}>
+          <div style={{ position: "relative", flex: "1", minWidth: "200px" }}>
+            <Search style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} size={16} />
+            <input
               type="text"
               placeholder="Search by title or author..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 outline-none focus text-sm transition-colors"
+              style={{ paddingLeft: "2.25rem", paddingRight: "0.875rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", fontSize: "0.875rem", width: "100%" }}
             />
           </div>
-          <div className="flex items-center gap-2 w-full sm">
-            <Filter size={18} className="text-slate-400" />
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Filter size={15} color="#94A3B8" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 outline-none focus text-sm transition-colors w-full sm"
+              style={{ padding: "0.5rem 0.875rem", fontSize: "0.875rem", width: "auto" }}
             >
               <option value="All">All Statuses</option>
               <option value="Published">Published</option>
@@ -589,56 +571,48 @@ function Blogs() {
           </div>
         </div>
 
-        <Table
-          columns={[
-            { key: "image", label: "Image" },
-            { key: "title", label: "Title" },
-            { key: "author", label: "Author" },
-            { key: "date", label: "Date" },
-            { key: "status", label: "Status" },
-            { key: "actions", label: "Actions", align: "right" },
-          ]}
-        >
+        <Table columns={[
+          { key: "image", label: "Image" },
+          { key: "title", label: "Title" },
+          { key: "author", label: "Author" },
+          { key: "date", label: "Date" },
+          { key: "status", label: "Status" },
+          { key: "actions", label: "Actions", align: "right" },
+        ]}>
           {currentItems.map((item) => (
-            <tr key={item._id}>
-              <td className="px-5 py-4">
+            <tr key={item._id} style={{ borderBottom: "1px solid #F1F5F9" }}>
+              <td style={{ padding: "0.875rem 1.25rem" }}>
                 {item.blogImage ? (
-                  <div className="h-10 w-10 overflow-hidden rounded-lg bg-slate-100">
-                    <img src={`${api.defaults.baseURL.replace('/api', '')}${item.blogImage}`} alt={item.altTag || "blog"} className="h-full w-full object-cover" />
+                  <div style={{ width: "40px", height: "40px", borderRadius: "8px", overflow: "hidden", background: "#F1F5F9" }}>
+                    <img src={`${api.defaults.baseURL.replace('/api', '')}${item.blogImage}`} alt={item.altTag || "blog"} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </div>
                 ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
-                    <ImageIcon size={20} />
+                  <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", color: "#94A3B8" }}>
+                    <ImageIcon size={18} />
                   </div>
                 )}
               </td>
-              <td className="px-5 py-4 font-semibold text-ink max-w-[200px] truncate" title={item.title}>
+              <td style={{ padding: "0.875rem 1.25rem", fontWeight: 600, color: "#0F172A", maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={item.title}>
                 {item.title}
               </td>
-              <td className="px-5 py-4">{item.author}</td>
-              <td className="px-5 py-4 whitespace-nowrap">
-                {item.blogDate ? new Date(item.blogDate).toLocaleDateString() : "-"}
+              <td style={{ padding: "0.875rem 1.25rem", color: "#475569", fontSize: "0.875rem" }}>{item.author}</td>
+              <td style={{ padding: "0.875rem 1.25rem", color: "#475569", whiteSpace: "nowrap", fontSize: "0.875rem" }}>
+                {item.blogDate ? new Date(item.blogDate).toLocaleDateString() : "—"}
               </td>
-              <td className="px-5 py-4">
-                <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${item.status === 'Published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-                  {item.status || 'Published'}
+              <td style={{ padding: "0.875rem 1.25rem" }}>
+                <span style={{ padding: "0.2rem 0.6rem", borderRadius: "9999px", fontSize: "0.7rem", fontWeight: 700, background: item.status === "Published" ? "#D1FAE5" : "#FEF3C7", color: item.status === "Published" ? "#065F46" : "#92400E" }}>
+                  {item.status || "Published"}
                 </span>
               </td>
-              <td className="px-5 py-4 text-right">
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="p-2 text-slate-400 transition-colors hover bg-white rounded-lg border border-slate-200 shadow-sm"
-                    title="Edit Blog"
-                  >
-                    <Edit2 size={16} />
+              <td style={{ padding: "0.875rem 1.25rem", textAlign: "right" }}>
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
+                  <button onClick={() => handleEdit(item)} title="Edit"
+                    style={{ padding: "0.375rem", borderRadius: "6px", background: "#FFFFFF", border: "1px solid #E2E8F0", cursor: "pointer", color: "#475569", display: "flex" }}>
+                    <Edit2 size={15} />
                   </button>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="p-2 text-slate-400 transition-colors hover bg-white rounded-lg border border-slate-200 shadow-sm"
-                    title="Delete Blog"
-                  >
-                    <Trash2 size={16} />
+                  <button onClick={() => handleDelete(item._id)} title="Delete"
+                    style={{ padding: "0.375rem", borderRadius: "6px", background: "#FEF2F2", border: "1px solid #FECACA", cursor: "pointer", color: "#DC2626", display: "flex" }}>
+                    <Trash2 size={15} />
                   </button>
                 </div>
               </td>
@@ -646,35 +620,23 @@ function Blogs() {
           ))}
           {currentItems.length === 0 && (
             <tr>
-              <td colSpan="6" className="py-12 text-center text-slate-500">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="p-3 bg-slate-100 rounded-full">
-                    <Search size={24} className="text-slate-400" />
-                  </div>
-                  <p>No blogs found matching your criteria.</p>
-                </div>
+              <td colSpan={6} style={{ padding: "3rem", textAlign: "center", color: "#94A3B8", fontSize: "0.875rem" }}>
+                No blogs found matching your criteria.
               </td>
             </tr>
           )}
         </Table>
-        
+
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-4 px-2">
-            <span className="text-sm text-slate-500">
-              Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredItems.length)} of {filteredItems.length} entries
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1rem", flexWrap: "wrap", gap: "0.5rem" }}>
+            <span style={{ fontSize: "0.875rem", color: "#64748B" }}>
+              Showing {(currentPage - 1) * itemsPerPage + 1}–{Math.min(currentPage * itemsPerPage, filteredItems.length)} of {filteredItems.length}
             </span>
-            <div className="flex gap-1">
+            <div style={{ display: "flex", gap: "0.25rem" }}>
               {Array.from({ length: totalPages }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium transition-colors ${
-                    currentPage === i + 1 
-                      ? 'bg-coral text-white' 
-                      : 'bg-white text-slate-600 hover border border-slate-200'
-                  }`}
-                >
+                <button key={i} onClick={() => setCurrentPage(i + 1)}
+                  style={{ width: "32px", height: "32px", borderRadius: "6px", border: "1px solid", borderColor: currentPage === i + 1 ? "#2563EB" : "#E2E8F0", background: currentPage === i + 1 ? "#2563EB" : "#FFFFFF", color: currentPage === i + 1 ? "#FFFFFF" : "#475569", fontSize: "0.8rem", fontWeight: 600, cursor: "pointer" }}>
                   {i + 1}
                 </button>
               ))}
@@ -687,5 +649,7 @@ function Blogs() {
 }
 
 export default Blogs;
+
+
 
 
