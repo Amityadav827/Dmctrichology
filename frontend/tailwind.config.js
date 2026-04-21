@@ -19,6 +19,10 @@ export default {
         darkCard: "#111827",
         lightCard: "#FFFFFF",
       },
+      fontFamily: {
+        heading: ["Syne", "sans-serif"],
+        body: ["Epilogue", "sans-serif"],
+      },
       boxShadow: {
         panel: "0 20px 45px rgba(15, 23, 42, 0.08)",
         glass: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",

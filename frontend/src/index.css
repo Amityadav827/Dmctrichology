@@ -4,11 +4,13 @@
 
 @layer base {
   body {
-    @apply bg-lightBg text-slate-900 dark:bg-darkBg dark:text-slate-100 transition-colors duration-300 antialiased;
+    @apply bg-lightBg text-slate-900 dark:bg-darkBg dark:text-slate-100 transition-colors duration-300 antialiased font-body;
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
   }
 }
 
