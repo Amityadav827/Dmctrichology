@@ -108,14 +108,8 @@ textarea {
   color: #F3F4F6;
 }
 
-/* Ensure borders and dividers are subtle but visible in dark mode */
-.dark .border-slate-200,
-.dark .border-slate-300 {
-  border-color: rgba(51, 65, 85, 0.5);
-}
-
-.dark .divide-slate-100> :not([hidden])~ :not([hidden]),
-.dark .divide-slate-200> :not([hidden])~ :not([hidden]) {
+/* Ensure borders are subtle but visible in dark mode */
+.dark .border-slate-200 {
   border-color: rgba(51, 65, 85, 0.5);
 }
 
@@ -146,3 +140,8 @@ textarea {
 .dark .ql-editor.ql-blank::before {
   color: #64748b;
 }
+
+
+/* aa{
+  aa
+} */
