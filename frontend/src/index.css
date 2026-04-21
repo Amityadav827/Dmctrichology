@@ -68,10 +68,44 @@ textarea {
   scrollbar-width: none;
 }
 
-/* Custom override for .bg-slate-50 */
-.bg-slate-50 {
-    --tw-bg-opacity: 1;
-    background-color: #ffffff;
+/* Remove the bad bg-slate-50 override and replace with robust dark mode mappings */
+.dark .bg-white {
+  background-color: #111827;
+}
+
+.dark .bg-slate-50 {
+  background-color: #0D0D1A;
+}
+
+.dark .bg-slate-100 {
+  background-color: #1A2235;
+}
+
+.dark .text-ink {
+  color: #FFFFFF;
+}
+
+.dark .text-slate-500 {
+  color: #9CA3AF;
+}
+
+.dark .text-slate-600 {
+  color: #D1D5DB;
+}
+
+.dark .text-slate-700 {
+  color: #F3F4F6;
+}
+
+/* Ensure borders and dividers are subtle but visible in dark mode */
+.dark .border-slate-200,
+.dark .border-slate-300 {
+  border-color: rgba(51, 65, 85, 0.5);
+}
+
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(51, 65, 85, 0.5);
 }
 
 /* React Quill Dark Mode Adjustments */

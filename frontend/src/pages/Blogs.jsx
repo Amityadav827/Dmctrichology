@@ -589,79 +589,74 @@ function Blogs() {
           </div>
         </div>
 
-        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
-          <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-            <thead className="bg-slate-50 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300">
-              <tr>
-                <th className="px-5 py-3 font-semibold">Image</th>
-                <th className="px-5 py-3 font-semibold">Title</th>
-                <th className="px-5 py-3 font-semibold">Author</th>
-                <th className="px-5 py-3 font-semibold">Date</th>
-                <th className="px-5 py-3 font-semibold">Status</th>
-                <th className="px-5 py-3 font-semibold text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-700/50">
-              {currentItems.map((item) => (
-                <tr key={item._id} className="transition-colors hover:bg-slate-50 dark:hover:bg-darkHover">
-                  <td className="px-5 py-4">
-                    {item.blogImage ? (
-                      <div className="h-10 w-10 overflow-hidden rounded-lg bg-slate-100">
-                        <img src={`${api.defaults.baseURL.replace('/api', '')}${item.blogImage}`} alt={item.altTag || "blog"} className="h-full w-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800">
-                        <ImageIcon size={20} />
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-5 py-4 font-semibold text-ink dark:text-white max-w-[200px] truncate" title={item.title}>
-                    {item.title}
-                  </td>
-                  <td className="px-5 py-4">{item.author}</td>
-                  <td className="px-5 py-4 whitespace-nowrap">
-                    {item.blogDate ? new Date(item.blogDate).toLocaleDateString() : "-"}
-                  </td>
-                  <td className="px-5 py-4">
-                    <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${item.status === 'Published' ? 'bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400'}`}>
-                      {item.status || 'Published'}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 text-right">
-                    <div className="flex justify-end gap-2">
-                      <button
-                        onClick={() => handleEdit(item)}
-                        className="p-2 text-slate-400 transition-colors hover:text-coral dark:hover:text-coral bg-white dark:bg-darkCard rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
-                        title="Edit Blog"
-                      >
-                        <Edit2 size={16} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item._id)}
-                        className="p-2 text-slate-400 transition-colors hover:text-red-500 dark:hover:text-red-400 bg-white dark:bg-darkCard rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
-                        title="Delete Blog"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {currentItems.length === 0 && (
-                <tr>
-                  <td colSpan="6" className="py-12 text-center text-slate-500 dark:text-slate-400">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-full">
-                        <Search size={24} className="text-slate-400" />
-                      </div>
-                      <p>No blogs found matching your criteria.</p>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+        <Table
+          columns={[
+            { key: "image", label: "Image" },
+            { key: "title", label: "Title" },
+            { key: "author", label: "Author" },
+            { key: "date", label: "Date" },
+            { key: "status", label: "Status" },
+            { key: "actions", label: "Actions", align: "right" },
+          ]}
+        >
+          {currentItems.map((item) => (
+            <tr key={item._id}>
+              <td className="px-5 py-4">
+                {item.blogImage ? (
+                  <div className="h-10 w-10 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
+                    <img src={`${api.defaults.baseURL.replace('/api', '')}${item.blogImage}`} alt={item.altTag || "blog"} className="h-full w-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
+                    <ImageIcon size={20} />
+                  </div>
+                )}
+              </td>
+              <td className="px-5 py-4 font-semibold text-ink dark:text-white max-w-[200px] truncate" title={item.title}>
+                {item.title}
+              </td>
+              <td className="px-5 py-4">{item.author}</td>
+              <td className="px-5 py-4 whitespace-nowrap">
+                {item.blogDate ? new Date(item.blogDate).toLocaleDateString() : "-"}
+              </td>
+              <td className="px-5 py-4">
+                <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${item.status === 'Published' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400'}`}>
+                  {item.status || 'Published'}
+                </span>
+              </td>
+              <td className="px-5 py-4 text-right">
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => handleEdit(item)}
+                    className="p-2 text-slate-400 transition-colors hover:text-coral dark:hover:text-primary bg-white dark:bg-darkBg rounded-lg border border-slate-200 dark:border-slate-700/50 shadow-sm"
+                    title="Edit Blog"
+                  >
+                    <Edit2 size={16} />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="p-2 text-slate-400 transition-colors hover:text-red-500 dark:hover:text-red-400 bg-white dark:bg-darkBg rounded-lg border border-slate-200 dark:border-slate-700/50 shadow-sm"
+                    title="Delete Blog"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+          {currentItems.length === 0 && (
+            <tr>
+              <td colSpan="6" className="py-12 text-center text-slate-500 dark:text-slate-400">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="p-3 bg-slate-100 dark:bg-darkBg rounded-full">
+                    <Search size={24} className="text-slate-400 dark:text-slate-500" />
+                  </div>
+                  <p>No blogs found matching your criteria.</p>
+                </div>
+              </td>
+            </tr>
+          )}
+        </Table>
         
         {/* Pagination */}
         {totalPages > 1 && (
