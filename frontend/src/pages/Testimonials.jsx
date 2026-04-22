@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
+import { 
+  Plus, Edit2, Trash2, Search, Star, MessageSquare, 
+  ExternalLink, User, Filter, X, ChevronRight,
+  MoreVertical, CheckCircle, XCircle
+} from "lucide-react";
 import Loader from "../components/Loader";
-import Modal from "../components/Modal";
 import StarRating from "../components/StarRating";
-import Table from "../components/Table";
-import ToggleButton from "../components/ToggleButton";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import {
   createTestimonial,
   deleteTestimonial,
@@ -14,35 +18,51 @@ import {
 } from "../api/services";
 
 const initialForm = {
+  showType: "Inside",
+  serviceName: "",
   source: "manual",
   name: "",
+  shortName: "",
   designation: "",
   message: "",
   rating: 5,
   status: "active",
 };
 
+const quillModules = {
+  toolbar: [
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    ['clean']
+  ],
+};
+
 function Testimonials() {
   const [items, setItems] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, totalPages: 1 });
-  const [search, setSearch] = useState("");
-  const [query, setQuery] = useState("");
-  const [sourceFilter, setSourceFilter] = useState("");
+  const [view, setView] = useState("list"); // "list" or "form"
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [actionId, setActionId] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(initialForm);
 
-  const fetchItems = async (page = pagination.page, searchValue = query, sourceValue = sourceFilter) => {
+  // Filters
+  const [search, setSearch] = useState("");
+  const [filterSource, setFilterSource] = useState("");
+  const [filterRating, setFilterRating] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+
+  const fetchItems = async (page = pagination.page) => {
     setLoading(true);
     try {
       const response = await getTestimonials({
         page,
         limit: pagination.limit,
-        search: searchValue,
-        source: sourceValue || undefined,
+        search,
+        source: filterSource || undefined,
+        rating: filterRating || undefined,
+        status: filterStatus || undefined,
       });
       setItems(response.data);
       setPagination(response.pagination);
@@ -54,47 +74,51 @@ function Testimonials() {
   };
 
   useEffect(() => {
-    fetchItems(1, query, sourceFilter);
-  }, [query, sourceFilter]);
+    const timer = setTimeout(() => {
+      fetchItems(1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search, filterSource, filterRating, filterStatus]);
 
-  const closeModal = () => {
-    setModalOpen(false);
-    setEditingItem(null);
+  const handleAdd = () => {
+    setEditingId(null);
     setForm(initialForm);
+    setView("form");
   };
 
-  const openAddModal = () => {
-    setEditingItem(null);
-    setForm(initialForm);
-    setModalOpen(true);
-  };
-
-  const openEditModal = (item) => {
-    setEditingItem(item);
+  const handleEdit = (item) => {
+    setEditingId(item._id);
     setForm({
-      source: item.source,
-      name: item.name,
+      showType: item.showType || "Inside",
+      serviceName: item.serviceName || "",
+      source: item.source || "manual",
+      name: item.name || "",
+      shortName: item.shortName || "",
       designation: item.designation || "",
-      message: item.message,
-      rating: item.rating,
-      status: item.status,
+      message: item.message || "",
+      rating: item.rating || 5,
+      status: item.status || "active",
     });
-    setModalOpen(true);
+    setView("form");
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name || !form.message || !form.rating) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
     setSaving(true);
     try {
-      if (editingItem) {
-        await updateTestimonial(editingItem._id, form);
+      if (editingId) {
+        await updateTestimonial(editingId, form);
         toast.success("Testimonial updated");
       } else {
         await createTestimonial(form);
         toast.success("Testimonial created");
       }
-
-      closeModal();
-      fetchItems(pagination.page, query, sourceFilter);
+      setView("list");
+      fetchItems();
     } catch (error) {
       toast.error(error.response?.data?.message || "Unable to save testimonial");
     } finally {
@@ -103,17 +127,14 @@ function Testimonials() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this testimonial?")) {
-      return;
-    }
-
+    if (!window.confirm("Delete this testimonial permanently?")) return;
     setActionId(id);
     try {
       await deleteTestimonial(id);
       toast.success("Testimonial deleted");
-      fetchItems(pagination.page, query, sourceFilter);
+      fetchItems();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to delete testimonial");
+      toast.error(error.response?.data?.message || "Delete failed");
     } finally {
       setActionId("");
     }
@@ -124,234 +145,420 @@ function Testimonials() {
     try {
       await toggleTestimonialStatus(id);
       toast.success("Status updated");
-      fetchItems(pagination.page, query, sourceFilter);
+      setItems(items.map(item => 
+        item._id === id ? { ...item, status: item.status === 'active' ? 'inactive' : 'active' } : item
+      ));
     } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to update status");
+      toast.error("Status update failed");
     } finally {
       setActionId("");
     }
   };
 
-  return (
-    <div className="space-y-6">
-      <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg lg lg">
-          <div>
-            <h3 className="text-2xl font-semibold text-ink">Testimonials List</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Manage written testimonials with source filters, ratings and quick status controls.
-            </p>
+  const getAvatarColor = (name) => {
+    if (!name) return '#3B82F6';
+    const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
+    const index = name.length % colors.length;
+    return colors[index];
+  };
+
+  const getInitials = (name) => {
+    if (!name) return '??';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+  };
+
+  if (view === "form") {
+    return (
+      <div className="space-y-6 max-w-5xl mx-auto pb-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setView("list")}
+              className="p-2 rounded-xl border border-slate-200 bg-white text-slate-500 hover:text-slate-700 transition"
+            >
+              <X size={20} />
+            </button>
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900">
+                {editingId ? "Edit Testimonial" : "Create Testimonial"}
+              </h3>
+              <p className="text-sm text-slate-500">
+                {editingId ? "Modify existing customer feedback" : "Add a new customer review to the system"}
+              </p>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={openAddModal}
-            className="rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white"
-          >
-            Add Testimonials
-          </button>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setView("list")}
+              className="px-6 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={saving}
+              className="px-8 py-2.5 rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700 transition shadow-lg shadow-blue-200 disabled:opacity-50"
+            >
+              {saving ? "Saving..." : editingId ? "Update" : "Save"}
+            </button>
+          </div>
         </div>
 
-        <div className="mt-5 grid gap-3 md_220px_auto]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Info */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="card-glass p-8 space-y-6">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1.5 h-6 bg-blue-500 rounded-full"></div>
+                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Review Content</h4>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">Full Name</label>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="form-input"
+                    placeholder="e.g. Rahul Sharma"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">Short Name / Nickname</label>
+                  <input
+                    type="text"
+                    value={form.shortName}
+                    onChange={(e) => setForm({ ...form, shortName: e.target.value })}
+                    className="form-input"
+                    placeholder="e.g. Rahul"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">Designation / Role</label>
+                <input
+                  type="text"
+                  value={form.designation}
+                  onChange={(e) => setForm({ ...form, designation: e.target.value })}
+                  className="form-input"
+                  placeholder="e.g. Verified Customer / Software Engineer"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">Testimonial Message</label>
+                <div className="rounded-xl overflow-hidden border border-slate-200">
+                  <ReactQuill
+                    theme="snow"
+                    value={form.message}
+                    onChange={(val) => setForm({ ...form, message: val })}
+                    modules={quillModules}
+                    placeholder="Write the customer's testimonial here..."
+                    className="h-64 mb-12"
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <span className="text-[10px] text-slate-400 font-medium">Rich text formatting enabled</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Meta Info */}
+          <div className="space-y-6">
+            <div className="card-glass p-8 space-y-6">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Status & Source</h4>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">Show Type</label>
+                <div className="flex p-1 bg-slate-100 rounded-xl border border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => setForm({ ...form, showType: "Inside" })}
+                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition ${
+                      form.showType === "Inside" ? "bg-white text-blue-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                    }`}
+                  >
+                    Inside
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setForm({ ...form, showType: "Outside" })}
+                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition ${
+                      form.showType === "Outside" ? "bg-white text-blue-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                    }`}
+                  >
+                    Outside
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">Service Name</label>
+                <input
+                  type="text"
+                  value={form.serviceName}
+                  onChange={(e) => setForm({ ...form, serviceName: e.target.value })}
+                  className="form-input"
+                  placeholder="e.g. Hair Transplant"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">Review Source</label>
+                <select
+                  value={form.source}
+                  onChange={(e) => setForm({ ...form, source: e.target.value })}
+                  className="form-input"
+                >
+                  <option value="manual">Manual Entry</option>
+                  <option value="google">Google Review</option>
+                  <option value="practo">Practo Review</option>
+                </select>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <label className="text-sm font-semibold text-slate-700">Star Rating</label>
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 border-dashed flex justify-center">
+                  <StarRating 
+                    value={form.rating} 
+                    interactive 
+                    onChange={(rating) => setForm({ ...form, rating })} 
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">Status</label>
+                <div 
+                  onClick={() => setForm({ ...form, status: form.status === 'active' ? 'inactive' : 'active' })}
+                  className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition ${
+                    form.status === 'active' ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    {form.status === 'active' ? <CheckCircle size={18} className="text-emerald-500" /> : <XCircle size={18} className="text-slate-400" />}
+                    <span className={`text-sm font-bold ${form.status === 'active' ? 'text-emerald-700' : 'text-slate-600'}`}>
+                      {form.status === 'active' ? 'Published' : 'Draft / Hidden'}
+                    </span>
+                  </div>
+                  <div className={`w-10 h-6 rounded-full relative transition-colors ${form.status === 'active' ? 'bg-emerald-500' : 'bg-slate-300'}`}>
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${form.status === 'active' ? 'right-1' : 'left-1'}`}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 pb-10">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-[28px] shadow-sm border border-slate-100">
+        <div>
+          <h3 className="text-2xl font-bold text-slate-900">Testimonials</h3>
+          <p className="text-sm text-slate-500 mt-1">Manage and curate your customer success stories</p>
+        </div>
+        <button
+          onClick={handleAdd}
+          className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-blue-600 text-sm font-bold text-white hover:bg-blue-700 transition shadow-lg shadow-blue-200"
+        >
+          <Plus size={18} />
+          <span>Add Testimonial</span>
+        </button>
+      </div>
+
+      {/* Filters */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-3xl shadow-sm border border-slate-100">
+        <div className="relative col-span-1 md:col-span-1">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input
+            type="text"
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search by name or message"
-            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus focus"
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search reviews..."
+            className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-100 bg-slate-50 text-sm focus:bg-white focus:ring-2 focus:ring-blue-100 transition outline-none"
           />
-          <select
-            value={sourceFilter}
-            onChange={(event) => setSourceFilter(event.target.value)}
-            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
+        </div>
+        <div className="flex items-center gap-2 px-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <Filter size={16} className="text-slate-400" />
+          <select 
+            value={filterSource}
+            onChange={(e) => setFilterSource(e.target.value)}
+            className="w-full py-3 bg-transparent text-sm font-semibold text-slate-600 outline-none"
           >
             <option value="">All Sources</option>
             <option value="google">Google</option>
+            <option value="practo">Practo</option>
             <option value="manual">Manual</option>
-            <option value="website">Website</option>
           </select>
-          <button
-            type="button"
-            onClick={() => setQuery(search)}
-            className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700"
+        </div>
+        <div className="flex items-center gap-2 px-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <Star size={16} className="text-slate-400" />
+          <select 
+            value={filterRating}
+            onChange={(e) => setFilterRating(e.target.value)}
+            className="w-full py-3 bg-transparent text-sm font-semibold text-slate-600 outline-none"
           >
-            Search
-          </button>
+            <option value="">All Ratings</option>
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2 px-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <CheckCircle size={16} className="text-slate-400" />
+          <select 
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="w-full py-3 bg-transparent text-sm font-semibold text-slate-600 outline-none"
+          >
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
         </div>
       </div>
 
       {loading ? (
-        <Loader label="Loading testimonials..." />
+        <div className="flex flex-col items-center justify-center py-20 card-glass">
+          <Loader />
+          <p className="text-slate-500 font-medium mt-4">Curating testimonials...</p>
+        </div>
+      ) : items.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 card-glass border-dashed border-2">
+          <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+            <MessageSquare size={32} className="text-slate-300" />
+          </div>
+          <h4 className="text-lg font-bold text-slate-900">No testimonials found</h4>
+          <p className="text-slate-500 text-sm max-w-xs text-center mt-2">
+            We couldn't find any reviews matching your criteria. Try adjusting your filters.
+          </p>
+        </div>
       ) : (
-        <>
-          <Table
-            columns={[
-              { key: "id", label: "ID" },
-              { key: "source", label: "Source" },
-              { key: "name", label: "Name" },
-              { key: "description", label: "Description" },
-              { key: "rating", label: "Rating" },
-              { key: "status", label: "Status" },
-              { key: "actions", label: "Actions" },
-            ]}
-          >
-            {items.map((item, index) => (
-              <tr key={item._id} className="text-sm text-slate-600">
-                <td className="px-5 py-4 font-semibold text-slate-500">
-                  {(pagination.page - 1) * pagination.limit + index + 1}
-                </td>
-                <td className="px-5 py-4">
-                  <span
-                    className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
-                      item.source === "google"
-                        ? "bg-blue-100 text-blue-700"
-                        : item.source === "website"
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-slate-100 text-slate-700"
+        <div className="grid grid-cols-1 gap-4">
+          {items.map((item) => (
+            <div 
+              key={item._id} 
+              className="group bg-white p-6 rounded-[28px] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden"
+            >
+              <div className="flex flex-col lg:flex-row gap-6 relative z-10">
+                {/* Profile Section */}
+                <div className="flex items-start gap-4 lg:w-64 flex-shrink-0">
+                  <div 
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-inner"
+                    style={{ backgroundColor: getAvatarColor(item.name) }}
+                  >
+                    {getInitials(item.name)}
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-base font-bold text-slate-900 truncate">{item.name}</h4>
+                    <p className="text-xs text-slate-500 font-medium truncate mb-2">{item.designation || "Customer"}</p>
+                    <div className="flex items-center gap-1.5">
+                      <div className={`w-2 h-2 rounded-full ${item.status === 'active' ? 'bg-emerald-500' : 'bg-slate-300'}`}></div>
+                      <span className={`text-[10px] font-bold uppercase tracking-wider ${item.status === 'active' ? 'text-emerald-600' : 'text-slate-400'}`}>
+                        {item.status}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
+                      item.source === 'google' ? 'bg-blue-50 text-blue-600 border-blue-100' : 
+                      item.source === 'practo' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 
+                      'bg-slate-50 text-slate-600 border-slate-100'
+                    }`}>
+                      {item.source}
+                    </div>
+                    {item.serviceName && (
+                      <div className="px-3 py-1 rounded-full bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        {item.serviceName}
+                      </div>
+                    )}
+                    <div className="h-1 w-1 rounded-full bg-slate-300 mx-1"></div>
+                    <StarRating value={item.rating} />
+                  </div>
+                  <div 
+                    className="text-sm text-slate-600 leading-relaxed line-clamp-2 italic"
+                    dangerouslySetInnerHTML={{ __html: item.message }}
+                  />
+                </div>
+
+                {/* Actions Section */}
+                <div className="flex lg:flex-col items-center justify-end gap-2 lg:w-32 flex-shrink-0">
+                  <button
+                    onClick={() => handleToggle(item._id)}
+                    disabled={actionId === item._id}
+                    className={`flex-1 lg:w-full py-2 px-4 rounded-xl text-[10px] font-bold transition flex items-center justify-center gap-2 ${
+                      item.status === 'active' 
+                        ? 'bg-slate-50 text-slate-600 hover:bg-slate-100' 
+                        : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
                     }`}
                   >
-                    {item.source}
-                  </span>
-                </td>
-                <td className="px-5 py-4">
-                  <div className="font-semibold text-ink">{item.name}</div>
-                  <div className="text-xs text-slate-400">{item.designation || "-"}</div>
-                </td>
-                <td className="px-5 py-4 max-w-md">
-                  <p className="truncate text-slate-500">{item.message}</p>
-                </td>
-                <td className="px-5 py-4">
-                  <StarRating value={item.rating} />
-                </td>
-                <td className="px-5 py-4">
-                  <ToggleButton
-                    status={item.status}
-                    loading={actionId === item._id}
-                    onClick={() => handleToggle(item._id)}
-                  />
-                </td>
-                <td className="px-5 py-4">
-                  <div className="flex gap-2">
+                    {item.status === 'active' ? <XCircle size={14} /> : <CheckCircle size={14} />}
+                    {item.status === 'active' ? 'Hide' : 'Publish'}
+                  </button>
+                  <div className="flex gap-2 w-full">
                     <button
-                      type="button"
-                      onClick={() => openEditModal(item)}
-                      className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700"
+                      onClick={() => handleEdit(item)}
+                      className="flex-1 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition flex items-center justify-center"
                     >
-                      Edit
+                      <Edit2 size={14} />
                     </button>
                     <button
-                      type="button"
                       onClick={() => handleDelete(item._id)}
                       disabled={actionId === item._id}
-                      className="btn-danger"
+                      className="flex-1 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition flex items-center justify-center border border-red-100"
                     >
-                      Delete
+                      <Trash2 size={14} />
                     </button>
                   </div>
-                </td>
-              </tr>
-            ))}
-          </Table>
+                </div>
+              </div>
+            </div>
+          ))}
 
-          <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md md md">
-            <p className="text-sm text-slate-500">
-              Showing page {pagination.page} of {pagination.totalPages}
+          {/* Pagination */}
+          <div className="flex items-center justify-between mt-8 px-6 py-4 bg-white rounded-3xl border border-slate-100 shadow-sm">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              Page {pagination.page} <span className="mx-2 text-slate-200">/</span> {pagination.totalPages}
             </p>
             <div className="flex gap-2">
               <button
-                type="button"
-                onClick={() => fetchItems(pagination.page - 1, query, sourceFilter)}
+                onClick={() => fetchItems(pagination.page - 1)}
                 disabled={pagination.page <= 1}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
+                className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition disabled:opacity-30"
               >
-                Previous
+                Prev
               </button>
               <button
-                type="button"
-                onClick={() => fetchItems(pagination.page + 1, query, sourceFilter)}
+                onClick={() => fetchItems(pagination.page + 1)}
                 disabled={pagination.page >= pagination.totalPages}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
+                className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition disabled:opacity-30"
               >
                 Next
               </button>
             </div>
           </div>
-        </>
-      )}
-
-      <Modal
-        open={modalOpen}
-        title={editingItem ? "Edit Testimonial" : "Add Testimonial"}
-        onClose={closeModal}
-        onSubmit={handleSubmit}
-        submitLabel={editingItem ? "Update Testimonial" : "Create Testimonial"}
-        loading={saving}
-      >
-        <div className="grid gap-5 md">
-          <div>
-            <label className="mb-2 block text-sm font-semibold text-slate-700">Source</label>
-            <select
-              value={form.source}
-              onChange={(event) => setForm((prev) => ({ ...prev, source: event.target.value }))}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-            >
-              <option value="google">Google</option>
-              <option value="manual">Manual</option>
-              <option value="website">Website</option>
-            </select>
-          </div>
-          <div>
-            <label className="mb-2 block text-sm font-semibold text-slate-700">Name</label>
-            <input
-              value={form.name}
-              onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-              required
-            />
-          </div>
-          <div className="md">
-            <label className="mb-2 block text-sm font-semibold text-slate-700">Designation</label>
-            <input
-              value={form.designation}
-              onChange={(event) =>
-                setForm((prev) => ({ ...prev, designation: event.target.value }))
-              }
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-            />
-          </div>
-          <div className="md">
-            <label className="mb-2 block text-sm font-semibold text-slate-700">Message</label>
-            <textarea
-              rows="5"
-              value={form.message}
-              onChange={(event) => setForm((prev) => ({ ...prev, message: event.target.value }))}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-              required
-            />
-          </div>
-          <div>
-            <label className="mb-2 block text-sm font-semibold text-slate-700">Rating</label>
-            <StarRating
-              value={form.rating}
-              interactive
-              onChange={(rating) => setForm((prev) => ({ ...prev, rating }))}
-            />
-          </div>
-          <div>
-            <label className="mb-2 block text-sm font-semibold text-slate-700">Status</label>
-            <select
-              value={form.status}
-              onChange={(event) => setForm((prev) => ({ ...prev, status: event.target.value }))}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-            >
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
         </div>
-      </Modal>
+      )}
     </div>
   );
 }
 
 export default Testimonials;
-
-

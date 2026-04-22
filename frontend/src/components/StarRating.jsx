@@ -1,3 +1,5 @@
+import { Star } from "lucide-react";
+
 function StarRating({ value = 0, onChange, interactive = false }) {
   return (
     <div className="flex items-center gap-1">
@@ -6,9 +8,11 @@ function StarRating({ value = 0, onChange, interactive = false }) {
 
         if (!interactive) {
           return (
-            <span key={star} className={`text-lg ${active ? "text-amber-400" : "text-slate-300"}`}>
-              ★
-            </span>
+            <Star
+              key={star}
+              size={16}
+              className={`${active ? "fill-amber-400 text-amber-400" : "text-slate-200"}`}
+            />
           );
         }
 
@@ -17,11 +21,14 @@ function StarRating({ value = 0, onChange, interactive = false }) {
             key={star}
             type="button"
             onClick={() => onChange?.(star)}
-            className={`text-2xl transition ${
-              active ? "text-amber-400" : "text-slate-300 hover"
-            }`}
+            className="transition hover:scale-110 active:scale-95"
           >
-            ★
+            <Star
+              size={24}
+              className={`${
+                active ? "fill-amber-400 text-amber-400" : "text-slate-300 hover:text-amber-300"
+              }`}
+            />
           </button>
         );
       })}

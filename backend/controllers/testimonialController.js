@@ -27,6 +27,8 @@ const getTestimonials = async (req, res, next) => {
     const skip = (page - 1) * limit;
     const search = String(req.query.search || "").trim();
     const source = String(req.query.source || "").trim().toLowerCase();
+    const status = String(req.query.status || "").trim();
+    const rating = parseInt(req.query.rating, 10);
 
     const filter = {};
 
@@ -34,11 +36,20 @@ const getTestimonials = async (req, res, next) => {
       filter.$or = [
         { name: { $regex: search, $options: "i" } },
         { message: { $regex: search, $options: "i" } },
+        { serviceName: { $regex: search, $options: "i" } },
       ];
     }
 
     if (source) {
       filter.source = source;
+    }
+
+    if (status) {
+      filter.status = status;
+    }
+
+    if (rating && rating >= 1 && rating <= 5) {
+      filter.rating = rating;
     }
 
     const [testimonials, total] = await Promise.all([
@@ -89,15 +100,24 @@ const updateTestimonial = async (req, res, next) => {
       throw new Error("Testimonial not found");
     }
 
-    testimonial.source = req.body.source || testimonial.source;
-    testimonial.name = req.body.name || testimonial.name;
-    testimonial.designation =
-      req.body.designation !== undefined ? req.body.designation : testimonial.designation;
-    testimonial.message = req.body.message || testimonial.message;
-    testimonial.rating = Number.isFinite(Number(req.body.rating))
-      ? Number(req.body.rating)
-      : testimonial.rating;
-    testimonial.status = req.body.status || testimonial.status;
+    // Update fields
+    const fieldsToUpdate = [
+      "showType",
+      "serviceName",
+      "source",
+      "name",
+      "shortName",
+      "designation",
+      "message",
+      "rating",
+      "status",
+    ];
+
+    fieldsToUpdate.forEach((field) => {
+      if (req.body[field] !== undefined) {
+        testimonial[field] = req.body[field];
+      }
+    });
 
     await testimonial.save();
 
