@@ -202,15 +202,27 @@ const resetPassword = async (req, res, next) => {
       .update(token)
       .digest("hex");
 
+    console.log(`[DEBUG] ResetPassword: Attempting reset with token -> ${token.substring(0, 5)}...`);
+
+    // First check if token exists at all
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
-      resetPasswordExpires: { $gt: Date.now() },
     });
 
     if (!user) {
+      console.log("[DEBUG] ResetPassword: No user found with this token ❌");
       res.status(400);
-      throw new Error("Invalid or expired reset token");
+      throw new Error("Invalid reset token. Please request a new link.");
     }
+
+    // Then check if it's expired
+    if (user.resetPasswordExpires < Date.now()) {
+      console.log("[DEBUG] ResetPassword: Token has expired ❌");
+      res.status(400);
+      throw new Error("Reset link has expired. Please request a new one.");
+    }
+
+    console.log(`[DEBUG] ResetPassword: Token valid for user -> ${user.email} ✅`);
 
     // Set new password (will be hashed by pre-save hook)
     user.password = password;
