@@ -9,7 +9,7 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const [form, setForm] = useState({
-    email: "",
+    email: "amityadav98255@gmail.com",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);

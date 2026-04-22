@@ -53,7 +53,8 @@ const registerAdmin = async (req, res, next) => {
 
 const loginAdmin = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { password } = req.body;
+    const email = req.body.email ? req.body.email.trim().toLowerCase() : "";
 
     if (!email || !password) {
       res.status(400);
@@ -111,14 +112,16 @@ const getAdminProfile = async (req, res, next) => {
 
 const forgotPassword = async (req, res, next) => {
   try {
-    const { email } = req.body;
+    const email = req.body.email ? req.body.email.trim().toLowerCase() : "";
 
     if (!email) {
       res.status(400);
       throw new Error("Email is required");
     }
 
+    console.log(`[DEBUG] ForgotPassword: Searching for email -> "${email}"`);
     const user = await User.findOne({ email });
+    console.log(`[DEBUG] ForgotPassword: User found -> ${user ? "YES" : "NO"}`);
 
     if (!user) {
       res.status(404);
