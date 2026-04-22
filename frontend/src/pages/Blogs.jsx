@@ -17,6 +17,15 @@ const modules = {
   ],
 };
 
+// Derive the uploads base URL from the API base URL
+const getImageUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith('http')) return path;
+  const base = (import.meta.env.VITE_API_URL || 'https://dmctrichology-1.onrender.com/api')
+    .replace(/\/api$/, '');
+  return `${base}${path}`;
+};
+
 function Blogs() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -112,8 +121,8 @@ function Blogs() {
     
     setImageFile(null);
     setBannerFile(null);
-    setImagePreview(item.blogImage ? `${api.defaults.baseURL.replace('/api', '')}${item.blogImage}` : null);
-    setBannerPreview(item.bannerImage ? `${api.defaults.baseURL.replace('/api', '')}${item.bannerImage}` : null);
+    setImagePreview(item.blogImage ? getImageUrl(item.blogImage) : null);
+    setBannerPreview(item.bannerImage ? getImageUrl(item.bannerImage) : null);
     
     setEditingId(item._id);
     setView("form");
@@ -336,7 +345,7 @@ function Blogs() {
           </div>
 
           {/* ── RIGHT SIDEBAR ── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", position: "sticky", top: "80px" }}>
 
             {/* Publishing */}
             <div className="card-glass" style={{ padding: "1.25rem" }}>

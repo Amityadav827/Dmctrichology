@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { clearAuth, getAuthUser } from "../utils/auth";
-import { LogOut, User, Sun, Moon } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
+import { LogOut, User } from "lucide-react";
 
 const titles = {
   "/dashboard": "Dashboard",
@@ -28,7 +27,7 @@ const titles = {
 };
 
 function Header() {
-  const { isDarkMode, toggleTheme } = useTheme();
+
   const location = useLocation();
   const navigate = useNavigate();
   const user = getAuthUser();
@@ -85,25 +84,7 @@ function Header() {
 
       {/* Right actions */}
       <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-        {/* Theme toggle */}
-        <button
-          onClick={toggleTheme}
-          title="Toggle Theme"
-          style={{
-            padding: "0.5rem",
-            borderRadius: "8px",
-            border: "1px solid #E2E8F0",
-            background: "#FFFFFF",
-            color: "#475569",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            transition: "all 0.15s ease",
-          }}
-        >
-          {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
-        </button>
+
 
         {/* User info */}
         <div
