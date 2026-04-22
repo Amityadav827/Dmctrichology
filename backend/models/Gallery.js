@@ -12,6 +12,16 @@ const gallerySchema = new mongoose.Schema(
       default: "",
       trim: true,
     },
+    altText: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    description: {
+      type: String,
+      default: "",
+      trim: true,
+    },
     order: {
       type: Number,
       default: 0,

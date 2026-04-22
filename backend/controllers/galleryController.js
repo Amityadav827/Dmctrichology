@@ -31,9 +31,13 @@ const createGalleryItem = async (req, res, next) => {
     }
 
     const title = req.body.title || "";
+    const altText = req.body.altText || "";
+    const description = req.body.description || "";
     const items = files.map((file, index) => ({
       image: normalizeImagePath(file),
       title,
+      altText,
+      description,
       order: Number.isFinite(Number(req.body.order)) ? Number(req.body.order) + index : index,
       status: req.body.status || "active",
     }));
@@ -119,6 +123,8 @@ const updateGalleryItem = async (req, res, next) => {
     }
 
     galleryItem.title = req.body.title !== undefined ? req.body.title : galleryItem.title;
+    galleryItem.altText = req.body.altText !== undefined ? req.body.altText : galleryItem.altText;
+    galleryItem.description = req.body.description !== undefined ? req.body.description : galleryItem.description;
     galleryItem.order = Number.isFinite(Number(req.body.order))
       ? Number(req.body.order)
       : galleryItem.order;

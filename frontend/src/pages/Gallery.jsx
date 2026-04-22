@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import toast from "react-hot-toast";
-import ImageUpload from "../components/ImageUpload";
+import { Upload, X, Search, Edit2, Trash2, Eye, CheckCircle, XCircle, Image as ImageIcon } from "lucide-react";
 import Loader from "../components/Loader";
-import Modal from "../components/Modal";
-import Table from "../components/Table";
-import ToggleButton from "../components/ToggleButton";
 import {
   createGalleryItems,
   deleteGalleryItem,
@@ -13,295 +10,383 @@ import {
   updateGalleryItem,
 } from "../api/services";
 
-const initialForm = {
-  title: "",
-  images: [],
+const getImgUrl = (path) => {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  const base = (import.meta.env.VITE_API_URL || "https://dmctrichology-1.onrender.com/api").replace(/\/api$/, "");
+  return `${base}${path}`;
 };
 
-function Gallery() {
+export default function Gallery() {
   const [items, setItems] = useState([]);
-  const [pagination, setPagination] = useState({ page: 1, limit: 12, total: 0, totalPages: 1 });
-  const [search, setSearch] = useState("");
-  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [actionId, setActionId] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState(null);
-  const [form, setForm] = useState(initialForm);
 
-  const fetchItems = async (page = pagination.page, searchValue = query) => {
+  // Filters
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+
+  // Selected image for detail panel
+  const [selected, setSelected] = useState(null);
+  const [detailForm, setDetailForm] = useState({ title: "", altText: "", description: "", status: "active" });
+
+  // Upload state
+  const [dragOver, setDragOver] = useState(false);
+  const [uploadFiles, setUploadFiles] = useState([]); // [{ file, preview, name }]
+  const [uploadTitle, setUploadTitle] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(false);
+  const fileInputRef = useRef();
+
+  // Preview modal
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  // ── Fetch ─────────────────────────────────────────────
+  const fetchItems = async () => {
     setLoading(true);
     try {
-      const response = await getGalleryItems({
-        page,
-        limit: pagination.limit,
-        search: searchValue,
-      });
-      setItems(response.data);
-      setPagination(response.pagination);
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to load gallery");
+      const res = await getGalleryItems({ page: 1, limit: 200 });
+      setItems(res.data || []);
+    } catch (e) {
+      toast.error(e.response?.data?.message || "Unable to load gallery");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchItems(1, query);
-  }, [query]);
+  useEffect(() => { fetchItems(); }, []);
 
-  const closeModal = () => {
-    setModalOpen(false);
-    setEditingItem(null);
-    setForm(initialForm);
-  };
-
-  const openAddModal = () => {
-    setEditingItem(null);
-    setForm(initialForm);
-    setModalOpen(true);
-  };
-
-  const openEditModal = (item) => {
-    setEditingItem(item);
-    setForm({
-      title: item.title || "",
-      images: [],
-    });
-    setModalOpen(true);
-  };
-
-  const buildFormData = () => {
-    const formData = new FormData();
-    formData.append("title", form.title);
-
-    if (editingItem) {
-      if (form.images[0]) {
-        formData.append("images", form.images[0]);
-      }
-      formData.append("order", editingItem.order ?? 0);
-      formData.append("status", editingItem.status ?? "active");
-    } else {
-      form.images.forEach((image) => formData.append("images", image));
+  // ── Filtered / Sorted List ────────────────────────────
+  const filtered = useMemo(() => {
+    let list = [...items];
+    if (search.trim()) {
+      list = list.filter(i => (i.title || "").toLowerCase().includes(search.toLowerCase()));
     }
+    if (statusFilter !== "all") {
+      list = list.filter(i => i.status === statusFilter);
+    }
+    if (sortBy === "newest") list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    else if (sortBy === "oldest") list.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    else if (sortBy === "name") list.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+    return list;
+  }, [items, search, statusFilter, sortBy]);
 
-    return formData;
+  // ── Upload Handlers ───────────────────────────────────
+  const addFiles = (fileList) => {
+    const newFiles = Array.from(fileList)
+      .filter(f => f.type.startsWith("image/"))
+      .map(f => ({ file: f, preview: URL.createObjectURL(f), name: f.name }));
+    if (!newFiles.length) { toast.error("Only image files are allowed"); return; }
+    setUploadFiles(prev => [...prev, ...newFiles]);
   };
 
-  const handleSubmit = async () => {
+  const onDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    addFiles(e.dataTransfer.files);
+  };
+
+  const removeUploadFile = (idx) => {
+    setUploadFiles(prev => {
+      URL.revokeObjectURL(prev[idx].preview);
+      return prev.filter((_, i) => i !== idx);
+    });
+  };
+
+  const handleUpload = async () => {
+    if (!uploadFiles.length) { toast.error("Select at least one image"); return; }
+    setUploadProgress(true);
+    try {
+      const fd = new FormData();
+      fd.append("title", uploadTitle);
+      uploadFiles.forEach(f => fd.append("images", f.file));
+      await createGalleryItems(fd);
+      toast.success(`${uploadFiles.length} image(s) uploaded`);
+      setUploadFiles([]);
+      setUploadTitle("");
+      fetchItems();
+    } catch (e) {
+      toast.error(e.response?.data?.message || "Upload failed");
+    } finally {
+      setUploadProgress(false);
+    }
+  };
+
+  // ── Select image (open detail panel) ─────────────────
+  const selectItem = (item) => {
+    setSelected(item);
+    setDetailForm({
+      title: item.title || "",
+      altText: item.altText || "",
+      description: item.description || "",
+      status: item.status || "active",
+    });
+  };
+
+  const closeDetail = () => setSelected(null);
+
+  // ── Detail Panel: Update ──────────────────────────────
+  const handleUpdate = async () => {
+    if (!selected) return;
     setSaving(true);
     try {
-      const payload = buildFormData();
-
-      if (!editingItem && !form.images.length) {
-        throw new Error("Please select at least one image");
-      }
-
-      if (editingItem) {
-        await updateGalleryItem(editingItem._id, payload);
-        toast.success("Gallery image updated");
-      } else {
-        await createGalleryItems(payload);
-        toast.success("Gallery images uploaded");
-      }
-
-      closeModal();
-      fetchItems(pagination.page, query);
-    } catch (error) {
-      toast.error(error.response?.data?.message || error.message || "Unable to save gallery item");
+      const fd = new FormData();
+      fd.append("title", detailForm.title);
+      fd.append("altText", detailForm.altText);
+      fd.append("description", detailForm.description);
+      fd.append("status", detailForm.status);
+      await updateGalleryItem(selected._id, fd);
+      toast.success("Image updated");
+      setItems(prev => prev.map(i => i._id === selected._id ? { ...i, ...detailForm } : i));
+      setSelected(prev => ({ ...prev, ...detailForm }));
+    } catch (e) {
+      toast.error(e.response?.data?.message || "Update failed");
     } finally {
       setSaving(false);
     }
   };
 
+  // ── Delete ────────────────────────────────────────────
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this gallery image?")) {
-      return;
-    }
-
+    if (!window.confirm("Delete this image permanently?")) return;
     setActionId(id);
     try {
       await deleteGalleryItem(id);
-      toast.success("Gallery image deleted");
-      fetchItems(pagination.page, query);
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to delete gallery image");
+      toast.success("Image deleted");
+      if (selected?._id === id) setSelected(null);
+      setItems(prev => prev.filter(i => i._id !== id));
+    } catch (e) {
+      toast.error(e.response?.data?.message || "Delete failed");
     } finally {
       setActionId("");
     }
   };
 
+  // ── Toggle status ─────────────────────────────────────
   const handleToggle = async (id) => {
     setActionId(id);
     try {
       await toggleGalleryItemStatus(id);
+      setItems(prev => prev.map(i => i._id === id ? { ...i, status: i.status === "active" ? "inactive" : "active" } : i));
+      if (selected?._id === id) {
+        setSelected(prev => ({ ...prev, status: prev.status === "active" ? "inactive" : "active" }));
+        setDetailForm(prev => ({ ...prev, status: prev.status === "active" ? "inactive" : "active" }));
+      }
       toast.success("Status updated");
-      fetchItems(pagination.page, query);
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to update status");
+    } catch (e) {
+      toast.error("Status update failed");
     } finally {
       setActionId("");
     }
   };
 
+  if (loading) return <Loader label="Loading gallery..." />;
+
   return (
-    <div className="space-y-6">
-      <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col gap-4 lg lg lg">
-          <div>
-            <h3 className="text-2xl font-semibold text-ink">Gallery List</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Upload and manage gallery images with preview-friendly listing.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={openAddModal}
-            className="rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white"
-          >
-            Add Gallery
-          </button>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+
+      {/* Preview Modal */}
+      {previewUrl && (
+        <div onClick={() => setPreviewUrl(null)} style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.85)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+          <button onClick={() => setPreviewUrl(null)} style={{ position: "absolute", top: "1rem", right: "1rem", background: "rgba(255,255,255,0.15)", border: "none", borderRadius: "50%", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff" }}><X size={18} /></button>
+          <img src={previewUrl} alt="Preview" style={{ maxWidth: "90vw", maxHeight: "88vh", borderRadius: 12, objectFit: "contain" }} onClick={e => e.stopPropagation()} />
         </div>
-
-        <div className="mt-5 flex flex-col gap-3 md md md">
-          <input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search gallery by title"
-            className="w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus focus"
-          />
-          <button
-            type="button"
-            onClick={() => setQuery(search)}
-            className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700"
-          >
-            Search
-          </button>
-        </div>
-      </div>
-
-      {loading ? (
-        <Loader label="Loading gallery..." />
-      ) : (
-        <>
-          <Table
-            columns={[
-              { key: "id", label: "ID" },
-              { key: "image", label: "Image" },
-              { key: "actions", label: "Actions" },
-            ]}
-          >
-            {items.map((item, index) => (
-              <tr key={item._id} className="text-sm text-slate-600">
-                <td className="px-5 py-4 font-semibold text-slate-500">
-                  {(pagination.page - 1) * pagination.limit + index + 1}
-                </td>
-                <td className="px-5 py-4">
-                  <div className="group flex items-center gap-4">
-                    <div className="overflow-hidden rounded-[20px] border border-slate-200 bg-white p-2">
-                      <img
-                        src={`http${item.image}`}
-                        alt={item.title || "Gallery"}
-                        className="h-20 w-24 rounded-2xl object-cover transition duration-300 group-hover"
-                      />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-ink">{item.title || "Untitled image"}</div>
-                      <div className="mt-2">
-                        <ToggleButton
-                          status={item.status}
-                          loading={actionId === item._id}
-                          onClick={() => handleToggle(item._id)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4">
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => openEditModal(item)}
-                      className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(item._id)}
-                      disabled={actionId === item._id}
-                      className="btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </Table>
-
-          <div className="flex flex-col gap-3 rounded-[28px] bg-white p-4 shadow-panel md md md">
-            <p className="text-sm text-slate-500">
-              Showing page {pagination.page} of {pagination.totalPages}
-            </p>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => fetchItems(pagination.page - 1, query)}
-                disabled={pagination.page <= 1}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
-              >
-                Previous
-              </button>
-              <button
-                type="button"
-                onClick={() => fetchItems(pagination.page + 1, query)}
-                disabled={pagination.page >= pagination.totalPages}
-                className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 disabled"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        </>
       )}
 
-      <Modal
-        open={modalOpen}
-        title={editingItem ? "Edit Gallery Image" : "Add Gallery"}
-        onClose={closeModal}
-        onSubmit={handleSubmit}
-        submitLabel={editingItem ? "Update Image" : "Upload Images"}
-        loading={saving}
-      >
-        <div className="space-y-5">
-          <div>
-            <label className="mb-2 block text-sm font-semibold text-slate-700">Title</label>
-            <input
-              value={form.title}
-              onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-              placeholder="Optional title"
-            />
-          </div>
+      {/* Page Header */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
+        <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Media Gallery</h2>
+        <span style={{ fontSize: "0.8rem", color: "#64748B" }}>{filtered.length} image{filtered.length !== 1 ? "s" : ""}</span>
+      </div>
 
-          <ImageUpload
-            label={editingItem ? "Replace Image" : "Upload Images"}
-            file={form.images}
-            previewUrl={editingItem ? `http${editingItem.image}` : []}
-            multiple={!editingItem}
-            helperText="Drag and drop one or more gallery images here"
-            onFileChange={(files) =>
-              setForm((prev) => ({ ...prev, images: Array.isArray(files) ? files : files ? [files] : [] }))
-            }
-          />
+      {/* Upload Area */}
+      <div className="card-glass" style={{ padding: "1.25rem" }}>
+        <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 0.875rem 0" }}>Upload Images</p>
+        <div
+          onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={onDrop}
+          onClick={() => fileInputRef.current?.click()}
+          style={{ border: `2px dashed ${dragOver ? "#2563EB" : "#CBD5E1"}`, borderRadius: 10, background: dragOver ? "#EFF6FF" : "#F8FAFC", padding: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", cursor: "pointer", transition: "all 0.2s" }}
+        >
+          <Upload size={28} color={dragOver ? "#2563EB" : "#94A3B8"} />
+          <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 500, color: dragOver ? "#2563EB" : "#64748B" }}>Drag & drop images here, or click to browse</p>
+          <p style={{ margin: 0, fontSize: "0.75rem", color: "#94A3B8" }}>PNG, JPG, WebP — up to 5 MB each</p>
         </div>
-      </Modal>
+        <input ref={fileInputRef} type="file" accept="image/*" multiple style={{ display: "none" }} onChange={e => addFiles(e.target.files)} />
+
+        {uploadFiles.length > 0 && (
+          <div style={{ marginTop: "1rem" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.625rem", marginBottom: "0.875rem" }}>
+              {uploadFiles.map((f, idx) => (
+                <div key={idx} style={{ position: "relative", width: 72, height: 72, borderRadius: 8, overflow: "hidden", border: "1px solid #E2E8F0" }}>
+                  <img src={f.preview} alt={f.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <button onClick={e => { e.stopPropagation(); removeUploadFile(idx); }} style={{ position: "absolute", top: 2, right: 2, background: "rgba(0,0,0,0.6)", border: "none", borderRadius: "50%", width: 18, height: 18, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff" }}><X size={10} /></button>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", flexWrap: "wrap" }}>
+              <input
+                type="text"
+                value={uploadTitle}
+                onChange={e => setUploadTitle(e.target.value)}
+                placeholder="Optional title for all images"
+                className="form-input"
+                style={{ maxWidth: 280 }}
+              />
+              <button onClick={handleUpload} disabled={uploadProgress} className="btn-primary">
+                {uploadProgress ? "Uploading…" : `Upload ${uploadFiles.length} Image${uploadFiles.length !== 1 ? "s" : ""}`}
+              </button>
+              <button onClick={() => setUploadFiles([])} className="btn-secondary">Clear</button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Filters */}
+      <div className="card" style={{ padding: "0.875rem 1.25rem", display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "center" }}>
+        <div style={{ position: "relative", flex: "1", minWidth: 180 }}>
+          <Search size={15} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
+          <input type="text" placeholder="Search by title…" value={search} onChange={e => setSearch(e.target.value)} className="form-input" style={{ paddingLeft: "2.25rem" }} />
+        </div>
+        <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="form-input" style={{ width: "auto", minWidth: 140 }}>
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="form-input" style={{ width: "auto", minWidth: 140 }}>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+
+      {/* Main 2-column area */}
+      <div style={{ display: "grid", gridTemplateColumns: selected ? "1fr 320px" : "1fr", gap: "1.5rem", alignItems: "start" }}>
+
+        {/* LEFT: Image Grid */}
+        <div>
+          {filtered.length === 0 ? (
+            <div style={{ padding: "3rem", textAlign: "center", color: "#94A3B8", background: "#fff", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+              <ImageIcon size={40} style={{ marginBottom: "0.75rem", opacity: 0.4 }} />
+              <p style={{ margin: 0, fontSize: "0.875rem" }}>No images found. Upload some above.</p>
+            </div>
+          ) : (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "0.875rem" }}>
+              {filtered.map(item => (
+                <div
+                  key={item._id}
+                  onClick={() => selectItem(item)}
+                  style={{
+                    position: "relative", borderRadius: 10, overflow: "hidden", cursor: "pointer",
+                    border: selected?._id === item._id ? "2px solid #2563EB" : "2px solid transparent",
+                    boxShadow: selected?._id === item._id ? "0 0 0 3px rgba(37,99,235,0.2)" : "0 1px 3px rgba(15,23,42,0.08)",
+                    transition: "all 0.18s",
+                    background: "#fff",
+                  }}
+                >
+                  {/* Image */}
+                  <div style={{ height: 140, overflow: "hidden", background: "#F1F5F9" }}>
+                    <img
+                      src={getImgUrl(item.image)}
+                      alt={item.altText || item.title || "Gallery"}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.25s" }}
+                      onMouseEnter={e => e.currentTarget.style.transform = "scale(1.06)"}
+                      onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                    />
+                  </div>
+
+                  {/* Status badge */}
+                  <div style={{ position: "absolute", top: 6, left: 6 }}>
+                    <span style={{ padding: "0.15rem 0.45rem", borderRadius: 9999, fontSize: "0.65rem", fontWeight: 700, background: item.status === "active" ? "#D1FAE5" : "#FEF3C7", color: item.status === "active" ? "#065F46" : "#92400E" }}>
+                      {item.status === "active" ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+
+                  {/* Hover actions */}
+                  <div style={{ position: "absolute", inset: 0, background: "rgba(15,23,42,0.55)", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", opacity: 0, transition: "opacity 0.2s" }}
+                    onMouseEnter={e => e.currentTarget.style.opacity = 1}
+                    onMouseLeave={e => e.currentTarget.style.opacity = 0}
+                  >
+                    <button onClick={e => { e.stopPropagation(); setPreviewUrl(getImgUrl(item.image)); }} title="View" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.9)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#0F172A" }}><Eye size={14} /></button>
+                    <button onClick={e => { e.stopPropagation(); selectItem(item); }} title="Edit" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.9)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#2563EB" }}><Edit2 size={14} /></button>
+                    <button onClick={e => { e.stopPropagation(); handleDelete(item._id); }} disabled={actionId === item._id} title="Delete" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(239,68,68,0.9)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff" }}><Trash2 size={14} /></button>
+                  </div>
+
+                  {/* Title */}
+                  {item.title && (
+                    <div style={{ padding: "0.4rem 0.6rem", fontSize: "0.75rem", fontWeight: 500, color: "#374151", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {item.title}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* RIGHT: Detail Panel (sticky) */}
+        {selected && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem", position: "sticky", top: 80 }}>
+            <div className="card-glass" style={{ padding: "1.25rem" }}>
+              {/* Header */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+                <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: 0 }}>Image Details</h3>
+                <button onClick={closeDetail} style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", display: "flex" }}><X size={16} /></button>
+              </div>
+
+              {/* Preview */}
+              <div style={{ borderRadius: 10, overflow: "hidden", marginBottom: "1rem", border: "1px solid #E2E8F0", cursor: "pointer", height: 180 }} onClick={() => setPreviewUrl(getImgUrl(selected.image))}>
+                <img src={getImgUrl(selected.image)} alt={selected.altText || "Preview"} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+
+              {/* Upload date */}
+              <p style={{ fontSize: "0.75rem", color: "#94A3B8", margin: "0 0 1rem 0" }}>
+                Uploaded: {selected.createdAt ? new Date(selected.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
+              </p>
+
+              {/* Fields */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <div>
+                  <label className="form-label">Title</label>
+                  <input type="text" value={detailForm.title} onChange={e => setDetailForm(p => ({ ...p, title: e.target.value }))} className="form-input" placeholder="Image title" />
+                </div>
+                <div>
+                  <label className="form-label">Alt Text <span style={{ color: "#2563EB", fontSize: "0.7rem" }}>(SEO)</span></label>
+                  <input type="text" value={detailForm.altText} onChange={e => setDetailForm(p => ({ ...p, altText: e.target.value }))} className="form-input" placeholder="Describe for search engines" />
+                </div>
+                <div>
+                  <label className="form-label">Description</label>
+                  <textarea rows={3} value={detailForm.description} onChange={e => setDetailForm(p => ({ ...p, description: e.target.value }))} className="form-input" placeholder="Optional description" />
+                </div>
+                <div>
+                  <label className="form-label">Status</label>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    {["active", "inactive"].map(s => (
+                      <button key={s} onClick={() => setDetailForm(p => ({ ...p, status: s }))}
+                        style={{ flex: 1, padding: "0.5rem", borderRadius: 8, fontSize: "0.8rem", fontWeight: 600, cursor: "pointer", border: detailForm.status === s ? "2px solid #2563EB" : "1px solid #E2E8F0", background: detailForm.status === s ? "#EFF6FF" : "#FFFFFF", color: detailForm.status === s ? "#2563EB" : "#64748B", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.3rem" }}>
+                        {s === "active" ? <CheckCircle size={13} /> : <XCircle size={13} />}
+                        {s.charAt(0).toUpperCase() + s.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div style={{ display: "flex", gap: "0.625rem", marginTop: "1rem" }}>
+                <button onClick={handleUpdate} disabled={saving} className="btn-primary" style={{ flex: 1 }}>
+                  {saving ? "Saving…" : "Update"}
+                </button>
+                <button onClick={() => handleDelete(selected._id)} disabled={actionId === selected._id} className="btn-danger">
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
-
-export default Gallery;
-
-
