@@ -53,7 +53,7 @@ function Login() {
             <Lock className="text-white w-8 h-8" />
           </div>
           <h1 className="text-3xl font-bold text-white tracking-tight">Welcome Back</h1>
-          <p className="mt-3 text-sm text-slate-400">Securely sign in to your administrative workspace.</p>
+          <p className="mt-3 text-sm text-slate-400">Secure access to your admin dashboard.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
