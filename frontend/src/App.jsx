@@ -21,7 +21,10 @@ import MenuOperation from "./pages/MenuOperation";
 import Callback from "./pages/Callback";
 import Contact from "./pages/Contact";
 import Blogs from "./pages/Blogs";
-import Appointment from "./pages/Appointment";
+import AppointmentList from "./pages/AppointmentList";
+import RedirectList from "./pages/RedirectList";
+import SitemapManager from "./pages/SitemapManager";
+import RobotsEditor from "./pages/RobotsEditor";
 import PlaceholderPage from "./pages/PlaceholderPage";
 
 function App() {
@@ -53,10 +56,26 @@ function App() {
           }
         />
         <Route
-          path="seo"
+          path="seo/redirects"
           element={
             <ProtectedRoute permission="seo">
-              <PlaceholderPage title="SEO" />
+              <RedirectList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="seo/sitemap"
+          element={
+            <ProtectedRoute permission="seo">
+              <SitemapManager />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="seo/robots"
+          element={
+            <ProtectedRoute permission="seo">
+              <RobotsEditor />
             </ProtectedRoute>
           }
         />
@@ -208,7 +227,7 @@ function App() {
           path="leads/appointment"
           element={
             <ProtectedRoute permission="users">
-              <Appointment />
+              <AppointmentList />
             </ProtectedRoute>
           }
         />

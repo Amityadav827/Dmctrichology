@@ -477,3 +477,65 @@ export const deleteMenuOperation = async (id) => {
   const { data } = await api.delete(`/menu-operations/${id}`);
   return data;
 };
+
+// ========================
+// ✅ SEO & Leads
+// ========================
+
+// Redirects
+export const getRedirects = async () => {
+  const { data } = await api.get("/seo/redirects");
+  return data;
+};
+
+export const createRedirect = async (payload) => {
+  const { data } = await api.post("/seo/redirects", payload);
+  return data;
+};
+
+export const updateRedirect = async (id, payload) => {
+  const { data } = await api.put(`/seo/redirects/${id}`, payload);
+  return data;
+};
+
+export const deleteRedirect = async (id) => {
+  const { data } = await api.delete(`/seo/redirects/${id}`);
+  return data;
+};
+
+export const toggleRedirectStatus = async (id) => {
+  const { data } = await api.patch(`/seo/redirects/${id}/toggle-status`);
+  return data;
+};
+
+// Sitemap
+export const getSitemapEntries = async () => {
+  const { data } = await api.get("/seo/sitemap");
+  return data;
+};
+
+export const createSitemapEntry = async (payload) => {
+  const { data } = await api.post("/seo/sitemap", payload);
+  return data;
+};
+
+export const deleteSitemapEntry = async (id) => {
+  const { data } = await api.delete(`/seo/sitemap/${id}`);
+  return data;
+};
+
+export const getSitemapXml = async () => {
+  const { data } = await api.get("/seo/sitemap/xml");
+  return data;
+};
+
+// Robots
+export const getRobotsContent = async () => {
+  const { data } = await api.get("/seo/robots");
+  return data;
+};
+
+export const updateRobotsContent = async (payload) => {
+  const { data } = await api.put("/seo/robots", payload);
+  return data;
+};

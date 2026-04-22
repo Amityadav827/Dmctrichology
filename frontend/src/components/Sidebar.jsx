@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Search, Star, PhoneCall, Mail, CalendarCheck,
   FileText, Scissors, Layers, HelpCircle, Activity, List,
   Video, PlayCircle, Image as ImageIcon, Users, Shield,
-  Key, Menu as MenuIcon, Settings, Wrench,
+  Key, Menu as MenuIcon, Settings, Wrench, Globe, Link as LinkIcon, Bot
 } from "lucide-react";
 
 const getNavClass = ({ isActive }) =>
@@ -95,9 +95,21 @@ function Sidebar() {
         )}
 
         {hasPermission("seo") && (
-          <NavLink to="/seo" className={getNavClass}>
-            <Search size={16} /> SEO
-          </NavLink>
+          <>
+            <SectionLabel>SEO & Leads</SectionLabel>
+            <NavLink to="/leads/appointment" className={getNavClass}>
+              <CalendarCheck size={16} /> Appointments
+            </NavLink>
+            <NavLink to="/seo/redirects" className={getNavClass}>
+              <LinkIcon size={16} /> Redirects
+            </NavLink>
+            <NavLink to="/seo/sitemap" className={getNavClass}>
+              <Globe size={16} /> Sitemap XML
+            </NavLink>
+            <NavLink to="/seo/robots" className={getNavClass}>
+              <Bot size={16} /> Robots.txt
+            </NavLink>
+          </>
         )}
 
         {hasPermission("testimonial") && (
@@ -114,9 +126,6 @@ function Sidebar() {
             </NavLink>
             <NavLink to="/leads/contact" className={getNavClass}>
               <Mail size={16} /> Contact Leads
-            </NavLink>
-            <NavLink to="/leads/appointment" className={getNavClass}>
-              <CalendarCheck size={16} /> Appointments
             </NavLink>
           </>
         )}
