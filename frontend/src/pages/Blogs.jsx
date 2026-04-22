@@ -237,6 +237,7 @@ function Blogs() {
           </div>
         )}
 
+        {/* Top Bar */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <button
@@ -263,268 +264,176 @@ function Blogs() {
           </div>
         </div>
 
-        <form style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1.5rem" }}>
-          {/* Main Content Column */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-            <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink">Basic Information</h3>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1.25rem" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.375rem" }}>
-                  <label className="text-sm font-medium text-slate-700">Blog Title <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    placeholder="Enter blog title..."
-                    className="w-full form-input"
-                    required
-                  />
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Author Name <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    name="author"
-                    value={formData.author}
-                    onChange={handleChange}
-                    className="w-full form-input"
-                    required
-                  />
-                </div>
+        {/* WordPress-style 2-column layout */}
+        <form style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "1.5rem", alignItems: "start" }}>
 
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Blog Date</label>
-                  <input
-                    type="date"
-                    name="blogDate"
-                    value={formData.blogDate}
-                    onChange={handleChange}
-                    className="w-full form-input"
-                  />
+          {/* ── LEFT PANEL (main content) ── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+
+            {/* Blog Title */}
+            <div className="card-glass" style={{ padding: "1.5rem" }}>
+              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.625rem" }}>
+                Blog Title <span style={{ color: "#EF4444" }}>*</span>
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Enter your blog title here..."
+                className="form-input"
+                required
+                style={{ fontSize: "1.125rem", fontWeight: 600, padding: "0.75rem 1rem" }}
+              />
+            </div>
+
+            {/* Author + Date row */}
+            <div className="card-glass" style={{ padding: "1.5rem" }}>
+              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.875rem" }}>
+                Author &amp; Date
+              </label>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Author Name <span style={{ color: "#EF4444" }}>*</span></label>
+                  <input type="text" name="author" value={formData.author} onChange={handleChange} className="form-input" required />
                 </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Show Type</label>
-                  <select
-                    name="showType"
-                    value={formData.showType}
-                    onChange={handleChange}
-                    className="w-full form-input"
-                  >
-                    <option value="Inside">Inside</option>
-                    <option value="Outside">Outside</option>
-                  </select>
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Layout Type</label>
-                  <select
-                    name="layoutType"
-                    value={formData.layoutType}
-                    onChange={handleChange}
-                    className="w-full form-input"
-                  >
-                    <option value="Left">Left</option>
-                    <option value="Right">Right</option>
-                  </select>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Blog Date</label>
+                  <input type="date" name="blogDate" value={formData.blogDate} onChange={handleChange} className="form-input" />
                 </div>
               </div>
             </div>
 
-            <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink">Content Details</h3>
-              <div className="space-y-6">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Blog Full Description <span className="text-red-500">*</span></label>
-                  <div className="bg-white rounded-xl overflow-hidden border border-slate-200">
-                    <ReactQuill 
-                      theme="snow" 
-                      modules={modules}
-                      value={formData.fullDescription} 
-                      onChange={(val) => handleQuillChange('fullDescription', val)} 
-                      className="h-64"
-                    />
-                  </div>
-                </div>
+            {/* Full Description */}
+            <div className="card-glass" style={{ padding: "1.5rem" }}>
+              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>
+                Blog Full Description <span style={{ color: "#EF4444" }}>*</span>
+              </label>
+              <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
+                <ReactQuill theme="snow" modules={modules} value={formData.fullDescription} onChange={(val) => handleQuillChange('fullDescription', val)} style={{ minHeight: "280px" }} />
+              </div>
+            </div>
 
-                <div className="space-y-1.5 pt-12">
-                  <label className="text-sm font-medium text-slate-700">Blog Short Description</label>
-                  <div className="bg-white rounded-xl overflow-hidden border border-slate-200">
-                    <ReactQuill 
-                      theme="snow" 
-                      modules={modules}
-                      value={formData.shortDescription} 
-                      onChange={(val) => handleQuillChange('shortDescription', val)} 
-                      className="h-32"
-                    />
-                  </div>
-                </div>
+            {/* Short Description */}
+            <div className="card-glass" style={{ padding: "1.5rem" }}>
+              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>
+                Blog Short Description
+              </label>
+              <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
+                <ReactQuill theme="snow" modules={modules} value={formData.shortDescription} onChange={(val) => handleQuillChange('shortDescription', val)} style={{ minHeight: "160px" }} />
+              </div>
+            </div>
 
-                <div className="space-y-1.5 pt-12">
-                  <label className="text-sm font-medium text-slate-700">Admin Description</label>
-                  <div className="bg-white rounded-xl overflow-hidden border border-slate-200">
-                    <ReactQuill 
-                      theme="snow" 
-                      modules={modules}
-                      value={formData.adminDescription} 
-                      onChange={(val) => handleQuillChange('adminDescription', val)} 
-                      className="h-32"
-                    />
-                  </div>
-                </div>
+            {/* Admin Description */}
+            <div className="card-glass" style={{ padding: "1.5rem" }}>
+              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>
+                Admin Description
+              </label>
+              <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
+                <ReactQuill theme="snow" modules={modules} value={formData.adminDescription} onChange={(val) => handleQuillChange('adminDescription', val)} style={{ minHeight: "160px" }} />
               </div>
             </div>
           </div>
 
-          {/* Sidebar Column */}
-          <div className="space-y-6">
-            <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink">Publishing</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="text-sm font-medium text-slate-700">Status</span>
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    className="bg-transparent text-sm font-semibold text-ink outline-none"
-                  >
-                    <option value="Published">Published</option>
-                    <option value="Draft">Draft</option>
+          {/* ── RIGHT SIDEBAR ── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+
+            {/* Publishing */}
+            <div className="card-glass" style={{ padding: "1.25rem" }}>
+              <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 1rem 0" }}>Publishing</h3>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.75rem 1rem", background: "#F8FAFC", borderRadius: "8px", border: "1px solid #E2E8F0" }}>
+                <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "#374151" }}>Status</span>
+                <select name="status" value={formData.status} onChange={handleChange} style={{ background: "transparent", border: "none", fontSize: "0.875rem", fontWeight: 600, color: "#0F172A", outline: "none", cursor: "pointer" }}>
+                  <option value="Published">Published</option>
+                  <option value="Draft">Draft</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Media */}
+            <div className="card-glass" style={{ padding: "1.25rem" }}>
+              <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 1rem 0" }}>Media</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.5rem" }}>Blog Image</label>
+                  <div style={{ position: "relative", overflow: "hidden", borderRadius: "10px", border: "2px dashed #CBD5E1", background: "#F8FAFC", display: "flex", justifyContent: "center", alignItems: "center", height: "130px", cursor: "pointer" }}>
+                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setImageFile, setImagePreview)} style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} />
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "#94A3B8" }}>
+                        <ImageIcon size={26} style={{ marginBottom: "0.375rem" }} />
+                        <span style={{ fontSize: "0.8rem", fontWeight: 500 }}>Click to upload</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.5rem" }}>Banner Image</label>
+                  <div style={{ position: "relative", overflow: "hidden", borderRadius: "10px", border: "2px dashed #CBD5E1", background: "#F8FAFC", display: "flex", justifyContent: "center", alignItems: "center", height: "90px", cursor: "pointer" }}>
+                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setBannerFile, setBannerPreview)} style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} />
+                    {bannerPreview ? (
+                      <img src={bannerPreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "#94A3B8" }}>
+                        <span style={{ fontSize: "0.8rem", fontWeight: 500 }}>Upload Banner</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Image Alt Tag</label>
+                  <input type="text" name="altTag" value={formData.altTag} onChange={handleChange} className="form-input" />
+                </div>
+              </div>
+            </div>
+
+            {/* SEO & Taxonomy */}
+            <div className="card-glass" style={{ padding: "1.25rem" }}>
+              <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 1rem 0" }}>SEO &amp; Taxonomy</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Tags <span style={{ color: "#94A3B8", fontWeight: 400 }}>(comma separated)</span></label>
+                  <input type="text" name="tags" value={formData.tags} onChange={handleChange} placeholder="hair loss, transplant" className="form-input" />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Title Tag</label>
+                  <input type="text" name="metaTitle" value={formData.metaTitle} onChange={handleChange} className="form-input" />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Meta Keywords</label>
+                  <textarea name="metaKeywords" value={formData.metaKeywords} onChange={handleChange} rows="2" className="form-input" />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Meta Description</label>
+                  <textarea name="metaDescription" value={formData.metaDescription} onChange={handleChange} rows="3" className="form-input" />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Canonical URL</label>
+                  <input type="text" name="canonicalUrl" value={formData.canonicalUrl} onChange={handleChange} className="form-input" />
+                </div>
+                <div>
+                  <label style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>
+                    <span>URL Slug</span>
+                    <span style={{ fontSize: "0.7rem", color: "#94A3B8", fontWeight: 400 }}>Auto-generates if empty</span>
+                  </label>
+                  <input type="text" name="slug" value={formData.slug} onChange={handleChange} placeholder="my-blog-post" className="form-input" />
+                </div>
+
+                {/* Show Type & Layout Type */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Show Type</label>
+                  <select name="showType" value={formData.showType} onChange={handleChange} className="form-input">
+                    <option value="Inside">Inside</option>
+                    <option value="Outside">Outside</option>
                   </select>
                 </div>
-              </div>
-            </div>
-
-            <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink">Media Assets</h3>
-              <div className="space-y-5">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Blog Image</label>
-                  <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover transition flex justify-center items-center h-40 cursor-pointer group">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleFileChange(e, setImageFile, setImagePreview)}
-                      className="absolute inset-0 opacity-0 cursor-pointer z-10"
-                    />
-                    {imagePreview ? (
-                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="flex flex-col items-center text-slate-400 group-hover transition-colors">
-                        <ImageIcon size={28} className="mb-2" />
-                        <span className="text-sm font-medium">Click to upload image</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Banner Image</label>
-                  <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover transition flex justify-center items-center h-28 cursor-pointer group">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleFileChange(e, setBannerFile, setBannerPreview)}
-                      className="absolute inset-0 opacity-0 cursor-pointer z-10"
-                    />
-                    {bannerPreview ? (
-                      <img src={bannerPreview} alt="Preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="flex flex-col items-center text-slate-400 group-hover transition-colors">
-                        <span className="text-sm font-medium">Upload Banner Image</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Image Alt Tag</label>
-                  <input
-                    type="text"
-                    name="altTag"
-                    value={formData.altTag}
-                    onChange={handleChange}
-                    className="w-full form-input"
-                  />
-                </div>
-              </div>
-            </div>
-            
-            <div className="card-glass p-6">
-              <h3 className="mb-4 text-lg font-semibold text-ink">SEO & Taxonomy</h3>
-              <div className="space-y-5">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Tags (Comma separated)</label>
-                  <input
-                    type="text"
-                    name="tags"
-                    value={formData.tags}
-                    onChange={handleChange}
-                    placeholder="hair loss, transplant, care"
-                    className="w-full form-input"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Title Tag</label>
-                  <input
-                    type="text"
-                    name="metaTitle"
-                    value={formData.metaTitle}
-                    onChange={handleChange}
-                    className="w-full form-input"
-                  />
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Meta Keyword</label>
-                  <textarea
-                    name="metaKeywords"
-                    value={formData.metaKeywords}
-                    onChange={handleChange}
-                    rows="2"
-                    className="w-full form-input"
-                  ></textarea>
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Meta Description</label>
-                  <textarea
-                    name="metaDescription"
-                    value={formData.metaDescription}
-                    onChange={handleChange}
-                    rows="3"
-                    className="w-full form-input"
-                  ></textarea>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700">Canonical URL</label>
-                  <input
-                    type="text"
-                    name="canonicalUrl"
-                    value={formData.canonicalUrl}
-                    onChange={handleChange}
-                    className="w-full form-input"
-                  />
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 flex justify-between">
-                    <span>URL Slug</span>
-                    <span className="text-xs text-slate-400 font-normal">Auto-generates if empty</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="slug"
-                    value={formData.slug}
-                    onChange={handleChange}
-                    placeholder="my-awesome-blog-post"
-                    className="w-full form-input"
-                  />
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Layout Type</label>
+                  <select name="layoutType" value={formData.layoutType} onChange={handleChange} className="form-input">
+                    <option value="Left">Left</option>
+                    <option value="Right">Right</option>
+                  </select>
                 </div>
               </div>
             </div>
