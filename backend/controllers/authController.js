@@ -110,6 +110,8 @@ const getAdminProfile = async (req, res, next) => {
   }
 };
 
+const sendEmail = require("../utils/sendEmail");
+
 const forgotPassword = async (req, res, next) => {
   try {
     const email = req.body.email ? req.body.email.trim().toLowerCase() : "";
@@ -140,16 +142,45 @@ const forgotPassword = async (req, res, next) => {
 
     await user.save();
 
-    // In a real app, send email here. For now, log to console.
+    // Prepare Reset URL
     const resetUrl = `${req.get("origin")}/reset-password/${resetToken}`;
-    console.log("====================================");
-    console.log("RESET PASSWORD LINK:", resetUrl);
-    console.log("====================================");
+    
+    // HTML Template
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 12px;">
+        <h2 style="color: #0f172a; text-align: center;">Password Reset Request</h2>
+        <p>Hello <strong>${user.name}</strong>,</p>
+        <p>You are receiving this email because you (or someone else) have requested the reset of a password for your DMC Trichology Admin account.</p>
+        <p>Please click on the button below to complete the process:</p>
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${resetUrl}" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">Reset Password</a>
+        </div>
+        <p style="color: #64748b; font-size: 14px;">If you did not request this, please ignore this email and your password will remain unchanged.</p>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
+        <p style="color: #94a3b8; font-size: 12px; text-align: center;">This link will expire in 10 minutes.</p>
+      </div>
+    `;
 
-    return res.status(200).json({
-      success: true,
-      message: "Password reset link sent to your email",
-    });
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "Password Reset Request - DMC Trichology",
+        html,
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "Password reset link sent to your email successfully",
+      });
+    } catch (emailError) {
+      // If email fails, reset the token fields
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      await user.save();
+      
+      res.status(500);
+      throw new Error("Unable to send reset email. Please check your SMTP configuration.");
+    }
   } catch (error) {
     next(error);
   }
