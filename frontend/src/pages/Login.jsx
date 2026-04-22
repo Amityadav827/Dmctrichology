@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { loginAdmin } from "../api/services";
@@ -77,7 +77,7 @@ function Login() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="block text-sm font-medium text-slate-300">Password</label>
-              <a href="#" className="text-xs font-medium text-primary hover transition-colors">Forgot password?</a>
+              <Link to="/forgot-password" title="Forgot password?" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">Forgot password?</Link>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">

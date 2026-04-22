@@ -5,6 +5,16 @@ export const loginAdmin = async (payload) => {
   return data;
 };
 
+export const forgotPassword = async (payload) => {
+  const { data } = await api.post("/auth/forgot-password", payload);
+  return data;
+};
+
+export const resetPassword = async (token, payload) => {
+  const { data } = await api.post(`/auth/reset-password/${token}`, payload);
+  return data;
+};
+
 const downloadCsv = async (url, filename) => {
   const response = await api.get(url, { responseType: "blob" });
   const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
