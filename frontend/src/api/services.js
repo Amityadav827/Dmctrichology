@@ -493,28 +493,28 @@ export const deleteMenuOperation = async (id) => {
 // ========================
 
 // Redirects
-export const getRedirects = async () => {
-  const { data } = await api.get("/seo/redirects");
+export const getRedirects = async (params) => {
+  const { data } = await api.get("/redirects", { params });
   return data;
 };
 
 export const createRedirect = async (payload) => {
-  const { data } = await api.post("/seo/redirects", payload);
+  const { data } = await api.post("/redirects", payload);
   return data;
 };
 
 export const updateRedirect = async (id, payload) => {
-  const { data } = await api.put(`/seo/redirects/${id}`, payload);
+  const { data } = await api.put(`/redirects/${id}`, payload);
   return data;
 };
 
 export const deleteRedirect = async (id) => {
-  const { data } = await api.delete(`/seo/redirects/${id}`);
+  const { data } = await api.delete(`/redirects/${id}`);
   return data;
 };
 
 export const toggleRedirectStatus = async (id) => {
-  const { data } = await api.patch(`/seo/redirects/${id}/toggle-status`);
+  const { data } = await api.patch(`/redirects/${id}/status`);
   return data;
 };
 

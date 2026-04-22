@@ -75,20 +75,30 @@ function RedirectList() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.sourceUrl.startsWith('/') || !form.destinationUrl.startsWith('/')) {
-      if (!form.destinationUrl.startsWith('http')) {
-        toast.error("URLs should start with / (internal) or http (external)");
-        return;
-      }
+    
+    // Normalize sourceUrl: ensure it starts with / and remove whitespace
+    let normalizedSource = form.sourceUrl.trim();
+    if (normalizedSource && !normalizedSource.startsWith('/')) {
+      normalizedSource = '/' + normalizedSource;
     }
+
+    if (!normalizedSource || normalizedSource === '/') {
+      toast.error("Source path cannot be empty or just /");
+      return;
+    }
+
+    const payload = {
+      ...form,
+      sourceUrl: normalizedSource.toLowerCase()
+    };
     
     setSaving(true);
     try {
       if (editingItem) {
-        await updateRedirect(editingItem._id, form);
+        await updateRedirect(editingItem._id, payload);
         toast.success("Redirect updated");
       } else {
-        await createRedirect(form);
+        await createRedirect(payload);
         toast.success("Redirect created");
       }
       closeModal();

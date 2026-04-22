@@ -30,9 +30,11 @@ const resultCategoryRoutes = require("./routes/resultCategoryRoutes");
 const resultInnerRoutes = require("./routes/resultInnerRoutes");
 const videoCategoryRoutes = require("./routes/videoCategoryRoutes");
 const videoRoutes = require("./routes/videoRoutes");
+const redirectRoutes = require("./routes/redirectRoutes");
 
 // Middleware
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const redirectMiddleware = require("./middleware/redirectMiddleware");
 
 const app = express();
 
@@ -59,6 +61,9 @@ if (process.env.NODE_ENV !== "production") {
 
 // Static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Dynamic Redirects (MUST be before API routes if you want to redirect old URLs)
+app.use(redirectMiddleware);
 
 // ========================
 // ✅ Health Check Route
@@ -111,6 +116,7 @@ app.use("/api/results", resultInnerRoutes);
 
 app.use("/api/video-categories", videoCategoryRoutes);
 app.use("/api/videos", videoRoutes);
+app.use("/api/redirects", redirectRoutes);
 
 // SEO
 app.get(

@@ -1,40 +1,12 @@
 const Redirect = require("../models/Redirect");
 
-const createRedirect = async (req, res, next) => {
-  try {
-    const { fromUrl, toUrl, type, status } = req.body;
-
-    if (!fromUrl || !toUrl) {
-      res.status(400);
-      throw new Error("fromUrl and toUrl are required");
-    }
-
-    if (fromUrl === toUrl) {
-      res.status(400);
-      throw new Error("fromUrl and toUrl cannot be the same");
-    }
-
-    const redirect = await Redirect.create({
-      fromUrl,
-      toUrl,
-      type,
-      status,
-    });
-
-    return res.status(201).json({
-      success: true,
-      data: redirect,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
+// @desc    Get all redirects
+// @route   GET /api/redirects
+// @access  Private/Admin
 const getRedirects = async (req, res, next) => {
   try {
     const redirects = await Redirect.find().sort({ createdAt: -1 });
-
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       count: redirects.length,
       data: redirects,
@@ -44,40 +16,76 @@ const getRedirects = async (req, res, next) => {
   }
 };
 
-const updateRedirect = async (req, res, next) => {
+// @desc    Create a redirect
+// @route   POST /api/redirects
+// @access  Private/Admin
+const createRedirect = async (req, res, next) => {
   try {
-    const { fromUrl, toUrl, type, status } = req.body;
-    const redirect = await Redirect.findById(req.params.id);
+    const { sourceUrl, destinationUrl, type, status } = req.body;
 
-    if (!redirect) {
-      res.status(404);
-      throw new Error("Redirect not found");
-    }
-
-    const nextFromUrl = fromUrl || redirect.fromUrl;
-    const nextToUrl = toUrl || redirect.toUrl;
-
-    if (nextFromUrl === nextToUrl) {
+    const existingRedirect = await Redirect.findOne({ sourceUrl: sourceUrl.toLowerCase().trim() });
+    if (existingRedirect) {
       res.status(400);
-      throw new Error("fromUrl and toUrl cannot be the same");
+      throw new Error("A redirect for this source URL already exists");
     }
 
-    redirect.fromUrl = nextFromUrl;
-    redirect.toUrl = nextToUrl;
-    redirect.type = type || redirect.type;
-    redirect.status = status || redirect.status;
+    const redirect = await Redirect.create({
+      sourceUrl,
+      destinationUrl,
+      type: type || 301,
+      status: status || "active",
+    });
 
-    const updatedRedirect = await redirect.save();
-
-    return res.status(200).json({
+    res.status(201).json({
       success: true,
-      data: updatedRedirect,
+      data: redirect,
     });
   } catch (error) {
     next(error);
   }
 };
 
+// @desc    Update a redirect
+// @route   PUT /api/redirects/:id
+// @access  Private/Admin
+const updateRedirect = async (req, res, next) => {
+  try {
+    const { sourceUrl, destinationUrl, type, status } = req.body;
+
+    let redirect = await Redirect.findById(req.params.id);
+
+    if (!redirect) {
+      res.status(404);
+      throw new Error("Redirect not found");
+    }
+
+    // Check if new sourceUrl already exists (if changed)
+    if (sourceUrl && sourceUrl.toLowerCase().trim() !== redirect.sourceUrl) {
+      const existingRedirect = await Redirect.findOne({ sourceUrl: sourceUrl.toLowerCase().trim() });
+      if (existingRedirect) {
+        res.status(400);
+        throw new Error("A redirect for this source URL already exists");
+      }
+    }
+
+    redirect = await Redirect.findByIdAndUpdate(
+      req.params.id,
+      { sourceUrl, destinationUrl, type, status },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      data: redirect,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Delete a redirect
+// @route   DELETE /api/redirects/:id
+// @access  Private/Admin
 const deleteRedirect = async (req, res, next) => {
   try {
     const redirect = await Redirect.findById(req.params.id);
@@ -89,15 +97,18 @@ const deleteRedirect = async (req, res, next) => {
 
     await redirect.deleteOne();
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Redirect deleted successfully",
+      message: "Redirect removed",
     });
   } catch (error) {
     next(error);
   }
 };
 
+// @desc    Toggle redirect status
+// @route   PATCH /api/redirects/:id/status
+// @access  Private/Admin
 const toggleRedirectStatus = async (req, res, next) => {
   try {
     const redirect = await Redirect.findById(req.params.id);
@@ -110,7 +121,7 @@ const toggleRedirectStatus = async (req, res, next) => {
     redirect.status = redirect.status === "active" ? "inactive" : "active";
     await redirect.save();
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       data: redirect,
     });
@@ -120,8 +131,8 @@ const toggleRedirectStatus = async (req, res, next) => {
 };
 
 module.exports = {
-  createRedirect,
   getRedirects,
+  createRedirect,
   updateRedirect,
   deleteRedirect,
   toggleRedirectStatus,

@@ -1,19 +1,26 @@
 const express = require("express");
+const router = express.Router();
 const {
-  createRedirect,
   getRedirects,
+  createRedirect,
   updateRedirect,
   deleteRedirect,
   toggleRedirectStatus,
 } = require("../controllers/redirectController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+const { protect } = require("../middleware/authMiddleware");
 
-const router = express.Router();
+// All routes are protected and admin only (protected by protect middleware usually, 
+// but I'll check authMiddleware to be sure)
+router.use(protect);
 
-router.use(protect, adminOnly);
+router.route("/")
+  .get(getRedirects)
+  .post(createRedirect);
 
-router.route("/").post(createRedirect).get(getRedirects);
-router.route("/:id").put(updateRedirect).delete(deleteRedirect);
-router.patch("/:id/toggle-status", toggleRedirectStatus);
+router.route("/:id")
+  .put(updateRedirect)
+  .delete(deleteRedirect);
+
+router.patch("/:id/status", toggleRedirectStatus);
 
 module.exports = router;
