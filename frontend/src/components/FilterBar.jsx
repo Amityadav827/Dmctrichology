@@ -1,3 +1,5 @@
+import CustomDropdown from "./CustomDropdown";
+
 function FilterBar({
   search,
   onSearchChange,
@@ -35,18 +37,12 @@ function FilterBar({
         placeholder="Search leads..."
         style={fieldStyle}
       />
-      <select
+      <CustomDropdown
         value={status}
-        onChange={(e) => onStatusChange(e.target.value)}
-        style={fieldStyle}
-      >
-        <option value="">All Statuses</option>
-        {statusOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        onChange={onStatusChange}
+        options={statusOptions}
+        placeholder="All Statuses"
+      />
       <input
         type="date"
         value={startDate}

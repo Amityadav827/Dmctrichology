@@ -3,8 +3,8 @@ import toast from "react-hot-toast";
 import ExportButton from "../components/ExportButton";
 import FilterBar from "../components/FilterBar";
 import Loader from "../components/Loader";
-import StatusBadge from "../components/StatusBadge";
 import Table from "../components/Table";
+import CustomDropdown from "../components/CustomDropdown";
 import {
   deleteCallback,
   exportCallbacksCsv,
@@ -149,19 +149,12 @@ function Callback() {
                 <td className="px-5 py-4 font-semibold text-ink">{item.name}</td>
                 <td className="px-5 py-4">{item.mobile}</td>
                 <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <StatusBadge status={item.status} />
-                    <select
+                  <div className="max-w-[160px]">
+                    <CustomDropdown
                       value={item.status}
-                      onChange={(event) => handleStatusChange(item._id, event.target.value)}
-                      className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs"
-                    >
-                      {statusOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
+                      onChange={(val) => handleStatusChange(item._id, val)}
+                      options={statusOptions}
+                    />
                   </div>
                 </td>
                 <td className="px-5 py-4">{new Date(item.createdAt).toLocaleString()}</td>
