@@ -37,6 +37,11 @@ const appointmentSchema = new mongoose.Schema(
       enum: ["new", "confirmed", "completed", "cancelled"],
       default: "new",
     },
+    notes: {
+      type: String,
+      default: "",
+      trim: true,
+    },
   },
   {
     timestamps: true,

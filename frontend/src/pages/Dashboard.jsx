@@ -26,6 +26,15 @@ function Dashboard() {
       setLoading(true);
       try {
         const { data } = await api.get("/dashboard");
+        console.group("📊 Dashboard Data Audit");
+        console.log("Full API Response:", data);
+        console.log("Total Leads (Real):", data.data.totalLeads);
+        console.log("Today's Leads (Real):", data.data.todaysLeads);
+        console.log("Converted Leads (Real):", data.data.convertedLeads);
+        console.log("Total Appointments (Real):", data.data.totalAppointments);
+        console.log("Today's Bookings (Real):", data.data.todaysAppointments);
+        console.log("Completed Bookings (Real):", data.data.completedAppointments);
+        console.groupEnd();
         setStats(data.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Unable to load dashboard");

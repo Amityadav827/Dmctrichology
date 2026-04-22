@@ -147,6 +147,7 @@ const updateAppointment = async (req, res, next) => {
     }
 
     appointment.status = req.body.status || appointment.status;
+    appointment.notes = typeof req.body.notes === "string" ? sanitizeText(req.body.notes) : appointment.notes;
     appointment.service = req.body.service ? sanitizeText(req.body.service) : appointment.service;
     appointment.appointmentDate = req.body.appointmentDate || appointment.appointmentDate;
     await appointment.save();
