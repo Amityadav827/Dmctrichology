@@ -66,7 +66,7 @@ function ForgotPassword() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full rounded-xl border border-slate-700 bg-slate-800/50 pl-11 pr-4 py-3 text-white outline-none transition focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
-                  placeholder="admin@dmc.com"
+                  placeholder="Enter your email"
                   required
                 />
               </div>

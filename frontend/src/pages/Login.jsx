@@ -9,8 +9,8 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const [form, setForm] = useState({
-    email: "admin@dmc.com",
-    password: "admin123",
+    email: "",
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -68,7 +68,7 @@ function Login() {
                 value={form.email}
                 onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
                 className="w-full rounded-xl border border-slate-700 bg-slate-800/50 pl-11 pr-4 py-3 text-white outline-none transition focus focus focus focus"
-                placeholder="admin@dmc.com"
+                placeholder="Enter your email"
                 required
               />
             </div>
