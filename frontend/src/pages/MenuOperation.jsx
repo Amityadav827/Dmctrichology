@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { Plus, Trash2, Layout, Settings, X, Save, ArrowRight, Layers, Link } from "lucide-react";
+import { Plus, Trash2, Layout, Settings, X, Save, ArrowRight, Layers, Link, ChevronDown, CheckCircle } from "lucide-react";
 import Loader from "../components/Loader";
 import {
   createMenuOperation,
@@ -14,6 +14,68 @@ import {
 const initialForm = {
   menuId: "",
   operationId: "",
+};
+
+const CustomDropdown = ({ value, onChange, options, label, icon: Icon, placeholder = "Select...", className = "", compact = false }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selected = options.find(opt => opt.value === value);
+
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClick = () => setIsOpen(false);
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [isOpen]);
+
+  return (
+    <div className={`relative ${className}`} onClick={e => e.stopPropagation()}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full flex items-center justify-between gap-2 px-3 bg-slate-50 border border-slate-100 rounded-[10px] text-sm font-semibold text-slate-600 outline-none hover:bg-white hover:border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 shadow-sm ${compact ? 'h-[38px]' : 'h-[44px]'} ${isOpen ? 'bg-white border-blue-500 ring-4 ring-blue-500/10' : ''}`}
+      >
+        <div className="flex items-center gap-2 truncate">
+          {Icon && <Icon size={compact ? 14 : 18} className="text-slate-400 flex-shrink-0" />}
+          <span className={`truncate ${selected ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+            {selected ? selected.label : placeholder}
+          </span>
+        </div>
+        <ChevronDown 
+          size={compact ? 14 : 18} 
+          className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 top-full mt-1.5 w-full bg-white rounded-[10px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-100 z-[100] overflow-hidden animate-fade-in">
+          <div className="p-1.5 max-h-[180px] overflow-y-auto scrollbar-hide space-y-0.5">
+            {options.map((opt) => {
+              const isSelected = value === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-semibold rounded-[8px] transition-all duration-200 ${
+                    isSelected 
+                      ? 'bg-blue-50 text-blue-700' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  <span className={isSelected ? 'font-bold' : ''}>{opt.label}</span>
+                  {isSelected && <CheckCircle size={16} className="text-blue-600" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 function MenuOperation() {
@@ -190,37 +252,27 @@ function MenuOperation() {
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-700">Select Menu Item</label>
-                <div className="relative">
-                  <Layout size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <select
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">Select Menu Item</label>
+                  <CustomDropdown
                     value={form.menuId}
-                    onChange={(e) => setForm({ ...form, menuId: e.target.value })}
-                    className="form-input pl-11"
-                    required
-                  >
-                    <option value="">Select Menu...</option>
-                    {menus.map(m => <option key={m._id} value={m._id}>{m.name}</option>)}
-                  </select>
+                    onChange={(val) => setForm({ ...form, menuId: val })}
+                    options={menus.map(m => ({ label: m.name, value: m._id }))}
+                    placeholder="Select Menu..."
+                    icon={Layout}
+                  />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-700">Assign Operation</label>
-                <div className="relative">
-                  <Settings size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <select
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">Assign Operation</label>
+                  <CustomDropdown
                     value={form.operationId}
-                    onChange={(e) => setForm({ ...form, operationId: e.target.value })}
-                    className="form-input pl-11"
-                    required
-                  >
-                    <option value="">Select Operation...</option>
-                    {operations.map(o => <option key={o._id} value={o._id}>{o.name}</option>)}
-                  </select>
+                    onChange={(val) => setForm({ ...form, operationId: val })}
+                    options={operations.map(o => ({ label: o.name, value: o._id }))}
+                    placeholder="Select Operation..."
+                    icon={Settings}
+                  />
                 </div>
-              </div>
 
               <div className="flex gap-4 pt-4 border-t border-slate-50">
                 <button
@@ -255,13 +307,12 @@ function MenuOperationRow({ item, menus, operations, onUpdate, onDelete, isUpdat
   return (
     <tr className="hover:bg-slate-50/50 transition-colors">
       <td className="px-6 py-4">
-        <select 
+        <CustomDropdown
           value={selectedMenu}
-          onChange={(e) => setSelectedMenu(e.target.value)}
-          className="bg-transparent text-sm font-bold text-slate-900 border-none focus:ring-0 cursor-pointer p-0 w-full"
-        >
-          {menus.map(m => <option key={m._id} value={m._id}>{m.name}</option>)}
-        </select>
+          onChange={setSelectedMenu}
+          options={menus.map(m => ({ label: m.name, value: m._id }))}
+          compact={true}
+        />
         <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1 flex items-center gap-1">
           <Link size={10} />
           Navigation Parent
@@ -271,13 +322,13 @@ function MenuOperationRow({ item, menus, operations, onUpdate, onDelete, isUpdat
         <ArrowRight size={18} className="text-slate-200 mx-auto" />
       </td>
       <td className="px-6 py-4">
-        <select 
+        <CustomDropdown
           value={selectedOp}
-          onChange={(e) => setSelectedOp(e.target.value)}
-          className="bg-transparent text-sm font-bold text-blue-600 border-none focus:ring-0 cursor-pointer p-0 w-full"
-        >
-          {operations.map(o => <option key={o._id} value={o._id}>{o.name}</option>)}
-        </select>
+          onChange={setSelectedOp}
+          options={operations.map(o => ({ label: o.name, value: o._id }))}
+          compact={true}
+          className="text-blue-600"
+        />
         <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1 flex items-center gap-1">
           <Settings size={10} />
           System Capability
