@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import ExportButton from "../components/ExportButton";
-import FilterBar from "../components/FilterBar";
+import { 
+  Search, Calendar, Mail, Phone, MessageSquare, 
+  Trash2, Filter, ChevronDown, Check, X, Clock,
+  MoreVertical
+} from "lucide-react";
 import Loader from "../components/Loader";
-import Modal from "../components/Modal";
-import StatusBadge from "../components/StatusBadge";
-import Table from "../components/Table";
 import {
   deleteContact,
   exportContactsCsv,
@@ -14,10 +14,54 @@ import {
 } from "../api/services";
 
 const statusOptions = [
-  { label: "New", value: "new" },
-  { label: "Replied", value: "replied" },
-  { label: "Closed", value: "closed" },
+  { label: "New", value: "new", color: "bg-blue-100 text-blue-700" },
+  { label: "Replied", value: "replied", color: "bg-amber-100 text-amber-700" },
+  { label: "Closed", value: "closed", color: "bg-slate-100 text-slate-600" },
 ];
+
+const StatusDropdown = ({ value, onChange, options }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selected = options.find(opt => opt.value === value);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold text-slate-500 hover:border-slate-300 hover:bg-slate-50 transition shadow-sm outline-none"
+      >
+        <span>Update</span>
+        <ChevronDown size={12} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
+          <div className="absolute right-0 top-full mt-2 w-32 bg-white border border-slate-100 rounded-xl shadow-xl z-20 overflow-hidden animate-fade-in">
+            <div className="p-1.5 space-y-0.5">
+              {options.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-[11px] font-bold rounded-lg transition-all duration-200 ${
+                    value === opt.value 
+                      ? 'bg-blue-50 text-blue-700' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  {opt.label}
+                  {value === opt.value && <Check size={12} />}
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 function Contact() {
   const [items, setItems] = useState([]);
@@ -106,143 +150,258 @@ function Contact() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-[28px] bg-white p-5 shadow-panel">
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:justify-between">
+    <div className="space-y-6 pb-20">
+      {/* Header Card */}
+      <div className="rounded-[32px] bg-white p-8 shadow-sm border border-slate-100">
+        <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
           <div>
-            <h3 className="text-2xl font-semibold text-ink">Contact Us List</h3>
+            <h3 className="text-2xl font-bold text-slate-900">Contact Inquiries</h3>
             <p className="mt-1 text-sm text-slate-500">
-              Review contact form submissions, update statuses and export the latest lead sheet.
+              Manage and track customer messages from the contact form
             </p>
           </div>
-          <ExportButton onClick={handleExport} loading={exporting} />
+          <button
+            onClick={handleExport}
+            disabled={exporting}
+            className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl text-sm font-bold hover:bg-slate-800 transition shadow-lg shadow-slate-200 disabled:opacity-50"
+          >
+            {exporting ? (
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            ) : (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+            )}
+            <span>Export CSV</span>
+          </button>
         </div>
 
-        <div className="mt-5">
-          <FilterBar
-            search={search}
-            onSearchChange={setSearch}
-            status={status}
-            onStatusChange={setStatus}
-            startDate={startDate}
-            onStartDateChange={setStartDate}
-            endDate={endDate}
-            onEndDateChange={setEndDate}
-            statusOptions={statusOptions}
-          />
+        {/* Improved Filter Bar */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search leads..."
+              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:bg-white focus:ring-4 focus:ring-blue-50 transition outline-none font-medium"
+            />
+          </div>
+          <div className="relative">
+            <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:bg-white transition outline-none appearance-none font-bold text-slate-600"
+            >
+              <option value="">All Statuses</option>
+              {statusOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+            </select>
+          </div>
+          <div className="relative">
+            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:bg-white transition outline-none font-bold text-slate-600"
+            />
+          </div>
+          <div className="relative">
+            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:bg-white transition outline-none font-bold text-slate-600"
+            />
+          </div>
         </div>
       </div>
 
       {loading ? (
-        <Loader label="Loading contact leads..." />
+        <div className="flex flex-col items-center justify-center py-24 bg-white rounded-[32px] border border-slate-100">
+          <Loader />
+          <p className="mt-4 text-slate-400 font-medium animate-pulse">Syncing contact leads...</p>
+        </div>
       ) : (
-        <>
-          <Table
-            columns={[
-              { key: "name", label: "Name" },
-              { key: "email", label: "Email" },
-              { key: "mobile", label: "Mobile" },
-              { key: "message", label: "Message" },
-              { key: "status", label: "Status" },
-              { key: "createdAt", label: "Created Date" },
-              { key: "actions", label: "Actions" },
-            ]}
-          >
-            {items.map((item) => (
-              <tr key={item._id} className="text-sm text-slate-600">
-                <td className="px-5 py-4 font-semibold text-ink">{item.name}</td>
-                <td className="px-5 py-4">{item.email}</td>
-                <td className="px-5 py-4">{item.mobile}</td>
-                <td className="px-5 py-4 max-w-sm">
-                  <button
-                    type="button"
-                    onClick={() => setMessageModal({ open: true, item })}
-                    className="truncate text-left text-slate-500 underline"
-                  >
-                    {item.message}
-                  </button>
-                </td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <StatusBadge status={item.status} />
-                    <select
-                      value={item.status}
-                      onChange={(event) => handleStatusChange(item._id, event.target.value)}
-                      className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs"
-                    >
-                      {statusOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </td>
-                <td className="px-5 py-4">{new Date(item.createdAt).toLocaleString()}</td>
-                <td className="px-5 py-4">
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(item._id)}
-                    disabled={actionId === item._id}
-                    className="btn-danger"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </Table>
+        <div className="bg-white rounded-[32px] shadow-sm border border-slate-100 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-100">
+                  <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Lead Name</th>
+                  <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Contact Info</th>
+                  <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Message</th>
+                  <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
+                  <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date</th>
+                  <th className="px-6 py-4 text-right text-[10px] font-bold text-slate-400 uppercase tracking-widest">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {items.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="px-6 py-20 text-center text-slate-400 font-medium italic">
+                      No contact inquiries found matching your filters.
+                    </td>
+                  </tr>
+                ) : (
+                  items.map((item) => (
+                    <tr key={item._id} className="hover:bg-slate-50/50 transition-colors group">
+                      <td className="px-6 py-5 whitespace-nowrap overflow-hidden text-ellipsis max-w-[200px] align-middle">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold">
+                            {item.name.charAt(0).toUpperCase()}
+                          </div>
+                          <span className="text-sm font-bold text-slate-900">{item.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5 align-middle">
+                        <div className="flex flex-col gap-0.5">
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
+                            <Mail size={12} className="text-slate-400" />
+                            {item.email}
+                          </div>
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
+                            <Phone size={12} className="text-slate-400" />
+                            {item.mobile}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5 max-w-xs align-middle">
+                        <button
+                          type="button"
+                          onClick={() => setMessageModal({ open: true, item })}
+                          title={item.message}
+                          className="w-full text-left text-xs text-slate-500 font-medium truncate hover:text-blue-600 transition"
+                        >
+                          {item.message}
+                        </button>
+                      </td>
+                      <td className="px-6 py-5 align-middle">
+                        <div className="flex items-center gap-4">
+                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                            statusOptions.find(o => o.value === item.status)?.color || 'bg-slate-100 text-slate-600'
+                          }`}>
+                            {item.status}
+                          </span>
+                          <StatusDropdown
+                            value={item.status}
+                            onChange={(val) => handleStatusChange(item._id, val)}
+                            options={statusOptions}
+                          />
+                        </div>
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap align-middle">
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-slate-700">
+                            {new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-medium">
+                            {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5 text-right align-middle">
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(item._id)}
+                          disabled={actionId === item._id}
+                          className="p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition border border-transparent hover:border-red-100 group/btn"
+                        >
+                          <Trash2 size={18} className="transition-transform group-hover/btn:scale-110" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
 
-          <Pagination pagination={pagination} onPageChange={fetchItems} />
-        </>
+          {/* Pagination Component */}
+          <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+              Showing Page {pagination.page} of {pagination.totalPages} ({pagination.total} entries)
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => fetchItems(pagination.page - 1)}
+                disabled={pagination.page <= 1}
+                className="px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-100 disabled:opacity-50 transition shadow-sm"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => fetchItems(pagination.page + 1)}
+                disabled={pagination.page >= pagination.totalPages}
+                className="px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-100 disabled:opacity-50 transition shadow-sm"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
-      <Modal
-        open={messageModal.open}
-        title="Contact Message"
-        onClose={() => setMessageModal({ open: false, item: null })}
-        onSubmit={() => setMessageModal({ open: false, item: null })}
-        submitLabel="Close"
-        loading={false}
-      >
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-ink">{messageModal.item?.name}</p>
-          <p className="rounded-2xl bg-slate-50 p-4 text-sm leading-7 text-slate-600">
-            {messageModal.item?.message}
-          </p>
-        </div>
-      </Modal>
-    </div>
-  );
-}
+      {/* Message Modal */}
+      {messageModal.open && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-lg rounded-[32px] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div className="flex items-center justify-between p-6 border-b border-slate-50 bg-slate-50/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                  <MessageSquare size={20} />
+                </div>
+                <div>
+                  <h4 className="text-lg font-bold text-slate-900">{messageModal.item?.name}</h4>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Inquiry Message</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setMessageModal({ open: false, item: null })}
+                className="p-2 rounded-xl hover:bg-slate-200 transition text-slate-400"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-8">
+              <div className="p-6 rounded-2xl bg-blue-50/30 border border-blue-100 text-sm text-slate-600 leading-relaxed font-medium italic">
+                "{messageModal.item?.message}"
+              </div>
+              
+              <div className="mt-8 flex flex-col gap-4">
+                 <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase">Contact Email</span>
+                    <a href={`mailto:${messageModal.item?.email}`} className="text-sm font-bold text-blue-600 hover:underline">
+                      {messageModal.item?.email}
+                    </a>
+                 </div>
+                 <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase">Contact Phone</span>
+                    <a href={`tel:${messageModal.item?.mobile}`} className="text-sm font-bold text-slate-900">
+                      {messageModal.item?.mobile}
+                    </a>
+                 </div>
+              </div>
 
-function Pagination({ pagination, onPageChange }) {
-  return (
-    <div className="card p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-      <p className="text-sm text-slate-500">
-        Showing page {pagination.page} of {pagination.totalPages}
-      </p>
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => onPageChange(pagination.page - 1)}
-          disabled={pagination.page <= 1}
-          className="btn-secondary"
-        >
-          Previous
-        </button>
-        <button
-          type="button"
-          onClick={() => onPageChange(pagination.page + 1)}
-          disabled={pagination.page >= pagination.totalPages}
-          className="btn-secondary"
-        >
-          Next
-        </button>
-      </div>
+              <div className="mt-8">
+                <button
+                  onClick={() => setMessageModal({ open: false, item: null })}
+                  className="w-full py-3 rounded-2xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition shadow-lg shadow-slate-200"
+                >
+                  Close Message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Contact;
 
