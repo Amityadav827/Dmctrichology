@@ -86,6 +86,58 @@ const FilterDropdown = ({ value, onChange, options, label, icon: Icon }) => {
   );
 };
 
+const ModalDropdown = ({ value, onChange, options, name }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selected = options.find(opt => opt.value === value);
+
+  return (
+    <div className="relative w-full">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+        className="w-full flex items-center justify-between gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-900 outline-none hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 h-[46px] shadow-sm"
+      >
+        <span className="truncate">{selected ? selected.label : value}</span>
+        <ChevronDown 
+          size={18} 
+          className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)}></div>
+          <div className="absolute left-0 top-full mt-1.5 w-full bg-white border border-slate-100 rounded-xl shadow-2xl z-[70] overflow-hidden animate-fade-in">
+            <div className="p-1.5 max-h-[180px] overflow-y-auto scrollbar-hide space-y-0.5">
+              {options.map((opt) => {
+                const isSelected = value === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => {
+                      onChange({ target: { name, value: opt.value } });
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-bold rounded-lg transition-all duration-200 ${
+                      isSelected 
+                        ? 'bg-blue-50 text-blue-700' 
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>{opt.label}</span>
+                    {isSelected && <Check size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
 function ServiceCategory() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -387,14 +439,15 @@ function ServiceCategory() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700">Status</label>
-                <select
+                <ModalDropdown
+                  name="status"
                   value={form.status}
                   onChange={(e) => setForm({ ...form, status: e.target.value })}
-                  className="form-input"
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
+                  options={[
+                    { label: "Active", value: "active" },
+                    { label: "Inactive", value: "inactive" }
+                  ]}
+                />
               </div>
               <div className="flex gap-3 pt-2">
                 <button
