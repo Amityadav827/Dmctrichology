@@ -61,7 +61,7 @@ const StatusDropdown = ({ value, onChange, options }) => {
             style={{ 
               position: 'absolute', 
               top: `${coords.top + 8}px`, 
-              left: `${coords.left - 40}px`, // Slight offset for better alignment
+              left: `${coords.left - 40}px`, 
               minWidth: '140px',
               zIndex: 999 
             }}
@@ -92,6 +92,73 @@ const StatusDropdown = ({ value, onChange, options }) => {
           </div>
         </>,
         document.body
+      )}
+    </div>
+  );
+};
+
+const FilterDropdown = ({ value, onChange, options, label, icon: Icon }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selected = options.find(opt => opt.value === value);
+
+  return (
+    <div className="relative w-full">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between gap-2 px-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-600 outline-none hover:bg-white hover:border-slate-200 hover:shadow-md transition-all duration-300 cursor-pointer h-[52px]"
+      >
+        <div className="flex items-center gap-2.5 truncate">
+          {Icon && <Icon size={18} className="text-slate-400 flex-shrink-0" />}
+          <span className="truncate">{selected ? selected.label : label}</span>
+        </div>
+        <ChevronDown 
+          size={18} 
+          className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
+          <div className="absolute left-0 top-full mt-2 w-full min-w-[180px] bg-white border border-slate-100 rounded-2xl shadow-xl z-20 overflow-hidden animate-fade-in">
+            <div className="p-1.5 space-y-0.5">
+              <button
+                onClick={() => {
+                  onChange("");
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${
+                  value === "" 
+                    ? 'bg-blue-50 text-blue-700' 
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`}
+              >
+                <span>{label}</span>
+                {value === "" && <Check size={14} />}
+              </button>
+              {options.map((opt) => {
+                const isSelected = value === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    onClick={() => {
+                      onChange(opt.value);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${
+                      isSelected 
+                        ? 'bg-blue-50 text-blue-700' 
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>{opt.label}</span>
+                    {isSelected && <Check size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
@@ -222,17 +289,13 @@ function Contact() {
               className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:bg-white focus:ring-4 focus:ring-blue-50 transition outline-none font-medium"
             />
           </div>
-          <div className="relative">
-            <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:bg-white transition outline-none appearance-none font-bold text-slate-600"
-            >
-              <option value="">All Statuses</option>
-              {statusOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-          </div>
+          <FilterDropdown
+            label="All Statuses"
+            value={status}
+            onChange={setStatus}
+            options={statusOptions}
+            icon={Filter}
+          />
           <div className="relative">
             <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input
