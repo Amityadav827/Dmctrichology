@@ -235,10 +235,10 @@ function Blogs() {
   };
 
   const [formData, setFormData] = useState(initialFormState);
-  const [imageFile, setImageFile] = useState(null);
-  const [bannerFile, setBannerFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [bannerPreview, setBannerPreview] = useState(null);
+  const [blogImage, setBlogImage] = useState(null);
+  const [bannerImage, setBannerImage] = useState(null);
+  const [blogImagePreview, setBlogImagePreview] = useState(null);
+  const [bannerImagePreview, setBannerImagePreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -249,8 +249,8 @@ function Blogs() {
   // Cleanup blob URLs only on unmount or when explicitly replaced
   useEffect(() => {
     return () => {
-      if (imagePreview && imagePreview.startsWith('blob:')) URL.revokeObjectURL(imagePreview);
-      if (bannerPreview && bannerPreview.startsWith('blob:')) URL.revokeObjectURL(bannerPreview);
+      if (blogImagePreview && blogImagePreview.startsWith('blob:')) URL.revokeObjectURL(blogImagePreview);
+      if (bannerImagePreview && bannerImagePreview.startsWith('blob:')) URL.revokeObjectURL(bannerImagePreview);
     };
   }, []);
 
@@ -268,10 +268,10 @@ function Blogs() {
 
   const handleAddNew = () => {
     setFormData(initialFormState);
-    setImageFile(null);
-    setBannerFile(null);
-    setImagePreview(null);
-    setBannerPreview(null);
+    setBlogImage(null);
+    setBannerImage(null);
+    setBlogImagePreview(null);
+    setBannerImagePreview(null);
     setEditingId(null);
     setView("form");
   };
@@ -296,10 +296,10 @@ function Blogs() {
       status: item.status || "Published"
     });
     
-    setImageFile(null);
-    setBannerFile(null);
-    setImagePreview(item.blogImage ? getImageUrl(item.blogImage) : null);
-    setBannerPreview(item.bannerImage ? getImageUrl(item.bannerImage) : null);
+    setBlogImage(null);
+    setBannerImage(null);
+    setBlogImagePreview(item.blogImage ? getImageUrl(item.blogImage) : null);
+    setBannerImagePreview(item.bannerImage ? getImageUrl(item.bannerImage) : null);
     
     setEditingId(item._id);
     setView("form");
@@ -337,14 +337,14 @@ function Blogs() {
       
       if (type === 'blog') {
         // Revoke old blob if exists
-        if (imagePreview && imagePreview.startsWith('blob:')) URL.revokeObjectURL(imagePreview);
-        setImageFile(file);
-        setImagePreview(url);
+        if (blogImagePreview && blogImagePreview.startsWith('blob:')) URL.revokeObjectURL(blogImagePreview);
+        setBlogImage(file);
+        setBlogImagePreview(url);
       } else {
         // Revoke old blob if exists
-        if (bannerPreview && bannerPreview.startsWith('blob:')) URL.revokeObjectURL(bannerPreview);
-        setBannerFile(file);
-        setBannerPreview(url);
+        if (bannerImagePreview && bannerImagePreview.startsWith('blob:')) URL.revokeObjectURL(bannerImagePreview);
+        setBannerImage(file);
+        setBannerImagePreview(url);
       }
     }
   };
@@ -368,8 +368,8 @@ function Blogs() {
         }
       });
       
-      if (imageFile) formPayload.append("blogImage", imageFile);
-      if (bannerFile) formPayload.append("bannerImage", bannerFile);
+      if (blogImage) formPayload.append("blogImage", blogImage);
+      if (bannerImage) formPayload.append("bannerImage", bannerImage);
 
       if (editingId) {
         await api.put(`/blogs/${editingId}`, formPayload, {
@@ -421,13 +421,13 @@ function Blogs() {
                 <button onClick={() => setShowPreviewModal(false)} className="btn-primary">Close Preview</button>
               </div>
               <div style={{ padding: "2rem" }}>
-                {bannerPreview && <img src={bannerPreview} alt="Banner" style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "12px", marginBottom: "1.5rem" }} />}
+                {bannerImagePreview && <img src={bannerImagePreview} alt="Banner" style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "12px", marginBottom: "1.5rem" }} />}
                 <h1 style={{ fontSize: "2rem", fontWeight: 800, color: "#0F172A", marginBottom: "1rem" }}>{formData.title}</h1>
                 <div style={{ display: "flex", gap: "1rem", color: "#64748B", marginBottom: "2rem", fontSize: "0.875rem" }}>
                   <span>By {formData.author}</span><span>•</span>
                   <span>{new Date(formData.blogDate).toLocaleDateString()}</span>
                 </div>
-                {imagePreview && <img src={imagePreview} alt={formData.altTag} style={{ float: "left", width: "33%", borderRadius: "12px", marginRight: "1.5rem", marginBottom: "1rem" }} />}
+                {blogImagePreview && <img src={blogImagePreview} alt={formData.altTag} style={{ float: "left", width: "33%", borderRadius: "12px", marginRight: "1.5rem", marginBottom: "1rem" }} />}
                 <div className="prose" dangerouslySetInnerHTML={{ __html: formData.fullDescription }} />
               </div>
             </div>
@@ -564,8 +564,8 @@ function Blogs() {
                       onChange={(e) => handleFileChange(e, 'blog')} 
                       style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} 
                     />
-                    {imagePreview ? (
-                      <img src={imagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    {blogImagePreview ? (
+                      <img src={blogImagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "#94A3B8" }}>
                         <ImageIcon size={26} style={{ marginBottom: "0.375rem" }} />
@@ -583,8 +583,8 @@ function Blogs() {
                       onChange={(e) => handleFileChange(e, 'banner')} 
                       style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} 
                     />
-                    {bannerPreview ? (
-                      <img src={bannerPreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    {bannerImagePreview ? (
+                      <img src={bannerImagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "#94A3B8" }}>
                         <span style={{ fontSize: "0.8rem", fontWeight: 500 }}>Upload Banner</span>
