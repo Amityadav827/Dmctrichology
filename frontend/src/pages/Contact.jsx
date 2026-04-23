@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
 import { 
   Search, Calendar, Mail, Phone, MessageSquare, 
@@ -21,43 +22,76 @@ const statusOptions = [
 
 const StatusDropdown = ({ value, onChange, options }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const selected = options.find(opt => opt.value === value);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+      });
+    }
+  }, [isOpen]);
+
+  const handleOpen = (e) => {
+    e.stopPropagation();
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="relative">
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        ref={triggerRef}
+        onClick={handleOpen}
         className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold text-slate-500 hover:border-slate-300 hover:bg-slate-50 transition shadow-sm outline-none"
       >
         <span>Update</span>
         <ChevronDown size={12} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
-      {isOpen && (
+      {isOpen && createPortal(
         <>
-          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
-          <div className="absolute right-0 top-full mt-2 w-32 bg-white border border-slate-100 rounded-xl shadow-xl z-20 overflow-hidden animate-fade-in">
-            <div className="p-1.5 space-y-0.5">
-              {options.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => {
-                    onChange(opt.value);
-                    setIsOpen(false);
-                  }}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-[11px] font-bold rounded-lg transition-all duration-200 ${
-                    value === opt.value 
-                      ? 'bg-blue-50 text-blue-700' 
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                  }`}
-                >
-                  {opt.label}
-                  {value === opt.value && <Check size={12} />}
-                </button>
-              ))}
+          <div 
+            className="fixed inset-0 z-[998]" 
+            onClick={() => setIsOpen(false)}
+          ></div>
+          <div 
+            style={{ 
+              position: 'absolute', 
+              top: `${coords.top + 8}px`, 
+              left: `${coords.left - 40}px`, // Slight offset for better alignment
+              minWidth: '140px',
+              zIndex: 999 
+            }}
+            className="bg-white border border-slate-100 rounded-xl shadow-2xl overflow-hidden animate-fade-in"
+          >
+            <div className="p-1.5">
+              {options.map((opt) => {
+                const isSelected = value === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    onClick={() => {
+                      onChange(opt.value);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 text-[11px] font-bold rounded-lg transition-all duration-200 ${
+                      isSelected 
+                        ? 'bg-blue-50 text-blue-700' 
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>{opt.label}</span>
+                    {isSelected && <Check size={12} />}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </>
+        </>,
+        document.body
       )}
     </div>
   );
