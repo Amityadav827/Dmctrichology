@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
 import { 
   Plus, Edit2, Trash2, Search, Filter, X, 
-  User, Mail, Phone, Shield, CheckCircle, XCircle 
+  User, Mail, Phone, Shield, CheckCircle, XCircle, ChevronDown 
 } from "lucide-react";
 import Loader from "../components/Loader";
 import {
@@ -21,6 +21,68 @@ const initialForm = {
   password: "",
   role: "",
   status: "active",
+};
+
+const CustomDropdown = ({ value, onChange, options, label, icon: Icon, placeholder = "Select...", className = "" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selected = options.find(opt => opt.value === value);
+
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClick = () => setIsOpen(false);
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [isOpen]);
+
+  return (
+    <div className={`relative ${className}`} onClick={e => e.stopPropagation()}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 border border-slate-100 rounded-[12px] text-sm font-semibold text-slate-600 outline-none hover:bg-white hover:border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 h-[44px] shadow-sm ${isOpen ? 'bg-white border-blue-500 ring-4 ring-blue-500/10' : ''}`}
+      >
+        <div className="flex items-center gap-2.5 truncate">
+          {Icon && <Icon size={18} className="text-slate-400 flex-shrink-0" />}
+          <span className={`truncate ${selected ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+            {selected ? selected.label : placeholder}
+          </span>
+        </div>
+        <ChevronDown 
+          size={18} 
+          className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 top-full mt-1.5 w-full bg-white rounded-[12px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-100 z-[100] overflow-hidden animate-fade-in">
+          <div className="p-1.5 max-h-[220px] overflow-y-auto scrollbar-hide space-y-0.5">
+            {options.map((opt) => {
+              const isSelected = value === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-semibold rounded-[10px] transition-all duration-200 ${
+                    isSelected 
+                      ? 'bg-blue-50 text-blue-700' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  <span className={isSelected ? 'font-bold' : ''}>{opt.label}</span>
+                  {isSelected && <CheckCircle size={16} className="text-blue-600" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 function UserList() {
@@ -189,25 +251,29 @@ function UserList() {
           />
         </div>
         <div>
-          <select 
+          <CustomDropdown
             value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value)}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-semibold text-slate-600 outline-none focus:bg-white transition"
-          >
-            <option value="">All Roles</option>
-            {roles.map(r => <option key={r._id} value={r._id}>{r.name.toUpperCase()}</option>)}
-          </select>
+            onChange={setRoleFilter}
+            options={[
+              { label: "All Roles", value: "" },
+              ...roles.map(r => ({ label: r.name.toUpperCase(), value: r._id }))
+            ]}
+            placeholder="All Roles"
+            icon={Filter}
+          />
         </div>
         <div>
-          <select 
+          <CustomDropdown
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-semibold text-slate-600 outline-none focus:bg-white transition"
-          >
-            <option value="">Any Status</option>
-            <option value="active">Active Only</option>
-            <option value="inactive">Inactive Only</option>
-          </select>
+            onChange={setStatusFilter}
+            options={[
+              { label: "Any Status", value: "" },
+              { label: "Active Only", value: "active" },
+              { label: "Inactive Only", value: "inactive" }
+            ]}
+            placeholder="Any Status"
+            icon={Filter}
+          />
         </div>
       </div>
 
@@ -353,26 +419,24 @@ function UserList() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">Assign Role</label>
-                  <select
+                  <CustomDropdown
                     value={form.role}
-                    onChange={(e) => setForm({ ...form, role: e.target.value })}
-                    className="form-input"
-                    required
-                  >
-                    <option value="">Select Role</option>
-                    {roles.map(r => <option key={r._id} value={r._id}>{r.name.toUpperCase()}</option>)}
-                  </select>
+                    onChange={(val) => setForm({ ...form, role: val })}
+                    options={roles.map(r => ({ label: r.name.toUpperCase(), value: r._id }))}
+                    placeholder="Select Role"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">Account Status</label>
-                  <select
+                  <CustomDropdown
                     value={form.status}
-                    onChange={(e) => setForm({ ...form, status: e.target.value })}
-                    className="form-input"
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
+                    onChange={(val) => setForm({ ...form, status: val })}
+                    options={[
+                      { label: "Active", value: "active" },
+                      { label: "Inactive", value: "inactive" }
+                    ]}
+                    placeholder="Select Status"
+                  />
                 </div>
               </div>
 
