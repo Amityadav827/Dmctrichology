@@ -20,10 +20,15 @@ const modules = {
 // Derive the uploads base URL from the API base URL
 const getImageUrl = (path) => {
   if (!path) return null;
-  if (path.startsWith('http')) return path;
-  const base = (import.meta.env.VITE_API_URL || 'https://dmctrichology-1.onrender.com/api')
-    .replace(/\/api$/, '');
-  return `${base}${path}`;
+  if (path.startsWith('http') || path.startsWith('blob:')) return path;
+  
+  // Try to get base URL from api client or env
+  const apiUrl = import.meta.env.VITE_API_URL || 'https://dmctrichology-1.onrender.com/api';
+  const base = apiUrl.replace(/\/api$/, '');
+  
+  // Ensure path starts with /
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${normalizedPath}`;
 };
 
 const FilterDropdown = ({ value, onChange, options, label, icon: Icon }) => {
@@ -241,12 +246,13 @@ function Blogs() {
   }, []);
 
   // Cleanup object URLs to avoid memory leaks
+  // Cleanup blob URLs only on unmount or when explicitly replaced
   useEffect(() => {
     return () => {
-      if (imagePreview && !imagePreview.startsWith('http')) URL.revokeObjectURL(imagePreview);
-      if (bannerPreview && !bannerPreview.startsWith('http')) URL.revokeObjectURL(bannerPreview);
+      if (imagePreview && imagePreview.startsWith('blob:')) URL.revokeObjectURL(imagePreview);
+      if (bannerPreview && bannerPreview.startsWith('blob:')) URL.revokeObjectURL(bannerPreview);
     };
-  }, [imagePreview, bannerPreview]);
+  }, []);
 
   const fetchBlogs = async () => {
     setLoading(true);
@@ -319,16 +325,27 @@ function Blogs() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e, setFile, setPreview) => {
+  const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
         toast.error("Please select an image file");
         return;
       }
-      setFile(file);
+      
       const url = URL.createObjectURL(file);
-      setPreview(url);
+      
+      if (type === 'blog') {
+        // Revoke old blob if exists
+        if (imagePreview && imagePreview.startsWith('blob:')) URL.revokeObjectURL(imagePreview);
+        setImageFile(file);
+        setImagePreview(url);
+      } else {
+        // Revoke old blob if exists
+        if (bannerPreview && bannerPreview.startsWith('blob:')) URL.revokeObjectURL(bannerPreview);
+        setBannerFile(file);
+        setBannerPreview(url);
+      }
     }
   };
 
@@ -541,7 +558,12 @@ function Blogs() {
                 <div>
                   <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.5rem" }}>Blog Image</label>
                   <div style={{ position: "relative", overflow: "hidden", borderRadius: "10px", border: "2px dashed #CBD5E1", background: "#F8FAFC", display: "flex", justifyContent: "center", alignItems: "center", height: "130px", cursor: "pointer" }}>
-                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setImageFile, setImagePreview)} style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} />
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={(e) => handleFileChange(e, 'blog')} 
+                      style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} 
+                    />
                     {imagePreview ? (
                       <img src={imagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
@@ -555,7 +577,12 @@ function Blogs() {
                 <div>
                   <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.5rem" }}>Banner Image</label>
                   <div style={{ position: "relative", overflow: "hidden", borderRadius: "10px", border: "2px dashed #CBD5E1", background: "#F8FAFC", display: "flex", justifyContent: "center", alignItems: "center", height: "90px", cursor: "pointer" }}>
-                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setBannerFile, setBannerPreview)} style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} />
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={(e) => handleFileChange(e, 'banner')} 
+                      style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} 
+                    />
                     {bannerPreview ? (
                       <img src={bannerPreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
@@ -681,7 +708,7 @@ function Blogs() {
               <td style={{ padding: "0.875rem 1.25rem" }}>
                 {item.blogImage ? (
                   <div style={{ width: "40px", height: "40px", borderRadius: "8px", overflow: "hidden", background: "#F1F5F9" }}>
-                    <img src={`${api.defaults.baseURL.replace('/api', '')}${item.blogImage}`} alt={item.altTag || "blog"} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img src={getImageUrl(item.blogImage)} alt={item.altTag || "blog"} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </div>
                 ) : (
                   <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", color: "#94A3B8" }}>
