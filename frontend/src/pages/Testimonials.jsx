@@ -60,54 +60,76 @@ const statusOptionsFilter = [
   { label: "Inactive", value: "inactive" },
 ];
 
-const CustomDropdown = ({ label, value, options, onChange, icon: Icon }) => {
+const CustomDropdown = ({ label, value, options, onChange, icon: Icon, placeholder = "Select...", className = "" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectedOption = options.find(opt => opt.value === value);
 
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClick = () => setIsOpen(false);
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [isOpen]);
+
+  const getSourceIcon = (val) => {
+    switch(val) {
+      case 'google': return <div className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-sm shadow-blue-100"></div>;
+      case 'practo': return <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-100"></div>;
+      case 'manual': return <div className="w-2.5 h-2.5 rounded-full bg-slate-400 shadow-sm shadow-slate-100"></div>;
+      default: return null;
+    }
+  };
+
   return (
-    <div className="relative w-full">
+    <div className={`relative w-full ${className}`} onClick={e => e.stopPropagation()}>
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-semibold text-slate-600 outline-none hover:bg-white hover:border-slate-200 transition-all duration-200 cursor-pointer h-[46px]"
+        className={`w-full flex items-center justify-between gap-3 px-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-semibold text-slate-600 outline-none hover:bg-slate-50 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 h-[46px] shadow-sm ${isOpen ? 'bg-white border-blue-500 ring-4 ring-blue-500/10' : ''}`}
       >
         <div className="flex items-center gap-2.5 truncate">
-          {Icon && <Icon size={16} className="text-slate-400 flex-shrink-0" />}
-          <span className="truncate">{selectedOption ? selectedOption.label : label}</span>
+          {Icon && <Icon size={18} className="text-slate-400 flex-shrink-0" />}
+          {selectedOption && getSourceIcon(selectedOption.value)}
+          <span className={`truncate ${selectedOption ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+            {selectedOption ? selectedOption.label : label}
+          </span>
         </div>
         <ChevronDown 
-          size={16} 
+          size={18} 
           className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
         />
       </button>
 
       {isOpen && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
-          <div className="absolute left-0 top-full mt-2 w-full min-w-[180px] bg-white border border-slate-100 rounded-2xl shadow-xl z-20 overflow-hidden animate-fade-in">
-            <div className="p-1.5 space-y-0.5">
-              {options.map((option) => {
-                const isSelected = value === option.value;
-                return (
-                  <button
-                    key={option.value}
-                    onClick={() => {
-                      onChange(option.value);
-                      setIsOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                      isSelected 
-                        ? 'bg-blue-50 text-blue-700' 
-                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                    }`}
-                  >
-                    <span>{option.label}</span>
-                    {isSelected && <Check size={14} className="text-blue-600" />}
-                  </button>
-                );
-              })}
-            </div>
+        <div className="absolute left-0 top-full mt-2 w-full bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-100 z-[100] overflow-hidden animate-fade-in">
+          <div className="p-1.5 max-h-[220px] overflow-y-auto scrollbar-hide space-y-0.5">
+            {options.map((option) => {
+              const isSelected = value === option.value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                    isSelected 
+                      ? 'bg-blue-50 text-blue-700' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    {getSourceIcon(option.value)}
+                    <span className={isSelected ? 'font-bold' : ''}>{option.label}</span>
+                  </div>
+                  {isSelected && <CheckCircle size={16} className="text-blue-600" />}
+                </button>
+              );
+            })}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
@@ -389,15 +411,16 @@ function Testimonials() {
 
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700">Review Source</label>
-                <select
+                <CustomDropdown
                   value={form.source}
-                  onChange={(e) => setForm({ ...form, source: e.target.value })}
-                  className="form-input"
-                >
-                  <option value="manual">Manual Entry</option>
-                  <option value="google">Google Review</option>
-                  <option value="practo">Practo Review</option>
-                </select>
+                  onChange={(val) => setForm({ ...form, source: val })}
+                  options={[
+                    { label: "Manual Entry", value: "manual" },
+                    { label: "Google Review", value: "google" },
+                    { label: "Practo Review", value: "practo" }
+                  ]}
+                  label="Select Source"
+                />
               </div>
 
               <div className="space-y-3 pt-2">
