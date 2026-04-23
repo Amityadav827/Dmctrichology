@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
-import { Plus, Edit2, Trash2, ArrowLeft, Image as ImageIcon, Search, Eye, Filter } from "lucide-react";
+import { Plus, Edit2, Trash2, ArrowLeft, Image as ImageIcon, Search, Eye, Filter, ChevronDown, Check } from "lucide-react";
 import Loader from "../components/Loader";
 import Table from "../components/Table";
 import api from "../api/client";
@@ -24,6 +24,74 @@ const getImageUrl = (path) => {
   const base = (import.meta.env.VITE_API_URL || 'https://dmctrichology-1.onrender.com/api')
     .replace(/\/api$/, '');
   return `${base}${path}`;
+};
+
+const FilterDropdown = ({ value, onChange, options, label, icon: Icon }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selected = options.find(opt => opt.value === value);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+        className="flex items-center justify-between gap-2.5 px-4 py-2 bg-white border border-slate-200 rounded-[12px] text-sm font-semibold text-slate-600 outline-none hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 cursor-pointer min-w-[160px] h-[38px] shadow-sm"
+      >
+        <div className="flex items-center gap-2 truncate">
+          {Icon && <Icon size={14} className="text-slate-400 flex-shrink-0" />}
+          <span className="truncate">{selected ? selected.label : label}</span>
+        </div>
+        <ChevronDown 
+          size={14} 
+          className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
+          <div className="absolute right-0 top-full mt-1.5 w-full min-w-[160px] bg-white border border-slate-100 rounded-[12px] shadow-xl z-20 overflow-hidden animate-fade-in">
+            <div className="p-1.5 space-y-0.5">
+              <button
+                onClick={() => {
+                  onChange("All");
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-3.5 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
+                  value === "All" 
+                    ? 'bg-blue-50 text-blue-700' 
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`}
+              >
+                <span>{label}</span>
+                {value === "All" && <Check size={14} />}
+              </button>
+              {options.map((opt) => {
+                const isSelected = value === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    onClick={() => {
+                      onChange(opt.value);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
+                      isSelected 
+                        ? 'bg-blue-50 text-blue-700' 
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>{opt.label}</span>
+                    {isSelected && <Check size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 function Blogs() {
@@ -475,18 +543,16 @@ function Blogs() {
               style={{ paddingLeft: "2.25rem", paddingRight: "0.875rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", fontSize: "0.875rem", width: "100%" }}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Filter size={15} color="#94A3B8" />
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              style={{ padding: "0.5rem 0.875rem", fontSize: "0.875rem", width: "auto" }}
-            >
-              <option value="All">All Statuses</option>
-              <option value="Published">Published</option>
-              <option value="Draft">Draft</option>
-            </select>
-          </div>
+          <FilterDropdown
+            label="All Statuses"
+            value={statusFilter}
+            onChange={setStatusFilter}
+            options={[
+              { label: "Published", value: "Published" },
+              { label: "Draft", value: "Draft" },
+            ]}
+            icon={Filter}
+          />
         </div>
 
         <Table columns={[
