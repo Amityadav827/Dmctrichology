@@ -5,7 +5,7 @@ import {
   Trash2, Eye, Download, Filter, ChevronLeft, 
   ChevronRight, CalendarDays, Clock, User,
   CheckCircle, PhoneOutgoing, ExternalLink, X, Save,
-  Check
+  Check, ChevronDown
 } from "lucide-react";
 import Loader from "../components/Loader";
 import {
@@ -22,6 +22,13 @@ const statusOptions = [
   { label: "Cancelled", value: "cancelled", color: "bg-red-100 text-red-700" },
 ];
 
+const sortOptions = [
+  { label: "Latest Created", value: "createdAt-desc" },
+  { label: "Oldest Created", value: "createdAt-asc" },
+  { label: "Latest Appt.", value: "appointmentDate-desc" },
+  { label: "Upcoming Appt.", value: "appointmentDate-asc" },
+];
+
 function AppointmentList() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +43,7 @@ function AppointmentList() {
   
   const [actionId, setActionId] = useState("");
   const [exporting, setExporting] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
   
   // CRM Modal State
   const [crmModal, setCrmModal] = useState({ open: false, item: null });
@@ -179,21 +187,54 @@ function AppointmentList() {
             className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-100 bg-slate-50 text-sm focus:bg-white focus:ring-2 focus:ring-blue-100 transition outline-none font-medium"
           />
         </div>
-        <div>
-          <select 
-            value={`${sortBy}-${sortOrder}`}
-            onChange={(e) => {
-              const [field, order] = e.target.value.split("-");
-              setSortBy(field);
-              setSortOrder(order);
-            }}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-600 outline-none focus:bg-white transition appearance-none cursor-pointer"
+        <div className="relative">
+          <button
+            onClick={() => setIsSortOpen(!isSortOpen)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-100 rounded-[12px] text-sm font-bold text-slate-600 outline-none hover:bg-white hover:border-slate-200 transition-all duration-200 cursor-pointer"
           >
-            <option value="createdAt-desc">Latest Created</option>
-            <option value="createdAt-asc">Oldest Created</option>
-            <option value="appointmentDate-desc">Latest Appt.</option>
-            <option value="appointmentDate-asc">Upcoming Appt.</option>
-          </select>
+            <span className="truncate">
+              {sortOptions.find(opt => opt.value === `${sortBy}-${sortOrder}`)?.label || "Latest Created"}
+            </span>
+            <ChevronDown 
+              size={18} 
+              className={`text-slate-400 transition-transform duration-300 ${isSortOpen ? 'rotate-180' : ''}`} 
+            />
+          </button>
+
+          {isSortOpen && (
+            <>
+              <div 
+                className="fixed inset-0 z-10" 
+                onClick={() => setIsSortOpen(false)}
+              ></div>
+              <div className="absolute right-0 top-full mt-2 w-full bg-white border border-slate-100 rounded-[10px] shadow-xl z-20 overflow-hidden animate-fade-in">
+                <div className="p-1.5 space-y-0.5">
+                  {sortOptions.map((option) => {
+                    const isSelected = `${sortBy}-${sortOrder}` === option.value;
+                    return (
+                      <button
+                        key={option.value}
+                        onClick={() => {
+                          const [field, order] = option.value.split("-");
+                          setSortBy(field);
+                          setSortOrder(order);
+                          setIsSortOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 ${
+                          isSelected 
+                            ? 'bg-blue-50 text-blue-700' 
+                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        }`}
+                      >
+                        <span>{option.label}</span>
+                        {isSelected && <Check size={14} className="text-blue-600" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
