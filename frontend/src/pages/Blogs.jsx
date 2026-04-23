@@ -94,6 +94,109 @@ const FilterDropdown = ({ value, onChange, options, label, icon: Icon }) => {
   );
 };
 
+const SidebarDropdown = ({ label, value, onChange, options, name, variant = "vertical" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selected = options.find(opt => opt.value === value);
+
+  if (variant === "horizontal") {
+    return (
+      <div className="relative flex items-center justify-between w-full p-1.5 px-3.5 bg-slate-50 border border-slate-100 rounded-xl">
+        <span className="text-sm font-semibold text-slate-600 truncate mr-2">{label}</span>
+        <div className="relative min-w-[120px]">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            type="button"
+            className="w-full flex items-center justify-between gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-900 outline-none hover:border-slate-300 transition-all duration-200"
+          >
+            <span className="truncate">{selected ? selected.label : value}</span>
+            <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {isOpen && (
+            <>
+              <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)}></div>
+              <div className="absolute right-0 top-full mt-1.5 w-40 bg-white border border-slate-100 rounded-xl shadow-2xl z-[70] overflow-hidden animate-fade-in">
+                <div className="p-1.5 max-h-[220px] overflow-y-auto scrollbar-hide">
+                  {options.map((opt) => {
+                    const isSelected = value === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => {
+                          onChange({ target: { name, value: opt.value } });
+                          setIsOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold rounded-lg transition-all duration-200 ${
+                          isSelected ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        <span>{opt.label}</span>
+                        {isSelected && <Check size={12} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full">
+      {label && (
+        <label className="block text-[0.8rem] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">
+          {label}
+        </label>
+      )}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+        className="w-full flex items-center justify-between gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-900 outline-none hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 h-[44px] shadow-sm"
+      >
+        <span className="truncate">{selected ? selected.label : value}</span>
+        <ChevronDown 
+          size={16} 
+          className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
+          <div className="absolute left-0 top-full mt-1.5 w-full bg-white border border-slate-100 rounded-xl shadow-xl z-20 animate-fade-in">
+            <div className="p-1.5 max-h-[220px] overflow-y-auto scrollbar-hide space-y-0.5">
+              {options.map((opt) => {
+                const isSelected = value === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => {
+                      onChange({ target: { name, value: opt.value } });
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-bold rounded-lg transition-all duration-200 ${
+                      isSelected 
+                        ? 'bg-blue-50 text-blue-700' 
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>{opt.label}</span>
+                    {isSelected && <Check size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
 function Blogs() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -418,13 +521,17 @@ function Blogs() {
             {/* Publishing */}
             <div className="card-glass" style={{ padding: "1.25rem" }}>
               <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 1rem 0" }}>Publishing</h3>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.75rem 1rem", background: "#F8FAFC", borderRadius: "8px", border: "1px solid #E2E8F0" }}>
-                <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "#374151" }}>Status</span>
-                <select name="status" value={formData.status} onChange={handleChange} style={{ background: "transparent", border: "none", fontSize: "0.875rem", fontWeight: 600, color: "#0F172A", outline: "none", cursor: "pointer" }}>
-                  <option value="Published">Published</option>
-                  <option value="Draft">Draft</option>
-                </select>
-              </div>
+              <SidebarDropdown
+                variant="horizontal"
+                label="Status"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                options={[
+                  { label: "Published", value: "Published" },
+                  { label: "Draft", value: "Draft" }
+                ]}
+              />
             </div>
 
             {/* Media */}
@@ -498,20 +605,26 @@ function Blogs() {
                 </div>
 
                 {/* Show Type & Layout Type */}
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Show Type</label>
-                  <select name="showType" value={formData.showType} onChange={handleChange} className="form-input">
-                    <option value="Inside">Inside</option>
-                    <option value="Outside">Outside</option>
-                  </select>
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Layout Type</label>
-                  <select name="layoutType" value={formData.layoutType} onChange={handleChange} className="form-input">
-                    <option value="Left">Left</option>
-                    <option value="Right">Right</option>
-                  </select>
-                </div>
+                <SidebarDropdown
+                  label="Show Type"
+                  name="showType"
+                  value={formData.showType}
+                  onChange={handleChange}
+                  options={[
+                    { label: "Inside", value: "Inside" },
+                    { label: "Outside", value: "Outside" }
+                  ]}
+                />
+                <SidebarDropdown
+                  label="Layout Type"
+                  name="layoutType"
+                  value={formData.layoutType}
+                  onChange={handleChange}
+                  options={[
+                    { label: "Left", value: "Left" },
+                    { label: "Right", value: "Right" }
+                  ]}
+                />
               </div>
             </div>
           </div>
