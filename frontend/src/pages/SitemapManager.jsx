@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { 
   Globe, FileCode, ExternalLink, RefreshCw, 
   Download, Copy, Check, Layout, List, 
-  Plus, Trash2, Search, Link as LinkIcon 
+  Plus, Trash2, Search, Link as LinkIcon, ChevronDown, CheckCircle 
 } from "lucide-react";
 import Loader from "../components/Loader";
 import { 
@@ -12,6 +12,68 @@ import {
   deleteSitemapEntry, 
   getSitemapXml 
 } from "../api/services";
+
+const CustomDropdown = ({ value, onChange, options, label, icon: Icon, placeholder = "Select...", className = "" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selected = options.find(opt => opt.value === value);
+
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClick = () => setIsOpen(false);
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [isOpen]);
+
+  return (
+    <div className={`relative ${className}`} onClick={e => e.stopPropagation()}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full flex items-center justify-between gap-3 px-4 py-3 bg-white border border-slate-200 rounded-[10px] text-sm font-semibold text-slate-600 outline-none hover:bg-slate-50 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 h-[44px] shadow-sm ${isOpen ? 'bg-white border-blue-500 ring-4 ring-blue-500/10' : ''}`}
+      >
+        <div className="flex items-center gap-2.5 truncate">
+          {Icon && <Icon size={18} className="text-slate-400 flex-shrink-0" />}
+          <span className={`truncate ${selected ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+            {selected ? selected.label : placeholder}
+          </span>
+        </div>
+        <ChevronDown 
+          size={18} 
+          className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 top-full mt-1.5 w-full bg-white rounded-[10px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-100 z-[100] overflow-hidden animate-fade-in">
+          <div className="p-1.5 max-h-[180px] overflow-y-auto scrollbar-hide space-y-0.5">
+            {options.map((opt) => {
+              const isSelected = value === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-semibold rounded-[8px] transition-all duration-200 ${
+                    isSelected 
+                      ? 'bg-blue-50 text-blue-700' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  <span className={isSelected ? 'font-bold' : ''}>{opt.label}</span>
+                  {isSelected && <CheckCircle size={16} className="text-blue-600" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 function SitemapManager() {
   const [entries, setEntries] = useState([]);
@@ -197,27 +259,29 @@ function SitemapManager() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Priority</label>
-                    <select
+                    <CustomDropdown
                       value={newEntry.priority}
-                      onChange={(e) => setNewEntry({...newEntry, priority: e.target.value})}
-                      className="form-input"
-                    >
-                      <option value="1.0">1.0 (Highest)</option>
-                      <option value="0.8">0.8 (Standard)</option>
-                      <option value="0.5">0.5 (Low)</option>
-                    </select>
+                      onChange={(val) => setNewEntry({...newEntry, priority: val})}
+                      options={[
+                        { label: "1.0 (Highest)", value: "1.0" },
+                        { label: "0.8 (Standard)", value: "0.8" },
+                        { label: "0.5 (Low)", value: "0.5" }
+                      ]}
+                      placeholder="Select"
+                    />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Freq</label>
-                    <select
+                    <CustomDropdown
                       value={newEntry.changefreq}
-                      onChange={(e) => setNewEntry({...newEntry, changefreq: e.target.value})}
-                      className="form-input"
-                    >
-                      <option value="daily">Daily</option>
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                    </select>
+                      onChange={(val) => setNewEntry({...newEntry, changefreq: val})}
+                      options={[
+                        { label: "Daily", value: "daily" },
+                        { label: "Weekly", value: "weekly" },
+                        { label: "Monthly", value: "monthly" }
+                      ]}
+                      placeholder="Select"
+                    />
                   </div>
                 </div>
                 <button
