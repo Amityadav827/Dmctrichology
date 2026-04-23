@@ -67,8 +67,8 @@ const CustomDropdown = ({ value, onChange, options, placeholder = "Select status
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute z-[100] w-full mt-2 overflow-hidden bg-white border border-slate-100 shadow-2xl rounded-2xl animate-in fade-in zoom-in duration-200">
-          <div className="py-1">
+        <div className="absolute z-[100] w-full mt-2 bg-white border border-slate-100 shadow-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+          <div className="py-1 max-h-[200px] overflow-y-auto scrollbar-hide">
             {options.map((option) => {
               const optColor = statusColors[option.value] || statusColors.default;
               const isActive = value === option.value;

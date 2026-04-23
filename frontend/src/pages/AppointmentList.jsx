@@ -208,7 +208,7 @@ function AppointmentList() {
                 onClick={() => setIsSortOpen(false)}
               ></div>
               <div className="absolute right-0 top-full mt-2 w-full bg-white border border-slate-100 rounded-[10px] shadow-xl z-20 overflow-hidden animate-fade-in">
-                <div className="p-1.5 space-y-0.5">
+                <div className="p-1.5 max-h-[220px] overflow-y-auto scrollbar-hide space-y-0.5">
                   {sortOptions.map((option) => {
                     const isSelected = `${sortBy}-${sortOrder}` === option.value;
                     return (

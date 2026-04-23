@@ -51,7 +51,7 @@ const FilterDropdown = ({ value, onChange, options, label, icon: Icon }) => {
         <>
           <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)}></div>
           <div className="absolute right-0 top-full mt-1.5 w-full min-w-[160px] bg-white border border-slate-100 rounded-[12px] shadow-xl z-20 overflow-hidden animate-fade-in">
-            <div className="p-1.5 space-y-0.5">
+            <div className="p-1.5 max-h-[200px] overflow-y-auto scrollbar-hide space-y-0.5">
               <button
                 onClick={() => {
                   onChange("All");
