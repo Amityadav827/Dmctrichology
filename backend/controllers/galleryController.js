@@ -7,18 +7,19 @@ const removeUploadedFile = (imagePath) => {
     return;
   }
 
-  const absolutePath = path.join(__dirname, "..", imagePath.replace(/^\//, ""));
+  const absolutePath = path.join(__dirname, "..", imagePath.replace(/^(https?:\/\/[^\/]+)?\//, ""));
   if (fs.existsSync(absolutePath)) {
     fs.unlinkSync(absolutePath);
   }
 };
 
-const normalizeImagePath = (file) => {
+const normalizeImagePath = (req, file) => {
   if (!file) {
     return "";
   }
 
-  return `/uploads/gallery/${file.filename}`;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+  return `${baseUrl}/uploads/gallery/${file.filename}`;
 };
 
 const createGalleryItem = async (req, res, next) => {
@@ -34,7 +35,7 @@ const createGalleryItem = async (req, res, next) => {
     const altText = req.body.altText || "";
     const description = req.body.description || "";
     const items = files.map((file, index) => ({
-      image: normalizeImagePath(file),
+      image: normalizeImagePath(req, file),
       title,
       altText,
       description,
@@ -111,7 +112,7 @@ const updateGalleryItem = async (req, res, next) => {
 
     if (!galleryItem) {
       if (req.files?.length) {
-        req.files.forEach((file) => removeUploadedFile(normalizeImagePath(file)));
+        req.files.forEach((file) => removeUploadedFile(normalizeImagePath(req, file)));
       }
       res.status(404);
       throw new Error("Gallery item not found");
@@ -119,7 +120,7 @@ const updateGalleryItem = async (req, res, next) => {
 
     if (req.files?.length) {
       removeUploadedFile(galleryItem.image);
-      galleryItem.image = normalizeImagePath(req.files[0]);
+      galleryItem.image = normalizeImagePath(req, req.files[0]);
     }
 
     galleryItem.title = req.body.title !== undefined ? req.body.title : galleryItem.title;

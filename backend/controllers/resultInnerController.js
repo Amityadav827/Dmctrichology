@@ -8,18 +8,19 @@ const removeUploadedFile = (imagePath) => {
     return;
   }
 
-  const absolutePath = path.join(__dirname, "..", imagePath.replace(/^\//, ""));
+  const absolutePath = path.join(__dirname, "..", imagePath.replace(/^(https?:\/\/[^\/]+)?\//, ""));
   if (fs.existsSync(absolutePath)) {
     fs.unlinkSync(absolutePath);
   }
 };
 
-const normalizeImagePath = (file) => {
+const normalizeImagePath = (req, file) => {
   if (!file) {
     return "";
   }
 
-  return `/uploads/${file.filename}`;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+  return `${baseUrl}/uploads/${file.filename}`;
 };
 
 const createResultInner = async (req, res, next) => {
@@ -49,7 +50,7 @@ const createResultInner = async (req, res, next) => {
     const item = await ResultInner.create({
       categoryId,
       title,
-      image: normalizeImagePath(req.file),
+      image: normalizeImagePath(req, req.file),
       order: Number.isFinite(Number(order)) ? Number(order) : 0,
       status: status || "active",
     });
@@ -112,7 +113,7 @@ const updateResultInner = async (req, res, next) => {
 
     if (req.file) {
       removeUploadedFile(item.image);
-      item.image = normalizeImagePath(req.file);
+      item.image = normalizeImagePath(req, req.file);
     }
 
     item.categoryId = nextCategoryId;

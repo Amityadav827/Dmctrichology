@@ -13,9 +13,11 @@ import {
 } from "../api/services";
 
 const getImgUrl = (path) => {
-  if (!path) return "";
+  if (!path) return "https://placehold.co/600x400?text=No+Image";
   if (path.startsWith("http")) return path;
-  const base = (import.meta.env.VITE_API_URL || "https://dmctrichology-1.onrender.com/api").replace(/\/api$/, "");
+  
+  const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  const base = (import.meta.env.VITE_API_URL || (isLocal ? "http://localhost:10000/api" : "https://dmctrichology-1.onrender.com/api")).replace(/\/api$/, "");
   return `${base}${path}`;
 };
 
@@ -323,7 +325,12 @@ export default function VideoInner() {
                       <div onClick={() => setPreviewVideo({ url: item.videoUrl, title: item.title })}
                         style={{ position: "relative", width: 80, height: 52, borderRadius: 8, overflow: "hidden", cursor: "pointer", background: "#0F172A" }}>
                         {item.thumbnail ? (
-                          <img src={getImgUrl(item.thumbnail)} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.85 }} />
+                          <img 
+                            src={getImgUrl(item.thumbnail)} 
+                            alt={item.title} 
+                            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.85 }}
+                            onError={(e) => { e.target.src = "https://placehold.co/120x80?text=Thumb"; }}
+                          />
                         ) : (
                           <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}><ImageIcon size={20} color="#475569" /></div>
                         )}

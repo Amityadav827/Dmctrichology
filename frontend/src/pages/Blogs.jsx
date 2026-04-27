@@ -19,7 +19,7 @@ const modules = {
 
 // Derive the uploads base URL from the API base URL
 const getImageUrl = (path) => {
-  if (!path) return null;
+  if (!path) return "https://placehold.co/600x400?text=No+Image";
   if (path.startsWith('http') || path.startsWith('blob:')) return path;
   
   // Try to get base URL from api client or env
@@ -780,7 +780,12 @@ function Blogs() {
               <td style={{ padding: "0.875rem 1.25rem" }}>
                 {item.blogImage ? (
                   <div style={{ width: "40px", height: "40px", borderRadius: "8px", overflow: "hidden", background: "#F1F5F9" }}>
-                    <img src={getImageUrl(item.blogImage)} alt={item.altTag || "blog"} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img 
+                      src={getImageUrl(item.blogImage)} 
+                      alt={item.altTag || "blog"} 
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      onError={(e) => { e.target.src = "https://placehold.co/40x40?text=Blog"; }}
+                    />
                   </div>
                 ) : (
                   <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", color: "#94A3B8" }}>

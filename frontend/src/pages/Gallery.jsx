@@ -11,7 +11,7 @@ import {
 } from "../api/services";
 
 const getImgUrl = (path) => {
-  if (!path) return "";
+  if (!path) return "https://placehold.co/600x400?text=No+Image";
   if (path.startsWith("http")) return path;
   const base = (import.meta.env.VITE_API_URL || "https://dmctrichology-1.onrender.com/api").replace(/\/api$/, "");
   return `${base}${path}`;
@@ -362,13 +362,14 @@ export default function Gallery() {
                 >
                   {/* Image */}
                   <div style={{ height: 140, overflow: "hidden", background: "#F1F5F9" }}>
-                    <img
-                      src={getImgUrl(item.image)}
-                      alt={item.altText || item.title || "Gallery"}
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.25s" }}
-                      onMouseEnter={e => e.currentTarget.style.transform = "scale(1.06)"}
-                      onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-                    />
+                      <img
+                        src={getImgUrl(item.image) || "https://placehold.co/600x400?text=Gallery"}
+                        alt={item.altText || item.title || "Gallery"}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.25s" }}
+                        onMouseEnter={e => e.currentTarget.style.transform = "scale(1.06)"}
+                        onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                        onError={(e) => { e.target.src = "https://placehold.co/600x400?text=Gallery"; }}
+                      />
                   </div>
 
                   {/* Status badge */}

@@ -8,18 +8,19 @@ const removeUploadedFile = (thumbnailPath) => {
     return;
   }
 
-  const absolutePath = path.join(__dirname, "..", thumbnailPath.replace(/^\//, ""));
+  const absolutePath = path.join(__dirname, "..", thumbnailPath.replace(/^(https?:\/\/[^\/]+)?\//, ""));
   if (fs.existsSync(absolutePath)) {
     fs.unlinkSync(absolutePath);
   }
 };
 
-const normalizeThumbnailPath = (file) => {
+const normalizeThumbnailPath = (req, file) => {
   if (!file) {
     return "";
   }
 
-  return `/uploads/videos/${file.filename}`;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+  return `${baseUrl}/uploads/videos/${file.filename}`;
 };
 
 const createVideo = async (req, res, next) => {
@@ -50,7 +51,7 @@ const createVideo = async (req, res, next) => {
       categoryId,
       title,
       videoUrl,
-      thumbnail: normalizeThumbnailPath(req.file),
+      thumbnail: normalizeThumbnailPath(req, req.file),
       order: Number.isFinite(Number(order)) ? Number(order) : 0,
       status: status || "active",
     });
@@ -113,7 +114,7 @@ const updateVideo = async (req, res, next) => {
 
     if (req.file) {
       removeUploadedFile(item.thumbnail);
-      item.thumbnail = normalizeThumbnailPath(req.file);
+      item.thumbnail = normalizeThumbnailPath(req, req.file);
     }
 
     item.categoryId = nextCategoryId;
