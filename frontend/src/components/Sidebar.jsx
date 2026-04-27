@@ -109,13 +109,21 @@ function Sidebar() {
                 <Layers size={16} /> Pages
               </NavLink>
             )}
+
+            {/* Media */}
             {hasPermission("gallery") && (
-              <NavLink to="/gallery" className={getNavClass}>
-                <ImageIcon size={16} /> Gallery
-              </NavLink>
+              <>
+                <SectionLabel>Media</SectionLabel>
+                <NavLink to="/gallery" className={getNavClass}>
+                  <ImageIcon size={16} /> Gallery
+                </NavLink>
+              </>
             )}
+
+            {/* Videos */}
             {hasPermission("video") && (
               <>
+                <SectionLabel>Videos</SectionLabel>
                 <NavLink to="/videos/categories" className={getNavClass}>
                   <Video size={16} /> Video Category
                 </NavLink>
@@ -124,8 +132,11 @@ function Sidebar() {
                 </NavLink>
               </>
             )}
+
+            {/* Leads & Contact */}
             {hasPermission("users") && (
               <>
+                <SectionLabel>Leads & Contact</SectionLabel>
                 <NavLink to="/leads/callback" className={getNavClass}>
                   <PhoneCall size={16} /> Request Callback
                 </NavLink>
