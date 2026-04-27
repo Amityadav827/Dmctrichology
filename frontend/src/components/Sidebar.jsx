@@ -85,6 +85,7 @@ function Sidebar() {
         style={{ flex: 1, overflowY: "auto", padding: "0.5rem 0.75rem 1.5rem" }}
         className="scrollbar-hide"
       >
+        {/* 1. MAIN */}
         {hasPermission("dashboard") && (
           <>
             <SectionLabel>Main</SectionLabel>
@@ -94,42 +95,7 @@ function Sidebar() {
           </>
         )}
 
-        {hasPermission("seo") && (
-          <>
-            <SectionLabel>SEO & Leads</SectionLabel>
-            <NavLink to="/leads/appointment" className={getNavClass}>
-              <CalendarCheck size={16} /> Appointments
-            </NavLink>
-            <NavLink to="/seo/redirects" className={getNavClass}>
-              <LinkIcon size={16} /> Redirects
-            </NavLink>
-            <NavLink to="/seo/sitemap" className={getNavClass}>
-              <Globe size={16} /> Sitemap XML
-            </NavLink>
-            <NavLink to="/seo/robots" className={getNavClass}>
-              <Bot size={16} /> Robots.txt
-            </NavLink>
-          </>
-        )}
-
-        {hasPermission("testimonial") && (
-          <NavLink to="/testimonials" className={getNavClass}>
-            <Star size={16} /> Testimonials
-          </NavLink>
-        )}
-
-        {hasPermission("users") && (
-          <>
-            <SectionLabel>Leads & Contact</SectionLabel>
-            <NavLink to="/leads/callback" className={getNavClass}>
-              <PhoneCall size={16} /> Request Callback
-            </NavLink>
-            <NavLink to="/leads/contact" className={getNavClass}>
-              <Mail size={16} /> Contact Leads
-            </NavLink>
-          </>
-        )}
-
+        {/* 2. CONTENT */}
         {(hasPermission("blog") || hasPermission("cms")) && (
           <>
             <SectionLabel>Content</SectionLabel>
@@ -146,6 +112,7 @@ function Sidebar() {
           </>
         )}
 
+        {/* 3. SERVICES */}
         {hasPermission("services") && (
           <>
             <SectionLabel>Services</SectionLabel>
@@ -161,6 +128,7 @@ function Sidebar() {
           </>
         )}
 
+        {/* 4. RESULTS */}
         {hasPermission("result") && (
           <>
             <SectionLabel>Results</SectionLabel>
@@ -173,6 +141,49 @@ function Sidebar() {
           </>
         )}
 
+        {/* 5. SEO & LEADS */}
+        {(hasPermission("seo") || hasPermission("testimonial")) && (
+          <>
+            <SectionLabel>SEO & Leads</SectionLabel>
+            {hasPermission("seo") && (
+              <NavLink to="/leads/appointment" className={getNavClass}>
+                <CalendarCheck size={16} /> Appointments
+              </NavLink>
+            )}
+            {hasPermission("seo") && (
+              <NavLink to="/seo/redirects" className={getNavClass}>
+                <LinkIcon size={16} /> Redirects
+              </NavLink>
+            )}
+            {hasPermission("seo") && (
+              <NavLink to="/seo/sitemap" className={getNavClass}>
+                <Globe size={16} /> Sitemap XML
+              </NavLink>
+            )}
+            {hasPermission("seo") && (
+              <NavLink to="/seo/robots" className={getNavClass}>
+                <Bot size={16} /> Robots.txt
+              </NavLink>
+            )}
+            {hasPermission("testimonial") && (
+              <NavLink to="/testimonials" className={getNavClass}>
+                <Star size={16} /> Testimonials
+              </NavLink>
+            )}
+          </>
+        )}
+
+        {/* 6. MEDIA */}
+        {hasPermission("gallery") && (
+          <>
+            <SectionLabel>Media</SectionLabel>
+            <NavLink to="/gallery" className={getNavClass}>
+              <ImageIcon size={16} /> Gallery
+            </NavLink>
+          </>
+        )}
+
+        {/* 7. VIDEOS */}
         {hasPermission("video") && (
           <>
             <SectionLabel>Videos</SectionLabel>
@@ -185,15 +196,20 @@ function Sidebar() {
           </>
         )}
 
-        {hasPermission("gallery") && (
+        {/* 8. LEADS & CONTACT */}
+        {hasPermission("users") && (
           <>
-            <SectionLabel>Media</SectionLabel>
-            <NavLink to="/gallery" className={getNavClass}>
-              <ImageIcon size={16} /> Gallery
+            <SectionLabel>Leads & Contact</SectionLabel>
+            <NavLink to="/leads/callback" className={getNavClass}>
+              <PhoneCall size={16} /> Request Callback
+            </NavLink>
+            <NavLink to="/leads/contact" className={getNavClass}>
+              <Mail size={16} /> Contact Leads
             </NavLink>
           </>
         )}
 
+        {/* 9. SYSTEM & USERS */}
         {hasPermission("users") && (
           <>
             <SectionLabel>System & Users</SectionLabel>
@@ -218,6 +234,7 @@ function Sidebar() {
           </>
         )}
       </nav>
+
     </div>
   );
 }
