@@ -96,7 +96,7 @@ function Sidebar() {
         )}
 
         {/* 2. CONTENT */}
-        {(hasPermission("blog") || hasPermission("cms")) && (
+        {(hasPermission("blog") || hasPermission("cms") || hasPermission("gallery") || hasPermission("video") || hasPermission("users")) && (
           <>
             <SectionLabel>Content</SectionLabel>
             {hasPermission("blog") && (
@@ -108,6 +108,31 @@ function Sidebar() {
               <NavLink to="/pages" className={getNavClass}>
                 <Layers size={16} /> Pages
               </NavLink>
+            )}
+            {hasPermission("gallery") && (
+              <NavLink to="/gallery" className={getNavClass}>
+                <ImageIcon size={16} /> Gallery
+              </NavLink>
+            )}
+            {hasPermission("video") && (
+              <>
+                <NavLink to="/videos/categories" className={getNavClass}>
+                  <Video size={16} /> Video Category
+                </NavLink>
+                <NavLink to="/videos/list" className={getNavClass}>
+                  <PlayCircle size={16} /> Video List
+                </NavLink>
+              </>
+            )}
+            {hasPermission("users") && (
+              <>
+                <NavLink to="/leads/callback" className={getNavClass}>
+                  <PhoneCall size={16} /> Request Callback
+                </NavLink>
+                <NavLink to="/leads/contact" className={getNavClass}>
+                  <Mail size={16} /> Contact Leads
+                </NavLink>
+              </>
             )}
           </>
         )}
@@ -173,43 +198,7 @@ function Sidebar() {
           </>
         )}
 
-        {/* 6. MEDIA */}
-        {hasPermission("gallery") && (
-          <>
-            <SectionLabel>Media</SectionLabel>
-            <NavLink to="/gallery" className={getNavClass}>
-              <ImageIcon size={16} /> Gallery
-            </NavLink>
-          </>
-        )}
-
-        {/* 7. VIDEOS */}
-        {hasPermission("video") && (
-          <>
-            <SectionLabel>Videos</SectionLabel>
-            <NavLink to="/videos/categories" className={getNavClass}>
-              <Video size={16} /> Video Category
-            </NavLink>
-            <NavLink to="/videos/list" className={getNavClass}>
-              <PlayCircle size={16} /> Video List
-            </NavLink>
-          </>
-        )}
-
-        {/* 8. LEADS & CONTACT */}
-        {hasPermission("users") && (
-          <>
-            <SectionLabel>Leads & Contact</SectionLabel>
-            <NavLink to="/leads/callback" className={getNavClass}>
-              <PhoneCall size={16} /> Request Callback
-            </NavLink>
-            <NavLink to="/leads/contact" className={getNavClass}>
-              <Mail size={16} /> Contact Leads
-            </NavLink>
-          </>
-        )}
-
-        {/* 9. SYSTEM & USERS */}
+        {/* 6. SYSTEM & USERS */}
         {hasPermission("users") && (
           <>
             <SectionLabel>System & Users</SectionLabel>
