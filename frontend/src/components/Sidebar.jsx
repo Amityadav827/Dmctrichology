@@ -130,12 +130,19 @@ function Sidebar() {
           </>
         )}
 
-        {hasPermission("blog") && (
+        {(hasPermission("blog") || hasPermission("cms")) && (
           <>
             <SectionLabel>Content</SectionLabel>
-            <NavLink to="/blogs" className={getNavClass}>
-              <FileText size={16} /> Blogs
-            </NavLink>
+            {hasPermission("blog") && (
+              <NavLink to="/blogs" className={getNavClass}>
+                <FileText size={16} /> Blogs
+              </NavLink>
+            )}
+            {hasPermission("cms") && (
+              <NavLink to="/pages" className={getNavClass}>
+                <Layers size={16} /> Pages
+              </NavLink>
+            )}
           </>
         )}
 

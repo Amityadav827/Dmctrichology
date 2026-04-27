@@ -5,11 +5,14 @@ const {
   getBlogById,
   updateBlog,
   deleteBlog,
+  getBlogBySlug,
 } = require("../controllers/blogController");
 const { protect, adminOnly } = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware");
 
 const router = express.Router();
+
+router.get("/slug/:slug", getBlogBySlug);
 
 router.use(protect, adminOnly);
 

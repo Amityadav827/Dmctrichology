@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
-import { Plus, Edit2, Trash2, ArrowLeft, Image as ImageIcon, Search, Eye, Filter, ChevronDown, Check, Globe } from "lucide-react";
+import { Plus, Edit2, Trash2, ArrowLeft, Search, Eye, Filter, ChevronDown, Check, Globe } from "lucide-react";
 import Loader from "../components/Loader";
 import Table from "../components/Table";
 import api from "../api/client";
@@ -12,23 +12,21 @@ const modules = {
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    ['link', 'image'],
+    ['link', 'image', 'video'],
     ['clean']
   ],
 };
 
-// Derive the uploads base URL from the API base URL
-const getImageUrl = (path) => {
-  if (!path) return null;
-  if (path.startsWith('http') || path.startsWith('blob:')) return path;
-  
-  // Try to get base URL from api client or env
-  const apiUrl = import.meta.env.VITE_API_URL || 'https://dmctrichology-1.onrender.com/api';
-  const base = apiUrl.replace(/\/api$/, '');
-  
-  // Ensure path starts with /
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return `${base}${normalizedPath}`;
+const slugify = (text) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
 };
 
 const FilterDropdown = ({ value, onChange, options, label, icon: Icon }) => {
@@ -202,19 +200,7 @@ const SidebarDropdown = ({ label, value, onChange, options, name, variant = "ver
   );
 };
 
-const slugify = (text) => {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
-};
-
-function Blogs() {
+function Pages() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState("list"); // 'list' | 'form'
@@ -229,51 +215,30 @@ function Blogs() {
   const itemsPerPage = 10;
   
   const initialFormState = {
-    showType: "Inside",
-    layoutType: "Left",
     title: "",
-    author: "",
-    adminDescription: "",
-    shortDescription: "",
-    fullDescription: "",
-    altTag: "",
-    tags: "",
-    blogDate: new Date().toISOString().split("T")[0],
+    content: "",
+    status: "Published",
     metaTitle: "",
     metaKeywords: "",
     metaDescription: "",
     canonicalUrl: "",
-    slug: "",
-    status: "Published"
+    slug: ""
   };
 
   const [formData, setFormData] = useState(initialFormState);
-  const [blogImage, setBlogImage] = useState(null);
-  const [bannerImage, setBannerImage] = useState(null);
-  const [blogImagePreview, setBlogImagePreview] = useState(null);
-  const [bannerImagePreview, setBannerImagePreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchBlogs();
+    fetchPages();
   }, []);
 
-  // Cleanup object URLs to avoid memory leaks
-  // Cleanup blob URLs only on unmount or when explicitly replaced
-  useEffect(() => {
-    return () => {
-      if (blogImagePreview && blogImagePreview.startsWith('blob:')) URL.revokeObjectURL(blogImagePreview);
-      if (bannerImagePreview && bannerImagePreview.startsWith('blob:')) URL.revokeObjectURL(bannerImagePreview);
-    };
-  }, []);
-
-  const fetchBlogs = async () => {
+  const fetchPages = async () => {
     setLoading(true);
     try {
-      const { data } = await api.get("/blogs");
+      const { data } = await api.get("/pages");
       setItems(data.data || []);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to load blogs");
+      toast.error(error.response?.data?.message || "Unable to load pages");
     } finally {
       setLoading(false);
     }
@@ -281,10 +246,6 @@ function Blogs() {
 
   const handleAddNew = () => {
     setFormData(initialFormState);
-    setBlogImage(null);
-    setBannerImage(null);
-    setBlogImagePreview(null);
-    setBannerImagePreview(null);
     setEditingId(null);
     setIsSlugManual(false);
     setView("form");
@@ -292,42 +253,28 @@ function Blogs() {
 
   const handleEdit = (item) => {
     setFormData({
-      showType: item.showType || "Inside",
-      layoutType: item.layoutType || "Left",
       title: item.title || "",
-      author: item.author || "",
-      adminDescription: item.adminDescription || "",
-      shortDescription: item.shortDescription || "",
-      fullDescription: item.fullDescription || "",
-      altTag: item.altTag || "",
-      tags: item.tags ? (Array.isArray(item.tags) ? item.tags.join(", ") : item.tags) : "",
-      blogDate: item.blogDate ? new Date(item.blogDate).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
+      content: item.content || "",
+      status: item.status || "Published",
       metaTitle: item.metaTitle || "",
       metaKeywords: item.metaKeywords || "",
       metaDescription: item.metaDescription || "",
       canonicalUrl: item.canonicalUrl || "",
-      slug: item.slug || "",
-      status: item.status || "Published"
+      slug: item.slug || ""
     });
-    
-    setBlogImage(null);
-    setBannerImage(null);
-    setBlogImagePreview(item.blogImage ? getImageUrl(item.blogImage) : null);
-    setBannerImagePreview(item.bannerImage ? getImageUrl(item.bannerImage) : null);
-    
     setEditingId(item._id);
-    setIsSlugManual(true);
+    setIsSlugManual(true); // Don't auto-generate when editing an existing page unless requested
     setView("form");
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this blog?")) return;
+    if (!window.confirm("Are you sure you want to delete this page?")) return;
     try {
-      await api.delete(`/blogs/${id}`);
-      toast.success("Blog deleted successfully");
-      fetchBlogs();
+      await api.delete(`/pages/${id}`);
+      toast.success("Page deleted successfully");
+      fetchPages();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to delete blog");
+      toast.error(error.response?.data?.message || "Unable to delete page");
     }
   };
 
@@ -348,71 +295,33 @@ function Blogs() {
     }
   };
 
-
   const handleQuillChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e, type) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        toast.error("Please select an image file");
-        return;
-      }
-      
-      const url = URL.createObjectURL(file);
-      
-      if (type === 'blog') {
-        // Revoke old blob if exists
-        if (blogImagePreview && blogImagePreview.startsWith('blob:')) URL.revokeObjectURL(blogImagePreview);
-        setBlogImage(file);
-        setBlogImagePreview(url);
-      } else {
-        // Revoke old blob if exists
-        if (bannerImagePreview && bannerImagePreview.startsWith('blob:')) URL.revokeObjectURL(bannerImagePreview);
-        setBannerImage(file);
-        setBannerImagePreview(url);
-      }
-    }
-  };
-
   const handleSubmit = async (e, saveAsDraft = false) => {
     if (e) e.preventDefault();
-    if (!formData.title || !formData.fullDescription || !formData.author) {
-      toast.error("Please fill in all required fields (Title, Author, Full Description)");
+    if (!formData.title || !formData.content) {
+      toast.error("Please fill in all required fields (Title, Content)");
       return;
     }
     
     setSubmitting(true);
     
     try {
-      const formPayload = new FormData();
-      Object.keys(formData).forEach((key) => {
-        if (key === 'status' && saveAsDraft) {
-          formPayload.append('status', 'Draft');
-        } else {
-          formPayload.append(key, formData[key]);
-        }
-      });
-      
-      if (blogImage) formPayload.append("blogImage", blogImage);
-      if (bannerImage) formPayload.append("bannerImage", bannerImage);
+      const payload = { ...formData };
+      if (saveAsDraft) payload.status = 'Draft';
 
       if (editingId) {
-        await api.put(`/blogs/${editingId}`, formPayload, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        toast.success(saveAsDraft ? "Draft saved successfully" : "Blog updated successfully");
+        await api.put(`/pages/${editingId}`, payload);
+        toast.success(saveAsDraft ? "Draft saved successfully" : "Page updated successfully");
       } else {
-        await api.post("/blogs", formPayload, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        toast.success(saveAsDraft ? "Draft created successfully" : "Blog published successfully");
+        await api.post("/pages", payload);
+        toast.success(saveAsDraft ? "Draft created successfully" : "Page published successfully");
       }
       
       setView("list");
-      fetchBlogs();
+      fetchPages();
     } catch (error) {
       toast.error(error.response?.data?.message || "Operation failed");
     } finally {
@@ -423,8 +332,7 @@ function Blogs() {
   // Table filtering and pagination
   const filteredItems = useMemo(() => {
     return items.filter(item => {
-      const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            item.author.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesStatus = statusFilter === "All" || item.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
@@ -433,8 +341,11 @@ function Blogs() {
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
   const currentItems = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+  // URL Preview logic
+  const siteUrl = window.location.origin;
+
   if (loading) {
-    return <Loader label="Loading blogs..." />;
+    return <Loader label="Loading pages..." />;
   }
 
   if (view === "form") {
@@ -445,18 +356,12 @@ function Blogs() {
           <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.5)", padding: "1rem" }}>
             <div style={{ background: "#FFFFFF", width: "100%", maxWidth: "900px", maxHeight: "90vh", borderRadius: "16px", overflowY: "auto", boxShadow: "0 25px 60px rgba(0,0,0,0.2)" }}>
               <div style={{ position: "sticky", top: 0, background: "rgba(255,255,255,0.95)", padding: "1rem 1.5rem", borderBottom: "1px solid #E2E8F0", display: "flex", justifyContent: "space-between", alignItems: "center", zIndex: 10 }}>
-                <h2 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Preview: {formData.title || "Untitled Blog"}</h2>
+                <h2 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Preview: {formData.title || "Untitled Page"}</h2>
                 <button onClick={() => setShowPreviewModal(false)} className="btn-primary">Close Preview</button>
               </div>
               <div style={{ padding: "2rem" }}>
-                {bannerImagePreview && <img src={bannerImagePreview} alt="Banner" style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "12px", marginBottom: "1.5rem" }} />}
-                <h1 style={{ fontSize: "2rem", fontWeight: 800, color: "#0F172A", marginBottom: "1rem" }}>{formData.title}</h1>
-                <div style={{ display: "flex", gap: "1rem", color: "#64748B", marginBottom: "2rem", fontSize: "0.875rem" }}>
-                  <span>By {formData.author}</span><span>•</span>
-                  <span>{new Date(formData.blogDate).toLocaleDateString()}</span>
-                </div>
-                {blogImagePreview && <img src={blogImagePreview} alt={formData.altTag} style={{ float: "left", width: "33%", borderRadius: "12px", marginRight: "1.5rem", marginBottom: "1rem" }} />}
-                <div className="prose" dangerouslySetInnerHTML={{ __html: formData.fullDescription }} />
+                <h1 style={{ fontSize: "2.5rem", fontWeight: 800, color: "#0F172A", marginBottom: "1.5rem" }}>{formData.title}</h1>
+                <div className="prose" dangerouslySetInnerHTML={{ __html: formData.content }} />
               </div>
             </div>
           </div>
@@ -472,7 +377,7 @@ function Blogs() {
               <ArrowLeft size={18} />
             </button>
             <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>
-              {editingId ? "Edit Blog" : "Add New Blog"}
+              {editingId ? "Edit Page" : "Add New Page"}
             </h2>
           </div>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
@@ -484,28 +389,28 @@ function Blogs() {
               Save as Draft
             </button>
             <button onClick={(e) => handleSubmit(e, false)} disabled={submitting} className="btn-primary">
-              {submitting ? "Saving..." : editingId ? "Update & Publish" : "Publish Blog"}
+              {submitting ? "Saving..." : editingId ? "Update & Publish" : "Publish Page"}
             </button>
           </div>
         </div>
 
-        {/* WordPress-style 2-column layout */}
+        {/* 2-column layout */}
         <form style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "1.5rem", alignItems: "start" }}>
 
           {/* ── LEFT PANEL (main content) ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
 
-            {/* Blog Title */}
+            {/* Page Title */}
             <div className="card-glass" style={{ padding: "1.5rem" }}>
               <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.625rem" }}>
-                Blog Title <span style={{ color: "#EF4444" }}>*</span>
+                Page Title <span style={{ color: "#EF4444" }}>*</span>
               </label>
               <input
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="Enter your blog title here..."
+                placeholder="Enter page title..."
                 className="form-input"
                 required
                 style={{ fontSize: "1.125rem", fontWeight: 600, padding: "0.75rem 1rem" }}
@@ -516,7 +421,7 @@ function Blogs() {
                 <Globe size={14} className="text-slate-400" />
                 <span style={{ fontSize: "0.8rem", color: "#64748B" }}>Permalink:</span>
                 <span style={{ fontSize: "0.8rem", color: "#2563EB", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {window.location.origin}/blog/{formData.slug || "..."}
+                  {siteUrl}/{formData.slug || "..."}
                 </span>
                 {!isSlugManual && formData.title && (
                   <button 
@@ -542,7 +447,7 @@ function Blogs() {
                     name="slug"
                     value={formData.slug}
                     onChange={handleChange}
-                    placeholder="blog-url-slug"
+                    placeholder="page-url-slug"
                     className="form-input"
                     style={{ flex: 1 }}
                   />
@@ -563,50 +468,13 @@ function Blogs() {
               </div>
             )}
 
-            {/* Author + Date row */}
-            <div className="card-glass" style={{ padding: "1.5rem" }}>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.875rem" }}>
-                Author &amp; Date
-              </label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Author Name <span style={{ color: "#EF4444" }}>*</span></label>
-                  <input type="text" name="author" value={formData.author} onChange={handleChange} className="form-input" required />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Blog Date</label>
-                  <input type="date" name="blogDate" value={formData.blogDate} onChange={handleChange} className="form-input" />
-                </div>
-              </div>
-            </div>
-
-            {/* Full Description */}
+            {/* Content */}
             <div className="card-glass" style={{ padding: "1.5rem" }}>
               <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>
-                Blog Full Description <span style={{ color: "#EF4444" }}>*</span>
+                Page Content <span style={{ color: "#EF4444" }}>*</span>
               </label>
               <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
-                <ReactQuill theme="snow" modules={modules} value={formData.fullDescription} onChange={(val) => handleQuillChange('fullDescription', val)} style={{ minHeight: "280px" }} />
-              </div>
-            </div>
-
-            {/* Short Description */}
-            <div className="card-glass" style={{ padding: "1.5rem" }}>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>
-                Blog Short Description
-              </label>
-              <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
-                <ReactQuill theme="snow" modules={modules} value={formData.shortDescription} onChange={(val) => handleQuillChange('shortDescription', val)} style={{ minHeight: "160px" }} />
-              </div>
-            </div>
-
-            {/* Admin Description */}
-            <div className="card-glass" style={{ padding: "1.5rem" }}>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>
-                Admin Description
-              </label>
-              <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
-                <ReactQuill theme="snow" modules={modules} value={formData.adminDescription} onChange={(val) => handleQuillChange('adminDescription', val)} style={{ minHeight: "160px" }} />
+                <ReactQuill theme="snow" modules={modules} value={formData.content} onChange={(val) => handleQuillChange('content', val)} style={{ minHeight: "400px" }} />
               </div>
             </div>
           </div>
@@ -628,104 +496,34 @@ function Blogs() {
                   { label: "Draft", value: "Draft" }
                 ]}
               />
-            </div>
-
-            {/* Media */}
-            <div className="card-glass" style={{ padding: "1.25rem" }}>
-              <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 1rem 0" }}>Media</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.5rem" }}>Blog Image</label>
-                  <div style={{ position: "relative", overflow: "hidden", borderRadius: "10px", border: "2px dashed #CBD5E1", background: "#F8FAFC", display: "flex", justifyContent: "center", alignItems: "center", height: "130px", cursor: "pointer" }}>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={(e) => handleFileChange(e, 'blog')} 
-                      style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} 
-                    />
-                    {blogImagePreview ? (
-                      <img src={blogImagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ) : (
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "#94A3B8" }}>
-                        <ImageIcon size={26} style={{ marginBottom: "0.375rem" }} />
-                        <span style={{ fontSize: "0.8rem", fontWeight: 500 }}>Click to upload</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.5rem" }}>Banner Image</label>
-                  <div style={{ position: "relative", overflow: "hidden", borderRadius: "10px", border: "2px dashed #CBD5E1", background: "#F8FAFC", display: "flex", justifyContent: "center", alignItems: "center", height: "90px", cursor: "pointer" }}>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={(e) => handleFileChange(e, 'banner')} 
-                      style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer", zIndex: 10 }} 
-                    />
-                    {bannerImagePreview ? (
-                      <img src={bannerImagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ) : (
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "#94A3B8" }}>
-                        <span style={{ fontSize: "0.8rem", fontWeight: 500 }}>Upload Banner</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Image Alt Tag</label>
-                  <input type="text" name="altTag" value={formData.altTag} onChange={handleChange} className="form-input" />
-                </div>
+              <div style={{ marginTop: "1rem", fontSize: "0.75rem", color: "#94A3B8" }}>
+                Last saved: {editingId ? "Just now" : "Not saved yet"}
               </div>
             </div>
 
-            {/* SEO & Taxonomy */}
+            {/* SEO Settings */}
             <div className="card-glass" style={{ padding: "1.25rem" }}>
-              <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 1rem 0" }}>SEO &amp; Taxonomy</h3>
+              <h3 style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 1rem 0" }}>SEO Settings</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
                 <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Tags <span style={{ color: "#94A3B8", fontWeight: 400 }}>(comma separated)</span></label>
-                  <input type="text" name="tags" value={formData.tags} onChange={handleChange} placeholder="hair loss, transplant" className="form-input" />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Title Tag</label>
-                  <input type="text" name="metaTitle" value={formData.metaTitle} onChange={handleChange} className="form-input" />
+                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Meta Title</label>
+                  <input type="text" name="metaTitle" value={formData.metaTitle} onChange={handleChange} placeholder="Page SEO Title" className="form-input" />
                 </div>
                 <div>
                   <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Meta Keywords</label>
-                  <textarea name="metaKeywords" value={formData.metaKeywords} onChange={handleChange} rows="2" className="form-input" />
+                  <textarea name="metaKeywords" value={formData.metaKeywords} onChange={handleChange} rows="2" placeholder="keyword1, keyword2" className="form-input" />
                 </div>
                 <div>
                   <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Meta Description</label>
-                  <textarea name="metaDescription" value={formData.metaDescription} onChange={handleChange} rows="3" className="form-input" />
+                  <textarea name="metaDescription" value={formData.metaDescription} onChange={handleChange} rows="3" placeholder="Brief description for search engines..." className="form-input" />
                 </div>
                 <div>
                   <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 500, color: "#374151", marginBottom: "0.375rem" }}>Canonical URL</label>
-                  <input type="text" name="canonicalUrl" value={formData.canonicalUrl} onChange={handleChange} className="form-input" />
+                  <input type="text" name="canonicalUrl" value={formData.canonicalUrl} onChange={handleChange} placeholder="https://example.com/page" className="form-input" />
                 </div>
-
-                {/* Show Type & Layout Type */}
-                <SidebarDropdown
-                  label="Show Type"
-                  name="showType"
-                  value={formData.showType}
-                  onChange={handleChange}
-                  options={[
-                    { label: "Inside", value: "Inside" },
-                    { label: "Outside", value: "Outside" }
-                  ]}
-                />
-                <SidebarDropdown
-                  label="Layout Type"
-                  name="layoutType"
-                  value={formData.layoutType}
-                  onChange={handleChange}
-                  options={[
-                    { label: "Left", value: "Left" },
-                    { label: "Right", value: "Right" }
-                  ]}
-                />
               </div>
             </div>
+
           </div>
         </form>
       </div>
@@ -736,9 +534,9 @@ function Blogs() {
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
       {/* Page header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-        <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Blogs</h2>
+        <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Pages</h2>
         <button onClick={handleAddNew} className="btn-primary">
-          <Plus size={18} /> Create New Blog
+          <Plus size={18} /> Create New Page
         </button>
       </div>
 
@@ -749,7 +547,7 @@ function Blogs() {
             <Search style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} size={16} />
             <input
               type="text"
-              placeholder="Search by title or author..."
+              placeholder="Search pages by title..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{ paddingLeft: "2.25rem", paddingRight: "0.875rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", fontSize: "0.875rem", width: "100%" }}
@@ -768,32 +566,22 @@ function Blogs() {
         </div>
 
         <Table columns={[
-          { key: "image", label: "Image" },
           { key: "title", label: "Title" },
-          { key: "author", label: "Author" },
-          { key: "date", label: "Date" },
+          { key: "slug", label: "Slug" },
+          { key: "date", label: "Last Modified" },
           { key: "status", label: "Status" },
           { key: "actions", label: "Actions", align: "right" },
         ]}>
           {currentItems.map((item) => (
             <tr key={item._id} style={{ borderBottom: "1px solid #F1F5F9" }}>
-              <td style={{ padding: "0.875rem 1.25rem" }}>
-                {item.blogImage ? (
-                  <div style={{ width: "40px", height: "40px", borderRadius: "8px", overflow: "hidden", background: "#F1F5F9" }}>
-                    <img src={getImageUrl(item.blogImage)} alt={item.altTag || "blog"} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  </div>
-                ) : (
-                  <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", color: "#94A3B8" }}>
-                    <ImageIcon size={18} />
-                  </div>
-                )}
-              </td>
-              <td style={{ padding: "0.875rem 1.25rem", fontWeight: 600, color: "#0F172A", maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={item.title}>
+              <td style={{ padding: "0.875rem 1.25rem", fontWeight: 600, color: "#0F172A" }}>
                 {item.title}
               </td>
-              <td style={{ padding: "0.875rem 1.25rem", color: "#475569", fontSize: "0.875rem" }}>{item.author}</td>
+              <td style={{ padding: "0.875rem 1.25rem", color: "#475569", fontSize: "0.875rem" }}>
+                /{item.slug}
+              </td>
               <td style={{ padding: "0.875rem 1.25rem", color: "#475569", whiteSpace: "nowrap", fontSize: "0.875rem" }}>
-                {item.blogDate ? new Date(item.blogDate).toLocaleDateString() : "—"}
+                {new Date(item.updatedAt).toLocaleDateString()}
               </td>
               <td style={{ padding: "0.875rem 1.25rem" }}>
                 <span style={{ padding: "0.2rem 0.6rem", borderRadius: "9999px", fontSize: "0.7rem", fontWeight: 700, background: item.status === "Published" ? "#D1FAE5" : "#FEF3C7", color: item.status === "Published" ? "#065F46" : "#92400E" }}>
@@ -802,7 +590,7 @@ function Blogs() {
               </td>
               <td style={{ padding: "0.875rem 1.25rem", textAlign: "right" }}>
                 <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
-                  <a href={`${window.location.origin}/blog/${item.slug}`} target="_blank" rel="noreferrer" title="View Blog"
+                  <a href={`${siteUrl}/${item.slug}`} target="_blank" rel="noreferrer" title="View Page"
                     style={{ padding: "0.375rem", borderRadius: "6px", background: "#F0F9FF", border: "1px solid #BAE6FD", cursor: "pointer", color: "#0284C7", display: "flex" }}>
                     <Eye size={15} />
                   </a>
@@ -820,8 +608,8 @@ function Blogs() {
           ))}
           {currentItems.length === 0 && (
             <tr>
-              <td colSpan={6} style={{ padding: "3rem", textAlign: "center", color: "#94A3B8", fontSize: "0.875rem" }}>
-                No blogs found matching your criteria.
+              <td colSpan={5} style={{ padding: "3rem", textAlign: "center", color: "#94A3B8", fontSize: "0.875rem" }}>
+                No pages found.
               </td>
             </tr>
           )}
@@ -848,8 +636,4 @@ function Blogs() {
   );
 }
 
-export default Blogs;
-
-
-
-
+export default Pages;

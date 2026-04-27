@@ -24,6 +24,8 @@ import Callback from "./pages/Callback";
 import Contact from "./pages/Contact";
 import Blogs from "./pages/Blogs";
 import AppointmentList from "./pages/AppointmentList";
+import Pages from "./pages/Pages";
+
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
 import RobotsEditor from "./pages/RobotsEditor";
@@ -144,6 +146,14 @@ function App() {
           element={
             <ProtectedRoute permission="blog">
               <Blogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="pages"
+          element={
+            <ProtectedRoute permission="cms">
+              <Pages />
             </ProtectedRoute>
           }
         />

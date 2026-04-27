@@ -25,6 +25,7 @@ const permissionGroups = [
       { label: "Services", value: "services" },
       { label: "Results", value: "result" },
       { label: "Blog Posts", value: "blog" },
+      { label: "CMS Pages", value: "cms" },
     ]
   },
   { 

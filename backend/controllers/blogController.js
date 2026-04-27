@@ -116,10 +116,29 @@ const deleteBlog = async (req, res, next) => {
   }
 };
 
+const getBlogBySlug = async (req, res, next) => {
+  try {
+    const blog = await Blog.findOne({ slug: req.params.slug, status: "Published" });
+
+    if (!blog) {
+      res.status(404);
+      throw new Error("Blog not found");
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: blog,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createBlog,
   getBlogs,
   getBlogById,
   updateBlog,
   deleteBlog,
+  getBlogBySlug,
 };

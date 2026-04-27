@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("../utils/slugify");
 
 const blogSchema = new mongoose.Schema(
   {
@@ -29,10 +30,7 @@ const blogSchema = new mongoose.Schema(
 // Auto-generate slug from title if not provided
 blogSchema.pre("save", async function (next) {
   if (!this.slug) {
-    let baseSlug = this.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)+/g, "");
+    let baseSlug = slugify(this.title);
     
     // Ensure uniqueness
     let slug = baseSlug;
@@ -49,3 +47,4 @@ blogSchema.pre("save", async function (next) {
 });
 
 module.exports = mongoose.model("Blog", blogSchema);
+
