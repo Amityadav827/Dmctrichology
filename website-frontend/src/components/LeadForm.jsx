@@ -41,11 +41,11 @@ export default function LeadForm() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
         <h2 style={{ fontSize: '2rem', marginBottom: '8px', color: '#000', margin: 0, fontFamily: "'Marcellus', serif" }}>Request A Call</h2>
         <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <img src="http://dmctrichology-1.onrender.com/uploads/gallery/225-satisfed-patients-1777457400392.png" alt="Patients" style={{ height: '30px', objectFit: 'contain' }} />
+          <img src="http://dmctrichology-1.onrender.com/uploads/gallery/225-satisfed-patients-1777465282570.png" alt="Patients" style={{ height: '30px', objectFit: 'contain' }} />
           <div>
             <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#333' }}>225+ Satisfied Patients</div>
             <div style={{ display: 'flex', gap: '2px', marginTop: '2px' }}>
-              {[1,2,3,4,5].map(star => <img key={star} src="http://dmctrichology-1.onrender.com/uploads/gallery/star-1777457400392.png" alt="star" style={{ width: '10px', height: '10px' }} />)}
+              {[1,2,3,4,5].map(star => <img key={star} src="http://dmctrichology-1.onrender.com/uploads/gallery/star-1777465282569.png" alt="star" style={{ width: '10px', height: '10px' }} />)}
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@ export default function LeadForm() {
           <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={loading}>
             {loading ? 'Submitting...' : 'Submit'}
             <div className="icon-circle" style={{ marginLeft: '8px' }}>
-              <img src="http://dmctrichology-1.onrender.com/uploads/gallery/book-appointment-arrow-1777456775616.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
+              <img src="http://dmctrichology-1.onrender.com/uploads/gallery/book-appointment-arrow-1777465282571.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
             </div>
           </button>
         </div>

@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  images: {
+    domains: ["dmctrichology-1.onrender.com"],
+  },
 };
 
 export default nextConfig;

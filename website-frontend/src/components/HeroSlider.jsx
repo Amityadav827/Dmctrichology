@@ -14,9 +14,9 @@ export default function HeroSlider() {
         // Fallback dummy data matching the design
         setSlides([
           {
-            image: 'http://dmctrichology-1.onrender.com/uploads/gallery/banner-1-1777456727949.png',
+            image: 'http://dmctrichology-1.onrender.com/uploads/gallery/banner-1-1777465282572.png',
             tag: 'TRUSTED CARE',
-            tagIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/trusted-care-1777457248025.png',
+            tagIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/trusted-care-1777465282570.png',
             title: 'Recover Stronger, Move Freely, Live Pain-Free',
             description: 'Experience Compassionate Care And Advanced Dental Solutions For A Healthier, Brighter Smile.'
           }

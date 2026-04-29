@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import { fetchSiteSettings } from '../services/api';
 
 export default function Header() {
-  const [logoUrl, setLogoUrl] = useState('http://dmctrichology-1.onrender.com/uploads/gallery/logo-1777456606992.png');
+  const [logoUrl, setLogoUrl] = useState('http://dmctrichology-1.onrender.com/uploads/gallery/logo-1777465282644.png');
 
   useEffect(() => {
     fetchSiteSettings().then(data => {
@@ -24,7 +24,7 @@ export default function Header() {
         <a href="#book" className="btn-primary">
           Book Appointment 
           <div className="icon-circle">
-            <img src="http://dmctrichology-1.onrender.com/uploads/gallery/book-appointment-arrow-1777456775616.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
+            <img src="http://dmctrichology-1.onrender.com/uploads/gallery/book-appointment-arrow-1777465282571.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
           </div>
         </a>
       </div>
