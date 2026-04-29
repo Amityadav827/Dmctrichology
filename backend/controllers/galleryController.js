@@ -7,9 +7,17 @@ const removeUploadedFile = (imagePath) => {
     return;
   }
 
-  const absolutePath = path.join(__dirname, "..", imagePath.replace(/^(https?:\/\/[^\/]+)?\//, ""));
-  if (fs.existsSync(absolutePath)) {
-    fs.unlinkSync(absolutePath);
+  try {
+    // Extract filename from URL or path
+    const filename = imagePath.split("/").pop();
+    if (!filename) return;
+
+    const absolutePath = path.join(__dirname, "..", "uploads", "gallery", filename);
+    if (fs.existsSync(absolutePath)) {
+      fs.unlinkSync(absolutePath);
+    }
+  } catch (err) {
+    console.error("Error removing file:", err);
   }
 };
 
@@ -17,9 +25,22 @@ const normalizeImagePath = (req, file) => {
   if (!file) {
     return "";
   }
-
-  const baseUrl = `${req.protocol}://${req.get("host")}`;
+  const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
   return `${baseUrl}/uploads/gallery/${file.filename}`;
+};
+
+const transformItem = (req, item) => {
+  const doc = item.toObject ? item.toObject() : item;
+  let finalUrl = doc.imageUrl || doc.image || "";
+  
+  if (finalUrl && !finalUrl.startsWith("http")) {
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
+    finalUrl = finalUrl.startsWith("/") ? `${baseUrl}${finalUrl}` : `${baseUrl}/${finalUrl}`;
+  }
+  
+  doc.imageUrl = finalUrl;
+  doc.image = finalUrl; 
+  return doc;
 };
 
 const createGalleryItem = async (req, res, next) => {
@@ -34,20 +55,25 @@ const createGalleryItem = async (req, res, next) => {
     const title = req.body.title || "";
     const altText = req.body.altText || "";
     const description = req.body.description || "";
-    const items = files.map((file, index) => ({
-      image: normalizeImagePath(req, file),
-      title,
-      altText,
-      description,
-      order: Number.isFinite(Number(req.body.order)) ? Number(req.body.order) + index : index,
-      status: req.body.status || "active",
-    }));
+    const items = files.map((file, index) => {
+      const fullUrl = normalizeImagePath(req, file);
+      return {
+        imageUrl: fullUrl,
+        image: fullUrl,
+        title,
+        altText,
+        description,
+        order: Number.isFinite(Number(req.body.order)) ? Number(req.body.order) + index : index,
+        status: req.body.status || "active",
+      };
+    });
 
     const galleryItems = await Gallery.insertMany(items);
+    const transformedItems = galleryItems.map(item => transformItem(req, item));
 
     return res.status(201).json({
       success: true,
-      data: galleryItems,
+      data: transformedItems,
     });
   } catch (error) {
     next(error);
@@ -72,10 +98,12 @@ const getGalleryItems = async (req, res, next) => {
       Gallery.countDocuments(filter),
     ]);
 
+    const transformedItems = galleryItems.map(item => transformItem(req, item));
+
     return res.status(200).json({
       success: true,
-      count: galleryItems.length,
-      data: galleryItems,
+      count: transformedItems.length,
+      data: transformedItems,
       pagination: {
         page,
         limit,
@@ -99,7 +127,7 @@ const getGalleryItemById = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: galleryItem,
+      data: transformItem(req, galleryItem),
     });
   } catch (error) {
     next(error);
@@ -119,8 +147,10 @@ const updateGalleryItem = async (req, res, next) => {
     }
 
     if (req.files?.length) {
-      removeUploadedFile(galleryItem.image);
-      galleryItem.image = normalizeImagePath(req, req.files[0]);
+      removeUploadedFile(galleryItem.imageUrl || galleryItem.image);
+      const newFullUrl = normalizeImagePath(req, req.files[0]);
+      galleryItem.imageUrl = newFullUrl;
+      galleryItem.image = newFullUrl;
     }
 
     galleryItem.title = req.body.title !== undefined ? req.body.title : galleryItem.title;
@@ -135,7 +165,7 @@ const updateGalleryItem = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: galleryItem,
+      data: transformItem(req, galleryItem),
     });
   } catch (error) {
     next(error);
@@ -151,7 +181,7 @@ const deleteGalleryItem = async (req, res, next) => {
       throw new Error("Gallery item not found");
     }
 
-    removeUploadedFile(galleryItem.image);
+    removeUploadedFile(galleryItem.imageUrl || galleryItem.image);
     await galleryItem.deleteOne();
 
     return res.status(200).json({
@@ -177,7 +207,7 @@ const toggleGalleryItemStatus = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: galleryItem,
+      data: transformItem(req, galleryItem),
     });
   } catch (error) {
     next(error);

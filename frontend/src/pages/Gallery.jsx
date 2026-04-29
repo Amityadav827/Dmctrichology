@@ -424,6 +424,13 @@ export default function Gallery() {
               {/* Fields */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 <div>
+                  <label className="form-label">Image URL</label>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <input type="text" readOnly value={getImgUrl(selected.image)} className="form-input" style={{ flex: 1, backgroundColor: "#F8FAFC", color: "#64748B", cursor: "text", fontSize: "0.75rem" }} />
+                    <button type="button" onClick={() => { navigator.clipboard.writeText(getImgUrl(selected.image)); toast.success("URL copied!"); }} className="btn-secondary" style={{ padding: "0 0.75rem", fontSize: "0.8rem", whiteSpace: "nowrap" }}>Copy URL</button>
+                  </div>
+                </div>
+                <div>
                   <label className="form-label">Title</label>
                   <input type="text" value={detailForm.title} onChange={e => setDetailForm(p => ({ ...p, title: e.target.value }))} className="form-input" placeholder="Image title" />
                 </div>
