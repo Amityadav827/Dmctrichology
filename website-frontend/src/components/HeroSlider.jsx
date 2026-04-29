@@ -14,16 +14,11 @@ export default function HeroSlider() {
         // Fallback dummy data matching the design
         setSlides([
           {
-            image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+            image: 'http://dmctrichology-1.onrender.com/uploads/gallery/banner-1-1777456727949.png',
             tag: 'TRUSTED CARE',
+            tagIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/trusted-care-1777457248025.png',
             title: 'Recover Stronger, Move Freely, Live Pain-Free',
             description: 'Experience Compassionate Care And Advanced Dental Solutions For A Healthier, Brighter Smile.'
-          },
-          {
-            image: 'https://images.unsplash.com/photo-1538108149393-ce905ce60d5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-            tag: 'EXPERT TEAM',
-            title: 'Your Health Is Our Priority',
-            description: 'Providing world-class treatments with state-of-the-art facilities.'
           }
         ]);
       }
@@ -50,9 +45,12 @@ export default function HeroSlider() {
         >
           <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 248, 0.75)' }}></div>
           <div className="slide-content">
-            <span className="slide-tag">{slide.tag}</span>
-            <h1 className="slide-title">{slide.title}</h1>
-            <p className="slide-desc">{slide.description}</p>
+            <span className="slide-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              {slide.tagIcon && <img src={slide.tagIcon} alt="icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
+              {slide.tag}
+            </span>
+            <h1 className="slide-title" style={{ fontFamily: "'Marcellus', serif", fontSize: '64px' }}>{slide.title}</h1>
+            <p className="slide-desc" style={{ fontFamily: "'Lato', sans-serif" }}>{slide.description}</p>
           </div>
         </div>
       ))}
