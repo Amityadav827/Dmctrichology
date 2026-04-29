@@ -1,11 +1,10 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
 import Navbar from './Navbar';
 import { fetchSiteSettings } from '../services/api';
 
 export default function Header() {
-  const [logoUrl, setLogoUrl] = useState('');
+  const [logoUrl, setLogoUrl] = useState('http://dmctrichology-1.onrender.com/uploads/gallery/logo-1777456606992.png');
 
   useEffect(() => {
     fetchSiteSettings().then(data => {
@@ -16,11 +15,7 @@ export default function Header() {
   return (
     <header className="header">
       <div className="logo">
-        {logoUrl ? (
-          <img src={logoUrl} alt="Logo" />
-        ) : (
-          <div style={{width: '60px', height: '60px', borderRadius: '50%', border: '2px solid #E4B753', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 'bold', color: '#E4B753'}}>LOGO</div>
-        )}
+        <img src={logoUrl} alt="Logo" />
       </div>
       
       <Navbar />
@@ -29,7 +24,7 @@ export default function Header() {
         <a href="#book" className="btn-primary">
           Book Appointment 
           <div className="icon-circle">
-            <ArrowUpRight />
+            <img src="http://dmctrichology-1.onrender.com/uploads/gallery/book-appointment-arrow-1777456775616.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
           </div>
         </a>
       </div>
