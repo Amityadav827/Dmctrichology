@@ -15,12 +15,8 @@ const removeUploadedFile = (imagePath) => {
 };
 
 const normalizeImagePath = (req, file) => {
-  if (!file) {
-    return "";
-  }
-
-  const baseUrl = `${req.protocol}://${req.get("host")}`;
-  return `${baseUrl}/uploads/${file.filename}`;
+  if (!file) return "";
+  return file.path || file.secure_url;
 };
 
 const createResultInner = async (req, res, next) => {

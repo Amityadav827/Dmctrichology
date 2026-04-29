@@ -13,8 +13,12 @@ import {
 const getImgUrl = (path) => {
   if (!path) return "https://placehold.co/600x400?text=No+Image";
   if (path.startsWith("http")) return path;
+  
+  // Ensure path starts with /
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const base = (import.meta.env.VITE_API_URL || "https://dmctrichology-1.onrender.com/api").replace(/\/api$/, "");
-  return `${base}${path}`;
+  
+  return `${base}${normalizedPath}`;
 };
 
 const CustomDropdown = ({ value, onChange, options, label, icon: Icon, placeholder = "Select...", className = "" }) => {
@@ -368,7 +372,10 @@ export default function Gallery() {
                         style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.25s" }}
                         onMouseEnter={e => e.currentTarget.style.transform = "scale(1.06)"}
                         onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-                        onError={(e) => { e.target.src = "https://placehold.co/600x400?text=Gallery"; }}
+                        onError={(e) => { 
+                          e.target.onerror = null; // Prevent infinite loop
+                          e.target.src = "https://placehold.co/600x400?text=Image+Not+Found"; 
+                        }}
                       />
                   </div>
 
@@ -413,7 +420,15 @@ export default function Gallery() {
 
               {/* Preview */}
               <div style={{ borderRadius: 10, overflow: "hidden", marginBottom: "1rem", border: "1px solid #E2E8F0", cursor: "pointer", height: 180 }} onClick={() => setPreviewUrl(getImgUrl(selected.image))}>
-                <img src={getImgUrl(selected.image)} alt={selected.altText || "Preview"} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img 
+                  src={getImgUrl(selected.image)} 
+                  alt={selected.altText || "Preview"} 
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://placehold.co/600x400?text=Image+Not+Found";
+                  }}
+                />
               </div>
 
               {/* Upload date */}

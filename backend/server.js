@@ -49,7 +49,8 @@ connectDB();
 // ✅ Global Middleware
 // ========================
 app.use(cors({
-  origin: "*", // production me restrict kar sakta hai
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 

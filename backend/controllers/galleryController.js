@@ -22,11 +22,8 @@ const removeUploadedFile = (imagePath) => {
 };
 
 const normalizeImagePath = (req, file) => {
-  if (!file) {
-    return "";
-  }
-  const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
-  return `${baseUrl}/uploads/gallery/${file.filename}`;
+  if (!file) return "";
+  return file.path || file.secure_url;
 };
 
 const transformItem = (req, item) => {
@@ -34,7 +31,9 @@ const transformItem = (req, item) => {
   let finalUrl = doc.imageUrl || doc.image || "";
   
   if (finalUrl && !finalUrl.startsWith("http")) {
-    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
+    const protocol = req.headers["x-forwarded-proto"] || req.protocol;
+    const host = req.get("host");
+    const baseUrl = process.env.BASE_URL || `${protocol}://${host}`;
     finalUrl = finalUrl.startsWith("/") ? `${baseUrl}${finalUrl}` : `${baseUrl}/${finalUrl}`;
   }
   

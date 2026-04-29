@@ -8,7 +8,7 @@ const {
   getBlogBySlug,
 } = require("../controllers/blogController");
 const { protect, adminOnly } = require("../middleware/authMiddleware");
-const upload = require("../middleware/uploadMiddleware");
+const upload = require("../middleware/cloudinaryUpload");
 
 const router = express.Router();
 

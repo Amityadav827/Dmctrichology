@@ -5,12 +5,11 @@ const createBlog = async (req, res, next) => {
     const blogData = { ...req.body };
 
     if (req.files) {
-      const baseUrl = `${req.protocol}://${req.get("host")}`;
       if (req.files.blogImage && req.files.blogImage[0]) {
-        blogData.blogImage = `${baseUrl}/uploads/${req.files.blogImage[0].filename}`;
+        blogData.blogImage = req.files.blogImage[0].path;
       }
       if (req.files.bannerImage && req.files.bannerImage[0]) {
-        blogData.bannerImage = `${baseUrl}/uploads/${req.files.bannerImage[0].filename}`;
+        blogData.bannerImage = req.files.bannerImage[0].path;
       }
     }
 
@@ -66,12 +65,11 @@ const updateBlog = async (req, res, next) => {
     const updateData = { ...req.body };
 
     if (req.files) {
-      const baseUrl = `${req.protocol}://${req.get("host")}`;
       if (req.files.blogImage && req.files.blogImage[0]) {
-        updateData.blogImage = `${baseUrl}/uploads/${req.files.blogImage[0].filename}`;
+        updateData.blogImage = req.files.blogImage[0].path;
       }
       if (req.files.bannerImage && req.files.bannerImage[0]) {
-        updateData.bannerImage = `${baseUrl}/uploads/${req.files.bannerImage[0].filename}`;
+        updateData.bannerImage = req.files.bannerImage[0].path;
       }
     }
 

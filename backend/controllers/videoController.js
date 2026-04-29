@@ -15,12 +15,8 @@ const removeUploadedFile = (thumbnailPath) => {
 };
 
 const normalizeThumbnailPath = (req, file) => {
-  if (!file) {
-    return "";
-  }
-
-  const baseUrl = `${req.protocol}://${req.get("host")}`;
-  return `${baseUrl}/uploads/videos/${file.filename}`;
+  if (!file) return "";
+  return file.path || file.secure_url;
 };
 
 const createVideo = async (req, res, next) => {

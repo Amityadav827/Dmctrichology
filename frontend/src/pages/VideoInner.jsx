@@ -16,9 +16,12 @@ const getImgUrl = (path) => {
   if (!path) return "https://placehold.co/600x400?text=No+Image";
   if (path.startsWith("http")) return path;
   
+  // Ensure path starts with /
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
   const base = (import.meta.env.VITE_API_URL || (isLocal ? "http://localhost:10000/api" : "https://dmctrichology-1.onrender.com/api")).replace(/\/api$/, "");
-  return `${base}${path}`;
+  
+  return `${base}${normalizedPath}`;
 };
 
 // Extract YouTube video ID for auto-thumbnail
@@ -329,7 +332,10 @@ export default function VideoInner() {
                             src={getImgUrl(item.thumbnail)} 
                             alt={item.title} 
                             style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.85 }}
-                            onError={(e) => { e.target.src = "https://placehold.co/120x80?text=Thumb"; }}
+                            onError={(e) => { 
+                              e.target.onerror = null;
+                              e.target.src = "https://placehold.co/120x80?text=Error"; 
+                            }}
                           />
                         ) : (
                           <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}><ImageIcon size={20} color="#475569" /></div>

@@ -20,9 +20,12 @@ const getImgUrl = (path) => {
   if (!path) return "https://placehold.co/600x400?text=No+Image";
   if (path.startsWith("http")) return path;
   
+  // Ensure path starts with /
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
   const apiBase = (import.meta.env.VITE_API_URL || (isLocal ? "http://localhost:10000/api" : "https://dmctrichology-1.onrender.com/api")).replace(/\/api$/, "");
-  return `${apiBase}${path}`;
+  
+  return `${apiBase}${normalizedPath}`;
 };
 
 const initialForm = {
@@ -353,7 +356,10 @@ function ResultInner() {
                   src={getImgUrl(item.image)} 
                   alt={item.title} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  onError={(e) => { e.target.src = "https://placehold.co/600x400?text=Result"; }}
+                  onError={(e) => { 
+                    e.target.onerror = null;
+                    e.target.src = "https://placehold.co/600x400?text=Result+Image+Not+Found"; 
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 

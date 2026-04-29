@@ -8,7 +8,7 @@ const {
   updateVideoOrder,
 } = require("../controllers/videoController");
 const { protect, adminOnly } = require("../middleware/authMiddleware");
-const upload = require("../middleware/videoUploadMiddleware");
+const upload = require("../middleware/cloudinaryUpload");
 
 const router = express.Router();
 
