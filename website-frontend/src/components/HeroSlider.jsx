@@ -13,11 +13,11 @@ export default function HeroSlider() {
       } else {
         // Fallback dummy data matching the design
         const baseSlide = {
-          image: 'http://dmctrichology-1.onrender.com/uploads/gallery/banner-1-1777528254824.png',
+          image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png',
           tag: 'TRUSTED CARE',
-          tagIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/trusted-care-1777528254823.png',
-          patientsIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/225-satisfed-patients-1777528254822.png',
-          starIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/star-1777528254822.png',
+          tagIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png',
+          patientsIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png',
+          starIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png',
           description: 'Experience Compassionate Care And Advanced Trichology Solutions For Healthier, Stronger Hair.'
         };
         setSlides([
@@ -59,7 +59,11 @@ export default function HeroSlider() {
             {(slide.patientsIcon || slide.starIcon) && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
                 {slide.starIcon && <img src={slide.starIcon} alt="star rating" style={{ height: '20px', objectFit: 'contain' }} />}
-                {slide.patientsIcon && <img src={slide.patientsIcon} alt="225+ satisfied patients" style={{ height: '28px', objectFit: 'contain' }} />}
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  {slide.patientsIcon && [1,2,3,4,5].map(i => (
+                    <img key={i} src={slide.patientsIcon} alt="satisfied patient" style={{ height: '28px', objectFit: 'contain' }} />
+                  ))}
+                </div>
               </div>
             )}
           </div>

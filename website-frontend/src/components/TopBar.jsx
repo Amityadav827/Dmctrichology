@@ -15,11 +15,11 @@ export default function TopBar() {
     phones: ['+91-8527830194', '+91-9810939319'],
     email: 'info@dadumedicalcentre.com',
     socials: [
-      { name: 'telegram', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/telegram-1777528254823.png' },
-      { name: 'instagram', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/instagram-1777528254823.png' },
-      { name: 'facebook', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/facebook-1777528254823.png' },
-      { name: 'youtube', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/youtube-1777528254823.png' },
-      { name: 'linkedin', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/linkdin-1777528254823.png' }
+      { name: 'telegram', link: '#', iconUrl: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/trooomdx4mjupebkzsmy.png' },
+      { name: 'instagram', link: '#', iconUrl: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/pzzrzqodtujxvlktyk2s.png' },
+      { name: 'facebook', link: '#', iconUrl: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/jkidxsr5nbpwq7y7x0x0.png' },
+      { name: 'youtube', link: '#', iconUrl: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/dgkcwru8nqurjw7f1lz6.png' },
+      { name: 'linkedin', link: '#', iconUrl: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lhgvbca5okvyge6atokb.png' }
     ]
   };
 
