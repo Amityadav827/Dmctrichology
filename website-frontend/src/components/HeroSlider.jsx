@@ -47,22 +47,39 @@ export default function HeroSlider() {
           className={`slide ${index === currentSlide ? 'active' : ''}`}
           style={{ backgroundImage: `url(${slide.image})` }}
         >
-          <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 248, 0.75)' }}></div>
+          <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
           <div className="slide-content">
-            <span className="slide-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-              {slide.tagIcon && <img src={slide.tagIcon} alt="icon" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />}
+            <span className="slide-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#1F3D3F', fontWeight: 'bold' }}>
+              <div style={{ width: '20px', height: '2px', backgroundColor: '#E4B753' }}></div>
               {slide.tag}
             </span>
-            <h1 className="slide-title" style={{ fontFamily: "'Marcellus', serif", fontSize: '64px' }}>{slide.title}</h1>
-            <p className="slide-desc" style={{ fontFamily: "'Lato', sans-serif" }}>{slide.description}</p>
+            <h1 className="slide-title" style={{ fontFamily: "'Marcellus', serif", fontSize: '72px', color: '#000', marginBottom: '16px' }}>{slide.title}</h1>
+            <p className="slide-desc" style={{ fontFamily: "'Lato', sans-serif", fontSize: '18px', color: '#333' }}>{slide.description}</p>
             {/* Social proof row */}
             {(slide.patientsIcon || slide.starIcon) && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
-                {slide.starIcon && <img src={slide.starIcon} alt="star rating" style={{ height: '20px', objectFit: 'contain' }} />}
                 <div style={{ display: 'flex', gap: '4px' }}>
-                  {slide.patientsIcon && [1,2,3,4,5].map(i => (
-                    <img key={i} src={slide.patientsIcon} alt="satisfied patient" style={{ height: '28px', objectFit: 'contain' }} />
+                  {slide.patientsIcon && [1,2,3,4].map(i => (
+                    <div key={i} style={{ 
+                      width: '32px', 
+                      height: '32px', 
+                      borderRadius: '50%', 
+                      border: '2px solid #fff', 
+                      overflow: 'hidden', 
+                      marginLeft: i > 1 ? '-10px' : '0',
+                      backgroundColor: '#ddd'
+                    }}>
+                      <img src={slide.patientsIcon} alt="satisfied patient" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
                   ))}
+                </div>
+                <div>
+                  <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#1F3D3F' }}>225+ Satisfied Patients</div>
+                  <div style={{ display: 'flex', gap: '2px' }}>
+                    {[1,2,3,4,5].map(i => (
+                      <img key={i} src={slide.starIcon} alt="star" style={{ width: '12px', height: '12px' }} />
+                    ))}
+                  </div>
                 </div>
               </div>
             )}

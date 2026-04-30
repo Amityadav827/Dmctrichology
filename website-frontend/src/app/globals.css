@@ -27,7 +27,12 @@ body {
   background-color: var(--bg-primary);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Marcellus', serif;
   font-weight: 400;
 }
@@ -59,7 +64,7 @@ a {
 }
 
 .icon-circle {
-  background-color: var(--black);
+  background-color: #ffffff;
   color: var(--button-gradient);
   border-radius: 50%;
   width: 24px;
@@ -68,6 +73,7 @@ a {
   align-items: center;
   justify-content: center;
 }
+
 .icon-circle svg {
   stroke: url(#gradient);
   stroke-width: 2;
@@ -110,7 +116,8 @@ a {
   display: flex;
   gap: 16px;
 }
-.form-row > div {
+
+.form-row>div {
   flex: 1;
 }
 
@@ -258,7 +265,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .logo img {
@@ -293,7 +300,7 @@ a {
   top: 100%;
   left: 0;
   background-color: var(--white);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   min-width: 200px;
   border-radius: 8px;
   padding: 8px 0;
@@ -333,18 +340,23 @@ a {
 
 @media (max-width: 992px) {
   .navbar {
-    display: none; /* simple mobile fallback, ideally a slide-out drawer */
+    display: none;
+    /* simple mobile fallback, ideally a slide-out drawer */
   }
+
   .mobile-toggle {
     display: block;
   }
+
   .header {
     padding: 12px 5%;
   }
+
   .hero-slider-container {
     height: auto;
     min-height: 100vh;
   }
+
   .slide-content {
     position: relative;
     top: 15%;
@@ -353,6 +365,7 @@ a {
     max-width: 90%;
     margin-bottom: 40px;
   }
+
   .hero-right {
     position: relative;
     top: auto;
@@ -361,9 +374,11 @@ a {
     margin: 0 auto;
     padding-bottom: 40px;
   }
+
   .slide-title {
     font-size: 2.5rem;
   }
+
   .topbar {
     flex-direction: column;
     gap: 12px;
