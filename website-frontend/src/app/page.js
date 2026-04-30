@@ -4,6 +4,7 @@ import HeroSlider from '@/components/HeroSlider';
 import LeadForm from '@/components/LeadForm';
 import AboutUsCare from '@/components/AboutUsCare';
 import Services from '@/components/Services';
+import FeaturesBar from '@/components/FeaturesBar';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
           <LeadForm />
         </div>
       </div>
+      <FeaturesBar />
       <AboutUsCare />
       <Services />
     </main>
