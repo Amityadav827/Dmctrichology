@@ -104,25 +104,15 @@ export default function WhyChooseUs() {
       }}>
         {/* Central Circular Head Image */}
         <div style={{ 
-          width: '450px', 
-          height: '450px', 
-          borderRadius: '50%', 
-          border: '1px solid #E4B753', 
-          padding: '20px',
+          width: '500px', 
+          height: '500px', 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#fff',
           zIndex: 1,
           position: 'relative'
         }}>
-          <img src={centralImage} alt="Head Visualization" style={{ width: '100%', height: 'auto', borderRadius: '50%' }} />
-          
-          {/* Connector Dots on the circle */}
-          <div style={{ position: 'absolute', top: '25%', left: '10%', width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%', border: '2px solid #fff' }}></div>
-          <div style={{ position: 'absolute', top: '75%', left: '15%', width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%', border: '2px solid #fff' }}></div>
-          <div style={{ position: 'absolute', top: '25%', right: '10%', width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%', border: '2px solid #fff' }}></div>
-          <div style={{ position: 'absolute', top: '75%', right: '15%', width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%', border: '2px solid #fff' }}></div>
+          <img src={centralImage} alt="Head Visualization" style={{ width: '100%', height: 'auto' }} />
         </div>
 
         {/* Feature Cards Positioned Around */}
