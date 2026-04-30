@@ -29,8 +29,8 @@ export default function AboutUsCare() {
 
       <h2 style={{ 
         fontFamily: "'Marcellus', serif", 
-        fontSize: '64px', 
-        lineHeight: '82px', 
+        fontSize: '49px', 
+        lineHeight: '67px', 
         color: '#1C1C1C', 
         marginBottom: '16px',
         fontWeight: 400,
@@ -41,8 +41,8 @@ export default function AboutUsCare() {
       
       <p style={{ 
         fontFamily: "'Marcellus', serif", 
-        fontSize: '64px', 
-        lineHeight: '82px', 
+        fontSize: '49px', 
+        lineHeight: '67px', 
         color: '#1C1C1C', 
         maxWidth: '1200px', 
         margin: '0 auto 80px',
