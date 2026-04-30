@@ -2,28 +2,28 @@ import React from 'react';
 
 const features = [
   {
-    side: 'left',
+    id: 'natural',
     title: 'Natural Results',
     desc: 'Every Hairline Is Designed To Match Your Facial Structure For A Natural Look.',
     icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777548895/dmc-trichology/kganja8haq69bvurxro8.png'
   },
   {
-    side: 'left',
+    id: 'customized',
     title: 'Customized Care',
     desc: 'Every Hair Loss Condition Is Different And Also Unique.',
     icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777548895/dmc-trichology/ecjlnpbmt8rk3ebxazva.png'
   },
   {
-    side: 'right',
+    id: 'surgical',
     title: 'Reduce Surgical',
     desc: 'Techniques Like FUE Ensure Minimal Discomfort, No Linear Scars, And Quick Recovery.',
     icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777548895/dmc-trichology/j8gecypsa2honobtknua.png'
   },
   {
-    side: 'right',
+    id: 'aftercare',
     title: 'Complete Aftercare',
     desc: 'Our Team Supports You From Consultation To Full Hair Growth.',
-    icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777548895/dmc-trichology/ecjlnpbmt8rk3ebxazva.png' // Reusing icon if missing one, but user gave 4. I'll use them.
+    icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777548895/dmc-trichology/ecjlnpbmt8rk3ebxazva.png' // Fallback to customized if 4th icon missing
   }
 ];
 
@@ -34,39 +34,39 @@ export default function WhyChooseUs() {
   const renderCard = (feat) => (
     <div style={{ 
       backgroundColor: '#000', 
-      borderRadius: '20px', 
-      padding: '24px', 
+      borderRadius: '24px', 
+      padding: '20px', 
       display: 'flex', 
       alignItems: 'center', 
       gap: '20px', 
-      maxWidth: '380px',
+      width: '400px',
       color: '#fff',
       textAlign: 'left',
-      boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+      zIndex: 2
     }}>
       <div style={{ 
         backgroundColor: '#FEF0D7', 
-        borderRadius: '12px', 
+        borderRadius: '16px', 
         padding: '12px', 
-        minWidth: '70px', 
-        height: '70px',
+        minWidth: '85px', 
+        height: '85px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        <img src={feat.icon} alt={feat.title} style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+        <img src={feat.icon} alt={feat.title} style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
       </div>
       <div>
-        <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '22px', marginBottom: '8px', fontWeight: 400 }}>{feat.title}</h4>
-        <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '13px', lineHeight: '20px', color: '#ccc' }}>{feat.desc}</p>
+        <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '24px', marginBottom: '8px', fontWeight: 400, color: '#FEF0D7' }}>{feat.title}</h4>
+        <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '13px', lineHeight: '20px', color: '#FFFFFF' }}>{feat.desc}</p>
       </div>
     </div>
   );
 
   return (
-    <section className="why-choose-us" style={{ padding: '100px 5%', backgroundColor: '#fff', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+    <section className="why-choose-us" style={{ padding: '100px 5%', backgroundColor: '#fff', textAlign: 'center', overflow: 'hidden' }}>
       <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
-        <img src={iconUrl} alt="icon" style={{ width: '40px', height: 'auto' }} />
+        <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
         <span style={{ 
           fontFamily: "'Marcellus', serif", 
           fontSize: '12px', 
@@ -84,56 +84,59 @@ export default function WhyChooseUs() {
         fontSize: '44px', 
         lineHeight: '60px', 
         color: '#000', 
-        marginBottom: '80px',
+        marginBottom: '100px',
         fontWeight: 400,
-        maxWidth: '900px',
-        margin: '0 auto 80px'
+        maxWidth: '1000px',
+        margin: '0 auto 100px'
       }}>
         Why DMC Trichology Is The Best Hair Transplant Clinic In Delhi
       </h2>
 
       <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: '1fr 1.2fr 1fr', 
-        gap: '40px', 
-        maxWidth: '1400px', 
+        position: 'relative', 
+        maxWidth: '1300px', 
+        height: '600px', 
         margin: '0 auto',
+        display: 'flex',
         alignItems: 'center',
-        position: 'relative'
+        justifyContent: 'center'
       }}>
-        {/* Left Features */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '80px', alignItems: 'flex-end' }}>
-          {renderCard(features[0])}
-          {renderCard(features[1])}
-        </div>
-
-        {/* Central Circle */}
-        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-          <div style={{ 
-            width: '450px', 
-            height: '450px', 
-            borderRadius: '50%', 
-            border: '1px solid #eee', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            padding: '20px',
-            backgroundColor: '#fff'
-          }}>
-            <img src={centralImage} alt="Best Hair Transplant" style={{ width: '100%', height: 'auto', borderRadius: '50%' }} />
-          </div>
+        {/* Central Circular Head Image */}
+        <div style={{ 
+          width: '500px', 
+          height: '500px', 
+          borderRadius: '50%', 
+          border: '1px solid #E4B753', 
+          padding: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#fff',
+          zIndex: 1,
+          position: 'relative'
+        }}>
+          <img src={centralImage} alt="Head Visualization" style={{ width: '100%', height: 'auto', borderRadius: '50%' }} />
           
-          {/* Decorative SVG Lines (simplified) */}
-          <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: -1 }}>
-             {/* Lines could be added here for extra polish */}
-          </svg>
+          {/* Connector Dots on the circle */}
+          <div style={{ position: 'absolute', top: '25%', left: '10%', width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%', border: '2px solid #fff' }}></div>
+          <div style={{ position: 'absolute', top: '75%', left: '15%', width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%', border: '2px solid #fff' }}></div>
+          <div style={{ position: 'absolute', top: '25%', right: '10%', width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%', border: '2px solid #fff' }}></div>
+          <div style={{ position: 'absolute', top: '75%', right: '15%', width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%', border: '2px solid #fff' }}></div>
         </div>
 
-        {/* Right Features */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '80px', alignItems: 'flex-start' }}>
-          {renderCard(features[2])}
-          {renderCard(features[3])}
-        </div>
+        {/* Feature Cards Positioned Around */}
+        <div style={{ position: 'absolute', top: '50px', left: '0' }}>{renderCard(features[0])}</div>
+        <div style={{ position: 'absolute', bottom: '50px', left: '0' }}>{renderCard(features[1])}</div>
+        <div style={{ position: 'absolute', top: '50px', right: '0' }}>{renderCard(features[2])}</div>
+        <div style={{ position: 'absolute', bottom: '50px', right: '0' }}>{renderCard(features[3])}</div>
+
+        {/* Connecting Lines (SVG) */}
+        <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
+           <line x1="400" y1="150" x2="550" y2="250" stroke="#E4B753" strokeWidth="1" opacity="0.3" />
+           <line x1="400" y1="450" x2="550" y2="350" stroke="#E4B753" strokeWidth="1" opacity="0.3" />
+           <line x1="900" y1="150" x2="750" y2="250" stroke="#E4B753" strokeWidth="1" opacity="0.3" />
+           <line x1="900" y1="450" x2="750" y2="350" stroke="#E4B753" strokeWidth="1" opacity="0.3" />
+        </svg>
       </div>
     </section>
   );
