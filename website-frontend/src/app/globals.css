@@ -79,6 +79,23 @@ a {
   }
 }
 
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.marquee-content {
+  display: inline-flex;
+  gap: 30px;
+  animation: marquee 30s linear infinite;
+}
+
 .icon-circle {
   background-color: #ffffff;
   color: var(--button-gradient);

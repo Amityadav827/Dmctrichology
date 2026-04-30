@@ -17,9 +17,9 @@ export default function Home() {
           <LeadForm />
         </div>
       </div>
-      <FeaturesBar />
       <AboutUsCare />
       <Services />
+      <FeaturesBar />
     </main>
   );
 }
