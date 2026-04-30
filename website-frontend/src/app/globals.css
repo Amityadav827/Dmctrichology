@@ -69,6 +69,16 @@ a {
   color: #ffffff !important;
 }
 
+@media (max-width: 768px) {
+  .stats-container {
+    gap: 30px !important;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 .icon-circle {
   background-color: #ffffff;
   color: var(--button-gradient);

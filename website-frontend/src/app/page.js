@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import HeroSlider from '@/components/HeroSlider';
 import LeadForm from '@/components/LeadForm';
 import AboutUsCare from '@/components/AboutUsCare';
+import Services from '@/components/Services';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         </div>
       </div>
       <AboutUsCare />
+      <Services />
     </main>
   );
 }
