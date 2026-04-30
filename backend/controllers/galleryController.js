@@ -24,13 +24,15 @@ const removeUploadedFile = (imagePath) => {
 const normalizeImagePath = (req, file) => {
   if (!file) return "";
   
-  // If Cloudinary provides a secure_url or path is already a full URL
+  // Cloudinary uploads: path IS the secure_url
   const filePath = file.secure_url || file.path || "";
+  
+  // If it's already a full URL (Cloudinary gives https://res.cloudinary.com/...)
   if (typeof filePath === "string" && filePath.startsWith("http")) {
     return filePath;
   }
   
-  // For local uploads, use filename to construct the full public URL
+  // Fallback: local uploads with BASE_URL
   if (file.filename) {
     const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
     const normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
