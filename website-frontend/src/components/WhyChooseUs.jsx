@@ -66,7 +66,7 @@ export default function WhyChooseUs() {
 
   return (
     <section className="why-choose-us" style={{ padding: '0', backgroundColor: '#fff', textAlign: 'center', overflow: 'hidden' }}>
-      <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px', paddingTop: '100px' }}>
+      <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
         <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
         <span style={{ 
           fontFamily: "'Marcellus', serif", 
