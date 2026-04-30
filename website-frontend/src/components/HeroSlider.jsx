@@ -50,10 +50,10 @@ export default function HeroSlider() {
           <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
           <div className="slide-content">
             <span className="slide-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#1F3D3F', fontWeight: 'bold' }}>
-              <div style={{ width: '20px', height: '2px', backgroundColor: '#E4B753' }}></div>
+              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto', objectFit: 'contain' }} />
               {slide.tag}
             </span>
-            <h1 className="slide-title" style={{ fontFamily: "'Marcellus', serif", fontSize: '72px', color: '#000', marginBottom: '16px' }}>{slide.title}</h1>
+            <h1 className="slide-title" style={{ fontFamily: "'Marcellus', serif", fontSize: '54px', color: '#000', marginBottom: '16px' }}>{slide.title}</h1>
             <p className="slide-desc" style={{ fontFamily: "'Lato', sans-serif", fontSize: '18px', color: '#333' }}>{slide.description}</p>
           </div>
         </div>

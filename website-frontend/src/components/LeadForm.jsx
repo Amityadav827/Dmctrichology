@@ -34,8 +34,7 @@ export default function LeadForm() {
   return (
     <div className="form-container" style={{ backgroundColor: '#FFFBF0', borderRadius: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
-        <div style={{ width: '40px', height: '1px', backgroundColor: '#E4B753' }}></div>
-        <div style={{ width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%' }}></div>
+        <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto', objectFit: 'contain' }} />
         <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#1F3D3F', fontWeight: 'bold' }}>Book a Session</span>
       </div>
       
