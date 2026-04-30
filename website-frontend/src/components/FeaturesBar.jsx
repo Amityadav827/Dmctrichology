@@ -24,7 +24,7 @@ export default function FeaturesBar() {
           {displayImages.map((src, index) => (
             <div key={index} style={{ 
               flex: '0 0 auto',
-              width: '240px',
+              width: '150px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
