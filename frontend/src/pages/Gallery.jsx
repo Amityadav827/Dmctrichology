@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import toast from "react-hot-toast";
-import { Upload, X, Search, Edit2, Trash2, Eye, CheckCircle, XCircle, Image as ImageIcon, ChevronDown } from "lucide-react";
+import { Upload, X, Search, Edit2, Trash2, Eye, CheckCircle, XCircle, Image as ImageIcon, ChevronDown, Square, CheckSquare } from "lucide-react";
 import Loader from "../components/Loader";
 import {
   createGalleryItems,
@@ -88,6 +88,10 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [actionId, setActionId] = useState("");
+
+  // Bulk selection
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [bulkDeleting, setBulkDeleting] = useState(false);
 
   // Filters
   const [search, setSearch] = useState("");
@@ -229,6 +233,41 @@ export default function Gallery() {
     }
   };
 
+  // ── Bulk Selection ───────────────────────────────────
+  const toggleSelectItem = (e, id) => {
+    e.stopPropagation();
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filtered.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filtered.map(i => i._id)));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (!selectedIds.size) return;
+    if (!window.confirm(`Delete ${selectedIds.size} image(s) permanently?`)) return;
+    setBulkDeleting(true);
+    try {
+      await Promise.all([...selectedIds].map(id => deleteGalleryItem(id)));
+      toast.success(`${selectedIds.size} image(s) deleted`);
+      if (selected && selectedIds.has(selected._id)) setSelected(null);
+      setItems(prev => prev.filter(i => !selectedIds.has(i._id)));
+      setSelectedIds(new Set());
+    } catch (e) {
+      toast.error("Some deletions failed");
+    } finally {
+      setBulkDeleting(false);
+    }
+  };
+
   // ── Toggle status ─────────────────────────────────────
   const handleToggle = async (id) => {
     setActionId(id);
@@ -263,8 +302,27 @@ export default function Gallery() {
       {/* Page Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
         <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Media Gallery</h2>
-        <span style={{ fontSize: "0.8rem", color: "#64748B" }}>{filtered.length} image{filtered.length !== 1 ? "s" : ""}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <span style={{ fontSize: "0.8rem", color: "#64748B" }}>{filtered.length} image{filtered.length !== 1 ? "s" : ""}</span>
+        </div>
       </div>
+
+      {/* Bulk Action Bar */}
+      {selectedIds.size > 0 && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1E293B", borderRadius: 10, padding: "0.75rem 1.25rem", gap: "1rem", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+            <span style={{ width: 26, height: 26, borderRadius: "50%", background: "#2563EB", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, color: "#fff" }}>{selectedIds.size}</span>
+            <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "#E2E8F0" }}>{selectedIds.size} image{selectedIds.size !== 1 ? "s" : ""} selected</span>
+          </div>
+          <div style={{ display: "flex", gap: "0.625rem" }}>
+            <button onClick={() => setSelectedIds(new Set())} style={{ padding: "0.4rem 1rem", borderRadius: 8, fontSize: "0.8rem", fontWeight: 600, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", color: "#CBD5E1", cursor: "pointer" }}>Cancel</button>
+            <button onClick={handleBulkDelete} disabled={bulkDeleting} style={{ padding: "0.4rem 1rem", borderRadius: 8, fontSize: "0.8rem", fontWeight: 600, background: bulkDeleting ? "#6B7280" : "#EF4444", border: "none", color: "#fff", cursor: bulkDeleting ? "not-allowed" : "pointer", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <Trash2 size={13} />
+              {bulkDeleting ? "Deleting…" : `Delete ${selectedIds.size} Image${selectedIds.size !== 1 ? "s" : ""}`}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Upload Area */}
       <div className="card-glass" style={{ padding: "1.25rem" }}>
@@ -312,6 +370,19 @@ export default function Gallery() {
 
       {/* Filters */}
       <div className="card" style={{ padding: "0.875rem 1.25rem", display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "center" }}>
+        {/* Select All toggle */}
+        {filtered.length > 0 && (
+          <button
+            onClick={toggleSelectAll}
+            title={selectedIds.size === filtered.length ? "Deselect All" : "Select All"}
+            style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.4rem 0.75rem", borderRadius: 8, fontSize: "0.8rem", fontWeight: 600, border: "1px solid #E2E8F0", background: selectedIds.size === filtered.length ? "#EFF6FF" : "#F8FAFC", color: selectedIds.size === filtered.length ? "#2563EB" : "#64748B", cursor: "pointer", whiteSpace: "nowrap" }}
+          >
+            {selectedIds.size === filtered.length
+              ? <CheckSquare size={15} />
+              : <Square size={15} />}
+            Select All
+          </button>
+        )}
         <div style={{ position: "relative", flex: "1", minWidth: 180 }}>
           <Search size={15} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
           <input type="text" placeholder="Search by title…" value={search} onChange={e => setSearch(e.target.value)} className="form-input" style={{ paddingLeft: "2.25rem" }} />
@@ -352,18 +423,37 @@ export default function Gallery() {
             </div>
           ) : (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "0.875rem" }}>
-              {filtered.map(item => (
+              {filtered.map(item => {
+                const isChecked = selectedIds.has(item._id);
+                const isActive = selected?._id === item._id;
+                return (
                 <div
                   key={item._id}
                   onClick={() => selectItem(item)}
                   style={{
                     position: "relative", borderRadius: 10, overflow: "hidden", cursor: "pointer",
-                    border: selected?._id === item._id ? "2px solid #2563EB" : "2px solid transparent",
-                    boxShadow: selected?._id === item._id ? "0 0 0 3px rgba(37,99,235,0.2)" : "0 1px 3px rgba(15,23,42,0.08)",
+                    border: isChecked ? "2px solid #EF4444" : isActive ? "2px solid #2563EB" : "2px solid transparent",
+                    boxShadow: isChecked ? "0 0 0 3px rgba(239,68,68,0.2)" : isActive ? "0 0 0 3px rgba(37,99,235,0.2)" : "0 1px 3px rgba(15,23,42,0.08)",
                     transition: "all 0.18s",
-                    background: "#fff",
+                    background: isChecked ? "#FFF5F5" : "#fff",
                   }}
                 >
+                  {/* Checkbox */}
+                  <div
+                    onClick={e => toggleSelectItem(e, item._id)}
+                    style={{ position: "absolute", top: 6, right: 6, zIndex: 10, cursor: "pointer" }}
+                  >
+                    <div style={{
+                      width: 20, height: 20, borderRadius: 5,
+                      background: isChecked ? "#EF4444" : "rgba(255,255,255,0.92)",
+                      border: isChecked ? "2px solid #EF4444" : "2px solid #CBD5E1",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.15)", transition: "all 0.15s"
+                    }}>
+                      {isChecked && <CheckCircle size={12} color="#fff" />}
+                    </div>
+                  </div>
+
                   {/* Image */}
                   <div style={{ height: 140, overflow: "hidden", background: "#F1F5F9" }}>
                       <img
@@ -372,9 +462,9 @@ export default function Gallery() {
                         style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.25s" }}
                         onMouseEnter={e => e.currentTarget.style.transform = "scale(1.06)"}
                         onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-                        onError={(e) => { 
-                          e.target.onerror = null; // Prevent infinite loop
-                          e.target.src = "https://placehold.co/600x400?text=Image+Not+Found"; 
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "https://placehold.co/600x400?text=Image+Not+Found";
                         }}
                       />
                   </div>
@@ -403,7 +493,7 @@ export default function Gallery() {
                     </div>
                   )}
                 </div>
-              ))}
+              )})}
             </div>
           )}
         </div>
