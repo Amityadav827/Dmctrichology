@@ -120,14 +120,6 @@ export default function WhyChooseUs() {
         <div style={{ position: 'absolute', bottom: '20px', left: '0' }}>{renderCard(features[1])}</div>
         <div style={{ position: 'absolute', top: '20px', right: '0' }}>{renderCard(features[2])}</div>
         <div style={{ position: 'absolute', bottom: '20px', right: '0' }}>{renderCard(features[3])}</div>
-
-        {/* Connecting Lines (SVG) */}
-        <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
-           <line x1="400" y1="120" x2="500" y2="250" stroke="#E4B753" strokeWidth="1" opacity="0.3" />
-           <line x1="400" y1="530" x2="500" y2="400" stroke="#E4B753" strokeWidth="1" opacity="0.3" />
-           <line x1="900" y1="120" x2="800" y2="250" stroke="#E4B753" strokeWidth="1" opacity="0.3" />
-           <line x1="900" y1="530" x2="800" y2="400" stroke="#E4B753" strokeWidth="1" opacity="0.3" />
-        </svg>
       </div>
     </section>
   );
