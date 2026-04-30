@@ -55,34 +55,6 @@ export default function HeroSlider() {
             </span>
             <h1 className="slide-title" style={{ fontFamily: "'Marcellus', serif", fontSize: '72px', color: '#000', marginBottom: '16px' }}>{slide.title}</h1>
             <p className="slide-desc" style={{ fontFamily: "'Lato', sans-serif", fontSize: '18px', color: '#333' }}>{slide.description}</p>
-            {/* Social proof row */}
-            {(slide.patientsIcon || slide.starIcon) && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
-                <div style={{ display: 'flex', gap: '4px' }}>
-                  {slide.patientsIcon && [1,2,3,4].map(i => (
-                    <div key={i} style={{ 
-                      width: '32px', 
-                      height: '32px', 
-                      borderRadius: '50%', 
-                      border: '2px solid #fff', 
-                      overflow: 'hidden', 
-                      marginLeft: i > 1 ? '-10px' : '0',
-                      backgroundColor: '#ddd'
-                    }}>
-                      <img src={slide.patientsIcon} alt="satisfied patient" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#1F3D3F' }}>225+ Satisfied Patients</div>
-                  <div style={{ display: 'flex', gap: '2px' }}>
-                    {[1,2,3,4,5].map(i => (
-                      <img key={i} src={slide.starIcon} alt="star" style={{ width: '12px', height: '12px' }} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       ))}

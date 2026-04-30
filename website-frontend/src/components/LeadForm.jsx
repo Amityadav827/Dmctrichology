@@ -40,29 +40,6 @@ export default function LeadForm() {
       
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
         <h2 style={{ fontSize: '2.5rem', color: '#000', margin: 0, fontFamily: "'Marcellus', serif" }}>Request A Call</h2>
-        <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ display: 'flex' }}>
-            {[1,2,3,4].map(i => (
-              <div key={i} style={{ 
-                width: '36px', 
-                height: '36px', 
-                borderRadius: '50%', 
-                border: '2px solid #fff', 
-                overflow: 'hidden', 
-                marginLeft: i > 1 ? '-12px' : '0',
-                backgroundColor: '#ddd'
-              }}>
-                <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png" alt="Patients" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-            ))}
-          </div>
-          <div style={{ textAlign: 'left' }}>
-            <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#1F3D3F' }}>225+ Satisfied Patients</div>
-            <div style={{ display: 'flex', gap: '2px', marginTop: '4px' }}>
-              {[1,2,3,4,5].map(star => <img key={star} src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" alt="star" style={{ width: '12px', height: '12px' }} />)}
-            </div>
-          </div>
-        </div>
       </div>
 
       {success && <div style={{ color: 'green', marginBottom: '16px', fontSize: '14px' }}>Request sent successfully!</div>}
@@ -118,9 +95,9 @@ export default function LeadForm() {
 
         <div style={{ marginTop: '32px' }}>
           <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', borderRadius: '50px', padding: '16px' }} disabled={loading}>
-            <span style={{ color: '#000' }}>{loading ? 'Submitting...' : 'Submit'}</span>
-            <div className="icon-circle" style={{ marginLeft: '12px', backgroundColor: '#000' }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain', filter: 'brightness(100) invert(1)' }} />
+            <span>{loading ? 'Submitting...' : 'Submit'}</span>
+            <div className="icon-circle" style={{ marginLeft: '12px' }}>
+              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
             </div>
           </button>
         </div>

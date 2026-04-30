@@ -28,19 +28,7 @@ export default function TopBar() {
   const socials = settings?.socials || fallbackSettings.socials;
 
   const renderIcon = (social) => {
-    return (
-      <div style={{ 
-        width: '28px', 
-        height: '28px', 
-        backgroundColor: '#ffffff', 
-        borderRadius: '50%', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center' 
-      }}>
-        <img src={social.iconUrl} alt={social.name} style={{ width: '14px', height: '14px', objectFit: 'contain' }} />
-      </div>
-    );
+    return <img src={social.iconUrl} alt={social.name} style={{ width: '24px', height: '24px', objectFit: 'contain' }} />;
   };
 
   return (
