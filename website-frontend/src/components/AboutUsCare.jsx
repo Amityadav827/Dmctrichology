@@ -14,7 +14,7 @@ export default function AboutUsCare() {
   return (
     <section className="about-us-care" style={{ padding: '100px 5%', textAlign: 'center', backgroundColor: '#fff' }}>
       <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
-        <img src={iconUrl} alt="icon" style={{ width: '40px', height: 'auto' }} />
+        <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
         <span style={{ 
           fontFamily: "'Marcellus', serif", 
           fontSize: '12px', 
@@ -32,7 +32,7 @@ export default function AboutUsCare() {
         fontSize: '49px', 
         lineHeight: '67px', 
         color: '#1C1C1C', 
-        marginBottom: '16px',
+        marginBottom: '0',
         fontWeight: 400,
         textTransform: 'capitalize'
       }}>
@@ -57,7 +57,7 @@ export default function AboutUsCare() {
           <div key={index} className="stat-item" style={{ textAlign: 'center' }}>
             <div style={{ 
               fontFamily: "'Marcellus', serif", 
-              fontSize: '44px', 
+              fontSize: '34px', 
               lineHeight: '60px', 
               color: '#000000',
               fontWeight: 400
@@ -66,7 +66,7 @@ export default function AboutUsCare() {
             </div>
             <div style={{ 
               fontFamily: "'Marcellus', serif", 
-              fontSize: '30px', 
+              fontSize: '20px', 
               lineHeight: '48px', 
               color: '#1C1C1C',
               marginBottom: '12px',
@@ -76,11 +76,11 @@ export default function AboutUsCare() {
               {stat.label}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
-              <img src={iconUrl} alt="icon" style={{ width: '30px', height: 'auto' }} />
+              <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
             </div>
             <p style={{ 
               fontFamily: "'Lato', sans-serif", 
-              fontSize: '16px', 
+              fontSize: '10px', 
               lineHeight: '26px', 
               color: '#4D4D4D',
               textTransform: 'capitalize'
