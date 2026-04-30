@@ -2,6 +2,7 @@ import TopBar from '@/components/TopBar';
 import Header from '@/components/Header';
 import HeroSlider from '@/components/HeroSlider';
 import LeadForm from '@/components/LeadForm';
+import AboutUsCare from '@/components/AboutUsCare';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
           <LeadForm />
         </div>
       </div>
+      <AboutUsCare />
     </main>
   );
 }
