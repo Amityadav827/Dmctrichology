@@ -266,7 +266,8 @@ a {
   background-color: transparent;
   padding: 20px 5%;
   position: absolute;
-  top: 40px; /* Offset from topbar */
+  top: 40px;
+  /* Offset from topbar */
   left: 0;
   right: 0;
   z-index: 100;
@@ -277,7 +278,7 @@ a {
 
 .header-container {
   background-color: #ffffff;
-  padding: 10px 40px;
+  padding: 10px;
   border-radius: 100px;
   display: flex;
   justify-content: space-between;
