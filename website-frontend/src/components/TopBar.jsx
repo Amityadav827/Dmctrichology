@@ -28,7 +28,7 @@ export default function TopBar() {
   const socials = settings?.socials || fallbackSettings.socials;
 
   const renderIcon = (social) => {
-    return <img src={social.iconUrl} alt={social.name} style={{ width: '12px', height: '12px', objectFit: 'contain' }} />;
+    return <img src={social.iconUrl} alt={social.name} style={{ width: '24px', height: '24px', objectFit: 'contain' }} />;
   };
 
   return (
