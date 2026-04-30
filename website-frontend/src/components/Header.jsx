@@ -22,7 +22,7 @@ export default function Header() {
         <Navbar />
 
         <div className="header-right" style={{display: 'flex', gap: '16px', alignItems: 'center'}}>
-          <a href="#book" className="btn-primary" style={{ backgroundColor: '#000000', color: '#ffffff', borderRadius: '50px', padding: '10px 10px 10px 24px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', background: 'none' }}>
+          <a href="#book" className="btn-primary" style={{ backgroundColor: '#000000', color: '#ffffff', borderRadius: '50px', padding: '10px 10px 10px 24px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
             <span style={{ fontFamily: "'Marcellus', serif" }}>Book Appointment</span>
             <div className="icon-circle" style={{ width: '32px', height: '32px', backgroundColor: '#ffffff' }}>
               <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain', filter: 'brightness(0)' }} />
