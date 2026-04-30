@@ -97,13 +97,11 @@ export default function LeadForm() {
           </div>
         </div>
 
-        <div className="form-row" style={{ alignItems: 'stretch' }}>
-          <div className="form-group" style={{ flex: '0 0 100px', marginBottom: '0' }}>
-            <div className="form-input" style={{ backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '12px', borderRight: 'none', borderTopRightRadius: 0, borderBottomRightRadius: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50px', padding: 0 }}>
-              6534
-            </div>
+        <div className="form-row" style={{ alignItems: 'stretch', border: '1px solid #ddd', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ flex: '0 0 100px', backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50px', borderRight: '1px solid #ddd' }}>
+            <span style={{ color: '#888' }}>6534</span>
           </div>
-          <div className="form-group" style={{ flex: 1, marginBottom: '0' }}>
+          <div style={{ flex: 1 }}>
             <input 
               type="text" 
               name="code" 
@@ -111,17 +109,17 @@ export default function LeadForm() {
               className="form-input" 
               value={formData.code} 
               onChange={handleChange} 
-              style={{ backgroundColor: 'transparent', border: '1px solid #ddd', borderTopLeftRadius: 0, borderBottomLeftRadius: 0, height: '50px', borderRadius: '12px' }}
+              style={{ backgroundColor: 'transparent', border: 'none', height: '50px', borderRadius: 0, width: '100%' }}
               required 
             />
           </div>
         </div>
 
         <div style={{ marginTop: '32px' }}>
-          <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', borderRadius: '50px', padding: '16px' }} disabled={loading}>
-            <span>{loading ? 'Submitting...' : 'Submit'}</span>
-            <div className="icon-circle" style={{ marginLeft: '12px', backgroundColor: '#000' }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+          <button type="submit" className="btn-primary" style={{ width: '100%', position: 'relative', height: '60px', borderRadius: '50px', padding: '0 24px' }} disabled={loading}>
+            <span style={{ fontFamily: "'Marcellus', serif", fontSize: '1.2rem', color: '#000', margin: '0 auto' }}>{loading ? 'Submitting...' : 'Submit'}</span>
+            <div className="icon-circle" style={{ position: 'absolute', right: '10px', backgroundColor: '#000', width: '40px', height: '40px' }}>
+              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '16px', height: '16px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
             </div>
           </button>
         </div>
