@@ -28,7 +28,7 @@ const features = [
 ];
 
 export default function WhyChooseUs() {
-  const centralImage = "https://res.cloudinary.com/dseixl6px/image/upload/v1777548895/dmc-trichology/lk8xz9tuxb0pz6v4xprd.png";
+  const centralImage = "https://res.cloudinary.com/dseixl6px/image/upload/v1777550637/dmc-trichology/mprq5pm7g2utm2olrnj1.png";
   const iconUrl = "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png";
 
   const renderCard = (feat) => (
