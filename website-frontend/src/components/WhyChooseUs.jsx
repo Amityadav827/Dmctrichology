@@ -116,10 +116,10 @@ export default function WhyChooseUs() {
         </div>
 
         {/* Feature Cards Positioned Around */}
-        <div style={{ position: 'absolute', top: '20px', left: '0' }}>{renderCard(features[0])}</div>
-        <div style={{ position: 'absolute', bottom: '20px', left: '0' }}>{renderCard(features[1])}</div>
-        <div style={{ position: 'absolute', top: '20px', right: '0' }}>{renderCard(features[2])}</div>
-        <div style={{ position: 'absolute', bottom: '20px', right: '0' }}>{renderCard(features[3])}</div>
+        <div style={{ position: 'absolute', top: '150px', left: '0' }}>{renderCard(features[0])}</div>
+        <div style={{ position: 'absolute', top: '450px', left: '0' }}>{renderCard(features[1])}</div>
+        <div style={{ position: 'absolute', top: '40px', right: '0' }}>{renderCard(features[2])}</div>
+        <div style={{ position: 'absolute', top: '340px', right: '0' }}>{renderCard(features[3])}</div>
       </div>
     </section>
   );
