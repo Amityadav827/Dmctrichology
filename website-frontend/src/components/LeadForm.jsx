@@ -39,8 +39,8 @@ export default function LeadForm() {
         <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#1F3D3F', fontWeight: 'bold' }}>Book a Session</span>
       </div>
       
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
-        <h2 style={{ fontSize: '2.5rem', color: '#000', margin: 0, fontFamily: "'Marcellus', serif" }}>Request A Call</h2>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px', gap: '20px' }}>
+        <h2 style={{ fontSize: '2.8rem', color: '#000', margin: 0, fontFamily: "'Marcellus', serif", whiteSpace: 'nowrap' }}>Request A Call</h2>
         <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ display: 'flex' }}>
             {[1,2,3,4].map(i => (
@@ -58,7 +58,7 @@ export default function LeadForm() {
             ))}
           </div>
           <div style={{ textAlign: 'left' }}>
-            <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#1F3D3F' }}>225+ Satisfied Patients</div>
+            <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#1F3D3F', whiteSpace: 'nowrap' }}>225+ Satisfied Patients</div>
             <div style={{ display: 'flex', gap: '2px', marginTop: '4px' }}>
               {[1,2,3,4,5].map(star => <img key={star} src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" alt="star" style={{ width: '12px', height: '12px' }} />)}
             </div>
@@ -120,8 +120,8 @@ export default function LeadForm() {
         <div style={{ marginTop: '32px' }}>
           <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', borderRadius: '50px', padding: '16px' }} disabled={loading}>
             <span>{loading ? 'Submitting...' : 'Submit'}</span>
-            <div className="icon-circle" style={{ marginLeft: '12px' }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain' }} />
+            <div className="icon-circle" style={{ marginLeft: '12px', backgroundColor: '#000' }}>
+              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '12px', height: '12px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
             </div>
           </button>
         </div>
