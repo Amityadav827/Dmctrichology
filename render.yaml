@@ -1,18 +1,9 @@
 services:
   - type: web
-    name: dmc-trichology-backend
+    name: dmctrichology-backend-one
     runtime: node
-    rootDir: backend
-    buildCommand: npm install
-    startCommand: npm start
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node server.js
     envVars:
-      - key: NODE_VERSION
-        value: 18.x
-      - fromContext: true
-        key: PORT
-      - fromContext: true
-        key: MONGO_URI
-      - fromContext: true
-        key: JWT_SECRET
-      - fromContext: true
-        key: BASE_URL
+      - key: NODE_ENV
+        value: production
