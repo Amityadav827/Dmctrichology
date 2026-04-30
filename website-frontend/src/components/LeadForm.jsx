@@ -34,12 +34,36 @@ export default function LeadForm() {
   return (
     <div className="form-container" style={{ backgroundColor: '#FFFBF0', borderRadius: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
-        <div style={{ width: '24px', height: '2px', backgroundColor: '#E4B753' }}></div>
-        <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#1F3D3F', fontWeight: 'bold' }}>Book a Session</span>
+        <div style={{ width: '40px', height: '1px', backgroundColor: '#E4B753' }}></div>
+        <div style={{ width: '12px', height: '12px', backgroundColor: '#E4B753', borderRadius: '50%' }}></div>
+        <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#1F3D3F', fontWeight: 'bold' }}>Book a Session</span>
       </div>
       
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
         <h2 style={{ fontSize: '2.5rem', color: '#000', margin: 0, fontFamily: "'Marcellus', serif" }}>Request A Call</h2>
+        <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex' }}>
+            {[1,2,3,4].map(i => (
+              <div key={i} style={{ 
+                width: '36px', 
+                height: '36px', 
+                borderRadius: '50%', 
+                border: '2px solid #fff', 
+                overflow: 'hidden', 
+                marginLeft: i > 1 ? '-12px' : '0',
+                backgroundColor: '#ddd'
+              }}>
+                <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png" alt="Patients" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign: 'left' }}>
+            <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#1F3D3F' }}>225+ Satisfied Patients</div>
+            <div style={{ display: 'flex', gap: '2px', marginTop: '4px' }}>
+              {[1,2,3,4,5].map(star => <img key={star} src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" alt="star" style={{ width: '12px', height: '12px' }} />)}
+            </div>
+          </div>
+        </div>
       </div>
 
       {success && <div style={{ color: 'green', marginBottom: '16px', fontSize: '14px' }}>Request sent successfully!</div>}
