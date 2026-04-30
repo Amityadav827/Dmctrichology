@@ -53,8 +53,7 @@ export default function Services() {
   return (
     <section className="services-section" style={{ padding: '100px 5%', backgroundColor: '#FFFAF1', textAlign: 'center' }}>
       <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
-        <div style={{ width: '40px', height: '1px', backgroundColor: '#E4B753' }}></div>
-        <img src={iconUrl} alt="icon" style={{ width: '12px', height: '12px' }} />
+        <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
         <span style={{ 
           fontFamily: "'Marcellus', serif", 
           fontSize: '11px', 
@@ -99,7 +98,7 @@ export default function Services() {
           backgroundColor: '#FEF0D7', 
           borderRadius: '40px', 
           padding: '60px 40px', 
-          textAlign: 'center',
+          textAlign: 'left',
           boxShadow: '0 4px 30px rgba(0,0,0,0.03)',
           height: 'fit-content'
         }}>
@@ -107,7 +106,7 @@ export default function Services() {
           <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '15px', lineHeight: '26px', color: '#333', marginBottom: '24px' }}>
             Each Hair Follicle Is Removed Individually And Implanted Into The Thinning Or Bald Areas, Making Sure That It's Natural Volume And Growth.
           </p>
-          <ul style={{ listStyle: 'none', padding: 0, marginBottom: '24px', textAlign: 'left', display: 'inline-block' }}>
+          <ul style={{ listStyle: 'none', padding: 0, marginBottom: '24px', textAlign: 'left' }}>
             {['Best For Both Men And Women', 'Low Scarring And Recovery Time', 'Permanent, Natural-Looking Results'].map((item, i) => (
               <li key={i} style={{ fontFamily: "'Lato', sans-serif", fontSize: '14px', color: '#333', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ color: '#E4B753', fontSize: '18px' }}>•</span> {item}
