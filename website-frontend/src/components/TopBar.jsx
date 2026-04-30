@@ -15,11 +15,11 @@ export default function TopBar() {
     phones: ['+91-8527830194', '+91-9810939319'],
     email: 'info@dadumedicalcentre.com',
     socials: [
-      { name: 'telegram', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/telegram-1777465282571.png' },
-      { name: 'instagram', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/instagram-1777465282571.png' },
-      { name: 'facebook', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/facebook-1777465282571.png' },
-      { name: 'youtube', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/youtube-1777465282571.png' },
-      { name: 'linkedin', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/linkdin-1777465282571.png' }
+      { name: 'telegram', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/telegram-1777528254823.png' },
+      { name: 'instagram', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/instagram-1777528254823.png' },
+      { name: 'facebook', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/facebook-1777528254823.png' },
+      { name: 'youtube', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/youtube-1777528254823.png' },
+      { name: 'linkedin', link: '#', iconUrl: 'http://dmctrichology-1.onrender.com/uploads/gallery/linkdin-1777528254823.png' }
     ]
   };
 

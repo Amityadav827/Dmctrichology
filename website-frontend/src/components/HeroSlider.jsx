@@ -13,10 +13,12 @@ export default function HeroSlider() {
       } else {
         // Fallback dummy data matching the design
         const baseSlide = {
-          image: 'http://dmctrichology-1.onrender.com/uploads/gallery/banner-1-1777465282572.png',
+          image: 'http://dmctrichology-1.onrender.com/uploads/gallery/banner-1-1777528254824.png',
           tag: 'TRUSTED CARE',
-          tagIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/trusted-care-1777465282570.png',
-          description: 'Experience Compassionate Care And Advanced Dental Solutions For A Healthier, Brighter Smile.'
+          tagIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/trusted-care-1777528254823.png',
+          patientsIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/225-satisfed-patients-1777528254822.png',
+          starIcon: 'http://dmctrichology-1.onrender.com/uploads/gallery/star-1777528254822.png',
+          description: 'Experience Compassionate Care And Advanced Trichology Solutions For Healthier, Stronger Hair.'
         };
         setSlides([
           { ...baseSlide, title: 'Recover Stronger, Move Freely, Live Pain-Free' },
@@ -53,6 +55,13 @@ export default function HeroSlider() {
             </span>
             <h1 className="slide-title" style={{ fontFamily: "'Marcellus', serif", fontSize: '64px' }}>{slide.title}</h1>
             <p className="slide-desc" style={{ fontFamily: "'Lato', sans-serif" }}>{slide.description}</p>
+            {/* Social proof row */}
+            {(slide.patientsIcon || slide.starIcon) && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
+                {slide.starIcon && <img src={slide.starIcon} alt="star rating" style={{ height: '20px', objectFit: 'contain' }} />}
+                {slide.patientsIcon && <img src={slide.patientsIcon} alt="225+ satisfied patients" style={{ height: '28px', objectFit: 'contain' }} />}
+              </div>
+            )}
           </div>
         </div>
       ))}
