@@ -2,7 +2,7 @@ import axios from "axios";
 
 const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || (isLocal ? "http://localhost:10000/api" : "https://dmctrichology-1.onrender.com/api"),
+  baseURL: import.meta.env.VITE_API_URL || (isLocal ? "http://localhost:10000/api" : "https://dmctrichology-backend-one.onrender.com/api"),
 });
 
 api.interceptors.request.use((config) => {
