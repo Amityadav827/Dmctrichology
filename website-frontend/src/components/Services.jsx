@@ -4,22 +4,22 @@ const serviceCards = [
   {
     title: 'Follicular Unit Extraction (FUE)',
     desc: 'Each Hair Follicle Is Removed Individually And Implanted Into The Thinning Or Bald Areas, Making Sure That It\'s Natural Volume And Growth.',
-    image: 'http://dmctrichology-1.onrender.com/uploads/gallery/follicular-unit-extraction-fue-1777543866001.png'
+    image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777545320/dmc-trichology/scr1ziqgtxcsmwf2oq6p.png'
   },
   {
     title: 'Follicular Unit Transplantation (FUT)',
     desc: 'FUT is another effective technique for hair restoration with high graft yield.',
-    image: 'http://dmctrichology-1.onrender.com/uploads/gallery/follicular-unit-transplantation-fut-1777543865771.png'
+    image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777545320/dmc-trichology/ugxr4ynn8vchlvqj6wkl.png'
   },
   {
     title: 'Hair Replacement In Delhi – Non-Surgical Solutions',
     desc: 'Advanced non-surgical hair replacement solutions for natural look.',
-    image: 'http://dmctrichology-1.onrender.com/uploads/gallery/hair-replacement-in-delhi-non-surgical-solutions-1777543865905.png'
+    image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777545320/dmc-trichology/jzdzyygl81bzzklwosgr.png'
   },
   {
     title: 'Scalp Treatments For Healthy Hair',
     desc: 'Nourish your scalp and promote healthy hair growth with our treatments.',
-    image: 'http://dmctrichology-1.onrender.com/uploads/gallery/scalp-treatments-for-healthy-hair-1777543865767.png'
+    image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777545319/dmc-trichology/kitvciqmkcr2xm1zr77f.png'
   }
 ];
 
@@ -30,20 +30,23 @@ export default function Services() {
     <div style={{ 
       backgroundColor: '#FEF0D7', 
       borderRadius: '24px', 
-      padding: '30px', 
+      padding: '24px', 
       boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-      height: '100%',
+      height: 'auto',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      textAlign: 'center'
     }}>
-      <img src={card.image} alt={card.title} style={{ width: '100%', borderRadius: '12px', marginBottom: '20px', height: '200px', objectFit: 'cover' }} />
-      <h3 style={{ fontFamily: "'Marcellus', serif", fontSize: '22px', lineHeight: '32px', color: '#000', marginBottom: '12px', fontWeight: 400 }}>{card.title}</h3>
-      <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '16px', lineHeight: '26px', color: '#7B7B7B', flex: 1 }}>{card.desc}</p>
+      <div style={{ width: '100%', height: '180px', marginBottom: '20px', borderRadius: '12px', overflow: 'hidden' }}>
+        <img src={card.image} alt={card.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </div>
+      <h3 style={{ fontFamily: "'Marcellus', serif", fontSize: '20px', lineHeight: '28px', color: '#000', marginBottom: '12px', fontWeight: 400 }}>{card.title}</h3>
+      <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '14px', lineHeight: '22px', color: '#7B7B7B', marginBottom: 0 }}>{card.desc}</p>
       {isCenter && (
-        <div style={{ marginTop: '20px' }}>
-          <ul style={{ listStyle: 'none', padding: 0, marginBottom: '20px' }}>
+        <div style={{ marginTop: '16px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '16px' }}>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {['Best For Both Men And Women', 'Low Scarring And Recovery Time', 'Permanent, Natural-Looking Results'].map((item, i) => (
-              <li key={i} style={{ fontFamily: "'Lato', sans-serif", fontSize: '14px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <li key={i} style={{ fontFamily: "'Lato', sans-serif", fontSize: '13px', color: '#333', marginBottom: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                 <span style={{ color: '#E4B753' }}>•</span> {item}
               </li>
             ))}
@@ -54,8 +57,8 @@ export default function Services() {
   );
 
   return (
-    <section className="services-section" style={{ padding: '100px 5%', backgroundColor: '#FFFAF1', textAlign: 'center' }}>
-      <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
+    <section className="services-section" style={{ padding: '80px 5%', backgroundColor: '#FFFAF1', textAlign: 'center' }}>
+      <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '20px' }}>
         <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
         <span style={{ 
           fontFamily: "'Marcellus', serif", 
@@ -71,10 +74,10 @@ export default function Services() {
 
       <h2 style={{ 
         fontFamily: "'Marcellus', serif", 
-        fontSize: '44px', 
-        lineHeight: '60px', 
+        fontSize: '40px', 
+        lineHeight: '52px', 
         color: '#000000', 
-        marginBottom: '60px',
+        marginBottom: '50px',
         fontWeight: 400,
         textTransform: 'capitalize'
       }}>
@@ -83,30 +86,16 @@ export default function Services() {
 
       <div className="services-grid" style={{ 
         display: 'grid', 
-        gridTemplateColumns: '1fr 1fr 1fr', 
-        gap: '30px', 
-        maxWidth: '1400px', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+        gap: '24px', 
+        maxWidth: '1200px', 
         margin: '0 auto',
-        alignItems: 'stretch'
+        alignItems: 'start'
       }}>
-        {/* Left Column */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-          {renderCard(serviceCards[1])} {/* FUT */}
-          {renderCard(serviceCards[3])} {/* Scalp */}
-        </div>
-
-        {/* Center Focus Card */}
-        <div style={{ height: '100%' }}>
-          {renderCard(serviceCards[0], true)} {/* FUE */}
-        </div>
-
-        {/* Right Column */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-          {renderCard(serviceCards[2])} {/* Non-Surgical */}
-          <div style={{ backgroundColor: '#FEF0D7', borderRadius: '24px', padding: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-             <p style={{ fontFamily: "'Marcellus', serif", fontSize: '20px', color: '#1C1C1C' }}>Expert Solutions for You</p>
-          </div>
-        </div>
+        {renderCard(serviceCards[1])} {/* FUT */}
+        {renderCard(serviceCards[0], true)} {/* FUE */}
+        {renderCard(serviceCards[2])} {/* Non-Surgical */}
+        {renderCard(serviceCards[3])} {/* Scalp */}
       </div>
     </section>
   );
