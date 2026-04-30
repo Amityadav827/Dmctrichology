@@ -5,6 +5,7 @@ import LeadForm from '@/components/LeadForm';
 import AboutUsCare from '@/components/AboutUsCare';
 import Services from '@/components/Services';
 import FeaturesBar from '@/components/FeaturesBar';
+import WhyChooseUs from '@/components/WhyChooseUs';
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <AboutUsCare />
       <Services />
       <FeaturesBar />
+      <WhyChooseUs />
     </main>
   );
 }

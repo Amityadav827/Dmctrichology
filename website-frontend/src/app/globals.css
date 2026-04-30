@@ -433,4 +433,18 @@ a {
     gap: 12px;
     padding: 12px;
   }
+
+  .why-choose-us div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .why-choose-us div[style*="flexDirection: column"] {
+    align-items: center !important;
+  }
+
+  .why-choose-us div[style*="width: 450px"] {
+    width: 300px !important;
+    height: 300px !important;
+  }
 }
