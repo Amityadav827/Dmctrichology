@@ -80,7 +80,7 @@ export default function AboutUsCare() {
             </div>
             <p style={{ 
               fontFamily: "'Lato', sans-serif", 
-              fontSize: '10px', 
+              fontSize: '16px', 
               lineHeight: '26px', 
               color: '#4D4D4D',
               textTransform: 'capitalize'
