@@ -23,24 +23,45 @@ const removeUploadedFile = (imagePath) => {
 
 const normalizeImagePath = (req, file) => {
   if (!file) return "";
-  return file.path || file.secure_url;
+  
+  // If Cloudinary provides a secure_url or path is already a full URL
+  const filePath = file.secure_url || file.path || "";
+  if (typeof filePath === "string" && filePath.startsWith("http")) {
+    return filePath;
+  }
+  
+  // For local uploads, use filename to construct the full public URL
+  if (file.filename) {
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
+    const normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+    return `${normalizedBaseUrl}/uploads/gallery/${file.filename}`;
+  }
+  
+  return filePath;
 };
+
 
 const transformItem = (req, item) => {
   const doc = item.toObject ? item.toObject() : item;
   let finalUrl = doc.imageUrl || doc.image || "";
   
-  if (finalUrl && !finalUrl.startsWith("http")) {
+  // Only prepend BASE_URL if the URL is not already absolute
+  if (finalUrl && typeof finalUrl === "string" && !finalUrl.startsWith("http")) {
     const protocol = req.headers["x-forwarded-proto"] || req.protocol;
     const host = req.get("host");
     const baseUrl = process.env.BASE_URL || `${protocol}://${host}`;
-    finalUrl = finalUrl.startsWith("/") ? `${baseUrl}${finalUrl}` : `${baseUrl}/${finalUrl}`;
+    const normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+    
+    finalUrl = finalUrl.startsWith("/") 
+      ? `${normalizedBaseUrl}${finalUrl}` 
+      : `${normalizedBaseUrl}/${finalUrl}`;
   }
   
   doc.imageUrl = finalUrl;
   doc.image = finalUrl; 
   return doc;
 };
+
 
 const createGalleryItem = async (req, res, next) => {
   try {
