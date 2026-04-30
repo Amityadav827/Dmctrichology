@@ -191,7 +191,7 @@ a {
 
 .slider-dots {
   position: absolute;
-  bottom: 40px;
+  bottom: 100px;
   left: 10%;
   display: flex;
   gap: 12px;
