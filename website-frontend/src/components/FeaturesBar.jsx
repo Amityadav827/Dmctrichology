@@ -25,10 +25,6 @@ export default function FeaturesBar() {
             <div key={index} style={{ 
               flex: '0 0 auto',
               width: '240px',
-              backgroundColor: '#fff',
-              borderRadius: '16px',
-              padding: '15px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
