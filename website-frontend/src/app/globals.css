@@ -63,6 +63,12 @@ a {
   box-shadow: 0 4px 12px rgba(240, 152, 25, 0.3);
 }
 
+.header-appointment-btn {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
 .icon-circle {
   background-color: #ffffff;
   color: var(--button-gradient);
