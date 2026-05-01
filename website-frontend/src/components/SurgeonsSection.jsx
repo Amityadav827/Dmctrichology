@@ -87,9 +87,14 @@ const SurgeonsSection = () => {
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
-                  color: '#000'
+                  transform: activeSurgeon.id === surgeon.id ? 'rotate(-45deg)' : 'none',
+                  transition: 'transform 0.3s ease'
                 }}>
-                  {activeSurgeon.id === surgeon.id ? <ArrowUpRight size={20} /> : <MoveRight size={20} />}
+                  <img 
+                    src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" 
+                    alt="arrow" 
+                    style={{ width: '20px', height: 'auto' }} 
+                  />
                 </div>
               </div>
             ))}
@@ -128,7 +133,7 @@ const SurgeonsSection = () => {
                 marginBottom: '20px'
               }}>
                 <img 
-                  src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
+                  src="https://res.cloudinary.com/dseixl6px/image/upload/v1777621065/dmc-trichology/de4kyqzwsgkrkdfsihkv.png" 
                   alt="icon" 
                   style={{ width: '25px', filter: 'brightness(0) invert(1)' }} 
                 />
@@ -153,7 +158,11 @@ const SurgeonsSection = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '30px' }}>
                 {activeSurgeon.features.map((feature, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <CheckCircle2 size={16} color="#F09819" />
+                    <img 
+                      src="https://res.cloudinary.com/dseixl6px/image/upload/v1777621065/dmc-trichology/egrvgm3b2utj3jai3g2k.png" 
+                      alt="check" 
+                      style={{ width: '16px', height: 'auto' }} 
+                    />
                     <span style={{ fontSize: '13px', color: '#333', fontFamily: "'Lato', sans-serif" }}>{feature}</span>
                   </div>
                 ))}
@@ -172,19 +181,13 @@ const SurgeonsSection = () => {
                 cursor: 'pointer'
               }}>
                 Get Details
-                <div style={{ 
-                  width: '24px', 
-                  height: '24px', 
-                  borderRadius: '50%', 
-                  backgroundColor: '#000', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  color: '#fff'
-                }}>
-                  <ArrowUpRight size={14} />
-                </div>
+                <img 
+                  src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" 
+                  alt="arrow" 
+                  style={{ width: '24px', height: 'auto' }} 
+                />
               </button>
+
             </div>
           </div>
 
