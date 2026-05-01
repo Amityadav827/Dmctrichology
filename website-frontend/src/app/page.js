@@ -5,6 +5,8 @@ import LeadForm from '@/components/LeadForm';
 import AboutUs from '@/components/AboutUs';
 import AboutUsCare from '@/components/AboutUsCare';
 import SurgeonsSection from '@/components/SurgeonsSection';
+import EnquirySection from '@/components/EnquirySection';
+
 
 
 import Services from '@/components/Services';
@@ -33,6 +35,8 @@ export default function Home() {
       <GradeSlider />
       <AboutUsCare />
       <SurgeonsSection />
+      <EnquirySection />
+
 
 
     </main>
