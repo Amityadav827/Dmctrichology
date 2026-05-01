@@ -31,8 +31,8 @@ export default function Home() {
 
       <Services />
       <FeaturesBar />
-      <TreatmentSection />
       <WhyChooseUs />
+      <TreatmentSection />
       <ResultsSlider />
       <GradeSlider />
       <AboutUsCare />
