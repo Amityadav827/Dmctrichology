@@ -118,11 +118,11 @@ a {
 .form-container {
   background-color: var(--form-bg);
   border-radius: 16px;
-  padding: 32px;
+  padding: 24px 32px; /* Slightly reduced vertical padding */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  max-width: 650px;
+  max-width: 700px; /* Increased width */
   width: 100%;
-  min-height: 550px; /* Prevent layout collapse */
+  min-height: 520px; /* Adjusted for stability */
 }
 
 .form-group {
@@ -161,7 +161,7 @@ a {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 700px; /* Adjusted to prevent overlap */
+  min-height: 750px; /* Increased height */
   overflow: hidden;
   background-color: #f8f8f8; /* Placeholder color */
 }
@@ -222,7 +222,7 @@ a {
 
 .slider-dots {
   position: absolute;
-  bottom: 60px;
+  bottom: 100px; /* Moved upward */
   left: 5%;
   display: flex;
   gap: 12px;
@@ -252,6 +252,7 @@ a {
   transform: translateY(-50%);
   z-index: 3;
 }
+
 
 
 /* TopBar */
