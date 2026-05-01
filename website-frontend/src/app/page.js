@@ -14,6 +14,7 @@ import FeaturesBar from '@/components/FeaturesBar';
 import WhyChooseUs from '@/components/WhyChooseUs';
 import TreatmentSection from '@/components/TreatmentSection';
 import FaqSection from '@/components/FaqSection';
+import BlogSection from '@/components/BlogSection';
 import ResultsSlider from '@/components/ResultsSlider';
 import GradeSlider from '@/components/GradeSlider';
 
@@ -40,6 +41,7 @@ export default function Home() {
       <EnquirySection />
       <TreatmentSection />
       <FaqSection />
+      <BlogSection />
 
 
 
