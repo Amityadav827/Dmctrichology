@@ -84,7 +84,6 @@ export default function FaqSection() {
           </div>
         </div>
 
-        {/* FAQ Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '25px' }}>
           {faqs.map((faq, index) => (
             <div 
@@ -102,17 +101,27 @@ export default function FaqSection() {
                 cursor: 'pointer'
               }}
             >
-              <img 
-                src={faq.icon} 
-                alt="FAQ Icon" 
-                style={{ 
-                  width: '40px', 
-                  height: '40px', 
-                  objectFit: 'contain',
-                  flexShrink: 0,
-                  filter: faq.isActive ? 'brightness(0) invert(1)' : 'none' 
-                }} 
-              />
+              <div style={{ 
+                width: '60px', 
+                height: '60px', 
+                borderRadius: '50%', 
+                backgroundColor: faq.isActive ? '#fff' : '#000', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <img 
+                  src={faq.icon} 
+                  alt="FAQ Icon" 
+                  style={{ 
+                    width: '30px', 
+                    height: '30px', 
+                    objectFit: 'contain',
+                    filter: faq.isActive ? 'none' : 'invert(1)' 
+                  }} 
+                />
+              </div>
               <div>
                 <h3 style={{ 
                   fontSize: '22px', 
@@ -151,9 +160,8 @@ export default function FaqSection() {
             cursor: 'pointer',
             fontSize: '14px',
             fontWeight: '600',
-            fontFamily: "'Marcellus', serif",
-            transition: 'all 0.3s ease'
-          }} className="view-all-btn">
+            fontFamily: "'Marcellus', serif"
+          }}>
             View All Questions
             <div style={{ 
               display: 'flex', 
@@ -171,16 +179,6 @@ export default function FaqSection() {
         .faq-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-        }
-        .view-all-btn:hover {
-          background-color: #000;
-          color: #fff;
-        }
-        .view-all-btn:hover div {
-          background-color: #fff;
-        }
-        .view-all-btn:hover img {
-          filter: brightness(0);
         }
         @media (max-width: 768px) {
           h2 { font-size: 32px !important; }
