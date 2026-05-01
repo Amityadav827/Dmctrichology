@@ -18,7 +18,7 @@ export default function TreatmentSection() {
   ];
 
   return (
-    <section style={{ padding: '80px 20px', backgroundColor: '#fff' }}>
+    <section style={{ padding: '0', backgroundColor: '#fff' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
         {/* Section Header */}
