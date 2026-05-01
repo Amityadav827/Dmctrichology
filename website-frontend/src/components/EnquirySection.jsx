@@ -9,7 +9,7 @@ const EnquirySection = () => {
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
         {/* Top Row: Info Left, Form Right */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '60px', marginBottom: '40px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '60px', marginBottom: '15px' }}>
           
           {/* Header and Contact Info */}
           <div style={{ flex: '1 1 500px' }}>
@@ -92,8 +92,8 @@ const EnquirySection = () => {
               </div>
             </form>
           </div>
-
         </div>
+
 
 
         {/* Bottom Row: Full Width Image */}
