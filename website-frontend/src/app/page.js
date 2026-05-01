@@ -32,12 +32,12 @@ export default function Home() {
       <Services />
       <FeaturesBar />
       <WhyChooseUs />
-      <TreatmentSection />
       <ResultsSlider />
       <GradeSlider />
       <AboutUsCare />
       <SurgeonsSection />
       <EnquirySection />
+      <TreatmentSection />
 
 
 

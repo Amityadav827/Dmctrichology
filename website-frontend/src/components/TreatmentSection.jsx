@@ -52,7 +52,7 @@ export default function TreatmentSection() {
                 <h3 style={{ fontSize: '28px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '15px' }}>{card.title}</h3>
                 <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Lato', sans-serif", lineHeight: '1.6', marginBottom: '30px' }}>{card.desc}</p>
                 
-                <a href={card.link} style={{ 
+                <a href={card.link} className="treatment-btn" style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
                   gap: '12px', 
@@ -64,7 +64,8 @@ export default function TreatmentSection() {
                   width: 'fit-content',
                   fontSize: '14px',
                   fontWeight: 'bold',
-                  fontFamily: "'Marcellus', serif"
+                  fontFamily: "'Marcellus', serif",
+                  transition: 'all 0.3s ease'
                 }}>
                   TAKE THE TEST
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -79,6 +80,15 @@ export default function TreatmentSection() {
       </div>
 
       <style jsx>{`
+        .treatment-btn:hover {
+          background-color: #E4B753 !important;
+          transform: translateY(-3px);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .treatment-btn:hover svg {
+          transform: translateX(5px);
+          transition: transform 0.3s ease;
+        }
         @media (max-width: 992px) {
           .treatment-grid > div {
             flex-direction: column !important;
