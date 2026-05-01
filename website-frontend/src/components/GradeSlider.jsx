@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -58,26 +57,6 @@ const gradeData = [
     grafts: '4000',
     session: '2',
     image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/r3etpyboaedgq8gizzpc.png'
-  },
-  {
-    id: 6,
-    grade: 'GRADE 6',
-    displayNum: '6',
-    area: '120 cm²',
-    density: '40/cm²',
-    grafts: '4800',
-    session: '2-3',
-    image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/apdtgxwhhkwjz2c6l7lv.png'
-  },
-  {
-    id: 7,
-    grade: 'GRADE 7',
-    displayNum: '7',
-    area: '140 cm²',
-    density: '40/cm²',
-    grafts: '5600',
-    session: '3',
-    image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png'
   }
 ];
 
@@ -222,8 +201,8 @@ export default function GradeSlider() {
           <button className="grade-prev-btn" style={{
             background: 'transparent',
             border: 'none',
-            width: '60px',
-            height: '60px',
+            width: '65px',
+            height: '65px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -233,14 +212,14 @@ export default function GradeSlider() {
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/apdtgxwhhkwjz2c6l7lv.png" 
               alt="Prev" 
-              style={{ width: '100%', height: 'auto', transform: 'rotate(180deg)' }} 
+              style={{ width: '100%', height: 'auto' }} 
             />
           </button>
           <button className="grade-next-btn" style={{
             background: 'transparent',
             border: 'none',
-            width: '60px',
-            height: '60px',
+            width: '65px',
+            height: '65px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -248,7 +227,7 @@ export default function GradeSlider() {
             transition: 'all 0.3s ease'
           }}>
             <img 
-              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/apdtgxwhhkwjz2c6l7lv.png" 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" 
               alt="Next" 
               style={{ width: '100%', height: 'auto' }} 
             />
@@ -268,7 +247,6 @@ export default function GradeSlider() {
           .grade-section { padding-top: 60px !important; padding-bottom: 60px !important; }
         }
       `}</style>
-
     </section>
   );
 }
