@@ -8,6 +8,8 @@ import FeaturesBar from '@/components/FeaturesBar';
 import WhyChooseUs from '@/components/WhyChooseUs';
 import ResultsSlider from '@/components/ResultsSlider';
 import GradeSlider from '@/components/GradeSlider';
+import AboutUsCare from '@/components/AboutUsCare';
+
 
 
 
@@ -30,6 +32,8 @@ export default function Home() {
       <WhyChooseUs />
       <ResultsSlider />
       <GradeSlider />
+      <AboutUsCare />
+
 
 
 
