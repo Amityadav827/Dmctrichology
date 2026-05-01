@@ -18,13 +18,14 @@ const surgeons = [
     id: 2,
     name: 'Dr. Nivedita Dadu',
     role: 'Expert Dermatologist and Hair Transplant Specialist with extensive experience in clinical dermatology.',
-    image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777621065/dmc-trichology/de4kyqzwsgkrkdfsihkv.png',
+    image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777621065/dmc-trichology/bdobupruhaxajozumydn.png',
     features: [
       'Advanced Skin and Hair Solutions',
       'Personalized Patient Care',
       'Innovative Treatment Methods'
     ]
   }
+
 ];
 
 const SurgeonsSection = () => {
