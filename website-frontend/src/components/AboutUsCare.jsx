@@ -101,11 +101,6 @@ const AboutUsCare = () => {
               gap: '10px',
               position: 'relative'
             }}>
-              <div style={{ 
-                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, 
-                backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1 
-              }}></div>
-
               {points.map((point, index) => (
                 <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '6px', zIndex: 2 }}>
                   <CheckCircle2 size={14} color="#fff" />
@@ -113,6 +108,7 @@ const AboutUsCare = () => {
                 </div>
               ))}
             </div>
+
           </div>
         </div>
       </div>
