@@ -37,13 +37,6 @@ const resultsData = [
     beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610956/dmc-trichology/wpnd3ul16le7hvbjgfoo.png',
     afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/fpfrrxn4a8setu58g64j.png',
     sessions: 'After 4 sessions'
-  },
-  {
-    id: 5,
-    title: 'Advanced Skin Rejuvenation',
-    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/acctki1o9lkpujrsmtqu.png',
-    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/aevxkziamfrlmc14tpv1.png',
-    sessions: 'After 3 sessions'
   }
 ];
 
@@ -52,13 +45,30 @@ export default function ResultsSlider() {
     <section className="results-section" style={{ backgroundColor: '#FFFAF1', padding: '100px 5%', position: 'relative', overflow: 'hidden' }}>
       <div className="results-container" style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div className="section-header" style={{ marginBottom: '50px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-             <div style={{ width: '60px', height: '1.5px', backgroundColor: '#F09819' }}></div>
-             <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#F09819' }}></div>
-             <span style={{ fontSize: '14px', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '3px', color: '#1F3D3F', fontFamily: "'Lato', sans-serif" }}>BEFORE AND AFTER</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
+             <img 
+               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
+               alt="icon" 
+               style={{ width: '50px', height: 'auto' }} 
+             />
+             <span style={{ 
+               fontSize: '12px', 
+               lineHeight: '28px',
+               fontWeight: '400', 
+               textTransform: 'uppercase', 
+               color: '#1F3D3F', 
+               fontFamily: "'Marcellus', serif" 
+             }}>BEFORE AND AFTER</span>
           </div>
-          <h2 style={{ fontSize: '54px', color: '#1F3D3F', fontFamily: "'Marcellus', serif", fontWeight: '400', lineHeight: '1.2' }}>Results that speak for themselves</h2>
+          <h2 style={{ 
+            fontSize: '44px', 
+            lineHeight: '60px',
+            color: '#1F3D3F', 
+            fontFamily: "'Marcellus', serif", 
+            fontWeight: '400' 
+          }}>Results that speak for themselves</h2>
         </div>
+
 
         <div className="slider-wrapper" style={{ position: 'relative' }}>
           <Swiper
