@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+// Force build update for blog images
 
 export default function BlogSection() {
   const blogs = [
