@@ -21,9 +21,7 @@ const AboutUsCare = () => {
         {/* Left Side: Large Image */}
         <div style={{ flex: '1 1 450px', position: 'relative' }}>
           <div style={{ 
-            borderRadius: '30px 30px 100px 30px', 
-            overflow: 'hidden',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
+            width: '100%'
           }}>
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777615993/dmc-trichology/nymnxvv9rzeyfjeif7oe.png" 
@@ -32,6 +30,7 @@ const AboutUsCare = () => {
             />
           </div>
         </div>
+
 
         {/* Right Side: Content */}
         <div style={{ flex: '1 1 450px' }}>
