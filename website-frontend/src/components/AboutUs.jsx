@@ -33,10 +33,11 @@ const AboutUs = () => {
           lineHeight: '60px',
           color: '#1F3D3F', 
           fontFamily: "'Marcellus', serif", 
-          marginBottom: '20px',
+          marginBottom: '0',
           fontWeight: '400',
           textTransform: 'uppercase'
         }}>WELCOME TO DMC TRICHOLOGY®</h2>
+
 
         <p style={{ 
           fontSize: '44px', 
