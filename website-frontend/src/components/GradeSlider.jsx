@@ -139,8 +139,8 @@ export default function GradeSlider() {
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 style={{ 
-                  perspective: '1000px',
-                  height: '480px',
+                  perspective: '1500px',
+                  height: '400px',
                   cursor: 'pointer'
                 }}
               >
@@ -151,7 +151,7 @@ export default function GradeSlider() {
                     width: '100%',
                     height: '100%',
                     textAlign: 'center',
-                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                     transformStyle: 'preserve-3d'
                   }}
                 >
@@ -169,13 +169,6 @@ export default function GradeSlider() {
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}>
-                    <span style={{ 
-                      fontSize: '48px', 
-                      fontWeight: '700', 
-                      color: '#333', 
-                      fontFamily: "'Lato', sans-serif",
-                      marginBottom: '20px'
-                    }}>{item.displayNum}</span>
                     <img src={item.image} alt={item.grade} style={{ width: '180px', height: 'auto', objectFit: 'contain' }} />
                   </div>
 
@@ -194,25 +187,25 @@ export default function GradeSlider() {
                     justifyContent: 'flex-start',
                     textAlign: 'left'
                   }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                       <span style={{ fontSize: '18px', fontWeight: '600', color: '#333', fontFamily: "'Lato', sans-serif" }}>{item.grade}</span>
                       <img src={item.image} alt={item.grade} style={{ width: '50px', height: '50px', borderRadius: '50%', border: '2px solid #F09819' }} />
                     </div>
 
                     <div style={{ flexGrow: 1 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 0', borderBottom: '1px solid #eee' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #eee' }}>
                         <span style={{ color: '#666', fontSize: '14px' }}>Approx Area</span>
                         <span style={{ fontWeight: '600', color: '#333' }}>{item.area}</span>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 0', borderBottom: '1px solid #eee' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #eee' }}>
                         <span style={{ color: '#666', fontSize: '14px' }}>Avg. Density</span>
                         <span style={{ fontWeight: '600', color: '#333' }}>{item.density}</span>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 0', backgroundColor: '#FBEED7', margin: '15px -10px', paddingLeft: '10px', paddingRight: '10px', borderRadius: '8px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', backgroundColor: '#FBEED7', margin: '12px -10px', paddingLeft: '10px', paddingRight: '10px', borderRadius: '8px' }}>
                         <span style={{ color: '#666', fontSize: '14px' }}>No. of Grafts</span>
                         <span style={{ fontWeight: '700', color: '#F09819' }}>{item.grafts}</span>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 0' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0' }}>
                         <span style={{ color: '#666', fontSize: '14px' }}>Session</span>
                         <span style={{ fontWeight: '600', color: '#333' }}>{item.session}</span>
                       </div>
@@ -227,44 +220,45 @@ export default function GradeSlider() {
         {/* Custom Navigation Buttons */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '40px', paddingRight: '5%' }}>
           <button className="grade-prev-btn" style={{
-            background: '#fff',
+            background: 'transparent',
             border: 'none',
-            borderRadius: '50%',
-            width: '50px',
-            height: '50px',
+            width: '60px',
+            height: '60px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
             transition: 'all 0.3s ease'
           }}>
-            <ArrowLeft size={24} color="#000" />
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/apdtgxwhhkwjz2c6l7lv.png" 
+              alt="Prev" 
+              style={{ width: '100%', height: 'auto', transform: 'rotate(180deg)' }} 
+            />
           </button>
           <button className="grade-next-btn" style={{
-            background: '#fff',
+            background: 'transparent',
             border: 'none',
-            borderRadius: '50%',
-            width: '50px',
-            height: '50px',
+            width: '60px',
+            height: '60px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
             transition: 'all 0.3s ease'
           }}>
-            <ArrowRight size={24} color="#000" />
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/apdtgxwhhkwjz2c6l7lv.png" 
+              alt="Next" 
+              style={{ width: '100%', height: 'auto' }} 
+            />
           </button>
         </div>
       </div>
 
       <style jsx>{`
         .grade-prev-btn:hover, .grade-next-btn:hover {
-          background-color: #F09819 !important;
-        }
-        .grade-prev-btn:hover :global(svg), .grade-next-btn:hover :global(svg) {
-          color: #fff !important;
+          transform: scale(1.1);
         }
         .is-flipped {
           transform: rotateY(180deg);
@@ -274,6 +268,7 @@ export default function GradeSlider() {
           .grade-section { padding-top: 60px !important; padding-bottom: 60px !important; }
         }
       `}</style>
+
     </section>
   );
 }
