@@ -80,20 +80,13 @@ const SurgeonsSection = () => {
               >
                 <span style={{ fontSize: '18px', fontFamily: "'Marcellus', serif" }}>{surgeon.name}</span>
                 <div style={{ 
-                  width: '40px', 
-                  height: '40px', 
-                  borderRadius: '50%', 
-                  backgroundColor: '#fff', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
                   transform: activeSurgeon.id === surgeon.id ? 'rotate(-45deg)' : 'none',
                   transition: 'transform 0.3s ease'
                 }}>
                   <img 
                     src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" 
                     alt="arrow" 
-                    style={{ width: '20px', height: 'auto' }} 
+                    style={{ width: '40px', height: 'auto' }} 
                   />
                 </div>
               </div>
@@ -122,20 +115,11 @@ const SurgeonsSection = () => {
 
             {/* Info */}
             <div style={{ flex: '1 1 300px', padding: '10px 0' }}>
-              <div style={{ 
-                width: '50px', 
-                height: '50px', 
-                backgroundColor: '#000', 
-                borderRadius: '50%', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                marginBottom: '20px'
-              }}>
+              <div style={{ marginBottom: '20px' }}>
                 <img 
                   src="https://res.cloudinary.com/dseixl6px/image/upload/v1777621065/dmc-trichology/de4kyqzwsgkrkdfsihkv.png" 
                   alt="icon" 
-                  style={{ width: '25px', filter: 'brightness(0) invert(1)' }} 
+                  style={{ width: '40px' }} 
                 />
               </div>
 
@@ -187,6 +171,7 @@ const SurgeonsSection = () => {
                   style={{ width: '24px', height: 'auto' }} 
                 />
               </button>
+
 
             </div>
           </div>
