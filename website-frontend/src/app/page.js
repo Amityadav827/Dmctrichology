@@ -4,6 +4,8 @@ import HeroSlider from '@/components/HeroSlider';
 import LeadForm from '@/components/LeadForm';
 import AboutUs from '@/components/AboutUs';
 import AboutUsCare from '@/components/AboutUsCare';
+import SurgeonsSection from '@/components/SurgeonsSection';
+
 
 import Services from '@/components/Services';
 import FeaturesBar from '@/components/FeaturesBar';
@@ -30,6 +32,8 @@ export default function Home() {
       <ResultsSlider />
       <GradeSlider />
       <AboutUsCare />
+      <SurgeonsSection />
+
 
     </main>
   );
