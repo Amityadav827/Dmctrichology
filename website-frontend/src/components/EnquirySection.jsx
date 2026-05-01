@@ -41,7 +41,7 @@ const EnquirySection = () => {
           </div>
 
           {/* Form */}
-          <div style={{ flex: '1 1 500px', paddingTop: '55px', position: 'relative', zIndex: 2 }}>
+          <div style={{ flex: '1 1 400px', paddingTop: '55px', position: 'relative', zIndex: 2 }}>
             <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
               <div>
                  <input type="text" placeholder="Name*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif" }} />
@@ -95,13 +95,14 @@ const EnquirySection = () => {
         </div>
 
         {/* Bottom Row: Full Width Image with negative margin */}
-        <div style={{ width: '100%', marginTop: '-50px', position: 'relative', zIndex: 1 }}>
+        <div style={{ width: '100%', marginTop: '-95px', position: 'relative', zIndex: 1 }}>
           <img 
             src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623481/dmc-trichology/sfqfld2ikbs00iqncyse.png" 
             alt="Consultation Result" 
             style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '40px' }} 
           />
         </div>
+
 
 
 
