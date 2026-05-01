@@ -5,7 +5,7 @@ export default function BlogSection() {
   const blogs = [
     {
       date: "May 9, 2025",
-      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777614507/dmc-trichology/nfk4apuep0hexzvztq70.png", // Placeholder until user provides images
+      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777639996/dmc-trichology/hhr1froywuxce7joupag.png",
       author: "Dr. Alisha Verma, Physiotherapist",
       authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png",
       title: "PRP Hair Treatment – How Many Sessions Needed?",
@@ -13,7 +13,7 @@ export default function BlogSection() {
     },
     {
       date: "May 9, 2025",
-      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777614507/dmc-trichology/faxp8cvrttxpt3w38asw.png",
+      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777639995/dmc-trichology/zsnaxe1vrwm9mzu278tn.png",
       author: "Dr. Meera Joshi, Posture & Spine",
       authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png",
       title: "Best Shampoo For Hair Fall — What Actually Helps And Why Most People Are Looking In The Wrong Place",
@@ -22,7 +22,7 @@ export default function BlogSection() {
     },
     {
       date: "May 9, 2025",
-      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777614507/dmc-trichology/uwcoyjbmka6mtnpxif4t.png",
+      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777639995/dmc-trichology/imnwwbaiz0g1z70et338.png",
       author: "Dr. Rahul Kapoor, Neuro & Expert",
       authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png",
       title: "Hair Regrowth Timeline — What To Realistically Expect And When To Actually See Results",
