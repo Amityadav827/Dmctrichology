@@ -15,15 +15,15 @@ const AboutUsCare = () => {
   ];
 
   return (
-    <section className="about-us-care" style={{ padding: '100px 5%', backgroundColor: '#fff', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '60px' }}>
+    <section className="about-us-care" style={{ padding: '60px 5%', backgroundColor: '#fff', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '40px' }}>
         
         {/* Left Side: Large Image */}
-        <div style={{ flex: '1 1 500px', position: 'relative' }}>
+        <div style={{ flex: '1 1 450px', position: 'relative' }}>
           <div style={{ 
-            borderRadius: '40px 40px 150px 40px', 
+            borderRadius: '30px 30px 100px 30px', 
             overflow: 'hidden',
-            boxShadow: '0 30px 60px rgba(0,0,0,0.1)'
+            boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
           }}>
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777615993/dmc-trichology/nymnxvv9rzeyfjeif7oe.png" 
@@ -34,16 +34,16 @@ const AboutUsCare = () => {
         </div>
 
         {/* Right Side: Content */}
-        <div style={{ flex: '1 1 500px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
+        <div style={{ flex: '1 1 450px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
              <img 
                src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                alt="icon" 
-               style={{ width: '50px', height: 'auto' }} 
+               style={{ width: '40px', height: 'auto' }} 
              />
              <span style={{ 
-               fontSize: '12px', 
-               lineHeight: '28px',
+               fontSize: '11px', 
+               lineHeight: '24px',
                fontWeight: '400', 
                textTransform: 'uppercase', 
                color: '#1F3D3F', 
@@ -52,35 +52,36 @@ const AboutUsCare = () => {
           </div>
 
           <h2 style={{ 
-            fontSize: '44px', 
-            lineHeight: '60px',
+            fontSize: '36px', 
+            lineHeight: '48px',
             color: '#1F3D3F', 
             fontFamily: "'Marcellus', serif", 
             fontWeight: '400',
-            marginBottom: '25px'
+            marginBottom: '15px'
           }}>WHY CHOOSE DMC <br /> TRICHOLOGY?</h2>
 
           <p style={{ 
-            fontSize: '15px', 
-            lineHeight: '26px', 
+            fontSize: '14px', 
+            lineHeight: '22px', 
             color: '#666', 
             fontFamily: "'Lato', sans-serif",
-            marginBottom: '40px',
-            maxWidth: '550px'
+            marginBottom: '30px',
+            maxWidth: '500px'
           }}>
-            At DMC Trichology, A Top Hair Transplant Trichologist With Advanced Training And Expertise, And Committed Staff Members, Work To Provide Our Clients With Excellent Hair Loss And Hair Transplant Results. We Make Every Effort To Offer The Most Effective, Comfortable, And Secure Surgical And Non-Surgical Methods For Hair Loss And Hair Transplantation.
+            At DMC Trichology, A Top Hair Transplant Trichologist With Advanced Training And Expertise, And Committed Staff Members, Work To Provide Our Clients With Excellent Hair Loss And Hair Transplant Results.
           </p>
 
           {/* Feature Box */}
           <div style={{ 
             display: 'flex', 
-            borderRadius: '30px', 
+            borderRadius: '20px', 
             overflow: 'hidden', 
-            boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
-            backgroundColor: '#1a1a1a' // Fallback
+            boxShadow: '0 15px 30px rgba(0,0,0,0.08)',
+            backgroundColor: '#1a1a1a',
+            height: '180px'
           }}>
             {/* Box Left: Image */}
-            <div style={{ width: '40%', minHeight: '200px' }}>
+            <div style={{ width: '40%' }}>
               <img 
                 src="https://res.cloudinary.com/dseixl6px/image/upload/v1777615993/dmc-trichology/xe3vngtetdirbpovotgi.png" 
                 alt="Hair Detail" 
@@ -91,32 +92,32 @@ const AboutUsCare = () => {
             {/* Box Right: Points with Background */}
             <div style={{ 
               width: '60%', 
-              padding: '30px', 
+              padding: '20px', 
               backgroundImage: `url('https://res.cloudinary.com/dseixl6px/image/upload/v1777615992/dmc-trichology/une4wf3ini0mowjzhgq3.png')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '15px',
+              alignContent: 'center',
+              gap: '10px',
               position: 'relative'
             }}>
-              {/* Overlay for readability if needed */}
               <div style={{ 
                 position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, 
                 backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1 
               }}></div>
 
               {points.map((point, index) => (
-                <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px', zIndex: 2 }}>
-                  <CheckCircle2 size={16} color="#fff" />
-                  <span style={{ color: '#fff', fontSize: '13px', fontFamily: "'Lato', sans-serif" }}>{point}</span>
+                <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '6px', zIndex: 2 }}>
+                  <CheckCircle2 size={14} color="#fff" />
+                  <span style={{ color: '#fff', fontSize: '12px', fontFamily: "'Lato', sans-serif" }}>{point}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
-
       </div>
+
 
       <style jsx>{`
         @media (max-width: 1024px) {

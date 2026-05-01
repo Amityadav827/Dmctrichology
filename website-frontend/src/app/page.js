@@ -20,12 +20,13 @@ export default function Home() {
           <LeadForm />
         </div>
       </div>
-      <AboutUsCare />
       <Services />
       <FeaturesBar />
       <WhyChooseUs />
       <ResultsSlider />
       <GradeSlider />
+      <AboutUsCare />
+
     </main>
   );
 }
