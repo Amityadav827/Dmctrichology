@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Marcellus&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Marcellus&display=swap&font-display=swap');
 
 :root {
   --text-primary: #1F3D3F;
@@ -122,6 +122,7 @@ a {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   max-width: 650px;
   width: 100%;
+  min-height: 550px; /* Prevent layout collapse */
 }
 
 .form-group {
@@ -139,6 +140,7 @@ a {
   outline: none;
   background-color: var(--white);
   transition: border-color 0.2s ease;
+  height: 50px; /* Stable height */
 }
 
 .form-input:focus {
@@ -159,9 +161,11 @@ a {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 600px;
+  min-height: 800px; /* Stable height for desktop */
   overflow: hidden;
+  background-color: #f8f8f8; /* Placeholder color */
 }
+
 
 .slide {
   position: absolute;
