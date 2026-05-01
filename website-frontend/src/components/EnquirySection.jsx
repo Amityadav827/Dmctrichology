@@ -9,7 +9,7 @@ const EnquirySection = () => {
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
         {/* Top Row: Info Left, Form Right */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '60px', marginBottom: '60px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '60px', marginBottom: '40px' }}>
           
           {/* Header and Contact Info */}
           <div style={{ flex: '1 1 500px' }}>
@@ -17,7 +17,7 @@ const EnquirySection = () => {
               <img src={iconUrl} alt="icon" style={{ width: '40px', height: 'auto' }} />
               <span style={{ fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', color: '#1C1C1C', fontFamily: "'Marcellus', serif" }}>WHY CHOOSE US SERVICES</span>
             </div>
-            <h2 style={{ fontSize: '44px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px' }}>REQUEST A <br />CONSULTATION</h2>
+            <h2 style={{ fontSize: '44px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px', lineHeight: '1.2' }}>REQUEST A <br />CONSULTATION</h2>
             <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Lato', sans-serif", marginBottom: '30px' }}>Clinic Timings ( By Appointments Only)</p>
 
             {/* Contact Info Grid */}
@@ -41,8 +41,8 @@ const EnquirySection = () => {
           </div>
 
           {/* Form */}
-          <div style={{ flex: '1 1 500px' }}>
-            <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+          <div style={{ flex: '1 1 500px', paddingTop: '55px' }}>
+            <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
               <div>
                  <input type="text" placeholder="Name*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif" }} />
               </div>
@@ -60,7 +60,7 @@ const EnquirySection = () => {
                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/bze1cv4xanahe5dvljhb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '16px' }} alt="icon" />
               </div>
               <div style={{ gridColumn: 'span 2' }}>
-                <textarea placeholder="Enter Your Message Here*" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif", minHeight: '120px', resize: 'none' }}></textarea>
+                <textarea placeholder="Enter Your Message Here*" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif", minHeight: '100px', resize: 'none' }}></textarea>
               </div>
               <div style={{ gridColumn: 'span 2' }}>
                 <button style={{ 
@@ -97,6 +97,7 @@ const EnquirySection = () => {
             </form>
           </div>
         </div>
+
 
         {/* Bottom Row: Full Width Image */}
         <div style={{ width: '100%' }}>
