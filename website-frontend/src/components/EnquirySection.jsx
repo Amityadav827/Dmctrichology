@@ -9,7 +9,7 @@ const EnquirySection = () => {
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
         {/* Top Row: Info Left, Form Right */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '60px', marginBottom: '15px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '60px', marginBottom: '0' }}>
           
           {/* Header and Contact Info */}
           <div style={{ flex: '1 1 500px' }}>
@@ -41,7 +41,7 @@ const EnquirySection = () => {
           </div>
 
           {/* Form */}
-          <div style={{ flex: '1 1 500px', paddingTop: '55px' }}>
+          <div style={{ flex: '1 1 500px', paddingTop: '55px', position: 'relative', zIndex: 2 }}>
             <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
               <div>
                  <input type="text" placeholder="Name*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif" }} />
@@ -94,16 +94,15 @@ const EnquirySection = () => {
           </div>
         </div>
 
-
-
-        {/* Bottom Row: Full Width Image */}
-        <div style={{ width: '100%' }}>
+        {/* Bottom Row: Full Width Image with negative margin */}
+        <div style={{ width: '100%', marginTop: '-30px', position: 'relative', zIndex: 1 }}>
           <img 
             src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623481/dmc-trichology/sfqfld2ikbs00iqncyse.png" 
             alt="Consultation Result" 
             style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '40px' }} 
           />
         </div>
+
 
       </div>
 
