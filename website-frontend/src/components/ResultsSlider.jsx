@@ -13,32 +13,33 @@ const resultsData = [
   {
     id: 1,
     title: 'Korean Facial Illumination',
-    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610956/dmc-trichology/mgpsabnfq5rhxg8hfypa.png',
-    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/uclg7c7k8d1fpkhgzog1.png',
+    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612758/dmc-trichology/dvy3knew0pzq1gg8fr8q.png',
+    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/uttbdof06l4xbpvexlv9.png',
     sessions: 'After 6 sessions'
   },
   {
     id: 2,
     title: 'Acne Arrestor Facial With Salicylic Peel',
-    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/xluzed4j0c3xbr56qhxy.png',
-    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610956/dmc-trichology/kklplf4oggtlsqost2b5.png',
+    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/g7fs5kfpckmmcjwg5sk0.png',
+    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612758/dmc-trichology/zxyvkmr0uf8pf5qxgfvf.png',
     sessions: 'After 4 sessions'
   },
   {
     id: 3,
     title: 'Elastin Boost Facial',
-    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/ie9dh5i91bvseuinr7h5.png',
-    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610956/dmc-trichology/rsdxfwxbwbhxlnoc6cjz.png',
+    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/meeed3zg8w5j3xhkcfxc.png',
+    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/w6qder12vvhxrbhzskgw.png',
     sessions: 'After 5 sessions'
   },
   {
     id: 4,
     title: 'Derma Revive Facial',
-    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610956/dmc-trichology/wpnd3ul16le7hvbjgfoo.png',
-    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/fpfrrxn4a8setu58g64j.png',
+    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/dh6webh6x4l7qfrlzxtl.png',
+    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/bif89jyygbycclg8qa92.png',
     sessions: 'After 4 sessions'
   }
 ];
+
 
 export default function ResultsSlider() {
   return (
