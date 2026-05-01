@@ -201,8 +201,8 @@ export default function GradeSlider() {
           <button className="grade-prev-btn" style={{
             background: 'transparent',
             border: 'none',
-            width: '65px',
-            height: '65px',
+            width: '50px',
+            height: '50px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -218,8 +218,8 @@ export default function GradeSlider() {
           <button className="grade-next-btn" style={{
             background: 'transparent',
             border: 'none',
-            width: '65px',
-            height: '65px',
+            width: '50px',
+            height: '50px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -232,6 +232,7 @@ export default function GradeSlider() {
               style={{ width: '100%', height: 'auto' }} 
             />
           </button>
+
         </div>
       </div>
 
