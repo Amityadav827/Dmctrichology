@@ -8,9 +8,11 @@ const EnquirySection = () => {
     <section className="enquiry-section" style={{ padding: '100px 5%', backgroundColor: '#fff' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
-        {/* Header and Contact Info Row */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '40px' }}>
-          <div>
+        {/* Top Row: Info Left, Form Right */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '60px', marginBottom: '60px' }}>
+          
+          {/* Header and Contact Info */}
+          <div style={{ flex: '1 1 500px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
               <img src={iconUrl} alt="icon" style={{ width: '40px', height: 'auto' }} />
               <span style={{ fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', color: '#1C1C1C', fontFamily: "'Marcellus', serif" }}>WHY CHOOSE US SERVICES</span>
@@ -19,36 +21,23 @@ const EnquirySection = () => {
             <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Lato', sans-serif", marginBottom: '30px' }}>Clinic Timings ( By Appointments Only)</p>
 
             {/* Contact Info Grid */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '40px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px' }}>
               {[
                 { label: 'Phone Number', value: '+91-8527830194', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png' },
                 { label: 'Service Timing ( Mon To Sat )', value: '9:00 AM To 8:00 PM', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/tvkpjjjy78damrrfvi57.png' },
                 { label: 'Service Timing ( Sunday )', value: '10:00 AM To 7:00 PM', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/tvkpjjjy78damrrfvi57.png' }
               ].map((item, i) => (
-                <div key={i} style={{ borderLeft: i > 0 ? '1px solid #ddd' : 'none', paddingLeft: i > 0 ? '40px' : '0', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                  <div style={{ width: '40px', height: '40px', backgroundColor: '#000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src={item.icon} alt="icon" style={{ width: '18px', filter: 'brightness(0) invert(1)' }} />
+                <div key={i} style={{ borderLeft: i > 0 ? '1px solid #ddd' : 'none', paddingLeft: i > 0 ? '30px' : '0', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '35px', height: '35px', backgroundColor: '#000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <img src={item.icon} alt="icon" style={{ width: '16px', filter: 'brightness(0) invert(1)' }} />
                   </div>
                   <div>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#777', fontFamily: "'Lato', sans-serif" }}>{item.label}</p>
-                    <p style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#000', fontFamily: "'Lato', sans-serif" }}>{item.value}</p>
+                    <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Lato', sans-serif" }}>{item.label}</p>
+                    <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold', color: '#000', fontFamily: "'Lato', sans-serif" }}>{item.value}</p>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Bottom Row: Image Left, Form Right */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', alignItems: 'stretch' }}>
-          
-          {/* Image */}
-          <div style={{ flex: '1 1 500px' }}>
-            <img 
-              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623481/dmc-trichology/sfqfld2ikbs00iqncyse.png" 
-              alt="Enquiry" 
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '40px' }} 
-            />
           </div>
 
           {/* Form */}
@@ -71,7 +60,7 @@ const EnquirySection = () => {
                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/bze1cv4xanahe5dvljhb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '16px' }} alt="icon" />
               </div>
               <div style={{ gridColumn: 'span 2' }}>
-                <textarea placeholder="Enter Your Message Here*" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif", minHeight: '150px' }}></textarea>
+                <textarea placeholder="Enter Your Message Here*" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif", minHeight: '120px', resize: 'none' }}></textarea>
               </div>
               <div style={{ gridColumn: 'span 2' }}>
                 <button style={{ 
@@ -109,8 +98,16 @@ const EnquirySection = () => {
           </div>
         </div>
 
-      </div>
+        {/* Bottom Row: Full Width Image */}
+        <div style={{ width: '100%' }}>
+          <img 
+            src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623481/dmc-trichology/sfqfld2ikbs00iqncyse.png" 
+            alt="Consultation Result" 
+            style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '40px' }} 
+          />
+        </div>
 
+      </div>
 
       <style jsx>{`
         @media (max-width: 1024px) {
