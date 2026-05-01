@@ -61,22 +61,16 @@ const AboutUs = () => {
               <p style={{ fontSize: '18px', color: '#1F3D3F', fontFamily: "'Marcellus', serif", marginBottom: '20px' }}>{stat.label}</p>
               
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '100%', maxWidth: '150px', height: '1.5px', backgroundColor: '#F09819', position: 'relative' }}>
-                  <div style={{ 
-                    width: '10px', 
-                    height: '10px', 
-                    borderRadius: '50%', 
-                    backgroundColor: '#F09819', 
-                    position: 'absolute', 
-                    left: '50%', 
-                    top: '50%', 
-                    transform: 'translate(-50%, -50%)' 
-                  }}></div>
-                </div>
+                <img 
+                  src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
+                  alt="divider" 
+                  style={{ width: '40px', height: 'auto', marginBottom: '10px' }} 
+                />
                 <p style={{ fontSize: '12px', color: '#777', fontFamily: "'Lato', sans-serif", maxWidth: '180px', lineHeight: '1.6' }}>
                   Experience Compassionate Care Healthier Care Certified Brighter Smile.
                 </p>
               </div>
+
             </div>
           ))}
         </div>
