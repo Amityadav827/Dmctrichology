@@ -19,7 +19,7 @@ const AboutUs = () => {
              style={{ width: '40px', height: 'auto' }} 
            />
            <span style={{ 
-             fontSize: '11px', 
+             fontSize: '12px', 
              fontWeight: '400', 
              textTransform: 'uppercase', 
              color: '#000', 
@@ -29,7 +29,8 @@ const AboutUs = () => {
         </div>
 
         <h2 style={{ 
-          fontSize: '54px', 
+          fontSize: '44px', 
+          lineHeight: '60px',
           color: '#1F3D3F', 
           fontFamily: "'Marcellus', serif", 
           marginBottom: '20px',
@@ -38,13 +39,13 @@ const AboutUs = () => {
         }}>WELCOME TO DMC TRICHOLOGY®</h2>
 
         <p style={{ 
-          fontSize: '24px', 
+          fontSize: '44px', 
+          lineHeight: '60px',
           color: '#333', 
           fontFamily: "'Marcellus', serif", 
           marginBottom: '60px',
-          maxWidth: '900px',
-          margin: '0 auto 60px',
-          lineHeight: '1.4'
+          maxWidth: '1200px',
+          margin: '0 auto 60px'
         }}>
           At DMC Trichology, Advanced Hair Transplant Techniques Restore Your Hairline And Boost Confidence
         </p>
@@ -64,16 +65,16 @@ const AboutUs = () => {
                 <img 
                   src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                   alt="divider" 
-                  style={{ width: '40px', height: 'auto', marginBottom: '10px' }} 
+                  style={{ width: '60px', height: 'auto', marginBottom: '10px' }} 
                 />
                 <p style={{ fontSize: '12px', color: '#777', fontFamily: "'Lato', sans-serif", maxWidth: '180px', lineHeight: '1.6' }}>
                   Experience Compassionate Care Healthier Care Certified Brighter Smile.
                 </p>
               </div>
-
             </div>
           ))}
         </div>
+
       </div>
 
       <style jsx>{`
