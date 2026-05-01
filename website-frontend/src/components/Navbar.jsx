@@ -4,23 +4,20 @@ import { fetchMenu } from '../services/api';
 import { ChevronDown, Menu as MenuIcon } from 'lucide-react';
 
 export default function Navbar() {
-  const [menuItems, setMenuItems] = useState([]);
+  const [menuItems, setMenuItems] = useState([
+    { label: 'Home', link: '/' },
+    { label: 'About', link: '/about', dropdown: [{label: 'Our Story', link: '#'}] },
+    { label: 'Pages', link: '#', dropdown: [{label: 'Page 1', link: '#'}, {label: 'Page 2', link: '#'}] },
+    { label: 'Services', link: '/services' },
+    { label: 'Blog', link: '/blog' },
+    { label: 'Contact', link: '/contact' }
+  ]);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     fetchMenu().then(data => {
       if(data && data.length > 0) {
         setMenuItems(data);
-      } else {
-        // Fallback
-        setMenuItems([
-          { label: 'Home', link: '/' },
-          { label: 'About', link: '/about', dropdown: [{label: 'Our Story', link: '#'}] },
-          { label: 'Pages', link: '#', dropdown: [{label: 'Page 1', link: '#'}, {label: 'Page 2', link: '#'}] },
-          { label: 'Services', link: '/services' },
-          { label: 'Blog', link: '/blog' },
-          { label: 'Contact', link: '/contact' }
-        ]);
       }
     });
   }, []);
