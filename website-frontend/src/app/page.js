@@ -7,6 +7,8 @@ import Services from '@/components/Services';
 import FeaturesBar from '@/components/FeaturesBar';
 import WhyChooseUs from '@/components/WhyChooseUs';
 import ResultsSlider from '@/components/ResultsSlider';
+import GradeSlider from '@/components/GradeSlider';
+
 
 
 
@@ -27,6 +29,8 @@ export default function Home() {
       <FeaturesBar />
       <WhyChooseUs />
       <ResultsSlider />
+      <GradeSlider />
+
 
 
 
