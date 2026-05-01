@@ -28,8 +28,8 @@ const EnquirySection = () => {
                 { label: 'Service Timing ( Sunday )', value: '10:00 AM To 7:00 PM', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/tvkpjjjy78damrrfvi57.png' }
               ].map((item, i) => (
                 <div key={i} style={{ borderLeft: i > 0 ? '1px solid #ddd' : 'none', paddingLeft: i > 0 ? '30px' : '0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '35px', height: '35px', backgroundColor: '#000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <img src={item.icon} alt="icon" style={{ width: '16px', filter: 'brightness(0) invert(1)' }} />
+                  <div style={{ flexShrink: 0 }}>
+                    <img src={item.icon} alt="icon" style={{ width: '30px' }} />
                   </div>
                   <div>
                     <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Lato', sans-serif" }}>{item.label}</p>
@@ -53,11 +53,11 @@ const EnquirySection = () => {
                  <select style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif", appearance: 'none' }}>
                    <option>Type Of Service Enquiry*</option>
                  </select>
-                 <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '16px' }} alt="icon" />
+                 <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '12px' }} alt="icon" />
               </div>
               <div style={{ position: 'relative' }}>
                  <input type="text" placeholder="Select Date & Time*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif" }} />
-                 <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/bze1cv4xanahe5dvljhb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '16px' }} alt="icon" />
+                 <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/bze1cv4xanahe5dvljhb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '30px' }} alt="icon" />
               </div>
               <div style={{ gridColumn: 'span 2' }}>
                 <textarea placeholder="Enter Your Message Here*" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif", minHeight: '100px', resize: 'none' }}></textarea>
@@ -81,21 +81,18 @@ const EnquirySection = () => {
                 }}>
                   Schedule Your Visit
                   <div style={{ 
-                    width: '30px', 
-                    height: '30px', 
-                    borderRadius: '50%', 
-                    backgroundColor: '#fff', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    color: '#000'
+                    transform: 'rotate(-45deg)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}>
-                    <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" style={{ width: '14px', transform: 'rotate(-45deg)' }} alt="arrow" />
+                    <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" style={{ width: '40px' }} alt="arrow" />
                   </div>
                 </button>
               </div>
             </form>
           </div>
+
         </div>
 
 
