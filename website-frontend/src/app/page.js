@@ -2,7 +2,9 @@ import TopBar from '@/components/TopBar';
 import Header from '@/components/Header';
 import HeroSlider from '@/components/HeroSlider';
 import LeadForm from '@/components/LeadForm';
+import AboutUs from '@/components/AboutUs';
 import AboutUsCare from '@/components/AboutUsCare';
+
 import Services from '@/components/Services';
 import FeaturesBar from '@/components/FeaturesBar';
 import WhyChooseUs from '@/components/WhyChooseUs';
@@ -20,6 +22,8 @@ export default function Home() {
           <LeadForm />
         </div>
       </div>
+      <AboutUs />
+
       <Services />
       <FeaturesBar />
       <WhyChooseUs />
