@@ -37,8 +37,38 @@ const resultsData = [
     beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/dh6webh6x4l7qfrlzxtl.png',
     afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/bif89jyygbycclg8qa92.png',
     sessions: 'After 4 sessions'
+  },
+  // Duplicating for loop functionality with slidesPerView 4
+  {
+    id: 5,
+    title: 'Korean Facial Illumination',
+    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612758/dmc-trichology/dvy3knew0pzq1gg8fr8q.png',
+    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/uttbdof06l4xbpvexlv9.png',
+    sessions: 'After 6 sessions'
+  },
+  {
+    id: 6,
+    title: 'Acne Arrestor Facial With Salicylic Peel',
+    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/g7fs5kfpckmmcjwg5sk0.png',
+    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612758/dmc-trichology/zxyvkmr0uf8pf5qxgfvf.png',
+    sessions: 'After 4 sessions'
+  },
+  {
+    id: 7,
+    title: 'Elastin Boost Facial',
+    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/meeed3zg8w5j3xhkcfxc.png',
+    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/w6qder12vvhxrbhzskgw.png',
+    sessions: 'After 5 sessions'
+  },
+  {
+    id: 8,
+    title: 'Derma Revive Facial',
+    beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/dh6webh6x4l7qfrlzxtl.png',
+    afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/bif89jyygbycclg8qa92.png',
+    sessions: 'After 4 sessions'
   }
 ];
+
 
 
 export default function ResultsSlider() {
