@@ -75,13 +75,16 @@ export default function ResultsSlider() {
             modules={[Navigation, Autoplay]}
             spaceBetween={30}
             slidesPerView={1}
+            onBeforeInit={(swiper) => {
+              swiper.params.navigation.prevEl = '.results-prev-btn';
+              swiper.params.navigation.nextEl = '.results-next-btn';
+            }}
             navigation={{
               nextEl: '.results-next-btn',
               prevEl: '.results-prev-btn',
             }}
             loop={true}
             autoplay={{ delay: 6000, disableOnInteraction: false }}
-
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
@@ -90,6 +93,7 @@ export default function ResultsSlider() {
             className="results-swiper"
             style={{ padding: '20px 0 60px' }}
           >
+
             {resultsData.map((result) => (
               <SwiperSlide key={result.id}>
                 <div className="result-card" style={{ 
@@ -105,7 +109,7 @@ export default function ResultsSlider() {
                   transition: 'transform 0.3s ease'
                 }}>
                   <h3 style={{ 
-                    fontSize: '18px', 
+                    fontSize: '14px', 
                     marginBottom: '24px', 
                     fontFamily: "'Lato', sans-serif",
                     fontWeight: '600',
@@ -118,6 +122,7 @@ export default function ResultsSlider() {
                   }}>
                     {result.title}
                   </h3>
+
                   
                   <div className="images-container" style={{ 
                     display: 'flex', 
