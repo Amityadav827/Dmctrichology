@@ -102,27 +102,17 @@ export default function FaqSection() {
                 cursor: 'pointer'
               }}
             >
-              <div style={{ 
-                width: '60px', 
-                height: '60px', 
-                borderRadius: '50%', 
-                backgroundColor: faq.isActive ? '#fff' : '#000', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                <img 
-                  src={faq.icon} 
-                  alt="FAQ Icon" 
-                  style={{ 
-                    width: '30px', 
-                    height: '30px', 
-                    objectFit: 'contain',
-                    filter: faq.isActive ? 'none' : 'invert(1)' 
-                  }} 
-                />
-              </div>
+              <img 
+                src={faq.icon} 
+                alt="FAQ Icon" 
+                style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  objectFit: 'contain',
+                  flexShrink: 0,
+                  filter: faq.isActive ? 'brightness(0) invert(1)' : 'none' 
+                }} 
+              />
               <div>
                 <h3 style={{ 
                   fontSize: '22px', 
@@ -166,16 +156,12 @@ export default function FaqSection() {
           }} className="view-all-btn">
             View All Questions
             <div style={{ 
-              width: '32px', 
-              height: '32px', 
-              borderRadius: '50%', 
-              backgroundColor: '#000', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
               transform: 'rotate(-45deg)'
             }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" alt="arrow" style={{ width: '24px' }} />
+              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" alt="arrow" style={{ width: '32px' }} />
             </div>
           </button>
         </div>
