@@ -21,6 +21,15 @@ export default function HeroSlider() {
       starIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png',
       title: 'Expert Trichology Care for Healthy Hair',
       description: 'Experience Compassionate Care And Advanced Trichology Solutions For Healthier, Stronger Hair.'
+    },
+    {
+      image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png',
+      tag: 'TRUSTED CARE',
+      tagIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png',
+      patientsIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png',
+      starIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png',
+      title: 'Advanced Hair Solutions You Can Trust',
+      description: 'Experience Compassionate Care And Advanced Trichology Solutions For Healthier, Stronger Hair.'
     }
   ]);
   const [currentSlide, setCurrentSlide] = useState(0);

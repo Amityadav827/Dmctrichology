@@ -161,7 +161,7 @@ a {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 800px; /* Stable height for desktop */
+  min-height: 700px; /* Adjusted to prevent overlap */
   overflow: hidden;
   background-color: #f8f8f8; /* Placeholder color */
 }
@@ -187,10 +187,10 @@ a {
 
 .slide-content {
   position: absolute;
-  top: 50%;
-  left: 10%;
+  top: 55%; /* Moved down slightly */
+  left: 5%;
   transform: translateY(-50%);
-  max-width: 600px;
+  max-width: 500px; /* Reduced to prevent heading entering form */
   z-index: 3;
 }
 
@@ -208,22 +208,22 @@ a {
 }
 
 .slide-title {
-  font-size: 4rem;
+  font-size: 3.5rem; /* Restored closer to original */
   line-height: 1.1;
   margin-bottom: 24px;
 }
 
 .slide-desc {
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 32px;
-  max-width: 80%;
+  max-width: 90%;
 }
 
 .slider-dots {
   position: absolute;
-  bottom: 100px;
-  left: 10%;
+  bottom: 60px;
+  left: 5%;
   display: flex;
   gap: 12px;
   z-index: 3;
@@ -247,11 +247,12 @@ a {
 
 .hero-right {
   position: absolute;
-  top: 50%;
-  right: 10%;
+  top: 55%; /* Aligned with content */
+  right: 5%;
   transform: translateY(-50%);
   z-index: 3;
 }
+
 
 /* TopBar */
 .topbar {
