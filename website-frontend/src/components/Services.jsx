@@ -104,7 +104,7 @@ export default function Services() {
         }}>
           <h3 style={{ fontFamily: "'Marcellus', serif", fontSize: '28px', lineHeight: '38px', color: '#000', marginBottom: '20px', fontWeight: 400 }}>Follicular Unit Extraction (FUE)</h3>
           <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '15px', lineHeight: '26px', color: '#333', marginBottom: '24px' }}>
-            Each Hair Follicle Is Removed Individually And Implanted Into The Thinning Or Bald Areas, Making Sure That It's Natural Volume And Growth.
+            Each Hair Follicle Is Removed Individually And Implanted Into The Thinning Or Bald Areas, Making Sure That It&apos;s Natural Volume And Growth.
           </p>
           <ul style={{ listStyle: 'none', padding: 0, marginBottom: '24px', textAlign: 'left' }}>
             {['Best For Both Men And Women', 'Low Scarring And Recovery Time', 'Permanent, Natural-Looking Results'].map((item, i) => (
