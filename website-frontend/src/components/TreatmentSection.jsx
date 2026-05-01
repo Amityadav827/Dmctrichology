@@ -1,4 +1,5 @@
 import React from 'react';
+// Force update comment
 
 export default function TreatmentSection() {
   const cards = [
