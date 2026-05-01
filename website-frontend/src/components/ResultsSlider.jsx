@@ -69,7 +69,9 @@ export default function ResultsSlider() {
               nextEl: '.results-next-btn',
               prevEl: '.results-prev-btn',
             }}
+            loop={true}
             autoplay={{ delay: 6000, disableOnInteraction: false }}
+
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },

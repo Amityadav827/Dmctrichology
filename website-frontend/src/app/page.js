@@ -7,7 +7,7 @@ import Services from '@/components/Services';
 import FeaturesBar from '@/components/FeaturesBar';
 import WhyChooseUs from '@/components/WhyChooseUs';
 import ResultsSlider from '@/components/ResultsSlider';
-import BestHairGraft from '@/components/BestHairGraft';
+
 
 
 
@@ -25,9 +25,9 @@ export default function Home() {
       <AboutUsCare />
       <Services />
       <FeaturesBar />
-      <ResultsSlider />
-      <BestHairGraft />
       <WhyChooseUs />
+      <ResultsSlider />
+
 
 
     </main>
