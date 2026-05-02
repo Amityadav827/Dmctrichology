@@ -32,7 +32,7 @@ export default function BlogSection() {
   ];
 
   return (
-    <section style={{ padding: '80px 5%', backgroundColor: '#fff' }}>
+    <section>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
         {/* Header */}
@@ -86,16 +86,8 @@ export default function BlogSection() {
 
               {/* Content */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-                <div style={{ 
-                  width: '32px', 
-                  height: '32px', 
-                  borderRadius: '50%', 
-                  backgroundColor: blog.isActive ? '#fff' : '#000', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center' 
-                }}>
-                   <img src={blog.authorIcon} alt="author" style={{ width: '18px', filter: blog.isActive ? 'none' : 'invert(1)' }} />
+                <div>
+                   <img src={blog.authorIcon} alt="author" style={{ width: '32px' }} />
                 </div>
                 <span style={{ fontSize: '13px', color: blog.isActive ? 'rgba(255,255,255,0.7)' : '#666', fontFamily: "'Lato', sans-serif" }}>
                   {blog.author}
@@ -147,18 +139,7 @@ export default function BlogSection() {
             fontFamily: "'Marcellus', serif"
           }}>
             View All
-            <div style={{ 
-              width: '32px', 
-              height: '32px', 
-              borderRadius: '50%', 
-              backgroundColor: '#000', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              transform: 'rotate(-45deg)'
-            }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" alt="arrow" style={{ width: '24px' }} />
-            </div>
+            <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777698274/dmc-trichology/dh9kblxoinqmi5kvoona.png" alt="arrow" style={{ width: '32px' }} />
           </button>
         </div>
 
