@@ -89,8 +89,8 @@ export default function Footer() {
       <div style={{ backgroundColor: '#000', padding: '0 5% 0 5%', position: 'relative' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
           
-          {/* Left Side: Logo & About - Flexed Side by Side */}
-          <div style={{ flex: '2', minWidth: '500px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '40px' }}>
+          {/* Left Side: Logo & About - Flexed Side by Side (Width Reduced) */}
+          <div style={{ flex: '1', minWidth: '400px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '40px' }}>
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png" 
               alt="logo" 
@@ -98,7 +98,7 @@ export default function Footer() {
             />
             <div>
               <h5 style={{ color: '#fff', fontSize: '15px', letterSpacing: '1.5px', marginBottom: '15px', fontWeight: '500', fontFamily: "'Marcellus', serif" }}>ABOUT DMC TRICHOLOGY</h5>
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', maxWidth: '450px', lineHeight: '1.7', marginBottom: '25px' }}>
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', maxWidth: '400px', lineHeight: '1.7', marginBottom: '25px' }}>
                 One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures.
               </p>
               
@@ -113,11 +113,11 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Right Side: Overlap Card */}
+          {/* Right Side: Overlap Card (Width Increased) */}
           <div style={{ 
-            flex: '1', 
+            flex: '1.8', 
             minWidth: '350px', 
-            maxWidth: '1000px',
+            maxWidth: '1100px',
             marginTop: '-120px', 
             zIndex: '10' 
           }}>
