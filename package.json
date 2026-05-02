@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "install-backend": "npm install --prefix backend",
-    "build": "echo 'Root build not required'",
     "start": "node backend/server.js"
   }
 }
