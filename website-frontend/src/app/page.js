@@ -10,6 +10,7 @@ import EnquirySection from '@/components/EnquirySection';
 
 
 import Services from '@/components/Services';
+import ServiceSlider from '@/components/ServiceSlider';
 import FeaturesBar from '@/components/FeaturesBar';
 import WhyChooseUs from '@/components/WhyChooseUs';
 import TreatmentSection from '@/components/TreatmentSection';
@@ -34,6 +35,7 @@ export default function Home() {
       <AboutUs />
 
       <Services />
+      <ServiceSlider />
       <FeaturesBar />
       <WhyChooseUs />
       <ResultsSlider />
