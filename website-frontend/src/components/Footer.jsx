@@ -77,16 +77,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Disclaimer Area - Updated with top and bottom borders */}
-        <div style={{ maxWidth: '1400px', margin: '60px auto 0 auto', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '25px 0' }}>
-           <p style={{ fontSize: '14px', color: '#444', lineHeight: '1.6', textAlign: 'left' }}>
+        {/* Disclaimer Area - Updated to 30% width and right aligned */}
+        <div style={{ width: '30%', marginLeft: 'auto', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '25px 0', margin: '60px 0 0 auto' }}>
+           <p style={{ fontSize: '14px', color: '#444', lineHeight: '1.6', textAlign: 'right' }}>
             <strong>Disclaimer:</strong> Content is for awareness and education only, not medical advice. Consult a qualified trichologist or dermatologist for proper diagnosis and treatment. Results may vary for each individual.
           </p>
         </div>
       </div>
 
       {/* Bottom Footer Section (Black) */}
-      <div style={{ backgroundColor: '#000', padding: '0 5% 40px 5%', position: 'relative' }}>
+      <div style={{ backgroundColor: '#000', padding: '0 5% 0 5%', position: 'relative' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
           
           {/* Left Side: Logo & About - Flexed Side by Side */}
@@ -102,11 +102,11 @@ export default function Footer() {
                 One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures.
               </p>
               
-              {/* Social Icons */}
-              <div style={{ display: 'flex', gap: '15px' }}>
+              {/* Social Icons - Circle Styles Removed, Size Increased to 40px */}
+              <div style={{ display: 'flex', gap: '20px' }}>
                 {socialIcons.map((url, i) => (
-                  <a key={i} href="#" style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.3s' }}>
-                    <img src={url} alt="social" style={{ width: '22px' }} />
+                  <a key={i} href="#" style={{ textDecoration: 'none' }}>
+                    <img src={url} alt="social" style={{ width: '40px' }} />
                   </a>
                 ))}
               </div>
@@ -117,7 +117,7 @@ export default function Footer() {
           <div style={{ 
             flex: '1', 
             minWidth: '350px', 
-            maxWidth: '650px',
+            maxWidth: '850px',
             marginTop: '-120px', 
             zIndex: '10' 
           }}>
