@@ -141,7 +141,7 @@ export default function FaqSection() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '12px',
-            padding: '12px 30px',
+            padding: '12px 20px',
             borderRadius: '50px',
             border: '1px solid #E5E5E5',
             backgroundColor: '#fff',
