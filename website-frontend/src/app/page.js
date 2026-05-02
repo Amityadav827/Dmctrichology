@@ -18,6 +18,7 @@ import BlogSection from '@/components/BlogSection';
 import PressMediaSection from '@/components/PressMediaSection';
 import ResultsSlider from '@/components/ResultsSlider';
 import GradeSlider from '@/components/GradeSlider';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
@@ -44,6 +45,7 @@ export default function Home() {
       <FaqSection />
       <BlogSection />
       <PressMediaSection />
+      <Footer />
 
 
 
