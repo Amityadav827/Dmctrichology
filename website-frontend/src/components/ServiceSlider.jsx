@@ -42,7 +42,7 @@ export default function ServiceSlider() {
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
               alt="icon" 
-              style={{ width: '24px', height: 'auto' }} 
+              style={{ width: '40px', height: 'auto' }} 
             />
             <span style={{ fontSize: '14px', letterSpacing: '2.5px', color: '#3D5A80', fontWeight: '600' }}>SERVICES</span>
           </div>
@@ -61,15 +61,14 @@ export default function ServiceSlider() {
             onClick={() => scroll('left')}
             style={{
               position: 'absolute',
-              left: '-25px',
+              left: '-30px',
               top: '40%',
               transform: 'translateY(-50%)',
-              width: '50px',
-              height: '50px',
+              width: '60px',
+              height: '60px',
               borderRadius: '50%',
-              backgroundColor: '#fff',
+              backgroundColor: 'unset',
               border: 'none',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
               cursor: 'pointer',
               zIndex: 10,
               display: 'flex',
@@ -88,15 +87,14 @@ export default function ServiceSlider() {
             onClick={() => scroll('right')}
             style={{
               position: 'absolute',
-              right: '-25px',
+              right: '-30px',
               top: '40%',
               transform: 'translateY(-50%)',
-              width: '50px',
-              height: '50px',
+              width: '60px',
+              height: '60px',
               borderRadius: '50%',
-              backgroundColor: '#fff',
+              backgroundColor: 'unset',
               border: 'none',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
               cursor: 'pointer',
               zIndex: 10,
               display: 'flex',
