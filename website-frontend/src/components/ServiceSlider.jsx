@@ -1,25 +1,14 @@
 "use client";
 
 import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 const services = [
-  {
-    title: "Follicular Unit Extraction (FUE)",
-    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/dnnerjyyebzufaoya4hd.png"
-  },
-  {
-    title: "Follicular Unit Transplantation (FUT)",
-    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/scwz5ugmiwn9npmzpk5d.png"
-  },
-  {
-    title: "Hair Replacement In Delhi – Non-Surgical Solutions",
-    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/l141dtwrmlhc3xm8tlir.png"
-  },
-  {
-    title: "Scalp Treatments For Healthy Hair",
-    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/kuhwci9p4pp7r7mzmxof.png"
-  },
-  // Duplicated for scrolling
   {
     title: "Follicular Unit Extraction (FUE)",
     image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/dnnerjyyebzufaoya4hd.png"
@@ -39,17 +28,6 @@ const services = [
 ];
 
 export default function ServiceSlider() {
-  const scrollContainerRef = React.useRef(null);
-
-  const scroll = (direction) => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, clientWidth } = scrollContainerRef.current;
-      const scrollAmount = clientWidth; // Scroll by one full page
-      const scrollTo = direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount;
-      scrollContainerRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
-  };
-
   return (
     <section style={{ backgroundColor: '#FFFAF1', padding: '80px 5%' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -72,19 +50,74 @@ export default function ServiceSlider() {
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" 
               alt="arrow" 
-              style={{ width: '20px', height: 'auto' }} 
+              style={{ width: '12px', height: 'auto', transform: 'rotate(-90deg)' }} 
             />
           </a>
         </div>
 
         {/* Slider Container */}
-        <div style={{ position: 'relative' }}>
-          {/* Navigation Arrows - Using Provided Images */}
+        <div style={{ position: 'relative', padding: '0 40px' }}>
+          <Swiper
+            modules={[Navigation]}
+            spaceBetween={25}
+            slidesPerView={1}
+            loop={true}
+            navigation={{
+              prevEl: '.prev-btn',
+              nextEl: '.next-btn',
+            }}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+              1200: { slidesPerView: 4 }
+            }}
+            style={{ padding: '10px 0 40px 0' }}
+          >
+            {services.map((service, index) => (
+              <SwiperSlide key={index}>
+                <div 
+                  style={{ 
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer',
+                    transition: 'transform 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                >
+                  <div style={{ 
+                    width: '100%', 
+                    height: '300px', 
+                    borderRadius: '24px', 
+                    overflow: 'hidden', 
+                    marginBottom: '20px' 
+                  }}>
+                    <img 
+                      src={service.image} 
+                      alt={service.title} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
+                  </div>
+                  <h3 style={{ 
+                    fontSize: '18px', 
+                    color: '#1C1C1C', 
+                    textAlign: 'center', 
+                    lineHeight: '1.4',
+                    fontWeight: '500',
+                    padding: '0 10px'
+                  }}>
+                    {service.title}
+                  </h3>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Custom Navigation Arrows */}
           <button 
-            onClick={() => scroll('left')}
+            className="prev-btn"
             style={{
               position: 'absolute',
-              left: '-30px',
+              left: '-20px',
               top: '40%',
               transform: 'translateY(-50%)',
               width: '60px',
@@ -107,10 +140,10 @@ export default function ServiceSlider() {
             />
           </button>
           <button 
-            onClick={() => scroll('right')}
+            className="next-btn"
             style={{
               position: 'absolute',
-              right: '-30px',
+              right: '-20px',
               top: '40%',
               transform: 'translateY(-50%)',
               width: '60px',
@@ -132,58 +165,6 @@ export default function ServiceSlider() {
               style={{ width: '100%', height: '100%', borderRadius: '50%' }} 
             />
           </button>
-
-          {/* Cards Wrapper */}
-          <div 
-            ref={scrollContainerRef}
-            style={{ 
-              display: 'flex', 
-              gap: '25px', 
-              overflowX: 'auto', 
-              scrollbarWidth: 'none', 
-              msOverflowStyle: 'none',
-              padding: '10px 0 40px 0'
-            }}
-          >
-            {services.map((service, index) => (
-              <div 
-                key={index} 
-                style={{ 
-                  flex: '0 0 calc(25% - 19px)', 
-                  minWidth: '280px',
-                  backgroundColor: 'transparent',
-                  cursor: 'pointer',
-                  transition: 'transform 0.3s ease'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-              >
-                <div style={{ 
-                  width: '100%', 
-                  height: '280px', 
-                  borderRadius: '24px', 
-                  overflow: 'hidden', 
-                  marginBottom: '20px' 
-                }}>
-                  <img 
-                    src={service.image} 
-                    alt={service.title} 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                  />
-                </div>
-                <h3 style={{ 
-                  fontSize: '18px', 
-                  color: '#1C1C1C', 
-                  textAlign: 'center', 
-                  lineHeight: '1.4',
-                  fontWeight: '500',
-                  padding: '0 10px'
-                }}>
-                  {service.title}
-                </h3>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
