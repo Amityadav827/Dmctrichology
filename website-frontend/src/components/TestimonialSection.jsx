@@ -29,12 +29,8 @@ const ReviewCard = ({ name, text }) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
       <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#000' }}>- {name}.</span>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-           {/* eslint-disable-next-line @next/next/no-img-element */}
-           <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" alt="G" style={{ width: '40px', height: 'auto' }} />
-           <span style={{ fontSize: '8px', color: '#888', fontWeight: 'bold', textTransform: 'uppercase' }}>Posted on</span>
-        </div>
-        <span style={{ fontSize: '8px', color: '#888', fontWeight: 'bold', textTransform: 'uppercase' }}>Google</span>
+         {/* eslint-disable-next-line @next/next/no-img-element */}
+         <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" alt="Google Review" style={{ width: '40px', height: 'auto' }} />
       </div>
     </div>
   </div>
