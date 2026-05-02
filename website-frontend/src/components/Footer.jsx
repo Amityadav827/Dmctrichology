@@ -87,9 +87,9 @@ export default function Footer() {
 
       {/* Bottom Footer Section (Black) */}
       <div style={{ backgroundColor: '#000', padding: '0 5% 0 5%', position: 'relative' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '100px' }}>
           
-          {/* Left Side: Logo & About - Flexed Side by Side (Width Reduced) */}
+          {/* Left Side: Logo & About - Flexed Side by Side */}
           <div style={{ flex: '1', minWidth: '400px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '40px' }}>
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png" 
@@ -113,11 +113,11 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Right Side: Overlap Card (Width Increased) */}
+          {/* Right Side: Overlap Card - Width Reduced & Spacing Fixed */}
           <div style={{ 
-            flex: '1.8', 
+            flex: '1', 
             minWidth: '350px', 
-            maxWidth: '1100px',
+            maxWidth: '750px',
             marginTop: '-120px', 
             zIndex: '10' 
           }}>
