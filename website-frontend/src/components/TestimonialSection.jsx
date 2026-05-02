@@ -1,27 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 
-// YouTube/Shorts Style Play Icon
-const PlayIcon = ({ onClick }) => (
-  <div 
-    onClick={onClick}
-    style={{
-      width: '60px',
-      height: '60px',
-      backgroundColor: '#FF0000',
-      borderRadius: '15px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      boxShadow: '0 10px 20px rgba(255,0,0,0.3)',
-      cursor: 'pointer',
-      transition: 'transform 0.3s ease'
-    }} className="play-btn-hover">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
-      <path d="M8 5v14l11-7z" />
-    </svg>
-  </div>
-);
 
 const ReviewCard = ({ name, text }) => (
   <div style={{
