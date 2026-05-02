@@ -77,8 +77,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Disclaimer Area - Updated to 30% width and right aligned */}
-        <div style={{ width: '30%', marginLeft: 'auto', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '25px 0', margin: '60px 0 0 auto' }}>
+        {/* Disclaimer Area - Updated to 50% width and right aligned */}
+        <div style={{ width: '50%', marginLeft: 'auto', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '25px 0', margin: '0 0 0 auto' }}>
           <p style={{ fontSize: '14px', color: '#444', lineHeight: '1.6', textAlign: 'right' }}>
             <strong>Disclaimer:</strong> Content is for awareness and education only, not medical advice. Consult a qualified trichologist or dermatologist for proper diagnosis and treatment. Results may vary for each individual.
           </p>
@@ -157,13 +157,13 @@ export default function Footer() {
                     outline: 'none'
                   }}
                 />
-                <button style={{
-                  backgroundColor: '#fff',
-                  color: '#000',
-                  border: 'none',
-                  borderRadius: '50px',
-                  padding: '12px 30px',
-                  fontWeight: '600',
+                <button style={{ 
+                  backgroundColor: '#fff', 
+                  color: '#000', 
+                  border: 'revert', 
+                  borderRadius: '50px', 
+                  padding: '12px 12px 12px 24px', 
+                  fontWeight: '600', 
                   fontSize: '14px',
                   display: 'flex',
                   alignItems: 'center',
