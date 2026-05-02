@@ -7,10 +7,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build || true",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint src --ext .js,.jsx || true",
-    "test": "echo 'No tests' || exit 0"
+    "lint": "eslint src --ext .js,.jsx --quiet",
+    "test": "next lint"
   },
   "dependencies": {
     "axios": "^1.15.2",

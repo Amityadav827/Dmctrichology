@@ -7,9 +7,8 @@
   "private": true,
   "scripts": {
     "install-backend": "npm install --prefix backend",
-    "build": "cd website-frontend && npm run build || true",
-    "lint": "cd website-frontend && npm run lint || true",
-    "test": "echo 'No tests' || exit 0",
+    "build": "cd website-frontend && npm run build",
+    "lint": "cd website-frontend && npm run lint",
     "start": "node backend/server.js"
   }
 }

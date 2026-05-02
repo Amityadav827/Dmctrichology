@@ -51,8 +51,8 @@ export default function Home() {
 
 
 
-    </main>
       {/* Force Deployment Sync: v1.0.8 */}
+    </main>
   );
 }
 
