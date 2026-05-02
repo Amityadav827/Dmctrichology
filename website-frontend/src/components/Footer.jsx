@@ -132,7 +132,7 @@ export default function Footer() {
                 Stay Connected With Expert Care Support
               </h2>
               <p style={{ fontSize: '15px', color: '#555', marginBottom: '35px', lineHeight: '1.6' }}>
-                We're Here For You Monday To Friday With Tailored Treatments, Hands And A Commitment To Your Recovery Every Step Of The Way.
+                We&apos;re Here For You Monday To Friday With Tailored Treatments, Hands And A Commitment To Your Recovery Every Step Of The Way.
               </p>
 
               {/* Newsletter Input */}
