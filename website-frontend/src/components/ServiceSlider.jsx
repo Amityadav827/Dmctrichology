@@ -18,6 +18,23 @@ const services = [
   {
     title: "Scalp Treatments For Healthy Hair",
     image: "https://images.unsplash.com/photo-1559599101-f09722fb4948?q=80&w=1000&auto=format&fit=crop"
+  },
+  // Duplicated for scrolling
+  {
+    title: "Follicular Unit Extraction (FUE)",
+    image: "https://images.unsplash.com/photo-1628156112302-31050899650b?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    title: "Follicular Unit Transplantation (FUT)",
+    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    title: "Hair Replacement In Delhi – Non-Surgical Solutions",
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    title: "Scalp Treatments For Healthy Hair",
+    image: "https://images.unsplash.com/photo-1559599101-f09722fb4948?q=80&w=1000&auto=format&fit=crop"
   }
 ];
 
@@ -27,7 +44,8 @@ export default function ServiceSlider() {
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
       const { scrollLeft, clientWidth } = scrollContainerRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      const scrollAmount = clientWidth; // Scroll by one full page
+      const scrollTo = direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount;
       scrollContainerRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
     }
   };
@@ -49,8 +67,13 @@ export default function ServiceSlider() {
           <h2 style={{ fontSize: '42px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>
             Our Hair Transplant Services
           </h2>
-          <a href="#" style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none' }}>
-            View All &gt;
+          <a href="#" style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            View All
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" 
+              alt="arrow" 
+              style={{ width: '20px', height: 'auto' }} 
+            />
           </a>
         </div>
 
