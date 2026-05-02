@@ -20,15 +20,15 @@ export default function PressMediaSection() {
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ 
           backgroundColor: '#FFFAF1', 
-          borderRadius: '50px', 
-          padding: '80px',
+          borderRadius: '30px', 
+          padding: '40px',
           position: 'relative'
         }}>
           <div style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'flex-start', 
-            gap: '80px',
+            gap: '0',
             flexWrap: 'wrap'
           }}>
             
@@ -105,7 +105,7 @@ export default function PressMediaSection() {
                 fontSize: '16px',
                 fontWeight: '500',
                 fontFamily: "'Lato', sans-serif",
-                marginTop: '15px' // Aligned slightly lower with heading
+                marginTop: '0px'
               }}>
                 Get Free Consulting
                 <div style={{ 
@@ -127,7 +127,8 @@ export default function PressMediaSection() {
                 alignItems: 'center', 
                 gap: '40px', 
                 justifyContent: 'flex-end',
-                width: '100%'
+                width: '100%',
+                marginTop: '40px'
               }}>
                 {logos.map((url, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
