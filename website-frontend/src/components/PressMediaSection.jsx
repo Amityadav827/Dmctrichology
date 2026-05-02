@@ -10,9 +10,9 @@ export default function PressMediaSection() {
 
   const avatars = [
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png",
-    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png",
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png",
-    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png"
+    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png",
+    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png"
   ];
 
   return (
@@ -26,7 +26,7 @@ export default function PressMediaSection() {
           overflow: 'hidden'
         }}>
           {/* Main Layout */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '40px' }}>
             
             {/* Left Column */}
             <div style={{ flex: '1', minWidth: '300px' }}>
@@ -65,17 +65,22 @@ export default function PressMediaSection() {
                   <div style={{ fontSize: '15px', fontWeight: '600', color: '#333', fontFamily: "'Lato', sans-serif", marginBottom: '5px' }}>
                     225+ Satisfied Patients
                   </div>
-                  <div style={{ display: 'flex', gap: '2px' }}>
+                  <div style={{ display: 'flex', gap: '5px' }}>
                     {[1, 2, 3, 4, 5].map((s) => (
-                      <span key={s} style={{ color: '#FDB813', fontSize: '18px' }}>★</span>
+                      <img 
+                        key={s} 
+                        src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" 
+                        alt="star" 
+                        style={{ width: '18px', height: '18px' }} 
+                      />
                     ))}
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Column (Button) */}
-            <div>
+            {/* Right Column (Button & Logos Below) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', alignItems: 'flex-start' }}>
               <button style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -99,41 +104,27 @@ export default function PressMediaSection() {
                   borderRadius: '50%', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  justifyContent: 'center',
-                  color: '#000'
+                  justifyContent: 'center'
                 }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="7" y1="17" x2="17" y2="7"></line>
-                    <polyline points="7 7 17 7 17 17"></polyline>
-                  </svg>
+                   <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" alt="arrow" style={{ width: '32px' }} />
                 </div>
               </button>
-            </div>
-          </div>
 
-          {/* Bottom Logos */}
-          <div style={{ 
-            marginTop: '60px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '30px', 
-            flexWrap: 'wrap',
-            justifyContent: 'flex-start'
-          }}>
-            {logos.map((url, i) => (
-              <div key={i} style={{ 
-                backgroundColor: '#fff', 
-                padding: '15px 30px', 
-                borderRadius: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 10px rgba(0,0,0,0.02)',
-                minWidth: '180px'
+              {/* Logos Under Button */}
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '30px', 
+                flexWrap: 'wrap',
+                justifyContent: 'flex-start'
               }}>
-                <img src={url} alt="media logo" style={{ maxHeight: '35px', maxWidth: '100%', objectFit: 'contain' }} />
+                {logos.map((url, i) => (
+                  <div key={i}>
+                    <img src={url} alt="media logo" style={{ maxHeight: '60px', maxWidth: '100%', objectFit: 'contain' }} />
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
