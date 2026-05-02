@@ -8,8 +8,6 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-import Image from 'next/image';
-
 const services = [
   {
     title: "Follicular Unit Extraction (FUE)",
@@ -31,18 +29,16 @@ const services = [
 
 export default function ServiceSlider() {
   return (
-    <section style={{ backgroundColor: '#FFFAF1', padding: '80px 5%' }}>
+    <section className="service-slider-section" style={{ backgroundColor: '#FFFAF1', padding: '80px 5%' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
         {/* Top Area - Centered */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '60px', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '15px' }}>
-            <Image 
+            <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
               alt="icon" 
-              width={40}
-              height={40}
-              style={{ height: 'auto' }} 
+              style={{ width: '40px', height: 'auto' }} 
             />
             <span style={{ fontSize: '14px', letterSpacing: '2.5px', color: '#3D5A80', fontWeight: '600' }}>SERVICES</span>
           </div>
@@ -51,26 +47,24 @@ export default function ServiceSlider() {
           </h2>
           <a href="#" style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
             View All
-            <Image 
+            <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" 
               alt="arrow" 
-              width={12}
-              height={12}
-              style={{ height: 'auto', transform: 'rotate(-90deg)' }} 
+              style={{ width: '12px', height: 'auto', transform: 'rotate(-90deg)' }} 
             />
           </a>
         </div>
 
         {/* Slider Container */}
-        <div style={{ position: 'relative', padding: '0 40px' }}>
+        <div className="slider-wrapper" style={{ position: 'relative', padding: '0 40px' }}>
           <Swiper
             modules={[Navigation]}
             spaceBetween={25}
             slidesPerView={1}
             loop={true}
             navigation={{
-              prevEl: '.prev-btn',
-              nextEl: '.next-btn',
+              prevEl: '.service-prev-btn',
+              nextEl: '.service-next-btn',
             }}
             breakpoints={{
               640: { slidesPerView: 2 },
@@ -82,6 +76,7 @@ export default function ServiceSlider() {
             {services.map((service, index) => (
               <SwiperSlide key={index}>
                 <div 
+                  className="service-card-item"
                   style={{ 
                     backgroundColor: 'transparent',
                     cursor: 'pointer',
@@ -95,14 +90,12 @@ export default function ServiceSlider() {
                     height: '300px', 
                     borderRadius: '24px', 
                     overflow: 'hidden', 
-                    marginBottom: '20px',
-                    position: 'relative'
+                    marginBottom: '20px'
                   }}>
-                    <Image 
+                    <img 
                       src={service.image} 
                       alt={service.title} 
-                      fill
-                      style={{ objectFit: 'cover' }} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                     />
                   </div>
                   <h3 style={{ 
@@ -122,7 +115,7 @@ export default function ServiceSlider() {
 
           {/* Custom Navigation Arrows */}
           <button 
-            className="prev-btn"
+            className="service-prev-btn"
             style={{
               position: 'absolute',
               left: '-20px',
@@ -141,16 +134,14 @@ export default function ServiceSlider() {
               padding: '0'
             }}
           >
-            <Image 
+            <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/acctki1o9lkpujrsmtqu.png" 
               alt="prev" 
-              width={60}
-              height={60}
-              style={{ borderRadius: '50%' }} 
+              style={{ width: '100%', height: '100%', borderRadius: '50%' }} 
             />
           </button>
           <button 
-            className="next-btn"
+            className="service-next-btn"
             style={{
               position: 'absolute',
               right: '-20px',
@@ -169,12 +160,10 @@ export default function ServiceSlider() {
               padding: '0'
             }}
           >
-            <Image 
+            <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/aevxkziamfrlmc14tpv1.png" 
               alt="next" 
-              width={60}
-              height={60}
-              style={{ borderRadius: '50%' }} 
+              style={{ width: '100%', height: '100%', borderRadius: '50%' }} 
             />
           </button>
         </div>
