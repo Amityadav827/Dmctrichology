@@ -140,7 +140,7 @@ export default function Footer() {
                 display: 'flex', 
                 backgroundColor: '#000', 
                 borderRadius: '50px', 
-                padding: '6px',
+                padding: '0',
                 marginBottom: '20px',
                 alignItems: 'center'
               }}>
@@ -171,7 +171,7 @@ export default function Footer() {
                   cursor: 'pointer'
                 }}>
                   Submit
-                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777703175/dmc-trichology/vj4qbxtxftqzqslowwgd.png" alt="arrow" style={{ width: '24px' }} />
+                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" alt="email" style={{ width: '24px' }} />
                 </button>
               </div>
 
@@ -188,7 +188,7 @@ export default function Footer() {
                   <span style={{ fontSize: '16px', fontWeight: '600', color: '#1C1C1C' }}>+91-8527830194</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" alt="email" style={{ width: '32px' }} />
+                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777703175/dmc-trichology/vj4qbxtxftqzqslowwgd.png" alt="arrow" style={{ width: '32px' }} />
                   <span style={{ fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>Info@Dadumedicalcentre.Com</span>
                 </div>
               </div>
