@@ -152,14 +152,7 @@ export default function FaqSection() {
             fontFamily: "'Marcellus', serif"
           }}>
             View All Questions
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transform: 'rotate(-45deg)'
-            }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" alt="arrow" style={{ width: '32px' }} />
-            </div>
+            <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777698274/dmc-trichology/dh9kblxoinqmi5kvoona.png" alt="arrow" style={{ width: '32px', height: '32px' }} />
           </button>
         </div>
       </div>
