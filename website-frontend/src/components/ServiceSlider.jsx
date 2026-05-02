@@ -8,6 +8,8 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+import Image from 'next/image';
+
 const services = [
   {
     title: "Follicular Unit Extraction (FUE)",
@@ -35,10 +37,12 @@ export default function ServiceSlider() {
         {/* Top Area - Centered */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '60px', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '15px' }}>
-            <img 
+            <Image 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
               alt="icon" 
-              style={{ width: '40px', height: 'auto' }} 
+              width={40}
+              height={40}
+              style={{ height: 'auto' }} 
             />
             <span style={{ fontSize: '14px', letterSpacing: '2.5px', color: '#3D5A80', fontWeight: '600' }}>SERVICES</span>
           </div>
@@ -47,10 +51,12 @@ export default function ServiceSlider() {
           </h2>
           <a href="#" style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
             View All
-            <img 
+            <Image 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" 
               alt="arrow" 
-              style={{ width: '12px', height: 'auto', transform: 'rotate(-90deg)' }} 
+              width={12}
+              height={12}
+              style={{ height: 'auto', transform: 'rotate(-90deg)' }} 
             />
           </a>
         </div>
@@ -89,12 +95,14 @@ export default function ServiceSlider() {
                     height: '300px', 
                     borderRadius: '24px', 
                     overflow: 'hidden', 
-                    marginBottom: '20px' 
+                    marginBottom: '20px',
+                    position: 'relative'
                   }}>
-                    <img 
+                    <Image 
                       src={service.image} 
                       alt={service.title} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      fill
+                      style={{ objectFit: 'cover' }} 
                     />
                   </div>
                   <h3 style={{ 
@@ -133,10 +141,12 @@ export default function ServiceSlider() {
               padding: '0'
             }}
           >
-            <img 
+            <Image 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/acctki1o9lkpujrsmtqu.png" 
               alt="prev" 
-              style={{ width: '100%', height: '100%', borderRadius: '50%' }} 
+              width={60}
+              height={60}
+              style={{ borderRadius: '50%' }} 
             />
           </button>
           <button 
@@ -159,10 +169,12 @@ export default function ServiceSlider() {
               padding: '0'
             }}
           >
-            <img 
+            <Image 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/aevxkziamfrlmc14tpv1.png" 
               alt="next" 
-              style={{ width: '100%', height: '100%', borderRadius: '50%' }} 
+              width={60}
+              height={60}
+              style={{ borderRadius: '50%' }} 
             />
           </button>
         </div>
