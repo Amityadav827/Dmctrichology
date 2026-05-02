@@ -15,6 +15,7 @@ import WhyChooseUs from '@/components/WhyChooseUs';
 import TreatmentSection from '@/components/TreatmentSection';
 import FaqSection from '@/components/FaqSection';
 import BlogSection from '@/components/BlogSection';
+import PressMediaSection from '@/components/PressMediaSection';
 import ResultsSlider from '@/components/ResultsSlider';
 import GradeSlider from '@/components/GradeSlider';
 
@@ -42,6 +43,7 @@ export default function Home() {
       <TreatmentSection />
       <FaqSection />
       <BlogSection />
+      <PressMediaSection />
 
 
 
