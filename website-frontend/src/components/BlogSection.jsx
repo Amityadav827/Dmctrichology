@@ -8,7 +8,7 @@ export default function BlogSection() {
       date: "May 9, 2025",
       image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777639996/dmc-trichology/hhr1froywuxce7joupag.png",
       author: "Dr. Alisha Verma, Physiotherapist",
-      authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png",
+      authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777699290/dmc-trichology/xfi18qjzfi3nlsrf4taa.png",
       title: "PRP Hair Treatment – How Many Sessions Needed?",
       link: "#"
     },
@@ -16,7 +16,7 @@ export default function BlogSection() {
       date: "May 9, 2025",
       image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777639995/dmc-trichology/zsnaxe1vrwm9mzu278tn.png",
       author: "Dr. Meera Joshi, Posture & Spine",
-      authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png",
+      authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777699290/dmc-trichology/hkpas8djntgu0tkj5mpe.png",
       title: "Best Shampoo For Hair Fall — What Actually Helps And Why Most People Are Looking In The Wrong Place",
       link: "#",
       isActive: true
@@ -25,7 +25,7 @@ export default function BlogSection() {
       date: "May 9, 2025",
       image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777639995/dmc-trichology/imnwwbaiz0g1z70et338.png",
       author: "Dr. Rahul Kapoor, Neuro & Expert",
-      authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png",
+      authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777699290/dmc-trichology/xfi18qjzfi3nlsrf4taa.png",
       title: "Hair Regrowth Timeline — What To Realistically Expect And When To Actually See Results",
       link: "#"
     }
@@ -89,7 +89,7 @@ export default function BlogSection() {
                 <div>
                    <img src={blog.authorIcon} alt="author" style={{ width: '32px' }} />
                 </div>
-                <span style={{ fontSize: '13px', color: blog.isActive ? 'rgba(255,255,255,0.7)' : '#666', fontFamily: "'Lato', sans-serif" }}>
+                <span style={{ fontSize: '16px', color: blog.isActive ? 'rgba(255,255,255,0.7)' : '#666', fontFamily: "'Lato', sans-serif" }}>
                   {blog.author}
                 </span>
               </div>
@@ -128,7 +128,7 @@ export default function BlogSection() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '12px',
-            padding: '12px 40px',
+            padding: '12px 24px',
             borderRadius: '50px',
             border: '1px solid #E5E5E5',
             backgroundColor: '#fff',
