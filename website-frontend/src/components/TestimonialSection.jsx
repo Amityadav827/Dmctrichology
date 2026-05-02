@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 
-
 const ReviewCard = ({ name, text }) => (
   <div style={{
     backgroundColor: '#fff',
@@ -61,7 +60,7 @@ const VideoCard = ({ name, image, height = "400px", onPlay }) => (
       alignItems: 'center'
     }}>
       <h4 style={{ color: '#fff', fontSize: '20px', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>{name}</h4>
-      <div style={{ height: '20px' }}></div> {/* Spacer instead of PlayIcon */}
+      <div style={{ height: '20px' }}></div>
     </div>
   </div>
 );
@@ -235,9 +234,6 @@ const TestimonialSection = () => {
       <style jsx>{`
         .testimonial-staggered-grid {
           transition: all 0.5s ease;
-        }
-        .play-btn-hover:hover {
-          transform: scale(1.1);
         }
         .view-all-testimonials-btn:hover {
           background-color: #000 !important;
