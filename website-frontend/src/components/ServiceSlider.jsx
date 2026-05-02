@@ -27,6 +27,9 @@ const services = [
   }
 ];
 
+// Double the items for a seamless loop
+const duplicatedServices = [...services, ...services];
+
 export default function ServiceSlider() {
   return (
     <section className="service-slider-section" style={{ backgroundColor: '#FFFAF1', padding: '80px 5%' }}>
@@ -40,7 +43,7 @@ export default function ServiceSlider() {
               alt="icon" 
               style={{ width: '40px', height: 'auto' }} 
             />
-            <span style={{ fontSize: '14px', letterSpacing: '2.5px', color: '#3D5A80', fontWeight: '600' }}>SERVICES</span>
+            <span style={{ fontSize: '14px', letterSpacing: '2.5px', color: '#1C1C1C', fontWeight: '600' }}>SERVICES</span>
           </div>
           <h2 style={{ fontSize: '42px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>
             Our Hair Transplant Services
@@ -50,7 +53,7 @@ export default function ServiceSlider() {
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" 
               alt="arrow" 
-              style={{ width: '12px', height: 'auto', transform: 'rotate(-90deg)' }} 
+              style={{ width: '10px', height: 'auto', transform: 'rotate(-90deg)' }} 
             />
           </a>
         </div>
@@ -73,7 +76,7 @@ export default function ServiceSlider() {
             }}
             style={{ padding: '10px 0 40px 0' }}
           >
-            {services.map((service, index) => (
+            {duplicatedServices.map((service, index) => (
               <SwiperSlide key={index}>
                 <div 
                   className="service-card-item"
