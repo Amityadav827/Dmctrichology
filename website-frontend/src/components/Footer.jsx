@@ -28,7 +28,7 @@ export default function Footer() {
   const socialIcons = [
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/trooomdx4mjupebkzsmy.png",
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/pzzrzqodtujxvlktyk2s.png",
-    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/jkidxsr5nbpwq7y7x0x0.png",
+    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/jkidxsr5nbpwq7y7x0x0.png",
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/dgkcwru8nqurjw7f1lz6.png",
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lhgvbca5okvyge6atokb.png"
   ];
@@ -117,7 +117,7 @@ export default function Footer() {
           <div style={{ 
             flex: '1', 
             minWidth: '350px', 
-            maxWidth: '850px',
+            maxWidth: '1000px',
             marginTop: '-120px', 
             zIndex: '10' 
           }}>
