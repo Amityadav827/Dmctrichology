@@ -77,9 +77,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Disclaimer Area (Moved inside beige section but bottom-right) */}
-        <div style={{ maxWidth: '1400px', margin: '40px auto 0 auto', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '20px', textAlign: 'right' }}>
-           <p style={{ fontSize: '12px', color: '#888', maxWidth: '450px', marginLeft: 'auto', lineHeight: '1.4' }}>
+        {/* Disclaimer Area - Updated with top and bottom borders */}
+        <div style={{ maxWidth: '1400px', margin: '60px auto 0 auto', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '25px 0' }}>
+           <p style={{ fontSize: '14px', color: '#444', lineHeight: '1.6', textAlign: 'left' }}>
             <strong>Disclaimer:</strong> Content is for awareness and education only, not medical advice. Consult a qualified trichologist or dermatologist for proper diagnosis and treatment. Results may vary for each individual.
           </p>
         </div>
@@ -87,23 +87,29 @@ export default function Footer() {
 
       {/* Bottom Footer Section (Black) */}
       <div style={{ backgroundColor: '#000', padding: '0 5% 40px 5%', position: 'relative' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
           
-          {/* Left Side: Logo & About */}
-          <div style={{ flex: '1', minWidth: '350px', paddingTop: '80px', paddingBottom: '60px' }}>
-            <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png" alt="logo" style={{ width: '180px', marginBottom: '40px' }} />
-            <h5 style={{ color: '#fff', fontSize: '14px', letterSpacing: '1px', marginBottom: '15px', fontWeight: '500' }}>ABOUT DMC TRICHOLOGY</h5>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', maxWidth: '400px', lineHeight: '1.6', marginBottom: '40px' }}>
-              One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures.
-            </p>
-            
-            {/* Social Icons */}
-            <div style={{ display: 'flex', gap: '15px' }}>
-              {socialIcons.map((url, i) => (
-                <a key={i} href="#" style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.3s' }}>
-                  <img src={url} alt="social" style={{ width: '22px' }} />
-                </a>
-              ))}
+          {/* Left Side: Logo & About - Flexed Side by Side */}
+          <div style={{ flex: '2', minWidth: '500px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '40px' }}>
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png" 
+              alt="logo" 
+              style={{ width: '220px', flexShrink: 0 }} 
+            />
+            <div>
+              <h5 style={{ color: '#fff', fontSize: '15px', letterSpacing: '1.5px', marginBottom: '15px', fontWeight: '500', fontFamily: "'Marcellus', serif" }}>ABOUT DMC TRICHOLOGY</h5>
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', maxWidth: '450px', lineHeight: '1.7', marginBottom: '25px' }}>
+                One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures.
+              </p>
+              
+              {/* Social Icons */}
+              <div style={{ display: 'flex', gap: '15px' }}>
+                {socialIcons.map((url, i) => (
+                  <a key={i} href="#" style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.3s' }}>
+                    <img src={url} alt="social" style={{ width: '22px' }} />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -112,12 +118,12 @@ export default function Footer() {
             flex: '1', 
             minWidth: '350px', 
             maxWidth: '650px',
-            marginTop: '-100px', 
+            marginTop: '-120px', 
             zIndex: '10' 
           }}>
             <div style={{ 
               backgroundColor: '#FEF9F1', 
-              borderRadius: '40px 40px 40px 40px', 
+              borderRadius: '40px', 
               padding: '60px 50px',
               boxShadow: '0 20px 50px rgba(0,0,0,0.15)',
               textAlign: 'center'
@@ -176,7 +182,7 @@ export default function Footer() {
               </div>
 
               {/* Contact Info Pills */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', marginBottom: '40px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png" alt="phone" style={{ width: '32px' }} />
                   <span style={{ fontSize: '16px', fontWeight: '600', color: '#1C1C1C' }}>+91-8527830194</span>
