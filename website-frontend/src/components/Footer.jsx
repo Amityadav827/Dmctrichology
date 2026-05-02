@@ -89,24 +89,24 @@ export default function Footer() {
       <div style={{ backgroundColor: '#000', padding: '0 5% 0 5%', position: 'relative' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '100px' }}>
           
-          {/* Left Side: Logo & About - Flexed Side by Side */}
-          <div style={{ flex: '1', minWidth: '400px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '40px' }}>
+          {/* Left Side: Logo & About - Flexed Side by Side (Sizes Reduced) */}
+          <div style={{ flex: '1', minWidth: '400px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '30px' }}>
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png" 
               alt="logo" 
-              style={{ width: '220px', flexShrink: 0 }} 
+              style={{ width: '180px', flexShrink: 0 }} 
             />
             <div>
-              <h5 style={{ color: '#fff', fontSize: '15px', letterSpacing: '1.5px', marginBottom: '15px', fontWeight: '500', fontFamily: "'Marcellus', serif" }}>ABOUT DMC TRICHOLOGY</h5>
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', maxWidth: '400px', lineHeight: '1.7', marginBottom: '25px' }}>
+              <h5 style={{ color: '#fff', fontSize: '14px', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: '500', fontFamily: "'Marcellus', serif" }}>ABOUT DMC TRICHOLOGY</h5>
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', maxWidth: '380px', lineHeight: '1.6', marginBottom: '20px' }}>
                 One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures.
               </p>
               
-              {/* Social Icons - Circle Styles Removed, Size Increased to 40px */}
-              <div style={{ display: 'flex', gap: '20px' }}>
+              {/* Social Icons - Size Reduced to 32px */}
+              <div style={{ display: 'flex', gap: '15px' }}>
                 {socialIcons.map((url, i) => (
                   <a key={i} href="#" style={{ textDecoration: 'none' }}>
-                    <img src={url} alt="social" style={{ width: '40px' }} />
+                    <img src={url} alt="social" style={{ width: '32px' }} />
                   </a>
                 ))}
               </div>
