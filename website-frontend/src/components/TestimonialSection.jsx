@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 const ReviewCard = ({ name, text }) => (
   <div style={{
@@ -27,7 +28,14 @@ const ReviewCard = ({ name, text }) => (
     </p>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
       <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#000' }}>- {name}.</span>
-      <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" alt="Google Review" style={{ height: '35px' }} />
+      <Image 
+        src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" 
+        alt="Google Review" 
+        width={100}
+        height={35}
+        priority
+        style={{ height: '35px', width: 'auto' }} 
+      />
     </div>
   </div>
 );
@@ -42,7 +50,13 @@ const VideoCard = ({ name, image, height = "400px", onPlay }) => (
     marginBottom: '24px',
     cursor: 'pointer'
   }} onClick={onPlay}>
-    <img src={image} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+    <Image 
+      src={image} 
+      alt={name} 
+      fill
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      style={{ objectFit: 'cover' }} 
+    />
     <div style={{
       position: 'absolute',
       inset: 0,
@@ -80,7 +94,13 @@ const TestimonialSection = () => {
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
             <span style={{ fontSize: '16px', color: '#666' }}>7000+ Reviews on</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" style={{ width: '80px', marginTop: '4px' }} />
+            <Image 
+              src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" 
+              alt="Google" 
+              width={80} 
+              height={26} 
+              style={{ width: '80px', height: 'auto', marginTop: '4px' }} 
+            />
           </div>
         </div>
 
