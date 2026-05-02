@@ -16,42 +16,46 @@ export default function PressMediaSection() {
   ];
 
   return (
-    <section style={{ padding: '80px 5%', backgroundColor: '#fff' }}>
+    <section style={{ padding: '60px 5%', backgroundColor: '#fff' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ 
           backgroundColor: '#FFFAF1', 
-          borderRadius: '80px', 
-          padding: '60px 80px',
-          position: 'relative',
-          overflow: 'hidden'
+          borderRadius: '50px', 
+          padding: '80px',
+          position: 'relative'
         }}>
-          {/* Main Layout */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '40px' }}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'flex-start', 
+            gap: '80px',
+            flexWrap: 'wrap'
+          }}>
             
-            {/* Left Column */}
-            <div style={{ flex: '1', minWidth: '300px' }}>
+            {/* Left Side: Heading + Rating */}
+            <div style={{ flex: '1.2', minWidth: '350px' }}>
               <h2 style={{ 
-                fontSize: '42px', 
+                fontSize: '48px', 
                 color: '#1C1C1C', 
                 fontFamily: "'Marcellus', serif", 
                 fontWeight: '400', 
-                margin: '0 0 40px 0',
-                lineHeight: '1.2',
-                maxWidth: '600px'
+                margin: '0 0 50px 0',
+                lineHeight: '1.25',
+                maxWidth: '650px'
               }}>
                 What The Press And Media Are Saying About Our Clinic
               </h2>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '25px', marginTop: '10px' }}>
                 {/* Avatars */}
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   {avatars.map((url, i) => (
                     <div key={i} style={{ 
-                      width: '50px', 
-                      height: '50px', 
+                      width: '54px', 
+                      height: '54px', 
                       borderRadius: '50%', 
                       border: '3px solid #FFFAF1',
-                      marginLeft: i === 0 ? '0' : '-15px',
+                      marginLeft: i === 0 ? '0' : '-18px',
                       overflow: 'hidden',
                       backgroundColor: '#E5E5E5'
                     }}>
@@ -61,26 +65,33 @@ export default function PressMediaSection() {
                 </div>
 
                 {/* Rating Info */}
-                <div>
-                  <div style={{ fontSize: '15px', fontWeight: '600', color: '#333', fontFamily: "'Lato', sans-serif", marginBottom: '5px' }}>
-                    225+ Satisfied Patients
-                  </div>
-                  <div style={{ display: 'flex', gap: '5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                   <div style={{ display: 'flex', gap: '4px' }}>
                     {[1, 2, 3, 4, 5].map((s) => (
                       <img 
                         key={s} 
                         src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" 
                         alt="star" 
-                        style={{ width: '18px', height: '18px' }} 
+                        style={{ width: '20px', height: '20px' }} 
                       />
                     ))}
+                  </div>
+                  <div style={{ fontSize: '16px', fontWeight: '500', color: '#1C1C1C', fontFamily: "'Lato', sans-serif" }}>
+                    225+ Satisfied Patients
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Column (Button & Logos Below) */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', alignItems: 'flex-start' }}>
+            {/* Right Side: Button + Logos */}
+            <div style={{ 
+              flex: '1', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'flex-end', 
+              gap: '60px',
+              minWidth: '350px'
+            }}>
               <button style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -94,7 +105,7 @@ export default function PressMediaSection() {
                 fontSize: '16px',
                 fontWeight: '500',
                 fontFamily: "'Lato', sans-serif",
-                transition: 'all 0.3s ease'
+                marginTop: '15px' // Aligned slightly lower with heading
               }}>
                 Get Free Consulting
                 <div style={{ 
@@ -110,21 +121,22 @@ export default function PressMediaSection() {
                 </div>
               </button>
 
-              {/* Logos Under Button */}
+              {/* Logos in one horizontal row */}
               <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
-                gap: '30px', 
-                flexWrap: 'wrap',
-                justifyContent: 'flex-start'
+                gap: '40px', 
+                justifyContent: 'flex-end',
+                width: '100%'
               }}>
                 {logos.map((url, i) => (
-                  <div key={i}>
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img src={url} alt="media logo" style={{ maxHeight: '60px', maxWidth: '100%', objectFit: 'contain' }} />
                   </div>
                 ))}
               </div>
             </div>
+
           </div>
         </div>
       </div>
