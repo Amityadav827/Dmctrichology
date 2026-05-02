@@ -35,11 +35,11 @@ export default function Footer() {
 
   return (
     <footer style={{ width: '100%', fontFamily: "'Lato', sans-serif" }}>
-      
+
       {/* Top Footer Section (Beige) */}
       <div style={{ backgroundColor: '#F9F4EA', padding: '80px 5% 150px 5%' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '50px' }}>
-          
+
           {/* Column 1: Hair Transplant */}
           <div>
             <h4 style={{ fontSize: '18px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", marginBottom: '25px', fontWeight: '400' }}>HAIR TRANSPLANT</h4>
@@ -79,7 +79,7 @@ export default function Footer() {
 
         {/* Disclaimer Area - Updated to 30% width and right aligned */}
         <div style={{ width: '30%', marginLeft: 'auto', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '25px 0', margin: '60px 0 0 auto' }}>
-           <p style={{ fontSize: '14px', color: '#444', lineHeight: '1.6', textAlign: 'right' }}>
+          <p style={{ fontSize: '14px', color: '#444', lineHeight: '1.6', textAlign: 'right' }}>
             <strong>Disclaimer:</strong> Content is for awareness and education only, not medical advice. Consult a qualified trichologist or dermatologist for proper diagnosis and treatment. Results may vary for each individual.
           </p>
         </div>
@@ -88,20 +88,20 @@ export default function Footer() {
       {/* Bottom Footer Section (Black) */}
       <div style={{ backgroundColor: '#000', padding: '0 5% 0 5%', position: 'relative' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '100px' }}>
-          
+
           {/* Left Side: Logo & About - Flexed Side by Side (Sizes Reduced) */}
           <div style={{ flex: '1', minWidth: '400px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '30px' }}>
-            <img 
-              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png" 
-              alt="logo" 
-              style={{ width: '180px', flexShrink: 0 }} 
+            <img
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png"
+              alt="logo"
+              style={{ width: '180px', flexShrink: 0 }}
             />
             <div>
               <h5 style={{ color: '#fff', fontSize: '14px', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: '500', fontFamily: "'Marcellus', serif" }}>ABOUT DMC TRICHOLOGY</h5>
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', maxWidth: '380px', lineHeight: '1.6', marginBottom: '20px' }}>
                 One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures.
               </p>
-              
+
               {/* Social Icons - Size Reduced to 32px */}
               <div style={{ display: 'flex', gap: '15px' }}>
                 {socialIcons.map((url, i) => (
@@ -114,16 +114,16 @@ export default function Footer() {
           </div>
 
           {/* Right Side: Overlap Card - Width Reduced & Spacing Fixed */}
-          <div style={{ 
-            flex: '1', 
-            minWidth: '350px', 
+          <div style={{
+            flex: '1',
+            minWidth: '350px',
             maxWidth: '750px',
-            marginTop: '-120px', 
-            zIndex: '10' 
+            marginTop: '-120px',
+            zIndex: '10'
           }}>
-            <div style={{ 
-              backgroundColor: '#FEF9F1', 
-              borderRadius: '40px', 
+            <div style={{
+              backgroundColor: '#FEF9F1',
+              borderRadius: '40px',
               padding: '60px 50px',
               boxShadow: '0 20px 50px rgba(0,0,0,0.15)',
               textAlign: 'center'
@@ -136,34 +136,34 @@ export default function Footer() {
               </p>
 
               {/* Newsletter Input */}
-              <div style={{ 
-                display: 'flex', 
-                backgroundColor: '#000', 
-                borderRadius: '50px', 
+              <div style={{
+                display: 'flex',
+                backgroundColor: '#000',
+                borderRadius: '50px',
                 padding: '0',
                 marginBottom: '20px',
                 alignItems: 'center'
               }}>
-                <input 
-                  type="email" 
-                  placeholder="Your Email Adress" 
-                  style={{ 
-                    flex: 1, 
-                    background: 'transparent', 
-                    border: 'none', 
-                    padding: '12px 25px', 
-                    color: '#fff', 
+                <input
+                  type="email"
+                  placeholder="Your Email Adress"
+                  style={{
+                    flex: 1,
+                    background: 'transparent',
+                    border: 'none',
+                    padding: '12px 25px',
+                    color: '#fff',
                     fontSize: '14px',
                     outline: 'none'
-                  }} 
+                  }}
                 />
-                <button style={{ 
-                  backgroundColor: '#fff', 
-                  color: '#000', 
-                  border: 'none', 
-                  borderRadius: '50px', 
-                  padding: '12px 30px', 
-                  fontWeight: '600', 
+                <button style={{
+                  backgroundColor: '#fff',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: '50px',
+                  padding: '12px 30px',
+                  fontWeight: '600',
                   fontSize: '14px',
                   display: 'flex',
                   alignItems: 'center',
@@ -195,12 +195,12 @@ export default function Footer() {
 
               {/* Card Footer Links */}
               <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#777' }}>
-                 <span>© 2024 . All Rights Reserved.</span>
-                 <div style={{ display: 'flex', gap: '15px' }}>
-                   <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>Terms And Condition</a>
-                   <span>|</span>
-                   <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>Privacy Policy</a>
-                 </div>
+                <span>© 2024 . All Rights Reserved.</span>
+                <div style={{ display: 'flex', gap: '15px' }}>
+                  <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>Terms And Condition</a>
+                  <span>|</span>
+                  <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>Privacy Policy</a>
+                </div>
               </div>
             </div>
           </div>
