@@ -65,8 +65,11 @@ export default function PressMediaSection() {
                 </div>
 
                 {/* Rating Info */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                   <div style={{ display: 'flex', gap: '4px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  <div style={{ fontSize: '16px', fontWeight: '500', color: '#1C1C1C', fontFamily: "'Lato', sans-serif" }}>
+                    225+ Satisfied Patients
+                  </div>
+                  <div style={{ display: 'flex', gap: '4px' }}>
                     {[1, 2, 3, 4, 5].map((s) => (
                       <img 
                         key={s} 
@@ -75,9 +78,6 @@ export default function PressMediaSection() {
                         style={{ width: '20px', height: '20px' }} 
                       />
                     ))}
-                  </div>
-                  <div style={{ fontSize: '16px', fontWeight: '500', color: '#1C1C1C', fontFamily: "'Lato', sans-serif" }}>
-                    225+ Satisfied Patients
                   </div>
                 </div>
               </div>
