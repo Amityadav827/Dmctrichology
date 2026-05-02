@@ -101,24 +101,13 @@ export default function FaqSection() {
                 cursor: 'pointer'
               }}
             >
-              <div style={{ 
-                width: '60px', 
-                height: '60px', 
-                borderRadius: '50%', 
-                backgroundColor: faq.isActive ? '#fff' : '#000', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
+              <div style={{ flexShrink: 0 }}>
                 <img 
                   src={faq.icon} 
                   alt="FAQ Icon" 
                   style={{ 
-                    width: '30px', 
-                    height: '30px', 
-                    objectFit: 'contain',
-                    filter: faq.isActive ? 'none' : 'invert(1)' 
+                    width: '40px', 
+                    height: '40px'
                   }} 
                 />
               </div>
