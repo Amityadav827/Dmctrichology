@@ -125,10 +125,10 @@ export default function PressMediaSection() {
               <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
-                gap: '40px', 
+                gap: '0', 
                 justifyContent: 'flex-end',
                 width: '100%',
-                marginTop: '40px'
+                marginTop: '60px'
               }}>
                 {logos.map((url, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
