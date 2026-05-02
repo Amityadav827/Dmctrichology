@@ -5,36 +5,36 @@ import React from 'react';
 const services = [
   {
     title: "Follicular Unit Extraction (FUE)",
-    image: "https://images.unsplash.com/photo-1628156112302-31050899650b?q=80&w=1000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/dnnerjyyebzufaoya4hd.png"
   },
   {
     title: "Follicular Unit Transplantation (FUT)",
-    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/scwz5ugmiwn9npmzpk5d.png"
   },
   {
     title: "Hair Replacement In Delhi – Non-Surgical Solutions",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/l141dtwrmlhc3xm8tlir.png"
   },
   {
     title: "Scalp Treatments For Healthy Hair",
-    image: "https://images.unsplash.com/photo-1559599101-f09722fb4948?q=80&w=1000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/kuhwci9p4pp7r7mzmxof.png"
   },
   // Duplicated for scrolling
   {
     title: "Follicular Unit Extraction (FUE)",
-    image: "https://images.unsplash.com/photo-1628156112302-31050899650b?q=80&w=1000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/dnnerjyyebzufaoya4hd.png"
   },
   {
     title: "Follicular Unit Transplantation (FUT)",
-    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/scwz5ugmiwn9npmzpk5d.png"
   },
   {
     title: "Hair Replacement In Delhi – Non-Surgical Solutions",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/l141dtwrmlhc3xm8tlir.png"
   },
   {
     title: "Scalp Treatments For Healthy Hair",
-    image: "https://images.unsplash.com/photo-1559599101-f09722fb4948?q=80&w=1000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/kuhwci9p4pp7r7mzmxof.png"
   }
 ];
 
