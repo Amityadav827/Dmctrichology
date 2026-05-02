@@ -10,49 +10,30 @@ const featureImages = [
 ];
 
 export default function FeaturesBar() {
-  // Triple the images to ensure a seamless infinite loop even on ultra-wide screens
-  const displayImages = [...featureImages, ...featureImages, ...featureImages];
+  // Duplicate images for infinite loop
+  const displayImages = [...featureImages, ...featureImages];
 
   return (
     <section className="features-bar" style={{ 
-      padding: '40px 0', 
+      padding: '60px 0', 
       backgroundColor: 'transparent', 
       overflow: 'hidden' 
     }}>
-      <style>
-        {`
-          @keyframes infiniteMarquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-33.33%); }
-          }
-          .marquee-content-fixed {
-            display: flex;
-            gap: 40px;
-            animation: infiniteMarquee 25s linear infinite;
-            width: max-content;
-          }
-          .feature-card {
-            flex: 0 0 auto;
-            width: 200px;
-            background: #fff;
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 80px;
-          }
-        `}
-      </style>
-      <div className="marquee-container" style={{ overflow: 'hidden', width: '100%' }}>
-        <div className="marquee-content-fixed">
+      <div className="marquee-container" style={{ width: '100%', overflow: 'hidden' }}>
+        <div className="marquee-content">
           {displayImages.map((src, index) => (
-            <div key={index} className="feature-card">
+            <div key={index} style={{ 
+              flex: '0 0 auto',
+              width: '200px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: '40px'
+            }}>
               <img 
                 src={src} 
                 alt={`Certification ${index + 1}`} 
-                style={{ width: '100%', height: 'auto', objectFit: 'contain', maxHeight: '100%' }} 
+                style={{ width: '100%', height: 'auto', objectFit: 'contain' }} 
               />
             </div>
           ))}
