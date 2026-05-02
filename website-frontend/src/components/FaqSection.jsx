@@ -92,11 +92,11 @@ export default function FaqSection() {
               style={{
                 backgroundColor: faq.isActive ? '#000' : '#F9F7F2',
                 borderRadius: '40px',
-                padding: '35px',
+                padding: '16px',
                 display: 'flex',
                 gap: '20px',
-                alignItems: 'flex-start',
-                border: faq.isActive ? 'none' : '1px solid rgba(0,0,0,0.05)',
+                alignItems: 'center',
+                border: '1px solid #4D4D4D',
                 transition: 'all 0.3s ease',
                 cursor: 'pointer'
               }}
@@ -106,8 +106,8 @@ export default function FaqSection() {
                   src={faq.icon}
                   alt="FAQ Icon"
                   style={{
-                    width: '40px',
-                    height: '40px'
+                    width: '50px',
+                    height: '50px'
                   }}
                 />
               </div>
