@@ -27,13 +27,7 @@ const ReviewCard = ({ name, text }) => (
     </p>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
       <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#000' }}>- {name}.</span>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-           <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Reference_Icon.svg" alt="G" style={{ width: '16px' }} />
-           <span style={{ fontSize: '8px', color: '#888', fontWeight: 'bold', textTransform: 'uppercase' }}>Posted on</span>
-        </div>
-        <span style={{ fontSize: '8px', color: '#888', fontWeight: 'bold', textTransform: 'uppercase' }}>Google</span>
-      </div>
+      <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" alt="Google Review" style={{ height: '35px' }} />
     </div>
   </div>
 );
