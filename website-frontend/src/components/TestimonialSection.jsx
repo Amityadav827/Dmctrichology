@@ -1,27 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 
-// YouTube/Shorts Style Play Icon
-const PlayIcon = ({ onClick }) => (
-  <div 
-    onClick={onClick}
-    style={{
-      width: '60px',
-      height: '60px',
-      backgroundColor: '#FF0000',
-      borderRadius: '15px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      boxShadow: '0 10px 20px rgba(255,0,0,0.3)',
-      cursor: 'pointer',
-      transition: 'transform 0.3s ease'
-    }} className="play-btn-hover">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
-      <path d="M8 5v14l11-7z" />
-    </svg>
-  </div>
-);
 
 const ReviewCard = ({ name, text }) => (
   <div style={{
@@ -82,7 +61,6 @@ const VideoCard = ({ name, image, height = "400px", onPlay }) => (
       alignItems: 'center'
     }}>
       <h4 style={{ color: '#fff', fontSize: '20px', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>{name}</h4>
-      <PlayIcon />
       <div style={{ height: '20px' }}></div> {/* Spacer */}
     </div>
   </div>
@@ -257,9 +235,6 @@ const TestimonialSection = () => {
       <style jsx>{`
         .testimonial-staggered-grid {
           transition: all 0.5s ease;
-        }
-        .play-btn-hover:hover {
-          transform: scale(1.1);
         }
         .view-all-testimonials-btn:hover {
           background-color: #000 !important;
