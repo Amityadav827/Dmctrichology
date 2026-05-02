@@ -13,23 +13,23 @@ export default function FaqSection() {
     {
       question: "What Types Of Hair Treatments Are Available At DMC Trichology?",
       answer: "Yes, We Provide Home Visits When Needed. Ideal For Post-Surgery Or Limited Mobility Patients. Call Us To Check Availability In Your Area.",
-      icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777638444/dmc-trichology/faxp8cvrttxpt3w38asw.png"
+      icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777638444/dmc-trichology/azwnlible0jjieljwpin.png"
     },
     {
       question: "Who Performs The Hair Transplants At DMC Trichology?",
       answer: "We Help With Joint Pain, Sports Injuries, Back Issues, And More. Each Treatment Is Personalized To Your Needs. Our Goal Is To Restore Comfort And Movement.",
-      icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777638444/dmc-trichology/uwcoyjbmka6mtnpxif4t.png"
+      icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777638444/dmc-trichology/faxp8cvrttxpt3w38asw.png"
     },
     {
       question: "What Should I Wear To My Appointment?",
       answer: "Wear Loose, Comfortable Clothes. Gym Wear Or Stretchable Outfits Are Ideal. Avoid Tight Or Formal Clothing.",
-      icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777638444/dmc-trichology/azwnlible0jjieljwpin.png",
+      icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777638444/dmc-trichology/cds9oqjny3l4ctfzdnxp.png",
       isActive: true
     },
     {
       question: "Can Both Men And Women Undergo Hair Transplant Procedures At DMC Trichology?",
       answer: "Sessions Typically Run Between 30 To 60 Minutes. Your Duration Depends On Your Treatment Plan. We Focus On Quality Care, Not The Clock.",
-      icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777638444/dmc-trichology/cds9oqjny3l4ctfzdnxp.png"
+      icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777638444/dmc-trichology/uwcoyjbmka6mtnpxif4t.png"
     },
     {
       question: "How Can I Book A Consultation At DMC Trichology?",
@@ -41,7 +41,7 @@ export default function FaqSection() {
   return (
     <section style={{ padding: '80px 5%', backgroundColor: '#fff' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        
+
         {/* Header Area */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '60px', flexWrap: 'wrap', gap: '30px' }}>
           <div>
@@ -53,11 +53,11 @@ export default function FaqSection() {
           </div>
 
           {/* Tabs */}
-          <div style={{ 
-            display: 'flex', 
-            backgroundColor: '#fff', 
-            border: '1px solid #E5E5E5', 
-            borderRadius: '50px', 
+          <div style={{
+            display: 'flex',
+            backgroundColor: '#fff',
+            border: '1px solid #E5E5E5',
+            borderRadius: '50px',
             padding: '5px',
             gap: '5px'
           }}>
@@ -86,8 +86,8 @@ export default function FaqSection() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '25px' }}>
           {faqs.map((faq, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`faq-card ${faq.isActive ? 'active' : ''}`}
               style={{
                 backgroundColor: faq.isActive ? '#000' : '#F9F7F2',
@@ -102,31 +102,31 @@ export default function FaqSection() {
               }}
             >
               <div style={{ flexShrink: 0 }}>
-                <img 
-                  src={faq.icon} 
-                  alt="FAQ Icon" 
-                  style={{ 
-                    width: '40px', 
+                <img
+                  src={faq.icon}
+                  alt="FAQ Icon"
+                  style={{
+                    width: '40px',
                     height: '40px'
-                  }} 
+                  }}
                 />
               </div>
               <div>
-                <h3 style={{ 
-                  fontSize: '22px', 
-                  color: faq.isActive ? '#fff' : '#000', 
-                  fontFamily: "'Marcellus', serif", 
-                  fontWeight: '400', 
+                <h3 style={{
+                  fontSize: '22px',
+                  color: faq.isActive ? '#fff' : '#000',
+                  fontFamily: "'Marcellus', serif",
+                  fontWeight: '400',
                   marginBottom: '10px',
                   lineHeight: '1.3'
                 }}>
                   {faq.question}
                 </h3>
-                <p style={{ 
-                  fontSize: '14px', 
-                  color: faq.isActive ? 'rgba(255,255,255,0.8)' : '#666', 
-                  fontFamily: "'Lato', sans-serif", 
-                  lineHeight: '1.6' 
+                <p style={{
+                  fontSize: '14px',
+                  color: faq.isActive ? 'rgba(255,255,255,0.8)' : '#666',
+                  fontFamily: "'Lato', sans-serif",
+                  lineHeight: '1.6'
                 }}>
                   {faq.answer}
                 </p>
@@ -152,9 +152,9 @@ export default function FaqSection() {
             fontFamily: "'Marcellus', serif"
           }}>
             View All Questions
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
               justifyContent: 'center',
               transform: 'rotate(-45deg)'
             }}>
