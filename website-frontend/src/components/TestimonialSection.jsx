@@ -119,7 +119,7 @@ const TestimonialSection = () => {
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <ReviewCard name="Sneha Aggrawal" text="I highly recommend their services to anyone looking to enhance their natural beauty and enjoy a moment of relaxation." />
             <VideoCard 
-              name="Kritika Kamra S" 
+              name="Kritika Kamra" 
               image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/pgab6yn3skxpsx4oftws.png" 
               height="450px" 
               onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
