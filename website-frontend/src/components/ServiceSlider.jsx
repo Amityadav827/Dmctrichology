@@ -36,26 +36,27 @@ export default function ServiceSlider() {
     <section style={{ backgroundColor: '#FFFAF1', padding: '80px 5%' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
-        {/* Top Area */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px' }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-              <div style={{ width: '40px', height: '1px', backgroundColor: '#3D5A80' }}></div>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#3D5A80' }}></div>
-              <span style={{ fontSize: '12px', letterSpacing: '2px', color: '#3D5A80', fontWeight: '600' }}>SERVICES</span>
-            </div>
-            <h2 style={{ fontSize: '36px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", fontWeight: '400' }}>
-              Our Hair Transplant Services
-            </h2>
+        {/* Top Area - Centered */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '60px', position: 'relative' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '15px' }}>
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
+              alt="icon" 
+              style={{ width: '24px', height: 'auto' }} 
+            />
+            <span style={{ fontSize: '14px', letterSpacing: '2.5px', color: '#3D5A80', fontWeight: '600' }}>SERVICES</span>
           </div>
-          <a href="#" style={{ color: '#888', fontSize: '14px', textDecoration: 'none', marginBottom: '10px' }}>
+          <h2 style={{ fontSize: '42px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>
+            Our Hair Transplant Services
+          </h2>
+          <a href="#" style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none' }}>
             View All &gt;
           </a>
         </div>
 
         {/* Slider Container */}
         <div style={{ position: 'relative' }}>
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - Using Provided Images */}
           <button 
             onClick={() => scroll('left')}
             style={{
@@ -74,11 +75,14 @@ export default function ServiceSlider() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '20px',
-              color: '#444'
+              padding: '0'
             }}
           >
-            &#8249;
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/acctki1o9lkpujrsmtqu.png" 
+              alt="prev" 
+              style={{ width: '100%', height: '100%', borderRadius: '50%' }} 
+            />
           </button>
           <button 
             onClick={() => scroll('right')}
@@ -98,11 +102,14 @@ export default function ServiceSlider() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '20px',
-              color: '#444'
+              padding: '0'
             }}
           >
-            &#8250;
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777610955/dmc-trichology/aevxkziamfrlmc14tpv1.png" 
+              alt="next" 
+              style={{ width: '100%', height: '100%', borderRadius: '50%' }} 
+            />
           </button>
 
           {/* Cards Wrapper */}
