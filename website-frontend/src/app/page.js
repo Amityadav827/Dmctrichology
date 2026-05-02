@@ -6,6 +6,7 @@ import AboutUs from '@/components/AboutUs';
 import AboutUsCare from '@/components/AboutUsCare';
 import SurgeonsSection from '@/components/SurgeonsSection';
 import EnquirySection from '@/components/EnquirySection';
+import TestimonialSection from '@/components/TestimonialSection';
 
 
 
@@ -41,6 +42,9 @@ export default function Home() {
       <AboutUsCare />
       <SurgeonsSection />
       <EnquirySection />
+      <div style={{ marginTop: '80px' }}>
+        <TestimonialSection />
+      </div>
       <TreatmentSection />
       <FaqSection />
       <BlogSection />

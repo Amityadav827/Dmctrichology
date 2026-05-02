@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "echo 'Linting skipped for build stability'"
+    "lint": "eslint src"
   },
   "dependencies": {
     "axios": "^1.15.2",
