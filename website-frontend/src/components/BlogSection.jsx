@@ -128,7 +128,7 @@ export default function BlogSection() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '12px',
-            padding: '12px 24px',
+            padding: '8px 12px 8px 24px',
             borderRadius: '50px',
             border: '1px solid #E5E5E5',
             backgroundColor: '#fff',
