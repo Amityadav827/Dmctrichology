@@ -59,7 +59,7 @@ export default function ServiceSlider() {
         </div>
 
         {/* Slider Container */}
-        <div className="slider-wrapper" style={{ position: 'relative', padding: '0 40px' }}>
+        <div className="slider-wrapper" style={{ position: 'relative', padding: '0 10px' }}>
           <Swiper
             modules={[Navigation]}
             spaceBetween={25}
