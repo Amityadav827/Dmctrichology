@@ -42,9 +42,7 @@ export default function Home() {
       <AboutUsCare />
       <SurgeonsSection />
       <EnquirySection />
-      <div style={{ marginTop: '80px' }}>
-        <TestimonialSection />
-      </div>
+      <TestimonialSection />
       <TreatmentSection />
       <FaqSection />
       <BlogSection />
