@@ -17,20 +17,20 @@ const ReviewCard = ({ name, text }) => (
         <span key={s} style={{ color: '#E4B753', fontSize: '18px' }}>★</span>
       ))}
     </div>
-    <p style={{ 
-      fontSize: '14px', 
-      color: '#444', 
-      lineHeight: '1.6', 
+    <p style={{
+      fontSize: '14px',
+      color: '#444',
+      lineHeight: '1.6',
       marginBottom: '20px',
-      fontFamily: "'Lato', sans-serif" 
+      fontFamily: "'Lato', sans-serif"
     }}>
       {text}
     </p>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
       <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#000' }}>- {name}.</span>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-         {/* eslint-disable-next-line @next/next/no-img-element */}
-         <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" alt="Google Review" style={{ width: '40px', height: 'auto' }} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" alt="Google Review" style={{ width: '60px', height: 'auto' }} />
       </div>
     </div>
   </div>
@@ -46,12 +46,12 @@ const VideoCard = ({ name, image, height = "400px", onPlay }) => (
     marginBottom: '24px',
     cursor: 'pointer'
   }} onClick={onPlay}>
-    <Image 
-      src={image} 
-      alt={name} 
+    <Image
+      src={image}
+      alt={name}
       fill
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      style={{ objectFit: 'cover' }} 
+      style={{ objectFit: 'cover' }}
     />
     <div style={{
       position: 'absolute',
@@ -77,43 +77,43 @@ const TestimonialSection = () => {
   return (
     <section className="testimonials-grid-section" style={{ padding: '0 5% 100px 5%', backgroundColor: '#fff' }}>
       <div style={{ maxWidth: '1450px', margin: '0 auto' }}>
-        
+
         {/* Header Section */}
         <div style={{ textAlign: 'center', marginBottom: '80px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-             <div style={{ width: '40px', height: '2px', backgroundColor: '#E4B753' }}></div>
-             <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#E4B753' }}></div>
-             <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1C1C1C', textTransform: 'uppercase', letterSpacing: '2px', fontFamily: "'Marcellus', serif" }}>REVIEWS</span>
+            <div style={{ width: '40px', height: '2px', backgroundColor: '#E4B753' }}></div>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#E4B753' }}></div>
+            <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1C1C1C', textTransform: 'uppercase', letterSpacing: '2px', fontFamily: "'Marcellus', serif" }}>REVIEWS</span>
           </div>
           <h2 style={{ fontSize: '48px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px' }}>
             See the Results. Hear the Stories.
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
             <span style={{ fontSize: '16px', color: '#666' }}>7000+ Reviews on</span>
-            <Image 
-              src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" 
-              alt="Google" 
-              width={80} 
-              height={26} 
-              style={{ width: '80px', height: 'auto', marginTop: '4px' }} 
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
+              alt="Google"
+              width={80}
+              height={26}
+              style={{ width: '80px', height: 'auto', marginTop: '4px' }}
             />
           </div>
         </div>
 
         {/* Staggered Grid */}
-        <div className="testimonial-staggered-grid" style={{ 
-          display: 'flex', 
-          gap: '24px', 
+        <div className="testimonial-staggered-grid" style={{
+          display: 'flex',
+          gap: '24px',
           alignItems: 'flex-start'
         }}>
-          
+
           {/* Column 1 */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <ReviewCard name="Anjali Kohli" text="The full body laser session was excellent. The therapist was highly skilled and made the experience comfortable and effective." />
-            <VideoCard 
-              name="Real Results Story" 
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/ba79ohixgo962pduymyd.png" 
-              height="450px" 
+            <VideoCard
+              name="Real Results Story"
+              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/ba79ohixgo962pduymyd.png"
+              height="450px"
               onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
             />
             <ReviewCard name="Ravi Malik" text="The result of laser treatment is very nice. I have tried LHR from different places but find this the best." />
@@ -121,10 +121,10 @@ const TestimonialSection = () => {
 
           {/* Column 2 - Staggered Down */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginTop: '60px' }}>
-            <VideoCard 
-              name="Tanvi&apos;s Hydration" 
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/u1z7ggmemmekm84ep5hu.png" 
-              height="480px" 
+            <VideoCard
+              name="Tanvi&apos;s Hydration"
+              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/u1z7ggmemmekm84ep5hu.png"
+              height="480px"
               onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
             />
             <ReviewCard name="Priya Sharma" text="Today is the first session of slimming the abdomen, and love handles inch loss. I am totally satisfied with service." />
@@ -134,10 +134,10 @@ const TestimonialSection = () => {
           {/* Column 3 */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <ReviewCard name="Sneha Aggrawal" text="I highly recommend their services to anyone looking to enhance their natural beauty and enjoy a moment of relaxation." />
-            <VideoCard 
-              name="Kritika Kamra" 
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/pgab6yn3skxpsx4oftws.png" 
-              height="450px" 
+            <VideoCard
+              name="Kritika Kamra"
+              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/pgab6yn3skxpsx4oftws.png"
+              height="450px"
               onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
             />
             <ReviewCard name="Rahul Tomar" text="The results exceeded my expectations, and I felt pampered without the hassle of traveling to a salon." />
@@ -145,10 +145,10 @@ const TestimonialSection = () => {
 
           {/* Column 4 - Staggered Down */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginTop: '60px' }}>
-            <VideoCard 
-              name="Shweta Tiwari" 
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/fgljhvgnh4lyhilbokdf.png" 
-              height="480px" 
+            <VideoCard
+              name="Shweta Tiwari"
+              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/fgljhvgnh4lyhilbokdf.png"
+              height="480px"
               onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
             />
             <ReviewCard name="Priyal Sen" text="The procedure was quick, comfortable... I&apos;ve already started noticing positive changes since my first session." />
@@ -158,10 +158,10 @@ const TestimonialSection = () => {
           {/* Column 5 */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <ReviewCard name="Simran Paul" text="I&apos;ve had a great experience with my laser hair reduction sessions. My therapist is highly professional and gentle." />
-            <VideoCard 
-              name="Influencer Dish" 
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/o0naqjvopw7otiwdzwsg.png" 
-              height="450px" 
+            <VideoCard
+              name="Influencer Dish"
+              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/o0naqjvopw7otiwdzwsg.png"
+              height="450px"
               onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
             />
             <ReviewCard name="Alka Singh" text="Thank you for the wonderful facial! The entire experience was relaxing and refreshing. You were very professional." />
@@ -209,7 +209,7 @@ const TestimonialSection = () => {
             borderRadius: '20px',
             overflow: 'hidden'
           }} onClick={(e) => e.stopPropagation()}>
-            <button 
+            <button
               onClick={closeVideo}
               style={{
                 position: 'absolute',
@@ -228,13 +228,13 @@ const TestimonialSection = () => {
             >
               &times;
             </button>
-            <iframe 
-              width="100%" 
-              height="100%" 
-              src={`${activeVideo}?autoplay=1`} 
-              title="YouTube video player" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            <iframe
+              width="100%"
+              height="100%"
+              src={`${activeVideo}?autoplay=1`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             ></iframe>
           </div>
