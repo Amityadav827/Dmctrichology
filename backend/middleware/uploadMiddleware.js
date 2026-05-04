@@ -1,42 +1,21 @@
-const fs = require("fs");
-const path = require("path");
 const multer = require("multer");
 
-const uploadDir = path.join(__dirname, "../uploads");
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const safeName = path
-      .basename(file.originalname, ext)
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    cb(null, `${safeName || "result-image"}-${Date.now()}${ext}`);
-  },
-});
+// Use memory storage for Supabase uploads
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {
-    cb(new Error("Only image files are allowed"));
+    cb(new Error("Only image files are allowed"), false);
   }
 };
 
 const upload = multer({
-  storage,
-  fileFilter,
+  storage: storage,
+  fileFilter: fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 5 * 1024 * 1024, // 5MB limit
   },
 });
 

@@ -1,9 +1,19 @@
 const supabase = require("../config/supabase");
+const uploadToSupabase = require("../utils/uploadToSupabase");
 
 const createVideo = async (req, res, next) => {
   try {
-    const { categoryId, title, videoUrl, thumbnail, order, status } = req.body;
-    if (!categoryId || !title || !videoUrl || !thumbnail) return res.status(400).json({ success: false, message: "Required fields missing" });
+    const body = { ...req.body };
+
+    // Handle Thumbnail Upload to Supabase Storage
+    if (req.file) {
+      body.thumbnail = await uploadToSupabase(req.file, 'videos');
+    }
+
+    const { categoryId, title, videoUrl, thumbnail, order, status } = body;
+    if (!categoryId || !title || !videoUrl || !body.thumbnail) {
+      return res.status(400).json({ success: false, message: "Required fields missing" });
+    }
 
     const { data, error } = await supabase
       .from('videos')
@@ -11,7 +21,7 @@ const createVideo = async (req, res, next) => {
         category_id: categoryId,
         title,
         video_url: videoUrl,
-        thumbnail,
+        thumbnail: body.thumbnail,
         order: order || 0,
         status: status || 'active'
       }])
@@ -55,12 +65,19 @@ const getVideos = async (req, res, next) => {
 
 const updateVideo = async (req, res, next) => {
   try {
-    const { categoryId, title, videoUrl, thumbnail, order, status } = req.body;
+    const body = { ...req.body };
+
+    // Handle Thumbnail Upload to Supabase Storage
+    if (req.file) {
+      body.thumbnail = await uploadToSupabase(req.file, 'videos');
+    }
+
+    const { categoryId, title, videoUrl, order, status } = body;
     const updates = {
       category_id: categoryId,
       title,
       video_url: videoUrl,
-      thumbnail,
+      thumbnail: body.thumbnail,
       order,
       status
     };

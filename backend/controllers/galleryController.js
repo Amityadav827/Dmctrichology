@@ -1,71 +1,20 @@
 const supabase = require("../config/supabase");
-const fs = require("fs");
-const path = require("path");
+const uploadToSupabase = require("../utils/uploadToSupabase");
 
-const removeUploadedFile = (imagePath) => {
-  if (!imagePath) {
-    return;
-  }
-
-  try {
-    const filename = imagePath.split("/").pop();
-    if (!filename) return;
-
-    const absolutePath = path.join(__dirname, "..", "uploads", "gallery", filename);
-    if (fs.existsSync(absolutePath)) {
-      fs.unlinkSync(absolutePath);
-    }
-  } catch (err) {
-    console.error("Error removing file:", err);
-  }
-};
-
-const normalizeImagePath = (req, file) => {
-  if (!file) return "";
-  
-  const filePath = file.secure_url || file.path || "";
-  
-  if (typeof filePath === "string" && filePath.startsWith("http")) {
-    return filePath;
-  }
-  
-  if (file.filename) {
-    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
-    const normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-    return `${normalizedBaseUrl}/uploads/gallery/${file.filename}`;
-  }
-  
-  return filePath;
-};
-
-const transformItem = (req, item) => {
-  // item is already a plain object from Supabase
-  const doc = { ...item };
-  let finalUrl = doc.image_url || doc.image || "";
-  
-  if (finalUrl && typeof finalUrl === "string" && !finalUrl.startsWith("http")) {
-    const protocol = req.headers["x-forwarded-proto"] || req.protocol;
-    const host = req.get("host");
-    const baseUrl = process.env.BASE_URL || `${protocol}://${host}`;
-    const normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-    
-    finalUrl = finalUrl.startsWith("/") 
-      ? `${normalizedBaseUrl}${finalUrl}` 
-      : `${normalizedBaseUrl}/${finalUrl}`;
-  }
-  
+const transformItem = (item) => {
+  if (!item) return null;
   return {
-    _id: doc.id,
-    id: doc.id,
-    imageUrl: finalUrl,
-    image: finalUrl,
-    title: doc.title,
-    altText: doc.alt_text,
-    description: doc.description,
-    order: doc.order,
-    status: doc.status,
-    createdAt: doc.created_at,
-    updatedAt: doc.updated_at,
+    _id: item.id,
+    id: item.id,
+    imageUrl: item.image_url,
+    image: item.image_url,
+    title: item.title,
+    altText: item.alt_text,
+    description: item.description,
+    order: item.order,
+    status: item.status,
+    createdAt: item.created_at,
+    updatedAt: item.updated_at,
   };
 };
 
@@ -84,20 +33,19 @@ const createGalleryItem = async (req, res, next) => {
     const altText = req.body.altText || "";
     const description = req.body.description || "";
     
-    const itemsToInsert = files.map((file, index) => {
-      const fullUrl = normalizeImagePath(req, file);
-      return {
-        image_url: fullUrl,
-        image: fullUrl,
+    const itemsToInsert = [];
+    for (let i = 0; i < files.length; i++) {
+      const publicUrl = await uploadToSupabase(files[i], 'gallery');
+      itemsToInsert.push({
+        image_url: publicUrl,
         title,
         alt_text: altText,
         description,
-        order: Number.isFinite(Number(req.body.order)) ? Number(req.body.order) + index : index,
+        order: Number.isFinite(Number(req.body.order)) ? Number(req.body.order) + i : i,
         status: req.body.status || "active",
-      };
-    });
+      });
+    }
 
-    // const galleryItems = await Gallery.insertMany(items);
     const { data, error } = await supabase
       .from('gallery')
       .insert(itemsToInsert)
@@ -110,7 +58,7 @@ const createGalleryItem = async (req, res, next) => {
       });
     }
 
-    const transformedItems = data.map(item => transformItem(req, item));
+    const transformedItems = data.map(item => transformItem(item));
 
     return res.status(201).json({
       success: true,
@@ -127,14 +75,6 @@ const getGalleryItems = async (req, res, next) => {
     const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
     const skip = (page - 1) * limit;
     const search = String(req.query.search || "").trim();
-
-    /*
-    const filter = search
-      ? {
-          title: { $regex: search, $options: "i" },
-        }
-      : {};
-    */
 
     let query = supabase.from('gallery').select('*', { count: 'exact' });
 
@@ -154,7 +94,7 @@ const getGalleryItems = async (req, res, next) => {
       });
     }
 
-    const transformedItems = data.map(item => transformItem(req, item));
+    const transformedItems = data.map(item => transformItem(item));
 
     return res.status(200).json({
       success: true,
@@ -174,7 +114,7 @@ const getGalleryItems = async (req, res, next) => {
 
 const getGalleryItemById = async (req, res, next) => {
   try {
-        const { data, error } = await supabase
+    const { data, error } = await supabase
       .from('gallery')
       .select('*')
       .eq('id', req.params.id)
@@ -189,7 +129,7 @@ const getGalleryItemById = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: transformItem(req, data),
+      data: transformItem(data),
     });
   } catch (error) {
     next(error);
@@ -198,16 +138,13 @@ const getGalleryItemById = async (req, res, next) => {
 
 const updateGalleryItem = async (req, res, next) => {
   try {
-        const { data: galleryItem, error: fetchError } = await supabase
+    const { data: galleryItem, error: fetchError } = await supabase
       .from('gallery')
       .select('*')
       .eq('id', req.params.id)
       .single();
 
     if (fetchError || !galleryItem) {
-      if (req.files?.length) {
-        req.files.forEach((file) => removeUploadedFile(normalizeImagePath(req, file)));
-      }
       return res.status(404).json({
         success: false,
         message: "Gallery item not found"
@@ -216,10 +153,9 @@ const updateGalleryItem = async (req, res, next) => {
 
     const updates = {};
     if (req.files?.length) {
-      removeUploadedFile(galleryItem.image_url || galleryItem.image);
-      const newFullUrl = normalizeImagePath(req, req.files[0]);
-      updates.image_url = newFullUrl;
-      updates.image = newFullUrl;
+      // In a real production app, you might want to delete the old image from Supabase Storage here.
+      const newUrl = await uploadToSupabase(req.files[0], 'gallery');
+      updates.image_url = newUrl;
     }
 
     if (req.body.title !== undefined) updates.title = req.body.title;
@@ -246,7 +182,7 @@ const updateGalleryItem = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: transformItem(req, data),
+      data: transformItem(data),
     });
   } catch (error) {
     next(error);
@@ -255,21 +191,6 @@ const updateGalleryItem = async (req, res, next) => {
 
 const deleteGalleryItem = async (req, res, next) => {
   try {
-        const { data: galleryItem, error: fetchError } = await supabase
-      .from('gallery')
-      .select('*')
-      .eq('id', req.params.id)
-      .single();
-
-    if (fetchError || !galleryItem) {
-      return res.status(404).json({
-        success: false,
-        message: "Gallery item not found"
-      });
-    }
-
-    removeUploadedFile(galleryItem.image_url || galleryItem.image);
-    // await galleryItem.deleteOne();
     const { error } = await supabase
       .from('gallery')
       .delete()
@@ -293,7 +214,7 @@ const deleteGalleryItem = async (req, res, next) => {
 
 const toggleGalleryItemStatus = async (req, res, next) => {
   try {
-        const { data: current, error: fetchError } = await supabase
+    const { data: current, error: fetchError } = await supabase
       .from('gallery')
       .select('status')
       .eq('id', req.params.id)
@@ -324,7 +245,7 @@ const toggleGalleryItemStatus = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: transformItem(req, data),
+      data: transformItem(data),
     });
   } catch (error) {
     next(error);

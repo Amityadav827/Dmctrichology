@@ -8,16 +8,16 @@ const {
   updateVideoOrder,
 } = require("../controllers/videoController");
 const { protect, adminOnly } = require("../middleware/authMiddleware");
-const upload = require("../middleware/cloudinaryUpload");
+const upload = require("../middleware/uploadMiddleware");
 
 const router = express.Router();
 
 router.use(protect, adminOnly);
 
 router.route("/").post(upload.single("thumbnail"), createVideo).get(getVideos);
-router.put("/:id", upload.single("thumbnail"), updateVideo);
-router.delete("/:id", deleteVideo);
-router.patch("/:id/toggle-status", toggleVideoStatus);
-router.patch("/:id/order", updateVideoOrder);
+router.route("/:id").put(upload.single("thumbnail"), updateVideo).delete(deleteVideo);
+
+router.patch("/status/:id", toggleVideoStatus);
+router.patch("/order/:id", updateVideoOrder);
 
 module.exports = router;

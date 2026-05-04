@@ -8,7 +8,7 @@ const {
   toggleGalleryItemStatus,
 } = require("../controllers/galleryController");
 const { protect, adminOnly } = require("../middleware/authMiddleware");
-const upload = require("../middleware/cloudinaryUpload");
+const upload = require("../middleware/uploadMiddleware");
 
 const router = express.Router();
 

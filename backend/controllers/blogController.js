@@ -1,4 +1,5 @@
 const supabase = require("../config/supabase");
+const uploadToSupabase = require("../utils/uploadToSupabase");
 
 const mapToSupabase = (data) => {
   return {
@@ -53,7 +54,19 @@ const mapFromSupabase = (data) => {
 
 const createBlog = async (req, res, next) => {
   try {
-    const supabaseData = mapToSupabase(req.body);
+    const body = { ...req.body };
+
+    // Handle Image Uploads to Supabase Storage
+    if (req.files) {
+      if (req.files.blogImage && req.files.blogImage[0]) {
+        body.blogImage = await uploadToSupabase(req.files.blogImage[0], 'blogs');
+      }
+      if (req.files.bannerImage && req.files.bannerImage[0]) {
+        body.bannerImage = await uploadToSupabase(req.files.bannerImage[0], 'blogs');
+      }
+    }
+
+    const supabaseData = mapToSupabase(body);
     const { data, error } = await supabase
       .from('blogs')
       .insert([supabaseData])
@@ -68,7 +81,6 @@ const createBlog = async (req, res, next) => {
 };
 
 const getBlogs = async (req, res, next) => {
-  console.log("USING SUPABASE BLOG API");
   try {
     const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
     const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
@@ -126,7 +138,19 @@ const getBlogBySlug = async (req, res, next) => {
 
 const updateBlog = async (req, res, next) => {
   try {
-    const updates = mapToSupabase(req.body);
+    const body = { ...req.body };
+
+    // Handle Image Uploads to Supabase Storage
+    if (req.files) {
+      if (req.files.blogImage && req.files.blogImage[0]) {
+        body.blogImage = await uploadToSupabase(req.files.blogImage[0], 'blogs');
+      }
+      if (req.files.bannerImage && req.files.bannerImage[0]) {
+        body.bannerImage = await uploadToSupabase(req.files.bannerImage[0], 'blogs');
+      }
+    }
+
+    const updates = mapToSupabase(body);
     Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
 
     const { data, error } = await supabase.from('blogs').update(updates).eq('id', req.params.id).select().single();

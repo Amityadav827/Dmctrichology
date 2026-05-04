@@ -8,7 +8,7 @@ const {
   updateResultInnerOrder,
 } = require("../controllers/resultInnerController");
 const { protect, adminOnly } = require("../middleware/authMiddleware");
-const upload = require("../middleware/cloudinaryUpload");
+const upload = require("../middleware/uploadMiddleware");
 
 const router = express.Router();
 
