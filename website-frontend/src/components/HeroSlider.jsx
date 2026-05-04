@@ -33,6 +33,7 @@ export default function HeroSlider() {
     }
   ]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [contentReady, setContentReady] = useState(false);
 
   useEffect(() => {
     fetchHeroSlides().then(data => {
@@ -40,6 +41,9 @@ export default function HeroSlider() {
         setSlides(data);
       }
     });
+    // Trigger entrance animation shortly after mount
+    const t = setTimeout(() => setContentReady(true), 100);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -50,17 +54,21 @@ export default function HeroSlider() {
     return () => clearInterval(interval);
   }, [slides]);
 
-
   return (
     <div className="hero-slider-container">
       {slides.map((slide, index) => (
-        <div 
-          key={index} 
+        <div
+          key={index}
           className={`slide ${index === currentSlide ? 'active' : ''}`}
-          style={{ backgroundImage: `url(${slide.image})` }}
         >
-          <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
-          <div className="slide-content">
+          {/* Background with zoom animation */}
+          <div
+            className={`slide-bg ${index === currentSlide ? 'slide-bg-zoom' : ''}`}
+            style={{ backgroundImage: `url(${slide.image})` }}
+          />
+          <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 255, 0.2)', zIndex: 1 }}></div>
+
+          <div className={`slide-content ${index === currentSlide && contentReady ? 'slide-content-animate' : ''}`}>
             <span className="slide-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#1F3D3F', fontWeight: 'bold' }}>
               <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto', objectFit: 'contain' }} />
               {slide.tag}
@@ -72,8 +80,8 @@ export default function HeroSlider() {
       ))}
       <div className="slider-dots">
         {slides.map((_, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className={`dot ${index === currentSlide ? 'active' : ''}`}
             onClick={() => setCurrentSlide(index)}
           ></div>

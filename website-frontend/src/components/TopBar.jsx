@@ -35,10 +35,13 @@ export default function TopBar() {
     <div className="topbar">
       <div className="topbar-left">
         {phones.map((phone, i) => (
-          <span key={i}>{phone} {i < phones.length - 1 ? <span style={{margin: '0 8px'}}>|</span> : ''}</span>
+          <span key={i} className="topbar-contact-item">
+            <a href={`tel:${phone.replace(/\s/g, '')}`} className="topbar-link">{phone}</a>
+            {i < phones.length - 1 && <span className="topbar-sep">|</span>}
+          </span>
         ))}
-        <span style={{margin: '0 8px'}}>|</span>
-        <span>{email}</span>
+        <span className="topbar-sep">|</span>
+        <a href={`mailto:${email}`} className="topbar-link">{email}</a>
       </div>
       <div className="topbar-right">
         {socials.map((social, i) => (
