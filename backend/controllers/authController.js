@@ -1,5 +1,6 @@
 const crypto = require("crypto");
-const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const supabase = require("../config/supabase");
 const generateToken = require("../utils/generateToken");
 const { ensureAdminRole } = require("../utils/roleHelpers");
 
@@ -12,7 +13,11 @@ const registerAdmin = async (req, res, next) => {
       throw new Error("Name, email and password are required");
     }
 
-    const existingUser = await User.findOne({ email });
+    const { data: existingUser } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', email.trim().toLowerCase())
+      .single();
 
     if (existingUser) {
       res.status(400);
@@ -21,29 +26,45 @@ const registerAdmin = async (req, res, next) => {
 
     const adminRole = await ensureAdminRole();
 
-    const admin = await User.create({
-      name,
-      email,
-      phone: phone || "",
-      password,
-      role: adminRole._id,
-      status: "active",
-    });
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    await admin.populate("role", "name permissions");
+    const { data: user, error } = await supabase
+      .from('users')
+      .insert([
+        {
+          name,
+          email: email.trim().toLowerCase(),
+          password: hashedPassword,
+          phone: phone || "",
+          role_id: adminRole.id,
+          status: "active",
+        },
+      ])
+      .select(`
+        *,
+        role:roles (
+          name,
+          permissions
+        )
+      `)
+      .single();
+
+    if (error) throw error;
 
     return res.status(201).json({
       success: true,
       message: "Admin registered successfully",
       data: {
-        _id: admin._id,
-        name: admin.name,
-        email: admin.email,
-        phone: admin.phone,
-        status: admin.status,
-        role: admin.role,
-        permissions: admin.role?.permissions || [],
-        token: generateToken({ id: admin._id }),
+        _id: user.id,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        status: user.status,
+        role: user.role,
+        permissions: user.role?.permissions || [],
+        token: generateToken({ id: user.id }),
       },
     });
   } catch (error) {
@@ -53,19 +74,32 @@ const registerAdmin = async (req, res, next) => {
 
 const loginAdmin = async (req, res, next) => {
   try {
-    const { password } = req.body;
-    const email = req.body.email ? req.body.email.trim().toLowerCase() : "";
+    const { email, password } = req.body;
 
     if (!email || !password) {
       res.status(400);
       throw new Error("Email and password are required");
     }
 
-    const admin = await User.findOne({ email })
-      .populate("role", "name permissions")
-      .select("+password");
+    const { data: admin, error: fetchError } = await supabase
+      .from('users')
+      .select(`
+        *,
+        role:roles (
+          name,
+          permissions
+        )
+      `)
+      .eq('email', email.trim().toLowerCase())
+      .single();
 
-    if (!admin || !(await admin.matchPassword(password))) {
+    if (fetchError || !admin) {
+      res.status(401);
+      throw new Error("Invalid admin credentials");
+    }
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
       res.status(401);
       throw new Error("Invalid admin credentials");
     }
@@ -84,14 +118,15 @@ const loginAdmin = async (req, res, next) => {
       success: true,
       message: "Admin logged in successfully",
       data: {
-        _id: admin._id,
+        _id: admin.id,
+        id: admin.id,
         name: admin.name,
         email: admin.email,
         phone: admin.phone,
         status: admin.status,
         role: admin.role,
         permissions: admin.role?.permissions || [],
-        token: generateToken({ id: admin._id }),
+        token: generateToken({ id: admin.id }),
       },
     });
   } catch (error) {
@@ -101,9 +136,19 @@ const loginAdmin = async (req, res, next) => {
 
 const getAdminProfile = async (req, res, next) => {
   try {
+    const user = req.user;
     return res.status(200).json({
       success: true,
-      data: req.user,
+      data: {
+        _id: user.id,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        status: user.status,
+        role: user.role,
+        permissions: user.role?.permissions || [],
+      },
     });
   } catch (error) {
     next(error);
@@ -121,33 +166,35 @@ const forgotPassword = async (req, res, next) => {
       throw new Error("Email is required");
     }
 
-    console.log(`[DEBUG] ForgotPassword: Searching for email -> "${email}"`);
-    const user = await User.findOne({ email });
-    console.log(`[DEBUG] ForgotPassword: User found -> ${user ? "YES" : "NO"}`);
+    const { data: user, error: fetchError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
 
-    if (!user) {
+    if (fetchError || !user) {
       res.status(404);
       throw new Error("User with this email does not exist");
     }
 
-    // Generate reset token
     const resetToken = crypto.randomBytes(20).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    const expiry = new Date(Date.now() + 10 * 60 * 1000).toISOString();
 
-    // Hash and set reset token + expiry
-    user.resetPasswordToken = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
-    user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({
+        reset_password_token: hashedToken,
+        reset_password_expires: expiry,
+      })
+      .eq('id', user.id);
 
-    await user.save();
+    if (updateError) throw updateError;
 
-    // Prepare Reset URL
     const resetUrl = `${req.get("origin")}/reset-password/${resetToken}`;
     
-    // HTML Template
     const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 12px;">
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px;">
         <h2 style="color: #0f172a; text-align: center;">Password Reset Request</h2>
         <p>Hello <strong>${user.name}</strong>,</p>
         <p>You are receiving this email because you (or someone else) have requested the reset of a password for your DMC Trichology Admin account.</p>
@@ -173,10 +220,13 @@ const forgotPassword = async (req, res, next) => {
         message: "Password reset link sent to your email successfully",
       });
     } catch (emailError) {
-      // If email fails, reset the token fields
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-      await user.save();
+      await supabase
+        .from('users')
+        .update({
+          reset_password_token: null,
+          reset_password_expires: null,
+        })
+        .eq('id', user.id);
       
       res.status(500);
       throw new Error("Unable to send reset email. Please check your SMTP configuration.");
@@ -196,40 +246,37 @@ const resetPassword = async (req, res, next) => {
       throw new Error("New password is required");
     }
 
-    // Hash token from URL to compare with DB
-    const hashedToken = crypto
-      .createHash("sha256")
-      .update(token)
-      .digest("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-    console.log(`[DEBUG] ResetPassword: Attempting reset with token -> ${token.substring(0, 5)}...`);
+    const { data: user, error: fetchError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('reset_password_token', hashedToken)
+      .single();
 
-    // First check if token exists at all
-    const user = await User.findOne({
-      resetPasswordToken: hashedToken,
-    });
-
-    if (!user) {
-      console.log("[DEBUG] ResetPassword: No user found with this token ❌");
+    if (fetchError || !user) {
       res.status(400);
       throw new Error("Invalid reset token. Please request a new link.");
     }
 
-    // Then check if it's expired
-    if (user.resetPasswordExpires < Date.now()) {
-      console.log("[DEBUG] ResetPassword: Token has expired ❌");
+    if (new Date(user.reset_password_expires) < new Date()) {
       res.status(400);
       throw new Error("Reset link has expired. Please request a new one.");
     }
 
-    console.log(`[DEBUG] ResetPassword: Token valid for user -> ${user.email} ✅`);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Set new password (will be hashed by pre-save hook)
-    user.password = password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({
+        password: hashedPassword,
+        reset_password_token: null,
+        reset_password_expires: null,
+      })
+      .eq('id', user.id);
 
-    await user.save();
+    if (updateError) throw updateError;
 
     return res.status(200).json({
       success: true,

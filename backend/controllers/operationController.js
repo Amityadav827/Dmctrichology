@@ -1,25 +1,18 @@
-const Operation = require("../models/Operation");
+const supabase = require("../config/supabase");
 
 const createOperation = async (req, res, next) => {
   try {
     const { name, url, order, status } = req.body;
+    if (!name || !url) return res.status(400).json({ success: false, message: "Name and URL are required" });
 
-    if (!name || !url) {
-      res.status(400);
-      throw new Error("name and url are required");
-    }
+    const { data, error } = await supabase
+      .from('operations')
+      .insert([{ name, url, order: order || 0, status: status || 'active' }])
+      .select()
+      .single();
 
-    const operation = await Operation.create({
-      name,
-      url,
-      order: Number.isFinite(Number(order)) ? Number(order) : 0,
-      status: status || "active",
-    });
-
-    return res.status(201).json({
-      success: true,
-      data: operation,
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(201).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -27,13 +20,24 @@ const createOperation = async (req, res, next) => {
 
 const getOperations = async (req, res, next) => {
   try {
-    const operations = await Operation.find().sort({ order: 1, createdAt: -1 });
+    const { data, error } = await supabase
+      .from('operations')
+      .select('*')
+      .order('order', { ascending: true });
 
-    return res.status(200).json({
-      success: true,
-      count: operations.length,
-      data: operations,
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    const formattedData = data.map(item => ({ ...item, _id: item.id }));
+    return res.status(200).json({ success: true, count: formattedData.length, data: formattedData });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getOperationById = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase.from('operations').select('*').eq('id', req.params.id).single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Operation not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -42,24 +46,9 @@ const getOperations = async (req, res, next) => {
 const updateOperation = async (req, res, next) => {
   try {
     const { name, url, order, status } = req.body;
-    const operation = await Operation.findById(req.params.id);
-
-    if (!operation) {
-      res.status(404);
-      throw new Error("Operation not found");
-    }
-
-    operation.name = name || operation.name;
-    operation.url = url || operation.url;
-    operation.order = Number.isFinite(Number(order)) ? Number(order) : operation.order;
-    operation.status = status || operation.status;
-
-    await operation.save();
-
-    return res.status(200).json({
-      success: true,
-      data: operation,
-    });
+    const { data, error } = await supabase.from('operations').update({ name, url, order, status }).eq('id', req.params.id).select().single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Operation not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -67,19 +56,9 @@ const updateOperation = async (req, res, next) => {
 
 const deleteOperation = async (req, res, next) => {
   try {
-    const operation = await Operation.findById(req.params.id);
-
-    if (!operation) {
-      res.status(404);
-      throw new Error("Operation not found");
-    }
-
-    await operation.deleteOne();
-
-    return res.status(200).json({
-      success: true,
-      message: "Operation deleted successfully",
-    });
+    const { error } = await supabase.from('operations').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, message: "Operation deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -87,20 +66,14 @@ const deleteOperation = async (req, res, next) => {
 
 const toggleOperationStatus = async (req, res, next) => {
   try {
-    const operation = await Operation.findById(req.params.id);
+    const { data: current, error: fetchError } = await supabase.from('operations').select('status').eq('id', req.params.id).single();
+    if (fetchError || !current) return res.status(404).json({ success: false, message: "Operation not found" });
 
-    if (!operation) {
-      res.status(404);
-      throw new Error("Operation not found");
-    }
-
-    operation.status = operation.status === "active" ? "inactive" : "active";
-    await operation.save();
-
-    return res.status(200).json({
-      success: true,
-      data: operation,
-    });
+    const newStatus = current.status === "active" ? "inactive" : "active";
+    const { data, error } = await supabase.from('operations').update({ status: newStatus }).eq('id', req.params.id).select().single();
+    
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -109,6 +82,7 @@ const toggleOperationStatus = async (req, res, next) => {
 module.exports = {
   createOperation,
   getOperations,
+  getOperationById,
   updateOperation,
   deleteOperation,
   toggleOperationStatus,

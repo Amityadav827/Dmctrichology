@@ -1,49 +1,41 @@
-const Appointment = require("../models/Appointment");
-const {
-  buildDateFilter,
-  isValidEmail,
-  isValidMobile,
-  sanitizeText,
-  toCsv,
-} = require("../utils/leadHelpers");
+const supabase = require("../config/supabase");
 
 const createAppointment = async (req, res, next) => {
   try {
-    const name = sanitizeText(req.body.name);
-    const email = sanitizeText(req.body.email).toLowerCase();
-    const mobile = sanitizeText(req.body.mobile);
-    const service = sanitizeText(req.body.service);
-    const appointmentDate = req.body.appointmentDate;
-    const message = sanitizeText(req.body.message || "");
+    const { name, email, mobile, service, appointmentDate, message } = req.body;
 
     if (!name || !email || !mobile || !service || !appointmentDate) {
-      res.status(400);
-      throw new Error("name, email, mobile, service and appointmentDate are required");
+      return res.status(400).json({
+        success: false,
+        message: "Please provide all required fields",
+      });
     }
 
-    if (!isValidEmail(email)) {
-      res.status(400);
-      throw new Error("Valid email is required");
-    }
-
-    if (!isValidMobile(mobile)) {
-      res.status(400);
-      throw new Error("Valid mobile number is required");
-    }
-
-    const appointment = await Appointment.create({
+    const supabaseData = {
       name,
       email,
       mobile,
       service,
-      appointmentDate,
-      message,
+      appointment_date: appointmentDate,
+      message: message || "",
       status: "new",
-    });
+    };
+
+    const { data, error } = await supabase
+      .from('appointments')
+      .insert([supabaseData])
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
     return res.status(201).json({
       success: true,
-      data: appointment,
+      data: {
+        ...data,
+        appointmentDate: data.appointment_date,
+        _id: data.id,
+      },
     });
   } catch (error) {
     next(error);
@@ -52,84 +44,56 @@ const createAppointment = async (req, res, next) => {
 
 const getAppointments = async (req, res, next) => {
   try {
-    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
-    const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    const search = sanitizeText(req.query.search || "");
-    const status = sanitizeText(req.query.status || "").toLowerCase();
-    const startDate = req.query.startDate;
-    const endDate = req.query.endDate;
-    const quickFilter = sanitizeText(req.query.quickFilter || "").toLowerCase();
-    const sortBy = ["name", "email", "mobile", "service", "appointmentDate", "status", "createdAt"].includes(
-      req.query.sortBy
-    )
-      ? req.query.sortBy
-      : "createdAt";
-    const sortOrder = req.query.sortOrder === "asc" ? 1 : -1;
 
-    const filter = {};
+    const { data, count, error } = await supabase
+      .from('appointments')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(skip, skip + limit - 1);
 
-    if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
-        { mobile: { $regex: search, $options: "i" } },
-        { service: { $regex: search, $options: "i" } },
-      ];
-    }
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
-    if (status) {
-      filter.status = status;
-    }
-
-    Object.assign(filter, buildDateFilter(startDate, endDate) || {});
-
-    const now = new Date();
-    const startOfToday = new Date(now);
-    startOfToday.setHours(0, 0, 0, 0);
-
-    if (quickFilter === "today") {
-      filter.appointmentDate = {
-        $gte: startOfToday,
-        $lte: new Date(startOfToday.getTime() + 24 * 60 * 60 * 1000 - 1),
-      };
-    }
-
-    if (quickFilter === "week") {
-      const day = now.getDay();
-      const diff = (day === 0 ? -6 : 1) - day;
-      const startOfWeek = new Date(now);
-      startOfWeek.setDate(now.getDate() + diff);
-      startOfWeek.setHours(0, 0, 0, 0);
-
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
-      endOfWeek.setHours(23, 59, 59, 999);
-
-      filter.appointmentDate = {
-        $gte: startOfWeek,
-        $lte: endOfWeek,
-      };
-    }
-
-    if (quickFilter === "pending") {
-      filter.status = "new";
-    }
-
-    const [items, total] = await Promise.all([
-      Appointment.find(filter).sort({ [sortBy]: sortOrder }).skip(skip).limit(limit),
-      Appointment.countDocuments(filter),
-    ]);
+    const formattedData = data.map(item => ({
+      ...item,
+      appointmentDate: item.appointment_date,
+      _id: item.id,
+    }));
 
     return res.status(200).json({
       success: true,
-      count: items.length,
-      data: items,
+      count: formattedData.length,
+      data: formattedData,
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.max(Math.ceil(total / limit), 1),
+        total: count,
+        totalPages: Math.ceil(count / limit),
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAppointmentById = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error || !data) return res.status(404).json({ success: false, message: "Appointment not found" });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...data,
+        appointmentDate: data.appointment_date,
+        _id: data.id,
       },
     });
   } catch (error) {
@@ -139,22 +103,27 @@ const getAppointments = async (req, res, next) => {
 
 const updateAppointment = async (req, res, next) => {
   try {
-    const appointment = await Appointment.findById(req.params.id);
+    const { status, notes } = req.body;
+    const updates = {};
+    if (status) updates.status = status;
+    if (notes !== undefined) updates.notes = notes;
 
-    if (!appointment) {
-      res.status(404);
-      throw new Error("Appointment lead not found");
-    }
+    const { data, error } = await supabase
+      .from('appointments')
+      .update(updates)
+      .eq('id', req.params.id)
+      .select()
+      .single();
 
-    appointment.status = req.body.status || appointment.status;
-    appointment.notes = typeof req.body.notes === "string" ? sanitizeText(req.body.notes) : appointment.notes;
-    appointment.service = req.body.service ? sanitizeText(req.body.service) : appointment.service;
-    appointment.appointmentDate = req.body.appointmentDate || appointment.appointmentDate;
-    await appointment.save();
+    if (error || !data) return res.status(404).json({ success: false, message: "Appointment not found" });
 
     return res.status(200).json({
       success: true,
-      data: appointment,
+      data: {
+        ...data,
+        appointmentDate: data.appointment_date,
+        _id: data.id,
+      },
     });
   } catch (error) {
     next(error);
@@ -163,15 +132,8 @@ const updateAppointment = async (req, res, next) => {
 
 const deleteAppointment = async (req, res, next) => {
   try {
-    const appointment = await Appointment.findById(req.params.id);
-
-    if (!appointment) {
-      res.status(404);
-      throw new Error("Appointment lead not found");
-    }
-
-    await appointment.deleteOne();
-
+    const { error } = await supabase.from('appointments').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
     return res.status(200).json({
       success: true,
       message: "Appointment deleted successfully",
@@ -183,32 +145,16 @@ const deleteAppointment = async (req, res, next) => {
 
 const exportAppointmentsCsv = async (req, res, next) => {
   try {
-    const items = await Appointment.find().sort({ createdAt: -1 });
-    const csv = toCsv(
-      [
-        { key: "name", label: "Name" },
-        { key: "email", label: "Email" },
-        { key: "mobile", label: "Mobile" },
-        { key: "service", label: "Service" },
-        { key: "appointmentDate", label: "Appointment Date" },
-        { key: "message", label: "Message" },
-        { key: "status", label: "Status" },
-        { key: "createdAt", label: "Created At" },
-      ],
-      items.map((item) => ({
-        name: item.name,
-        email: item.email,
-        mobile: item.mobile,
-        service: item.service,
-        appointmentDate: item.appointmentDate.toISOString(),
-        message: item.message,
-        status: item.status,
-        createdAt: item.createdAt.toISOString(),
-      }))
-    );
+    const { data, error } = await supabase.from('appointments').select('*').order('created_at', { ascending: false });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    let csv = "ID,Name,Email,Mobile,Service,Date,Status,Notes,CreatedAt\n";
+    data.forEach(row => {
+      csv += `${row.id},${row.name},${row.email},${row.mobile},${row.service},${row.appointment_date},${row.status},"${(row.notes || '').replace(/"/g, '""')}",${row.created_at}\n`;
+    });
 
     res.setHeader("Content-Type", "text/csv");
-    res.setHeader("Content-Disposition", "attachment; filename=appointment-leads.csv");
+    res.setHeader("Content-Disposition", "attachment; filename=appointments.csv");
     return res.status(200).send(csv);
   } catch (error) {
     next(error);
@@ -218,6 +164,7 @@ const exportAppointmentsCsv = async (req, res, next) => {
 module.exports = {
   createAppointment,
   getAppointments,
+  getAppointmentById,
   updateAppointment,
   deleteAppointment,
   exportAppointmentsCsv,

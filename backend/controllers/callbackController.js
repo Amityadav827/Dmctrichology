@@ -1,30 +1,27 @@
-const Callback = require("../models/Callback");
-const { buildDateFilter, isValidMobile, sanitizeText, toCsv } = require("../utils/leadHelpers");
+const supabase = require("../config/supabase");
 
 const createCallback = async (req, res, next) => {
   try {
-    const name = sanitizeText(req.body.name);
-    const mobile = sanitizeText(req.body.mobile);
+    const { name, mobile } = req.body;
 
     if (!name || !mobile) {
-      res.status(400);
-      throw new Error("name and mobile are required");
+      return res.status(400).json({
+        success: false,
+        message: "Please provide both name and mobile number",
+      });
     }
 
-    if (!isValidMobile(mobile)) {
-      res.status(400);
-      throw new Error("Valid mobile number is required");
-    }
+    const { data, error } = await supabase
+      .from('callbacks')
+      .insert([{ name, mobile, status: 'new' }])
+      .select()
+      .single();
 
-    const callback = await Callback.create({
-      name,
-      mobile,
-      status: "new",
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
     return res.status(201).json({
       success: true,
-      data: callback,
+      data: { ...data, _id: data.id },
     });
   } catch (error) {
     next(error);
@@ -33,69 +30,30 @@ const createCallback = async (req, res, next) => {
 
 const getCallbacks = async (req, res, next) => {
   try {
-    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
-    const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    const search = sanitizeText(req.query.search || "");
-    const status = sanitizeText(req.query.status || "").toLowerCase();
-    const startDate = req.query.startDate;
-    const endDate = req.query.endDate;
-    const sortBy = ["name", "mobile", "status", "createdAt"].includes(req.query.sortBy)
-      ? req.query.sortBy
-      : "createdAt";
-    const sortOrder = req.query.sortOrder === "asc" ? 1 : -1;
 
-    const filter = {};
+    const { data, count, error } = await supabase
+      .from('callbacks')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(skip, skip + limit - 1);
 
-    if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { mobile: { $regex: search, $options: "i" } },
-      ];
-    }
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
-    if (status) {
-      filter.status = status;
-    }
-
-    Object.assign(filter, buildDateFilter(startDate, endDate) || {});
-
-    const [items, total] = await Promise.all([
-      Callback.find(filter).sort({ [sortBy]: sortOrder }).skip(skip).limit(limit),
-      Callback.countDocuments(filter),
-    ]);
+    const formattedData = data.map(item => ({ ...item, _id: item.id }));
 
     return res.status(200).json({
       success: true,
-      count: items.length,
-      data: items,
+      count: formattedData.length,
+      data: formattedData,
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.max(Math.ceil(total / limit), 1),
+        total: count,
+        totalPages: Math.ceil(count / limit),
       },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const updateCallbackStatus = async (req, res, next) => {
-  try {
-    const callback = await Callback.findById(req.params.id);
-
-    if (!callback) {
-      res.status(404);
-      throw new Error("Callback lead not found");
-    }
-
-    callback.status = req.body.status || callback.status;
-    await callback.save();
-
-    return res.status(200).json({
-      success: true,
-      data: callback,
     });
   } catch (error) {
     next(error);
@@ -104,19 +62,23 @@ const updateCallbackStatus = async (req, res, next) => {
 
 const deleteCallback = async (req, res, next) => {
   try {
-    const callback = await Callback.findById(req.params.id);
-
-    if (!callback) {
-      res.status(404);
-      throw new Error("Callback lead not found");
-    }
-
-    await callback.deleteOne();
-
+    const { error } = await supabase.from('callbacks').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
     return res.status(200).json({
       success: true,
-      message: "Callback lead deleted successfully",
+      message: "Callback request deleted successfully",
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateCallbackStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    const { data, error } = await supabase.from('callbacks').update({ status }).eq('id', req.params.id).select().single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Callback request not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -124,24 +86,16 @@ const deleteCallback = async (req, res, next) => {
 
 const exportCallbacksCsv = async (req, res, next) => {
   try {
-    const items = await Callback.find().sort({ createdAt: -1 });
-    const csv = toCsv(
-      [
-        { key: "name", label: "Name" },
-        { key: "mobile", label: "Mobile" },
-        { key: "status", label: "Status" },
-        { key: "createdAt", label: "Created At" },
-      ],
-      items.map((item) => ({
-        name: item.name,
-        mobile: item.mobile,
-        status: item.status,
-        createdAt: item.createdAt.toISOString(),
-      }))
-    );
+    const { data, error } = await supabase.from('callbacks').select('*').order('created_at', { ascending: false });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    let csv = "ID,Name,Mobile,Status,CreatedAt\n";
+    data.forEach(row => {
+      csv += `${row.id},${row.name},${row.mobile},${row.status},${row.created_at}\n`;
+    });
 
     res.setHeader("Content-Type", "text/csv");
-    res.setHeader("Content-Disposition", "attachment; filename=callback-leads.csv");
+    res.setHeader("Content-Disposition", "attachment; filename=callbacks.csv");
     return res.status(200).send(csv);
   } catch (error) {
     next(error);
@@ -151,7 +105,7 @@ const exportCallbacksCsv = async (req, res, next) => {
 module.exports = {
   createCallback,
   getCallbacks,
-  updateCallbackStatus,
   deleteCallback,
+  updateCallbackStatus,
   exportCallbacksCsv,
 };

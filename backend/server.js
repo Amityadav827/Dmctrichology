@@ -6,9 +6,6 @@ const morgan = require("morgan");
 const path = require("path");
 const fs = require("fs");
 
-
-const connectDB = require("./config/db");
-
 // Routes
 const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
@@ -35,17 +32,11 @@ const videoRoutes = require("./routes/videoRoutes");
 const redirectRoutes = require("./routes/redirectRoutes");
 const pageRoutes = require("./routes/pageRoutes");
 
-
 // Middleware
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const redirectMiddleware = require("./middleware/redirectMiddleware");
 
 const app = express();
-
-// ========================
-// ✅ Connect Database FIRST
-// ========================
-connectDB();
 
 // ========================
 // ✅ Global Middleware
@@ -72,7 +63,6 @@ if (!fs.existsSync(galleryDir)) fs.mkdirSync(galleryDir, { recursive: true });
 
 // Static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 
 // Dynamic Redirects (MUST be before API routes if you want to redirect old URLs)
 app.use(redirectMiddleware);
@@ -130,7 +120,6 @@ app.use("/api/video-categories", videoCategoryRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/redirects", redirectRoutes);
 app.use("/api/pages", pageRoutes);
-
 
 // SEO
 app.get(

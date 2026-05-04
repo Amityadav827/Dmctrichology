@@ -1,7 +1,7 @@
-const Redirect = require("../models/Redirect");
+const supabase = require("../config/supabase");
 
 /**
- * Middleware to handle dynamic redirects from database
+ * Middleware to handle dynamic redirects from database using Supabase
  */
 const redirectMiddleware = async (req, res, next) => {
   // We only intercept GET requests that are NOT API calls or static files
@@ -12,15 +12,17 @@ const redirectMiddleware = async (req, res, next) => {
   try {
     const path = req.path.toLowerCase().trim();
     
-    // Efficient lookup using indexed sourceUrl
-    const redirect = await Redirect.findOne({ 
-      sourceUrl: path, 
-      status: "active" 
-    });
+    // Efficient lookup using Supabase
+    const { data: redirect, error } = await supabase
+      .from('redirects')
+      .select('destination_url, type')
+      .eq('source_url', path)
+      .eq('status', 'active')
+      .single();
 
-    if (redirect) {
-      console.log(`[REDIRECT] Matched: ${path} -> ${redirect.destinationUrl} (${redirect.type})`);
-      return res.redirect(parseInt(redirect.type), redirect.destinationUrl);
+    if (redirect && !error) {
+      console.log(`[REDIRECT] Matched: ${path} -> ${redirect.destination_url} (${redirect.type})`);
+      return res.redirect(parseInt(redirect.type), redirect.destination_url);
     }
 
     next();

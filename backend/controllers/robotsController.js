@@ -1,25 +1,14 @@
-const Robots = require("../models/Robots");
-
-const getOrCreateRobots = async () => {
-  let robots = await Robots.findOne();
-
-  if (!robots) {
-    robots = await Robots.create({
-      content: "User-agent: *\nAllow: /",
-    });
-  }
-
-  return robots;
-};
+const supabase = require("../config/supabase");
 
 const getRobotsContent = async (req, res, next) => {
   try {
-    const robots = await getOrCreateRobots();
+    const { data, error } = await supabase.from('robots').select('*').single();
+    
+    if (error || !data) {
+      return res.status(200).json({ success: true, data: { content: "User-agent: *\nAllow: /" } });
+    }
 
-    return res.status(200).json({
-      success: true,
-      data: robots,
-    });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -28,20 +17,19 @@ const getRobotsContent = async (req, res, next) => {
 const updateRobotsContent = async (req, res, next) => {
   try {
     const { content } = req.body;
+    
+    const { data: existing } = await supabase.from('robots').select('id').single();
 
-    if (!content || !String(content).trim()) {
-      res.status(400);
-      throw new Error("content is required");
+    let result;
+    if (existing) {
+      result = await supabase.from('robots').update({ content }).eq('id', existing.id).select().single();
+    } else {
+      result = await supabase.from('robots').insert([{ content }]).select().single();
     }
 
-    const robots = await getOrCreateRobots();
-    robots.content = content;
-    await robots.save();
+    if (result.error) return res.status(500).json({ success: false, message: result.error.message });
 
-    return res.status(200).json({
-      success: true,
-      data: robots,
-    });
+    return res.status(200).json({ success: true, data: { ...result.data, _id: result.data.id } });
   } catch (error) {
     next(error);
   }
@@ -49,12 +37,10 @@ const updateRobotsContent = async (req, res, next) => {
 
 const serveRobotsTxt = async (req, res, next) => {
   try {
-    const robots = await getOrCreateRobots();
-
-    return res
-      .status(200)
-      .set("Content-Type", "text/plain; charset=utf-8")
-      .send(robots.content);
+    const { data, error } = await supabase.from('robots').select('content').single();
+    const content = (error || !data) ? "User-agent: *\nAllow: /" : data.content;
+    res.header("Content-Type", "text/plain");
+    return res.status(200).send(content);
   } catch (error) {
     next(error);
   }

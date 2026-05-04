@@ -1,34 +1,24 @@
-const ServiceCategory = require("../models/ServiceCategory");
-const slugify = require("../utils/slugify");
+const supabase = require("../config/supabase");
 
 const createCategory = async (req, res, next) => {
   try {
     const { name, slug, order, status } = req.body;
 
-    if (!name) {
-      res.status(400);
-      throw new Error("Category name is required");
+    if (!name || !slug) {
+      return res.status(400).json({ success: false, message: "Name and slug are required" });
     }
 
-    const normalizedSlug = slugify(slug || name);
-    const exists = await ServiceCategory.findOne({ slug: normalizedSlug });
+    const { data, error } = await supabase
+      .from('service_categories')
+      .insert([{ name, slug, order: order || 0, status: status || 'active' }])
+      .select()
+      .single();
 
-    if (exists) {
-      res.status(400);
-      throw new Error("Category slug already exists");
+    if (error) {
+      return res.status(500).json({ success: false, message: error.message });
     }
 
-    const category = await ServiceCategory.create({
-      name,
-      slug: normalizedSlug,
-      order: Number.isFinite(Number(order)) ? Number(order) : 0,
-      status: status || "active",
-    });
-
-    return res.status(201).json({
-      success: true,
-      data: category,
-    });
+    return res.status(201).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -36,35 +26,36 @@ const createCategory = async (req, res, next) => {
 
 const getCategories = async (req, res, next) => {
   try {
-    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
-    const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
-    const skip = (page - 1) * limit;
-    const search = String(req.query.search || "").trim();
+    const { data, error } = await supabase
+      .from('service_categories')
+      .select('*')
+      .order('order', { ascending: true });
 
-    const filter = search
-      ? {
-          $or: [
-            { name: { $regex: search, $options: "i" } },
-            { slug: { $regex: search, $options: "i" } },
-          ],
-        }
-      : {};
+    if (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
 
-    const [items, total] = await Promise.all([
-      ServiceCategory.find(filter).sort({ order: 1, createdAt: -1 }).skip(skip).limit(limit),
-      ServiceCategory.countDocuments(filter),
-    ]);
+    const formattedData = data.map(item => ({ ...item, _id: item.id }));
 
-    return res.status(200).json({
-      success: true,
-      data: items,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.max(Math.ceil(total / limit), 1),
-      },
-    });
+    return res.status(200).json({ success: true, count: formattedData.length, data: formattedData });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCategoryById = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from('service_categories')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ success: false, message: "Category not found" });
+    }
+
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -73,34 +64,18 @@ const getCategories = async (req, res, next) => {
 const updateCategory = async (req, res, next) => {
   try {
     const { name, slug, order, status } = req.body;
-    const category = await ServiceCategory.findById(req.params.id);
+    const { data, error } = await supabase
+      .from('service_categories')
+      .update({ name, slug, order, status })
+      .eq('id', req.params.id)
+      .select()
+      .single();
 
-    if (!category) {
-      res.status(404);
-      throw new Error("Category not found");
+    if (error || !data) {
+      return res.status(404).json({ success: false, message: "Category not found" });
     }
 
-    const nextSlug = slug ? slugify(slug) : name ? slugify(name) : category.slug;
-
-    if (nextSlug !== category.slug) {
-      const exists = await ServiceCategory.findOne({ slug: nextSlug });
-      if (exists) {
-        res.status(400);
-        throw new Error("Category slug already exists");
-      }
-    }
-
-    category.name = name || category.name;
-    category.slug = nextSlug;
-    category.order = Number.isFinite(Number(order)) ? Number(order) : category.order;
-    category.status = status || category.status;
-
-    const updatedCategory = await category.save();
-
-    return res.status(200).json({
-      success: true,
-      data: updatedCategory,
-    });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -108,19 +83,11 @@ const updateCategory = async (req, res, next) => {
 
 const deleteCategory = async (req, res, next) => {
   try {
-    const category = await ServiceCategory.findById(req.params.id);
-
-    if (!category) {
-      res.status(404);
-      throw new Error("Category not found");
+    const { error } = await supabase.from('service_categories').delete().eq('id', req.params.id);
+    if (error) {
+      return res.status(500).json({ success: false, message: error.message });
     }
-
-    await category.deleteOne();
-
-    return res.status(200).json({
-      success: true,
-      message: "Category deleted successfully",
-    });
+    return res.status(200).json({ success: true, message: "Category deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -128,20 +95,14 @@ const deleteCategory = async (req, res, next) => {
 
 const toggleCategoryStatus = async (req, res, next) => {
   try {
-    const category = await ServiceCategory.findById(req.params.id);
+    const { data: current, error: fetchError } = await supabase.from('service_categories').select('status').eq('id', req.params.id).single();
+    if (fetchError || !current) return res.status(404).json({ success: false, message: "Category not found" });
 
-    if (!category) {
-      res.status(404);
-      throw new Error("Category not found");
-    }
-
-    category.status = category.status === "active" ? "inactive" : "active";
-    await category.save();
-
-    return res.status(200).json({
-      success: true,
-      data: category,
-    });
+    const newStatus = current.status === "active" ? "inactive" : "active";
+    const { data, error } = await supabase.from('service_categories').update({ status: newStatus }).eq('id', req.params.id).select().single();
+    
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -150,25 +111,9 @@ const toggleCategoryStatus = async (req, res, next) => {
 const updateCategoryOrder = async (req, res, next) => {
   try {
     const { order } = req.body;
-    const category = await ServiceCategory.findById(req.params.id);
-
-    if (!category) {
-      res.status(404);
-      throw new Error("Category not found");
-    }
-
-    if (!Number.isFinite(Number(order))) {
-      res.status(400);
-      throw new Error("Valid order is required");
-    }
-
-    category.order = Number(order);
-    await category.save();
-
-    return res.status(200).json({
-      success: true,
-      data: category,
-    });
+    const { data, error } = await supabase.from('service_categories').update({ order }).eq('id', req.params.id).select().single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Category not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -177,6 +122,7 @@ const updateCategoryOrder = async (req, res, next) => {
 module.exports = {
   createCategory,
   getCategories,
+  getCategoryById,
   updateCategory,
   deleteCategory,
   toggleCategoryStatus,

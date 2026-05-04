@@ -1,42 +1,18 @@
-const ServiceFaq = require("../models/ServiceFaq");
-const SecondCategory = require("../models/SecondCategory");
+const supabase = require("../config/supabase");
 
 const createServiceFaq = async (req, res, next) => {
   try {
     const { serviceId, question, answer, order, status } = req.body;
+    if (!serviceId || !question || !answer) return res.status(400).json({ success: false, message: "Required fields missing" });
 
-    if (!serviceId || !question || !answer) {
-      res.status(400);
-      throw new Error("serviceId, question and answer are required");
-    }
+    const { data, error } = await supabase
+      .from('service_faqs')
+      .insert([{ service_id: serviceId, question, answer, order: order || 0, status: status || 'active' }])
+      .select(`*, service:second_categories(name)`)
+      .single();
 
-    const service = await SecondCategory.findById(serviceId);
-    if (!service) {
-      res.status(404);
-      throw new Error("Service not found");
-    }
-
-    const faq = await ServiceFaq.create({
-      serviceId,
-      question,
-      answer,
-      order: Number.isFinite(Number(order)) ? Number(order) : 0,
-      status: status || "active",
-    });
-
-    const populated = await faq.populate({
-      path: "serviceId",
-      populate: {
-        path: "categoryId",
-        select: "name slug",
-      },
-      select: "name slug categoryId",
-    });
-
-    return res.status(201).json({
-      success: true,
-      data: populated,
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(201).json({ success: true, data: { ...data, _id: data.id, serviceId: data.service ? { ...data.service, _id: data.service_id } : data.service_id } });
   } catch (error) {
     next(error);
   }
@@ -44,28 +20,18 @@ const createServiceFaq = async (req, res, next) => {
 
 const getServiceFaqs = async (req, res, next) => {
   try {
-    const filter = {};
+    let query = supabase.from('service_faqs').select(`*, service:second_categories(name)`);
+    if (req.query.serviceId) query = query.eq('service_id', req.query.serviceId);
 
-    if (req.query.serviceId) {
-      filter.serviceId = req.query.serviceId;
-    }
+    const { data, error } = await query.order('order', { ascending: true });
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
-    const items = await ServiceFaq.find(filter)
-      .populate({
-        path: "serviceId",
-        populate: {
-          path: "categoryId",
-          select: "name slug",
-        },
-        select: "name slug categoryId",
-      })
-      .sort({ order: 1, createdAt: -1 });
-
-    return res.status(200).json({
-      success: true,
-      count: items.length,
-      data: items,
-    });
+    const formattedData = data.map(item => ({
+      ...item,
+      _id: item.id,
+      serviceId: item.service ? { ...item.service, _id: item.service_id } : item.service_id
+    }));
+    return res.status(200).json({ success: true, count: formattedData.length, data: formattedData });
   } catch (error) {
     next(error);
   }
@@ -74,41 +40,15 @@ const getServiceFaqs = async (req, res, next) => {
 const updateServiceFaq = async (req, res, next) => {
   try {
     const { serviceId, question, answer, order, status } = req.body;
-    const faq = await ServiceFaq.findById(req.params.id);
+    const { data, error } = await supabase
+      .from('service_faqs')
+      .update({ service_id: serviceId, question, answer, order, status })
+      .eq('id', req.params.id)
+      .select(`*, service:second_categories(name)`)
+      .single();
 
-    if (!faq) {
-      res.status(404);
-      throw new Error("FAQ not found");
-    }
-
-    if (serviceId) {
-      const service = await SecondCategory.findById(serviceId);
-      if (!service) {
-        res.status(404);
-        throw new Error("Service not found");
-      }
-      faq.serviceId = serviceId;
-    }
-
-    faq.question = question || faq.question;
-    faq.answer = answer || faq.answer;
-    faq.order = Number.isFinite(Number(order)) ? Number(order) : faq.order;
-    faq.status = status || faq.status;
-
-    await faq.save();
-    await faq.populate({
-      path: "serviceId",
-      populate: {
-        path: "categoryId",
-        select: "name slug",
-      },
-      select: "name slug categoryId",
-    });
-
-    return res.status(200).json({
-      success: true,
-      data: faq,
-    });
+    if (error || !data) return res.status(404).json({ success: false, message: "FAQ not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id, serviceId: data.service ? { ...data.service, _id: data.service_id } : data.service_id } });
   } catch (error) {
     next(error);
   }
@@ -116,19 +56,9 @@ const updateServiceFaq = async (req, res, next) => {
 
 const deleteServiceFaq = async (req, res, next) => {
   try {
-    const faq = await ServiceFaq.findById(req.params.id);
-
-    if (!faq) {
-      res.status(404);
-      throw new Error("FAQ not found");
-    }
-
-    await faq.deleteOne();
-
-    return res.status(200).json({
-      success: true,
-      message: "FAQ deleted successfully",
-    });
+    const { error } = await supabase.from('service_faqs').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, message: "FAQ deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -136,27 +66,14 @@ const deleteServiceFaq = async (req, res, next) => {
 
 const toggleServiceFaqStatus = async (req, res, next) => {
   try {
-    const faq = await ServiceFaq.findById(req.params.id).populate({
-      path: "serviceId",
-      populate: {
-        path: "categoryId",
-        select: "name slug",
-      },
-      select: "name slug categoryId",
-    });
+    const { data: current, error: fetchError } = await supabase.from('service_faqs').select('status').eq('id', req.params.id).single();
+    if (fetchError || !current) return res.status(404).json({ success: false, message: "FAQ not found" });
 
-    if (!faq) {
-      res.status(404);
-      throw new Error("FAQ not found");
-    }
-
-    faq.status = faq.status === "active" ? "inactive" : "active";
-    await faq.save();
-
-    return res.status(200).json({
-      success: true,
-      data: faq,
-    });
+    const newStatus = current.status === "active" ? "inactive" : "active";
+    const { data, error } = await supabase.from('service_faqs').update({ status: newStatus }).eq('id', req.params.id).select(`*, service:second_categories(name)`).single();
+    
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id, serviceId: data.service ? { ...data.service, _id: data.service_id } : data.service_id } });
   } catch (error) {
     next(error);
   }

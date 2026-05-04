@@ -1,101 +1,74 @@
-const User = require("../models/User");
-const Role = require("../models/Role");
-const { ensureDefaultUserRole } = require("../utils/roleHelpers");
+const supabase = require("../config/supabase");
+const bcrypt = require("bcryptjs");
 
-const createUser = async (req, res, next) => {
+const getUsers = async (req, res, next) => {
   try {
-    const { name, email, phone, password, role, status } = req.body;
+    const { data: users, error } = await supabase
+      .from('users')
+      .select(`
+        *,
+        role:roles (
+          name,
+          permissions
+        )
+      `)
+      .order('created_at', { ascending: false });
 
-    if (!name || !email || !password) {
-      res.status(400);
-      throw new Error("Name, email and password are required");
-    }
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
-    const existingUser = await User.findOne({ email });
+    const formattedUsers = users.map(user => ({
+      _id: user.id,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      status: user.status,
+      role: user.role,
+      createdAt: user.created_at,
+    }));
 
-    if (existingUser) {
-      res.status(400);
-      throw new Error("User already exists with this email");
-    }
-
-    let roleId = role;
-
-    if (!roleId) {
-      const defaultRole = await ensureDefaultUserRole();
-      roleId = defaultRole._id;
-    } else {
-      const existingRole = await Role.findById(roleId);
-      if (!existingRole) {
-        res.status(404);
-        throw new Error("Role not found");
-      }
-    }
-
-    const user = await User.create({
-      name,
-      email,
-      phone: phone || "",
-      password,
-      role: roleId,
-      status: status || "active",
-    });
-
-    await user.populate("role", "name permissions");
-
-    return res.status(201).json({
-      success: true,
-      data: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        status: user.status,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
-    });
+    return res.status(200).json({ success: true, count: formattedUsers.length, data: formattedUsers });
   } catch (error) {
     next(error);
   }
 };
 
-const getUsers = async (req, res, next) => {
+const createUser = async (req, res, next) => {
   try {
-    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
-    const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
-    const skip = (page - 1) * limit;
-    const search = String(req.query.search || "").trim();
+    const { name, email, password, phone, role_id, status } = req.body;
+    
+    if (!name || !email || !password || !role_id) {
+      return res.status(400).json({ success: false, message: "Required fields missing" });
+    }
 
-    const filter = search
-      ? {
-          $or: [
-            { name: { $regex: search, $options: "i" } },
-            { email: { $regex: search, $options: "i" } },
-            { phone: { $regex: search, $options: "i" } },
-          ],
-        }
-      : {};
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    const [users, total] = await Promise.all([
-      User.find(filter)
-        .populate("role", "name permissions")
-        .select("-password")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit),
-      User.countDocuments(filter),
-    ]);
+    const { data: user, error } = await supabase
+      .from('users')
+      .insert([{
+        name,
+        email: email.trim().toLowerCase(),
+        password: hashedPassword,
+        phone: phone || "",
+        role_id,
+        status: status || 'active'
+      }])
+      .select(`*, role:roles(name, permissions)`)
+      .single();
 
-    return res.status(200).json({
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    return res.status(201).json({
       success: true,
-      count: users.length,
-      data: users,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.max(Math.ceil(total / limit), 1),
+      data: {
+        _id: user.id,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        status: user.status,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -105,18 +78,25 @@ const getUsers = async (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id)
-      .populate("role", "name permissions")
-      .select("-password");
+    const { data: user, error } = await supabase
+      .from('users')
+      .select(`*, role:roles(name, permissions)`)
+      .eq('id', req.params.id)
+      .single();
 
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
-    }
+    if (error || !user) return res.status(404).json({ success: false, message: "User not found" });
 
     return res.status(200).json({
       success: true,
-      data: user,
+      data: {
+        _id: user.id,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        status: user.status,
+        role: user.role,
+      },
     });
   } catch (error) {
     next(error);
@@ -125,54 +105,36 @@ const getUserById = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const { name, email, phone, password, role, status } = req.body;
-    const user = await User.findById(req.params.id).select("+password");
-
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
-    }
-
-    if (email && email !== user.email) {
-      const existingEmail = await User.findOne({ email });
-      if (existingEmail) {
-        res.status(400);
-        throw new Error("Email already in use");
-      }
-    }
-
-    if (role) {
-      const existingRole = await Role.findById(role);
-      if (!existingRole) {
-        res.status(404);
-        throw new Error("Role not found");
-      }
-      user.role = role;
-    }
-
-    user.name = name || user.name;
-    user.email = email || user.email;
-    user.phone = phone !== undefined ? phone : user.phone;
-    user.status = status || user.status;
+    const { name, email, phone, role_id, status, password } = req.body;
+    const updates = { name, email, phone, role_id, status };
 
     if (password) {
-      user.password = password;
+      const salt = await bcrypt.genSalt(10);
+      updates.password = await bcrypt.hash(password, salt);
     }
 
-    const updatedUser = await user.save();
-    await updatedUser.populate("role", "name permissions");
+    // Remove undefined
+    Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
+
+    const { data: user, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', req.params.id)
+      .select(`*, role:roles(name, permissions)`)
+      .single();
+
+    if (error || !user) return res.status(404).json({ success: false, message: "User not found" });
 
     return res.status(200).json({
       success: true,
       data: {
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        phone: updatedUser.phone,
-        role: updatedUser.role,
-        status: updatedUser.status,
-        createdAt: updatedUser.createdAt,
-        updatedAt: updatedUser.updatedAt,
+        _id: user.id,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        status: user.status,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -182,19 +144,9 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
-
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
-    }
-
-    await user.deleteOne();
-
-    return res.status(200).json({
-      success: true,
-      message: "User deleted successfully",
-    });
+    const { error } = await supabase.from('users').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, message: "User deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -202,21 +154,24 @@ const deleteUser = async (req, res, next) => {
 
 const toggleUserStatus = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id)
-      .populate("role", "name permissions")
-      .select("-password");
+    const { data: current, error: fetchError } = await supabase.from('users').select('status').eq('id', req.params.id).single();
+    if (fetchError || !current) return res.status(404).json({ success: false, message: "User not found" });
 
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
-    }
-
-    user.status = user.status === "active" ? "inactive" : "active";
-    await user.save();
-
+    const newStatus = current.status === "active" ? "inactive" : "active";
+    const { data: user, error } = await supabase.from('users').update({ status: newStatus }).eq('id', req.params.id).select(`*, role:roles(name, permissions)`).single();
+    
+    if (error) return res.status(500).json({ success: false, message: error.message });
     return res.status(200).json({
       success: true,
-      data: user,
+      data: {
+        _id: user.id,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        status: user.status,
+        role: user.role,
+      },
     });
   } catch (error) {
     next(error);
@@ -224,8 +179,8 @@ const toggleUserStatus = async (req, res, next) => {
 };
 
 module.exports = {
-  createUser,
   getUsers,
+  createUser,
   getUserById,
   updateUser,
   deleteUser,

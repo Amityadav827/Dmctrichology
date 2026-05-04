@@ -1,12 +1,23 @@
-const Service = require("../models/Service");
+const supabase = require("../config/supabase");
 
 const createService = async (req, res, next) => {
   try {
-    const service = await Service.create(req.body);
+    const { data, error } = await supabase
+      .from('services')
+      .insert([req.body])
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
 
     return res.status(201).json({
       success: true,
-      data: service,
+      data: data,
     });
   } catch (error) {
     next(error);
@@ -15,12 +26,23 @@ const createService = async (req, res, next) => {
 
 const getServices = async (req, res, next) => {
   try {
-    const services = await Service.find().sort({ createdAt: -1 });
+    const { data, error } = await supabase
+      .from('services')
+      .select('*')
+      .order('order', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
 
     return res.status(200).json({
       success: true,
-      count: services.length,
-      data: services,
+      count: data.length,
+      data: data,
     });
   } catch (error) {
     next(error);
@@ -29,16 +51,22 @@ const getServices = async (req, res, next) => {
 
 const getServiceById = async (req, res, next) => {
   try {
-    const service = await Service.findById(req.params.id);
+    const { data, error } = await supabase
+      .from('services')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
 
-    if (!service) {
-      res.status(404);
-      throw new Error("Service not found");
+    if (error || !data) {
+      return res.status(404).json({
+        success: false,
+        message: error ? error.message : "Service not found"
+      });
     }
 
     return res.status(200).json({
       success: true,
-      data: service,
+      data: data,
     });
   } catch (error) {
     next(error);
@@ -47,19 +75,23 @@ const getServiceById = async (req, res, next) => {
 
 const updateService = async (req, res, next) => {
   try {
-    const service = await Service.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const { data, error } = await supabase
+      .from('services')
+      .update(req.body)
+      .eq('id', req.params.id)
+      .select()
+      .single();
 
-    if (!service) {
-      res.status(404);
-      throw new Error("Service not found");
+    if (error || !data) {
+      return res.status(404).json({
+        success: false,
+        message: error ? error.message : "Service not found"
+      });
     }
 
     return res.status(200).json({
       success: true,
-      data: service,
+      data: data,
     });
   } catch (error) {
     next(error);
@@ -68,14 +100,17 @@ const updateService = async (req, res, next) => {
 
 const deleteService = async (req, res, next) => {
   try {
-    const service = await Service.findById(req.params.id);
+    const { error } = await supabase
+      .from('services')
+      .delete()
+      .eq('id', req.params.id);
 
-    if (!service) {
-      res.status(404);
-      throw new Error("Service not found");
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
     }
-
-    await service.deleteOne();
 
     return res.status(200).json({
       success: true,

@@ -1,25 +1,29 @@
-const ResultCategory = require("../models/ResultCategory");
+const supabase = require("../config/supabase");
 
 const createResultCategory = async (req, res, next) => {
   try {
     const { name, description, order, status } = req.body;
 
     if (!name) {
-      res.status(400);
-      throw new Error("Category name is required");
+      return res.status(400).json({
+        success: false,
+        message: "Name is required",
+      });
     }
 
-    const category = await ResultCategory.create({
-      name,
-      description: description || "",
-      order: Number.isFinite(Number(order)) ? Number(order) : 0,
-      status: status || "active",
-    });
+    const { data, error } = await supabase
+      .from('result_categories')
+      .insert([{
+        name,
+        description: description || "",
+        order: Number(order) || 0,
+        status: status || "active",
+      }])
+      .select()
+      .single();
 
-    return res.status(201).json({
-      success: true,
-      data: category,
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(201).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -27,34 +31,39 @@ const createResultCategory = async (req, res, next) => {
 
 const getResultCategories = async (req, res, next) => {
   try {
-    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
-    const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
-    const skip = (page - 1) * limit;
-    const search = String(req.query.search || "").trim();
+    const { data, error } = await supabase
+      .from('result_categories')
+      .select('*')
+      .order('order', { ascending: true })
+      .order('created_at', { ascending: false });
 
-    const filter = search
-      ? {
-          $or: [
-            { name: { $regex: search, $options: "i" } },
-            { description: { $regex: search, $options: "i" } },
-          ],
-        }
-      : {};
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
-    const [items, total] = await Promise.all([
-      ResultCategory.find(filter).sort({ order: 1, createdAt: -1 }).skip(skip).limit(limit),
-      ResultCategory.countDocuments(filter),
-    ]);
+    const formattedData = data.map(item => ({ ...item, _id: item.id }));
 
     return res.status(200).json({
       success: true,
-      data: items,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.max(Math.ceil(total / limit), 1),
-      },
+      count: formattedData.length,
+      data: formattedData,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getResultCategoryById = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from('result_categories')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error || !data) return res.status(404).json({ success: false, message: "Result category not found" });
+
+    return res.status(200).json({
+      success: true,
+      data: { ...data, _id: data.id },
     });
   } catch (error) {
     next(error);
@@ -64,23 +73,24 @@ const getResultCategories = async (req, res, next) => {
 const updateResultCategory = async (req, res, next) => {
   try {
     const { name, description, order, status } = req.body;
-    const category = await ResultCategory.findById(req.params.id);
+    
+    const { data, error } = await supabase
+      .from('result_categories')
+      .update({
+        name,
+        description,
+        order: order !== undefined ? Number(order) : undefined,
+        status,
+      })
+      .eq('id', req.params.id)
+      .select()
+      .single();
 
-    if (!category) {
-      res.status(404);
-      throw new Error("Result category not found");
-    }
-
-    category.name = name || category.name;
-    category.description = description !== undefined ? description : category.description;
-    category.order = Number.isFinite(Number(order)) ? Number(order) : category.order;
-    category.status = status || category.status;
-
-    await category.save();
+    if (error || !data) return res.status(404).json({ success: false, message: "Result category not found" });
 
     return res.status(200).json({
       success: true,
-      data: category,
+      data: { ...data, _id: data.id },
     });
   } catch (error) {
     next(error);
@@ -89,14 +99,12 @@ const updateResultCategory = async (req, res, next) => {
 
 const deleteResultCategory = async (req, res, next) => {
   try {
-    const category = await ResultCategory.findById(req.params.id);
+    const { error } = await supabase
+      .from('result_categories')
+      .delete()
+      .eq('id', req.params.id);
 
-    if (!category) {
-      res.status(404);
-      throw new Error("Result category not found");
-    }
-
-    await category.deleteOne();
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
     return res.status(200).json({
       success: true,
@@ -109,20 +117,15 @@ const deleteResultCategory = async (req, res, next) => {
 
 const toggleResultCategoryStatus = async (req, res, next) => {
   try {
-    const category = await ResultCategory.findById(req.params.id);
+    const { data: current, error: fetchError } = await supabase.from('result_categories').select('status').eq('id', req.params.id).single();
+    if (fetchError || !current) return res.status(404).json({ success: false, message: "Result category not found" });
 
-    if (!category) {
-      res.status(404);
-      throw new Error("Result category not found");
-    }
+    const newStatus = current.status === "active" ? "inactive" : "active";
 
-    category.status = category.status === "active" ? "inactive" : "active";
-    await category.save();
-
-    return res.status(200).json({
-      success: true,
-      data: category,
-    });
+    const { data, error } = await supabase.from('result_categories').update({ status: newStatus }).eq('id', req.params.id).select().single();
+    
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -131,25 +134,9 @@ const toggleResultCategoryStatus = async (req, res, next) => {
 const updateResultCategoryOrder = async (req, res, next) => {
   try {
     const { order } = req.body;
-    const category = await ResultCategory.findById(req.params.id);
-
-    if (!category) {
-      res.status(404);
-      throw new Error("Result category not found");
-    }
-
-    if (!Number.isFinite(Number(order))) {
-      res.status(400);
-      throw new Error("Valid order is required");
-    }
-
-    category.order = Number(order);
-    await category.save();
-
-    return res.status(200).json({
-      success: true,
-      data: category,
-    });
+    const { data, error } = await supabase.from('result_categories').update({ order: Number(order) }).eq('id', req.params.id).select().single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Result category not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -158,6 +145,7 @@ const updateResultCategoryOrder = async (req, res, next) => {
 module.exports = {
   createResultCategory,
   getResultCategories,
+  getResultCategoryById,
   updateResultCategory,
   deleteResultCategory,
   toggleResultCategoryStatus,

@@ -1,25 +1,18 @@
-const Menu = require("../models/Menu");
+const supabase = require("../config/supabase");
 
 const createMenu = async (req, res, next) => {
   try {
     const { name, url, order, status } = req.body;
+    if (!name || !url) return res.status(400).json({ success: false, message: "Name and URL are required" });
 
-    if (!name || !url) {
-      res.status(400);
-      throw new Error("name and url are required");
-    }
+    const { data, error } = await supabase
+      .from('menus')
+      .insert([{ name, url, order: order || 0, status: status || 'active' }])
+      .select()
+      .single();
 
-    const menu = await Menu.create({
-      name,
-      url,
-      order: Number.isFinite(Number(order)) ? Number(order) : 0,
-      status: status || "active",
-    });
-
-    return res.status(201).json({
-      success: true,
-      data: menu,
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(201).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -27,13 +20,24 @@ const createMenu = async (req, res, next) => {
 
 const getMenus = async (req, res, next) => {
   try {
-    const menus = await Menu.find().sort({ order: 1, createdAt: -1 });
+    const { data, error } = await supabase
+      .from('menus')
+      .select('*')
+      .order('order', { ascending: true });
 
-    return res.status(200).json({
-      success: true,
-      count: menus.length,
-      data: menus,
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    const formattedData = data.map(item => ({ ...item, _id: item.id }));
+    return res.status(200).json({ success: true, count: formattedData.length, data: formattedData });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getMenuById = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase.from('menus').select('*').eq('id', req.params.id).single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Menu not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -42,24 +46,9 @@ const getMenus = async (req, res, next) => {
 const updateMenu = async (req, res, next) => {
   try {
     const { name, url, order, status } = req.body;
-    const menu = await Menu.findById(req.params.id);
-
-    if (!menu) {
-      res.status(404);
-      throw new Error("Menu not found");
-    }
-
-    menu.name = name || menu.name;
-    menu.url = url || menu.url;
-    menu.order = Number.isFinite(Number(order)) ? Number(order) : menu.order;
-    menu.status = status || menu.status;
-
-    await menu.save();
-
-    return res.status(200).json({
-      success: true,
-      data: menu,
-    });
+    const { data, error } = await supabase.from('menus').update({ name, url, order, status }).eq('id', req.params.id).select().single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Menu not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -67,19 +56,9 @@ const updateMenu = async (req, res, next) => {
 
 const deleteMenu = async (req, res, next) => {
   try {
-    const menu = await Menu.findById(req.params.id);
-
-    if (!menu) {
-      res.status(404);
-      throw new Error("Menu not found");
-    }
-
-    await menu.deleteOne();
-
-    return res.status(200).json({
-      success: true,
-      message: "Menu deleted successfully",
-    });
+    const { error } = await supabase.from('menus').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, message: "Menu deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -87,20 +66,14 @@ const deleteMenu = async (req, res, next) => {
 
 const toggleMenuStatus = async (req, res, next) => {
   try {
-    const menu = await Menu.findById(req.params.id);
+    const { data: current, error: fetchError } = await supabase.from('menus').select('status').eq('id', req.params.id).single();
+    if (fetchError || !current) return res.status(404).json({ success: false, message: "Menu not found" });
 
-    if (!menu) {
-      res.status(404);
-      throw new Error("Menu not found");
-    }
-
-    menu.status = menu.status === "active" ? "inactive" : "active";
-    await menu.save();
-
-    return res.status(200).json({
-      success: true,
-      data: menu,
-    });
+    const newStatus = current.status === "active" ? "inactive" : "active";
+    const { data, error } = await supabase.from('menus').update({ status: newStatus }).eq('id', req.params.id).select().single();
+    
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -109,25 +82,9 @@ const toggleMenuStatus = async (req, res, next) => {
 const updateMenuOrder = async (req, res, next) => {
   try {
     const { order } = req.body;
-    const menu = await Menu.findById(req.params.id);
-
-    if (!menu) {
-      res.status(404);
-      throw new Error("Menu not found");
-    }
-
-    if (!Number.isFinite(Number(order))) {
-      res.status(400);
-      throw new Error("Valid order is required");
-    }
-
-    menu.order = Number(order);
-    await menu.save();
-
-    return res.status(200).json({
-      success: true,
-      data: menu,
-    });
+    const { data, error } = await supabase.from('menus').update({ order }).eq('id', req.params.id).select().single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Menu not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -136,6 +93,7 @@ const updateMenuOrder = async (req, res, next) => {
 module.exports = {
   createMenu,
   getMenus,
+  getMenuById,
   updateMenu,
   deleteMenu,
   toggleMenuStatus,

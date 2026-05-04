@@ -1,19 +1,60 @@
-const Testimonial = require("../models/Testimonial");
+const supabase = require("../config/supabase");
 
 const createTestimonial = async (req, res, next) => {
   try {
     const { source, name, message, rating } = req.body;
 
     if (!source || !name || !message || !rating) {
-      res.status(400);
-      throw new Error("source, name, message and rating are required");
+      return res.status(400).json({
+        success: false,
+        message: "source, name, message and rating are required"
+      });
     }
 
-    const testimonial = await Testimonial.create(req.body);
+    const supabaseData = {
+      show_type: req.body.showType,
+      service_name: req.body.serviceName,
+      source: req.body.source,
+      name: req.body.name,
+      short_name: req.body.shortName,
+      designation: req.body.designation,
+      message: req.body.message,
+      rating: req.body.rating,
+      status: req.body.status,
+    };
+
+    const { data, error } = await supabase
+      .from('testimonials')
+      .insert([supabaseData])
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    const formattedData = {
+      _id: data.id,
+      id: data.id,
+      showType: data.show_type,
+      serviceName: data.service_name,
+      source: data.source,
+      name: data.name,
+      shortName: data.short_name,
+      designation: data.designation,
+      message: data.message,
+      rating: data.rating,
+      status: data.status,
+      createdAt: data.created_at,
+      updatedAt: data.updated_at,
+    };
 
     return res.status(201).json({
       success: true,
-      data: testimonial,
+      data: formattedData,
     });
   } catch (error) {
     next(error);
@@ -30,42 +71,51 @@ const getTestimonials = async (req, res, next) => {
     const status = String(req.query.status || "").trim();
     const rating = parseInt(req.query.rating, 10);
 
-    const filter = {};
+    let query = supabase.from('testimonials').select('*', { count: 'exact' });
 
     if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { message: { $regex: search, $options: "i" } },
-        { serviceName: { $regex: search, $options: "i" } },
-      ];
+      query = query.or(`name.ilike.%${search}%,message.ilike.%${search}%,service_name.ilike.%${search}%`);
+    }
+    if (source) query = query.eq('source', source);
+    if (status) query = query.eq('status', status);
+    if (!isNaN(rating)) query = query.eq('rating', rating);
+
+    const { data, count, error } = await query
+      .order('created_at', { ascending: false })
+      .range(skip, skip + limit - 1);
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
     }
 
-    if (source) {
-      filter.source = source;
-    }
-
-    if (status) {
-      filter.status = status;
-    }
-
-    if (rating && rating >= 1 && rating <= 5) {
-      filter.rating = rating;
-    }
-
-    const [testimonials, total] = await Promise.all([
-      Testimonial.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
-      Testimonial.countDocuments(filter),
-    ]);
+    const formattedData = data.map(item => ({
+      _id: item.id,
+      id: item.id,
+      showType: item.show_type,
+      serviceName: item.service_name,
+      source: item.source,
+      name: item.name,
+      shortName: item.short_name,
+      designation: item.designation,
+      message: item.message,
+      rating: item.rating,
+      status: item.status,
+      createdAt: item.created_at,
+      updatedAt: item.updated_at,
+    }));
 
     return res.status(200).json({
       success: true,
-      count: testimonials.length,
-      data: testimonials,
+      count: formattedData.length,
+      data: formattedData,
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.max(Math.ceil(total / limit), 1),
+        total: count,
+        totalPages: Math.max(Math.ceil(count / limit), 1),
       },
     });
   } catch (error) {
@@ -75,16 +125,38 @@ const getTestimonials = async (req, res, next) => {
 
 const getTestimonialById = async (req, res, next) => {
   try {
-    const testimonial = await Testimonial.findById(req.params.id);
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
 
-    if (!testimonial) {
-      res.status(404);
-      throw new Error("Testimonial not found");
+    if (error || !data) {
+      return res.status(404).json({
+        success: false,
+        message: error ? error.message : "Testimonial not found"
+      });
     }
+
+    const formattedData = {
+      _id: data.id,
+      id: data.id,
+      showType: data.show_type,
+      serviceName: data.service_name,
+      source: data.source,
+      name: data.name,
+      shortName: data.short_name,
+      designation: data.designation,
+      message: data.message,
+      rating: data.rating,
+      status: data.status,
+      createdAt: data.created_at,
+      updatedAt: data.updated_at,
+    };
 
     return res.status(200).json({
       success: true,
-      data: testimonial,
+      data: formattedData,
     });
   } catch (error) {
     next(error);
@@ -93,37 +165,50 @@ const getTestimonialById = async (req, res, next) => {
 
 const updateTestimonial = async (req, res, next) => {
   try {
-    const testimonial = await Testimonial.findById(req.params.id);
+    const updates = {};
+    if (req.body.showType !== undefined) updates.show_type = req.body.showType;
+    if (req.body.serviceName !== undefined) updates.service_name = req.body.serviceName;
+    if (req.body.source !== undefined) updates.source = req.body.source;
+    if (req.body.name !== undefined) updates.name = req.body.name;
+    if (req.body.shortName !== undefined) updates.short_name = req.body.shortName;
+    if (req.body.designation !== undefined) updates.designation = req.body.designation;
+    if (req.body.message !== undefined) updates.message = req.body.message;
+    if (req.body.rating !== undefined) updates.rating = req.body.rating;
+    if (req.body.status !== undefined) updates.status = req.body.status;
 
-    if (!testimonial) {
-      res.status(404);
-      throw new Error("Testimonial not found");
+    const { data, error } = await supabase
+      .from('testimonials')
+      .update(updates)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({
+        success: false,
+        message: error ? error.message : "Testimonial not found"
+      });
     }
 
-    // Update fields
-    const fieldsToUpdate = [
-      "showType",
-      "serviceName",
-      "source",
-      "name",
-      "shortName",
-      "designation",
-      "message",
-      "rating",
-      "status",
-    ];
-
-    fieldsToUpdate.forEach((field) => {
-      if (req.body[field] !== undefined) {
-        testimonial[field] = req.body[field];
-      }
-    });
-
-    await testimonial.save();
+    const formattedData = {
+      _id: data.id,
+      id: data.id,
+      showType: data.show_type,
+      serviceName: data.service_name,
+      source: data.source,
+      name: data.name,
+      shortName: data.short_name,
+      designation: data.designation,
+      message: data.message,
+      rating: data.rating,
+      status: data.status,
+      createdAt: data.created_at,
+      updatedAt: data.updated_at,
+    };
 
     return res.status(200).json({
       success: true,
-      data: testimonial,
+      data: formattedData,
     });
   } catch (error) {
     next(error);
@@ -132,14 +217,17 @@ const updateTestimonial = async (req, res, next) => {
 
 const deleteTestimonial = async (req, res, next) => {
   try {
-    const testimonial = await Testimonial.findById(req.params.id);
+    const { error } = await supabase
+      .from('testimonials')
+      .delete()
+      .eq('id', req.params.id);
 
-    if (!testimonial) {
-      res.status(404);
-      throw new Error("Testimonial not found");
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
     }
-
-    await testimonial.deleteOne();
 
     return res.status(200).json({
       success: true,
@@ -152,19 +240,38 @@ const deleteTestimonial = async (req, res, next) => {
 
 const toggleTestimonialStatus = async (req, res, next) => {
   try {
-    const testimonial = await Testimonial.findById(req.params.id);
+    const { data: current, error: fetchError } = await supabase
+      .from('testimonials')
+      .select('status')
+      .eq('id', req.params.id)
+      .single();
 
-    if (!testimonial) {
-      res.status(404);
-      throw new Error("Testimonial not found");
+    if (fetchError || !current) {
+      return res.status(404).json({
+        success: false,
+        message: "Testimonial not found"
+      });
     }
 
-    testimonial.status = testimonial.status === "active" ? "inactive" : "active";
-    await testimonial.save();
+    const newStatus = current.status === "active" ? "inactive" : "active";
+    
+    const { data, error } = await supabase
+      .from('testimonials')
+      .update({ status: newStatus })
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
 
     return res.status(200).json({
       success: true,
-      data: testimonial,
+      data: { ...data, _id: data.id },
     });
   } catch (error) {
     next(error);

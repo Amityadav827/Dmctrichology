@@ -1,13 +1,9 @@
+const supabase = require("../config/supabase");
 const fs = require("fs");
 const path = require("path");
-const ResultInner = require("../models/ResultInner");
-const ResultCategory = require("../models/ResultCategory");
 
 const removeUploadedFile = (imagePath) => {
-  if (!imagePath) {
-    return;
-  }
-
+  if (!imagePath) return;
   const absolutePath = path.join(__dirname, "..", imagePath.replace(/^(https?:\/\/[^\/]+)?\//, ""));
   if (fs.existsSync(absolutePath)) {
     fs.unlinkSync(absolutePath);
@@ -24,25 +20,27 @@ const createResultInner = async (req, res, next) => {
     const { categoryId, title, order, status } = req.body;
 
     if (!categoryId || !title) {
-      if (req.file) {
-        removeUploadedFile(`/uploads/${req.file.filename}`);
-      }
-      res.status(400);
-      throw new Error("categoryId and title are required");
+      if (req.file) removeUploadedFile(`/uploads/${req.file.filename}`);
+      return res.status(400).json({ success: false, message: "categoryId and title are required" });
     }
 
     if (!req.file) {
-      res.status(400);
-      throw new Error("Image is required");
+      return res.status(400).json({ success: false, message: "Image is required" });
     }
 
-    const category = await ResultCategory.findById(categoryId);
-    if (!category) {
+    // Check category exists
+    const { data: category, error: catError } = await supabase
+      .from('result_categories')
+      .select('id')
+      .eq('id', categoryId)
+      .single();
+
+    if (catError || !category) {
       removeUploadedFile(`/uploads/${req.file.filename}`);
-      res.status(404);
-      throw new Error("Result category not found");
+      return res.status(404).json({ success: false, message: "Result category not found" });
     }
 
+    /*
     const item = await ResultInner.create({
       categoryId,
       title,
@@ -50,12 +48,37 @@ const createResultInner = async (req, res, next) => {
       order: Number.isFinite(Number(order)) ? Number(order) : 0,
       status: status || "active",
     });
+    */
+    const { data: item, error } = await supabase
+      .from('result_items')
+      .insert([{
+        category_id: categoryId,
+        title,
+        image: normalizeImagePath(req, req.file),
+        order: Number.isFinite(Number(order)) ? Number(order) : 0,
+        status: status || "active",
+      }])
+      .select(`
+        *,
+        category:result_categories (
+          name,
+          description,
+          status
+        )
+      `)
+      .single();
 
-    await item.populate("categoryId", "name description status");
+    if (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
 
     return res.status(201).json({
       success: true,
-      data: item,
+      data: {
+        ...item,
+        _id: item.id,
+        categoryId: item.category ? { ...item.category, _id: item.category_id } : item.category_id
+      },
     });
   } catch (error) {
     next(error);
@@ -64,20 +87,37 @@ const createResultInner = async (req, res, next) => {
 
 const getResultInners = async (req, res, next) => {
   try {
-    const filter = {};
+    let query = supabase.from('result_items').select(`
+      *,
+      category:result_categories (
+        name,
+        description,
+        status
+      )
+    `);
 
     if (req.query.categoryId) {
-      filter.categoryId = req.query.categoryId;
+      query = query.eq('category_id', req.query.categoryId);
     }
 
-    const items = await ResultInner.find(filter)
-      .populate("categoryId", "name description status")
-      .sort({ order: 1, createdAt: -1 });
+    const { data: items, error } = await query
+      .order('order', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
+
+    const formattedData = items.map(item => ({
+      ...item,
+      _id: item.id,
+      categoryId: item.category ? { ...item.category, _id: item.category_id } : item.category_id
+    }));
 
     return res.status(200).json({
       success: true,
-      count: items.length,
-      data: items,
+      count: formattedData.length,
+      data: formattedData,
     });
   } catch (error) {
     next(error);
@@ -87,42 +127,62 @@ const getResultInners = async (req, res, next) => {
 const updateResultInner = async (req, res, next) => {
   try {
     const { categoryId, title, order, status } = req.body;
-    const item = await ResultInner.findById(req.params.id);
+    
+    const { data: item, error: fetchError } = await supabase
+      .from('result_items')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
 
-    if (!item) {
-      if (req.file) {
-        removeUploadedFile(`/uploads/${req.file.filename}`);
-      }
-      res.status(404);
-      throw new Error("Result not found");
+    if (fetchError || !item) {
+      if (req.file) removeUploadedFile(`/uploads/${req.file.filename}`);
+      return res.status(404).json({ success: false, message: "Result not found" });
     }
 
-    const nextCategoryId = categoryId || item.categoryId.toString();
-    const category = await ResultCategory.findById(nextCategoryId);
-    if (!category) {
-      if (req.file) {
-        removeUploadedFile(`/uploads/${req.file.filename}`);
+    const updates = {};
+    if (categoryId) {
+      const { data: cat } = await supabase.from('result_categories').select('id').eq('id', categoryId).single();
+      if (!cat) {
+        if (req.file) removeUploadedFile(`/uploads/${req.file.filename}`);
+        return res.status(404).json({ success: false, message: "Result category not found" });
       }
-      res.status(404);
-      throw new Error("Result category not found");
+      updates.category_id = categoryId;
     }
 
     if (req.file) {
       removeUploadedFile(item.image);
-      item.image = normalizeImagePath(req, req.file);
+      updates.image = normalizeImagePath(req, req.file);
     }
 
-    item.categoryId = nextCategoryId;
-    item.title = title || item.title;
-    item.order = Number.isFinite(Number(order)) ? Number(order) : item.order;
-    item.status = status || item.status;
+    if (title) updates.title = title;
+    if (order !== undefined) updates.order = Number.isFinite(Number(order)) ? Number(order) : item.order;
+    if (status) updates.status = status;
 
-    await item.save();
-    await item.populate("categoryId", "name description status");
+    const { data: updatedItem, error } = await supabase
+      .from('result_items')
+      .update(updates)
+      .eq('id', req.params.id)
+      .select(`
+        *,
+        category:result_categories (
+          name,
+          description,
+          status
+        )
+      `)
+      .single();
+
+    if (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
 
     return res.status(200).json({
       success: true,
-      data: item,
+      data: {
+        ...updatedItem,
+        _id: updatedItem.id,
+        categoryId: updatedItem.category ? { ...updatedItem.category, _id: updatedItem.category_id } : updatedItem.category_id
+      },
     });
   } catch (error) {
     next(error);
@@ -131,15 +191,22 @@ const updateResultInner = async (req, res, next) => {
 
 const deleteResultInner = async (req, res, next) => {
   try {
-    const item = await ResultInner.findById(req.params.id);
+    const { data: item, error: fetchError } = await supabase
+      .from('result_items')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
 
-    if (!item) {
-      res.status(404);
-      throw new Error("Result not found");
+    if (fetchError || !item) {
+      return res.status(404).json({ success: false, message: "Result not found" });
     }
 
     removeUploadedFile(item.image);
-    await item.deleteOne();
+    const { error } = await supabase.from('result_items').delete().eq('id', req.params.id);
+
+    if (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
 
     return res.status(200).json({
       success: true,
@@ -152,22 +219,42 @@ const deleteResultInner = async (req, res, next) => {
 
 const toggleResultInnerStatus = async (req, res, next) => {
   try {
-    const item = await ResultInner.findById(req.params.id).populate(
-      "categoryId",
-      "name description status"
-    );
+    const { data: current, error: fetchError } = await supabase
+      .from('result_items')
+      .select('status')
+      .eq('id', req.params.id)
+      .single();
 
-    if (!item) {
-      res.status(404);
-      throw new Error("Result not found");
+    if (fetchError || !current) {
+      return res.status(404).json({ success: false, message: "Result not found" });
     }
 
-    item.status = item.status === "active" ? "inactive" : "active";
-    await item.save();
+    const newStatus = current.status === "active" ? "inactive" : "active";
+    const { data: updated, error } = await supabase
+      .from('result_items')
+      .update({ status: newStatus })
+      .eq('id', req.params.id)
+      .select(`
+        *,
+        category:result_categories (
+          name,
+          description,
+          status
+        )
+      `)
+      .single();
+
+    if (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
 
     return res.status(200).json({
       success: true,
-      data: item,
+      data: {
+        ...updated,
+        _id: updated.id,
+        categoryId: updated.category ? { ...updated.category, _id: updated.category_id } : updated.category_id
+      },
     });
   } catch (error) {
     next(error);
@@ -177,27 +264,35 @@ const toggleResultInnerStatus = async (req, res, next) => {
 const updateResultInnerOrder = async (req, res, next) => {
   try {
     const { order } = req.body;
-    const item = await ResultInner.findById(req.params.id).populate(
-      "categoryId",
-      "name description status"
-    );
-
-    if (!item) {
-      res.status(404);
-      throw new Error("Result not found");
-    }
-
     if (!Number.isFinite(Number(order))) {
-      res.status(400);
-      throw new Error("Valid order is required");
+      return res.status(400).json({ success: false, message: "Valid order is required" });
     }
 
-    item.order = Number(order);
-    await item.save();
+    const { data: updated, error } = await supabase
+      .from('result_items')
+      .update({ order: Number(order) })
+      .eq('id', req.params.id)
+      .select(`
+        *,
+        category:result_categories (
+          name,
+          description,
+          status
+        )
+      `)
+      .single();
+
+    if (error || !updated) {
+      return res.status(404).json({ success: false, message: "Result not found" });
+    }
 
     return res.status(200).json({
       success: true,
-      data: item,
+      data: {
+        ...updated,
+        _id: updated.id,
+        categoryId: updated.category ? { ...updated.category, _id: updated.category_id } : updated.category_id
+      },
     });
   } catch (error) {
     next(error);

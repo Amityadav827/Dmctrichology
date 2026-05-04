@@ -1,138 +1,85 @@
-const Redirect = require("../models/Redirect");
+const supabase = require("../config/supabase");
 
-// @desc    Get all redirects
-// @route   GET /api/redirects
-// @access  Private/Admin
-const getRedirects = async (req, res, next) => {
-  try {
-    const redirects = await Redirect.find().sort({ createdAt: -1 });
-    res.status(200).json({
-      success: true,
-      count: redirects.length,
-      data: redirects,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Create a redirect
-// @route   POST /api/redirects
-// @access  Private/Admin
 const createRedirect = async (req, res, next) => {
   try {
     const { sourceUrl, destinationUrl, type, status } = req.body;
+    if (!sourceUrl || !destinationUrl) return res.status(400).json({ success: false, message: "Source and destination URLs are required" });
 
-    const existingRedirect = await Redirect.findOne({ sourceUrl: sourceUrl.toLowerCase().trim() });
-    if (existingRedirect) {
-      res.status(400);
-      throw new Error("A redirect for this source URL already exists");
-    }
+    const { data, error } = await supabase
+      .from('redirects')
+      .insert([{
+        source_url: sourceUrl,
+        destination_url: destinationUrl,
+        type: type || 301,
+        status: status || 'active'
+      }])
+      .select()
+      .single();
 
-    const redirect = await Redirect.create({
-      sourceUrl,
-      destinationUrl,
-      type: type || 301,
-      status: status || "active",
-    });
-
-    res.status(201).json({
-      success: true,
-      data: redirect,
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(201).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Update a redirect
-// @route   PUT /api/redirects/:id
-// @access  Private/Admin
+const getRedirects = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase.from('redirects').select('*').order('created_at', { ascending: false });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    const formattedData = data.map(item => ({ ...item, _id: item.id }));
+    return res.status(200).json({ success: true, count: formattedData.length, data: formattedData });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateRedirect = async (req, res, next) => {
   try {
-    const { sourceUrl, destinationUrl, type, status } = req.body;
+    const updates = {
+      source_url: req.body.sourceUrl,
+      destination_url: req.body.destinationUrl,
+      type: req.body.type,
+      status: req.body.status,
+    };
+    Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
 
-    let redirect = await Redirect.findById(req.params.id);
-
-    if (!redirect) {
-      res.status(404);
-      throw new Error("Redirect not found");
-    }
-
-    // Check if new sourceUrl already exists (if changed)
-    if (sourceUrl && sourceUrl.toLowerCase().trim() !== redirect.sourceUrl) {
-      const existingRedirect = await Redirect.findOne({ sourceUrl: sourceUrl.toLowerCase().trim() });
-      if (existingRedirect) {
-        res.status(400);
-        throw new Error("A redirect for this source URL already exists");
-      }
-    }
-
-    redirect = await Redirect.findByIdAndUpdate(
-      req.params.id,
-      { sourceUrl, destinationUrl, type, status },
-      { new: true, runValidators: true }
-    );
-
-    res.status(200).json({
-      success: true,
-      data: redirect,
-    });
+    const { data, error } = await supabase.from('redirects').update(updates).eq('id', req.params.id).select().single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Redirect not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Delete a redirect
-// @route   DELETE /api/redirects/:id
-// @access  Private/Admin
 const deleteRedirect = async (req, res, next) => {
   try {
-    const redirect = await Redirect.findById(req.params.id);
-
-    if (!redirect) {
-      res.status(404);
-      throw new Error("Redirect not found");
-    }
-
-    await redirect.deleteOne();
-
-    res.status(200).json({
-      success: true,
-      message: "Redirect removed",
-    });
+    const { error } = await supabase.from('redirects').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, message: "Redirect deleted successfully" });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Toggle redirect status
-// @route   PATCH /api/redirects/:id/status
-// @access  Private/Admin
 const toggleRedirectStatus = async (req, res, next) => {
   try {
-    const redirect = await Redirect.findById(req.params.id);
+    const { data: current, error: fetchError } = await supabase.from('redirects').select('status').eq('id', req.params.id).single();
+    if (fetchError || !current) return res.status(404).json({ success: false, message: "Redirect not found" });
 
-    if (!redirect) {
-      res.status(404);
-      throw new Error("Redirect not found");
-    }
-
-    redirect.status = redirect.status === "active" ? "inactive" : "active";
-    await redirect.save();
-
-    res.status(200).json({
-      success: true,
-      data: redirect,
-    });
+    const newStatus = current.status === "active" ? "inactive" : "active";
+    const { data, error } = await supabase.from('redirects').update({ status: newStatus }).eq('id', req.params.id).select().single();
+    
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
-  getRedirects,
   createRedirect,
+  getRedirects,
   updateRedirect,
   deleteRedirect,
   toggleRedirectStatus,

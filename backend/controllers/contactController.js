@@ -1,45 +1,27 @@
-const Contact = require("../models/Contact");
-const {
-  buildDateFilter,
-  isValidEmail,
-  isValidMobile,
-  sanitizeText,
-  toCsv,
-} = require("../utils/leadHelpers");
+const supabase = require("../config/supabase");
 
 const createContact = async (req, res, next) => {
   try {
-    const name = sanitizeText(req.body.name);
-    const email = sanitizeText(req.body.email).toLowerCase();
-    const mobile = sanitizeText(req.body.mobile);
-    const message = sanitizeText(req.body.message);
+    const { name, email, mobile, message } = req.body;
 
     if (!name || !email || !mobile || !message) {
-      res.status(400);
-      throw new Error("name, email, mobile and message are required");
+      return res.status(400).json({
+        success: false,
+        message: "Please provide all required fields",
+      });
     }
 
-    if (!isValidEmail(email)) {
-      res.status(400);
-      throw new Error("Valid email is required");
-    }
+    const { data, error } = await supabase
+      .from('contacts')
+      .insert([{ name, email, mobile, message, status: 'new' }])
+      .select()
+      .single();
 
-    if (!isValidMobile(mobile)) {
-      res.status(400);
-      throw new Error("Valid mobile number is required");
-    }
-
-    const contact = await Contact.create({
-      name,
-      email,
-      mobile,
-      message,
-      status: "new",
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
     return res.status(201).json({
       success: true,
-      data: contact,
+      data: { ...data, _id: data.id },
     });
   } catch (error) {
     next(error);
@@ -48,49 +30,29 @@ const createContact = async (req, res, next) => {
 
 const getContacts = async (req, res, next) => {
   try {
-    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
-    const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    const search = sanitizeText(req.query.search || "");
-    const status = sanitizeText(req.query.status || "").toLowerCase();
-    const startDate = req.query.startDate;
-    const endDate = req.query.endDate;
-    const sortBy = ["name", "email", "mobile", "status", "createdAt"].includes(req.query.sortBy)
-      ? req.query.sortBy
-      : "createdAt";
-    const sortOrder = req.query.sortOrder === "asc" ? 1 : -1;
 
-    const filter = {};
+    const { data, count, error } = await supabase
+      .from('contacts')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(skip, skip + limit - 1);
 
-    if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
-        { mobile: { $regex: search, $options: "i" } },
-        { message: { $regex: search, $options: "i" } },
-      ];
-    }
+    if (error) return res.status(500).json({ success: false, message: error.message });
 
-    if (status) {
-      filter.status = status;
-    }
-
-    Object.assign(filter, buildDateFilter(startDate, endDate) || {});
-
-    const [contacts, total] = await Promise.all([
-      Contact.find(filter).sort({ [sortBy]: sortOrder }).skip(skip).limit(limit),
-      Contact.countDocuments(filter),
-    ]);
+    const formattedData = data.map(item => ({ ...item, _id: item.id }));
 
     return res.status(200).json({
       success: true,
-      count: contacts.length,
-      data: contacts,
+      count: formattedData.length,
+      data: formattedData,
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.max(Math.ceil(total / limit), 1),
+        total: count,
+        totalPages: Math.ceil(count / limit),
       },
     });
   } catch (error) {
@@ -100,16 +62,17 @@ const getContacts = async (req, res, next) => {
 
 const getContactById = async (req, res, next) => {
   try {
-    const contact = await Contact.findById(req.params.id);
+    const { data, error } = await supabase
+      .from('contacts')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
 
-    if (!contact) {
-      res.status(404);
-      throw new Error("Contact message not found");
-    }
+    if (error || !data) return res.status(404).json({ success: false, message: "Contact not found" });
 
     return res.status(200).json({
       success: true,
-      data: contact,
+      data: { ...data, _id: data.id },
     });
   } catch (error) {
     next(error);
@@ -118,24 +81,19 @@ const getContactById = async (req, res, next) => {
 
 const updateContact = async (req, res, next) => {
   try {
-    const contact = await Contact.findById(req.params.id);
+    const { status } = req.body;
+    const { data, error } = await supabase
+      .from('contacts')
+      .update({ status })
+      .eq('id', req.params.id)
+      .select()
+      .single();
 
-    if (!contact) {
-      res.status(404);
-      throw new Error("Contact message not found");
-    }
-
-    contact.name = req.body.name ? sanitizeText(req.body.name) : contact.name;
-    contact.email = req.body.email ? sanitizeText(req.body.email).toLowerCase() : contact.email;
-    contact.mobile = req.body.mobile ? sanitizeText(req.body.mobile) : contact.mobile;
-    contact.message = req.body.message ? sanitizeText(req.body.message) : contact.message;
-    contact.status = req.body.status || contact.status;
-
-    await contact.save();
+    if (error || !data) return res.status(404).json({ success: false, message: "Contact not found" });
 
     return res.status(200).json({
       success: true,
-      data: contact,
+      data: { ...data, _id: data.id },
     });
   } catch (error) {
     next(error);
@@ -144,15 +102,8 @@ const updateContact = async (req, res, next) => {
 
 const deleteContact = async (req, res, next) => {
   try {
-    const contact = await Contact.findById(req.params.id);
-
-    if (!contact) {
-      res.status(404);
-      throw new Error("Contact message not found");
-    }
-
-    await contact.deleteOne();
-
+    const { error } = await supabase.from('contacts').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
     return res.status(200).json({
       success: true,
       message: "Contact message deleted successfully",
@@ -162,30 +113,30 @@ const deleteContact = async (req, res, next) => {
   }
 };
 
+const updateContactStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    const { data, error } = await supabase.from('contacts').update({ status }).eq('id', req.params.id).select().single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Contact message not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const exportContactsCsv = async (req, res, next) => {
   try {
-    const items = await Contact.find().sort({ createdAt: -1 });
-    const csv = toCsv(
-      [
-        { key: "name", label: "Name" },
-        { key: "email", label: "Email" },
-        { key: "mobile", label: "Mobile" },
-        { key: "message", label: "Message" },
-        { key: "status", label: "Status" },
-        { key: "createdAt", label: "Created At" },
-      ],
-      items.map((item) => ({
-        name: item.name,
-        email: item.email,
-        mobile: item.mobile,
-        message: item.message,
-        status: item.status,
-        createdAt: item.createdAt.toISOString(),
-      }))
-    );
+    const { data, error } = await supabase.from('contacts').select('*').order('created_at', { ascending: false });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    // Simplified CSV generation for API parity
+    let csv = "ID,Name,Email,Mobile,Message,Status,CreatedAt\n";
+    data.forEach(row => {
+      csv += `${row.id},${row.name},${row.email},${row.mobile},"${row.message.replace(/"/g, '""')}",${row.status},${row.created_at}\n`;
+    });
 
     res.setHeader("Content-Type", "text/csv");
-    res.setHeader("Content-Disposition", "attachment; filename=contact-leads.csv");
+    res.setHeader("Content-Disposition", "attachment; filename=contacts.csv");
     return res.status(200).send(csv);
   } catch (error) {
     next(error);
@@ -198,5 +149,6 @@ module.exports = {
   getContactById,
   updateContact,
   deleteContact,
+  updateContactStatus,
   exportContactsCsv,
 };

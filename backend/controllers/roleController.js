@@ -1,44 +1,34 @@
-const Role = require("../models/Role");
+const supabase = require("../config/supabase");
 
-const createRole = async (req, res, next) => {
+const getRoles = async (req, res, next) => {
   try {
-    const { name, permissions } = req.body;
+    const { data, error } = await supabase
+      .from('roles')
+      .select('*')
+      .order('name', { ascending: true });
 
-    if (!name) {
-      res.status(400);
-      throw new Error("Role name is required");
-    }
-
-    const existingRole = await Role.findOne({ name: name.trim().toLowerCase() });
-
-    if (existingRole) {
-      res.status(400);
-      throw new Error("Role already exists");
-    }
-
-    const role = await Role.create({
-      name,
-      permissions: Array.isArray(permissions) ? permissions : [],
-    });
-
-    return res.status(201).json({
-      success: true,
-      data: role,
-    });
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    
+    const formattedData = data.map(item => ({ ...item, _id: item.id }));
+    return res.status(200).json({ success: true, count: formattedData.length, data: formattedData });
   } catch (error) {
     next(error);
   }
 };
 
-const getRoles = async (req, res, next) => {
+const createRole = async (req, res, next) => {
   try {
-    const roles = await Role.find().sort({ createdAt: -1 });
+    const { name, permissions } = req.body;
+    if (!name) return res.status(400).json({ success: false, message: "Role name is required" });
 
-    return res.status(200).json({
-      success: true,
-      count: roles.length,
-      data: roles,
-    });
+    const { data, error } = await supabase
+      .from('roles')
+      .insert([{ name, permissions: permissions || [] }])
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(201).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -47,30 +37,15 @@ const getRoles = async (req, res, next) => {
 const updateRole = async (req, res, next) => {
   try {
     const { name, permissions } = req.body;
-    const role = await Role.findById(req.params.id);
+    const { data, error } = await supabase
+      .from('roles')
+      .update({ name, permissions })
+      .eq('id', req.params.id)
+      .select()
+      .single();
 
-    if (!role) {
-      res.status(404);
-      throw new Error("Role not found");
-    }
-
-    if (name && name.trim().toLowerCase() !== role.name) {
-      const existingRole = await Role.findOne({ name: name.trim().toLowerCase() });
-      if (existingRole) {
-        res.status(400);
-        throw new Error("Role already exists");
-      }
-    }
-
-    role.name = name || role.name;
-    role.permissions = Array.isArray(permissions) ? permissions : role.permissions;
-
-    await role.save();
-
-    return res.status(200).json({
-      success: true,
-      data: role,
-    });
+    if (error || !data) return res.status(404).json({ success: false, message: "Role not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
   }
@@ -78,32 +53,17 @@ const updateRole = async (req, res, next) => {
 
 const deleteRole = async (req, res, next) => {
   try {
-    const role = await Role.findById(req.params.id);
-
-    if (!role) {
-      res.status(404);
-      throw new Error("Role not found");
-    }
-
-    if (role.name === "admin") {
-      res.status(400);
-      throw new Error("Admin role cannot be deleted");
-    }
-
-    await role.deleteOne();
-
-    return res.status(200).json({
-      success: true,
-      message: "Role deleted successfully",
-    });
+    const { error } = await supabase.from('roles').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ success: false, message: error.message });
+    return res.status(200).json({ success: true, message: "Role deleted successfully" });
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
-  createRole,
   getRoles,
+  createRole,
   updateRole,
   deleteRole,
 };
