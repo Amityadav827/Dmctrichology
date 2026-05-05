@@ -14,13 +14,14 @@ const router = express.Router();
 
 router.use(protect, adminOnly);
 
-const uploadFields = upload.fields([
-  { name: "thumbnail", maxCount: 1 },
-  { name: "videoFile", maxCount: 1 },
+// Support both video file and thumbnail image upload
+const videoUploadFields = upload.fields([
+  { name: "video", maxCount: 1 },
+  { name: "thumbnail", maxCount: 1 }
 ]);
 
-router.route("/").post(uploadFields, createVideo).get(getVideos);
-router.route("/:id").put(uploadFields, updateVideo).delete(deleteVideo);
+router.route("/").post(videoUploadFields, createVideo).get(getVideos);
+router.route("/:id").put(videoUploadFields, updateVideo).delete(deleteVideo);
 
 router.patch("/status/:id", toggleVideoStatus);
 router.patch("/order/:id", updateVideoOrder);
