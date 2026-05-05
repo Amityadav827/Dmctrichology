@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { submitLead } from '../services/api';
 
 export default function LeadForm() {
@@ -8,9 +8,20 @@ export default function LeadForm() {
     mobile: '',
     code: ''
   });
+  const [captcha, setCaptcha] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  // Function to generate random 4-digit number
+  const generateCaptcha = () => {
+    const num = Math.floor(1000 + Math.random() * 9000).toString();
+    setCaptcha(num);
+  };
+
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,12 +29,21 @@ export default function LeadForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+
+    // 1. Validate Captcha
+    if (formData.code !== captcha) {
+      setError('Invalid captcha. Please enter the correct code.');
+      return;
+    }
+
+    setLoading(true);
     try {
       await submitLead(formData);
       setSuccess(true);
       setFormData({ name: '', mobile: '', code: '' });
+      // 2. Regenerate captcha after success
+      generateCaptcha();
     } catch (err) {
       setError('Something went wrong. Please try again.');
     } finally {
@@ -98,7 +118,7 @@ export default function LeadForm() {
 
         <div className="form-row" style={{ alignItems: 'stretch', border: '1px solid #ddd', borderRadius: '12px', overflow: 'hidden' }}>
           <div style={{ flex: '0 0 100px', backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50px', borderRight: '1px solid #ddd' }}>
-            <span style={{ color: '#888' }}>6534</span>
+            <span style={{ color: '#888', letterSpacing: '4px', fontWeight: 'bold' }}>{captcha}</span>
           </div>
           <div style={{ flex: 1 }}>
             <input 
