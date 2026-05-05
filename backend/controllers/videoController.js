@@ -7,25 +7,54 @@ const uploadToSupabase = require("../utils/uploadToSupabase");
 
 const createVideo = async (req, res, next) => {
   try {
-    console.log("[Video System] createVideo - req.files received:", req.files);
+    console.log("[Video System] --- UPLOAD ATTEMPT START ---");
+    console.log("[Video System] FILES:", req.files);
+    console.log("[Video System] BODY:", req.body);
+
     const body = { ...req.body };
+    const videoFile = req.files?.video?.[0];
+    const thumbnailFile = req.files?.thumbnail?.[0];
+
+    // Helper for timeout
+    const uploadWithTimeout = async (file, folder) => {
+      return Promise.race([
+        uploadToSupabase(file, folder),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("Upload timed out after 2 minutes")), 120000)
+        )
+      ]);
+    };
 
     // 1. Handle Video File Upload
-    if (req.files && req.files.video && req.files.video[0]) {
-      console.log("[Video System] Uploading local video file...");
-      body.video_url = await uploadToSupabase(req.files.video[0], 'videos/files');
+    if (videoFile) {
+      console.log("[Video System] Processing video file upload...");
+      try {
+        body.video_url = await uploadWithTimeout(videoFile, 'videos/files');
+      } catch (uploadErr) {
+        console.error("[Video System] Video upload failed/timed out:", uploadErr.message);
+        return res.status(500).json({ 
+          success: false, 
+          message: `Video upload failed: ${uploadErr.message}` 
+        });
+      }
     } else if (body.videoUrl || body.video_url) {
-      // Fallback to manual URL input (YouTube etc)
       body.video_url = body.videoUrl || body.video_url;
       console.log("[Video System] Using manual video URL:", body.video_url);
     }
 
     // 2. Handle Thumbnail Upload
-    if (req.files && req.files.thumbnail && req.files.thumbnail[0]) {
-      console.log("[Video System] Uploading local thumbnail image...");
-      body.thumbnail = await uploadToSupabase(req.files.thumbnail[0], 'videos/thumbnails');
+    if (thumbnailFile) {
+      console.log("[Video System] Processing thumbnail upload...");
+      try {
+        body.thumbnail = await uploadWithTimeout(thumbnailFile, 'videos/thumbnails');
+      } catch (uploadErr) {
+        console.error("[Video System] Thumbnail upload failed/timed out:", uploadErr.message);
+        return res.status(500).json({ 
+          success: false, 
+          message: `Thumbnail upload failed: ${uploadErr.message}` 
+        });
+      }
     } else if (body.thumbnailUrl || body.thumbnail) {
-      // Fallback to manual URL
       body.thumbnail = body.thumbnailUrl || body.thumbnail;
     }
 
@@ -33,12 +62,14 @@ const createVideo = async (req, res, next) => {
     
     // Validation
     if (!categoryId || !title || !body.video_url) {
+      console.warn("[Video System] Validation failed: Missing required fields");
       return res.status(400).json({ 
         success: false, 
         message: "Required fields missing: Category, Title, and either a Video File or a Video URL are required." 
       });
     }
 
+    console.log("[Video System] Saving to Database...");
     const { data, error } = await supabase
       .from('videos')
       .insert([{
@@ -53,12 +84,11 @@ const createVideo = async (req, res, next) => {
       .single();
 
     if (error) {
-      console.error("[Create Video ERROR]:", error.message);
+      console.error("[Video System] DB INSERT ERROR:", error.message);
       return res.status(500).json({ success: false, message: error.message });
     }
 
-    console.log("[Video System] Video created successfully:", data.video_url);
-
+    console.log("[Video System] SUCCESS: Video entry created.");
     return res.status(201).json({
       success: true,
       data: {
@@ -70,7 +100,10 @@ const createVideo = async (req, res, next) => {
       }
     });
   } catch (error) {
-    next(error);
+    console.error("[Video System] CRITICAL CONTROLLER ERROR:", error.message);
+    if (!res.headersSent) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
   }
 };
 
@@ -96,19 +129,52 @@ const getVideos = async (req, res, next) => {
 
 const updateVideo = async (req, res, next) => {
   try {
-    console.log("[Video System] updateVideo - req.files received:", req.files);
+    console.log("[Video System] --- UPDATE ATTEMPT START ---");
+    console.log("[Video System] FILES:", req.files);
+    console.log("[Video System] BODY:", req.body);
+
     const body = { ...req.body };
+    const videoFile = req.files?.video?.[0];
+    const thumbnailFile = req.files?.thumbnail?.[0];
+
+    // Helper for timeout
+    const uploadWithTimeout = async (file, folder) => {
+      return Promise.race([
+        uploadToSupabase(file, folder),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("Upload timed out after 2 minutes")), 120000)
+        )
+      ]);
+    };
 
     // 1. Handle Video File Upload
-    if (req.files && req.files.video && req.files.video[0]) {
-      body.video_url = await uploadToSupabase(req.files.video[0], 'videos/files');
+    if (videoFile) {
+      console.log("[Video System] Processing new video file upload...");
+      try {
+        body.video_url = await uploadWithTimeout(videoFile, 'videos/files');
+      } catch (uploadErr) {
+        console.error("[Video System] Video upload failed/timed out:", uploadErr.message);
+        return res.status(500).json({ 
+          success: false, 
+          message: `Video upload failed: ${uploadErr.message}` 
+        });
+      }
     } else if (body.videoUrl || body.video_url) {
       body.video_url = body.videoUrl || body.video_url;
     }
 
     // 2. Handle Thumbnail Upload
-    if (req.files && req.files.thumbnail && req.files.thumbnail[0]) {
-      body.thumbnail = await uploadToSupabase(req.files.thumbnail[0], 'videos/thumbnails');
+    if (thumbnailFile) {
+      console.log("[Video System] Processing new thumbnail upload...");
+      try {
+        body.thumbnail = await uploadWithTimeout(thumbnailFile, 'videos/thumbnails');
+      } catch (uploadErr) {
+        console.error("[Video System] Thumbnail upload failed/timed out:", uploadErr.message);
+        return res.status(500).json({ 
+          success: false, 
+          message: `Thumbnail upload failed: ${uploadErr.message}` 
+        });
+      }
     } else if (body.thumbnailUrl || body.thumbnail) {
       body.thumbnail = body.thumbnailUrl || body.thumbnail;
     }
@@ -126,6 +192,7 @@ const updateVideo = async (req, res, next) => {
     // Remove undefined fields
     Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
 
+    console.log("[Video System] Updating Database for ID:", req.params.id);
     const { data, error } = await supabase
       .from('videos')
       .update(updates)
@@ -134,10 +201,11 @@ const updateVideo = async (req, res, next) => {
       .single();
 
     if (error || !data) {
-      console.error("[Update Video ERROR]:", error ? error.message : "Not found");
+      console.error("[Video System] UPDATE ERROR:", error ? error.message : "Not found");
       return res.status(404).json({ success: false, message: error ? error.message : "Video not found" });
     }
 
+    console.log("[Video System] SUCCESS: Video updated.");
     return res.status(200).json({
       success: true,
       data: {
@@ -149,7 +217,10 @@ const updateVideo = async (req, res, next) => {
       }
     });
   } catch (error) {
-    next(error);
+    console.error("[Video System] CRITICAL UPDATE ERROR:", error.message);
+    if (!res.headersSent) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
   }
 };
 
