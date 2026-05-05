@@ -111,9 +111,10 @@ export default function VideoInner() {
   // Form panel
   const [panelOpen, setPanelOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState({ ...emptyForm, videoFile: null });
   const [thumbPreview, setThumbPreview] = useState("");
   const fileRef = useRef();
+  const videoFileRef = useRef();
 
   // Preview modal
   const [previewVideo, setPreviewVideo] = useState(null); // { url, title }
@@ -148,19 +149,19 @@ export default function VideoInner() {
   // ── Panel handlers ────────────────────────────────────
   const openAdd = () => {
     setEditingItem(null);
-    setForm({ ...emptyForm, categoryId: categoryFilter || categories[0]?._id || "" });
+    setForm({ ...emptyForm, categoryId: categoryFilter || categories[0]?._id || "", videoFile: null });
     setThumbPreview("");
     setPanelOpen(true);
   };
 
   const openEdit = (item) => {
     setEditingItem(item);
-    setForm({ categoryId: item.categoryId?._id || "", title: item.title, videoUrl: item.videoUrl, order: item.order, status: item.status, thumbnail: null });
+    setForm({ categoryId: item.categoryId?._id || "", title: item.title, videoUrl: item.videoUrl, order: item.order, status: item.status, thumbnail: null, videoFile: null });
     setThumbPreview(getImgUrl(item.thumbnail));
     setPanelOpen(true);
   };
 
-  const closePanel = () => { setPanelOpen(false); setEditingItem(null); setForm(emptyForm); setThumbPreview(""); };
+  const closePanel = () => { setPanelOpen(false); setEditingItem(null); setForm({ ...emptyForm, videoFile: null }); setThumbPreview(""); };
 
   // Auto-generate YT thumbnail when URL changes
   const handleVideoUrlChange = (url) => {
@@ -169,6 +170,14 @@ export default function VideoInner() {
     if (ytId && !thumbPreview) {
       setThumbPreview(`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`);
     }
+  };
+
+  const handleVideoFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("video/")) { toast.error("Video files only"); return; }
+    if (file.size > 50 * 1024 * 1024) { toast.error("Video too large (max 50MB)"); return; }
+    setForm(p => ({ ...p, videoFile: file }));
   };
 
   const handleThumbFile = (e) => {
@@ -181,22 +190,32 @@ export default function VideoInner() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.categoryId || !form.title.trim() || !form.videoUrl.trim()) {
-      toast.error("Category, title, and video URL are required");
+    if (!form.categoryId || !form.title.trim()) {
+      toast.error("Category and title are required");
       return;
     }
-    if (!editingItem && !form.thumbnail) {
+
+    // Must have either a file OR a URL
+    if (!form.videoFile && !form.videoUrl.trim()) {
+      toast.error("Please upload a video file or provide a video URL");
+      return;
+    }
+
+    if (!editingItem && !form.thumbnail && !getYtId(form.videoUrl)) {
       toast.error("Thumbnail is required");
       return;
     }
+
     setSaving(true);
     try {
       const fd = new FormData();
       fd.append("categoryId", form.categoryId);
       fd.append("title", form.title);
-      fd.append("videoUrl", form.videoUrl);
+      fd.append("videoUrl", form.videoUrl); // Will be fallback in backend
       fd.append("order", form.order);
       fd.append("status", form.status);
+
+      if (form.videoFile instanceof File) fd.append("video", form.videoFile);
       if (form.thumbnail instanceof File) fd.append("thumbnail", form.thumbnail);
 
       if (editingItem) {
@@ -412,16 +431,35 @@ export default function VideoInner() {
                   <label className="form-label">Video Title <span style={{ color: "#EF4444" }}>*</span></label>
                   <input type="text" value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} className="form-input" placeholder="e.g. Hair Transplant Overview" required />
                 </div>
+
+                {/* Video file upload */}
                 <div>
-                  <label className="form-label">Video URL <span style={{ color: "#EF4444" }}>*</span></label>
-                  <input type="url" value={form.videoUrl} onChange={e => handleVideoUrlChange(e.target.value)} className="form-input" placeholder="YouTube or hosted video URL" required />
+                  <label className="form-label">Upload Video File {(!form.videoUrl || !form.videoUrl.trim()) && <span style={{ color: "#EF4444" }}>*</span>}</label>
+                  <div onClick={() => videoFileRef.current?.click()} style={{ border: "2px dashed #CBD5E1", borderRadius: 10, background: "#F8FAFC", cursor: "pointer", padding: "12px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", transition: "border-color 0.2s" }}>
+                    <Play size={20} className={form.videoFile ? "text-blue-600" : "text-slate-400"} style={{ marginBottom: 4 }} />
+                    <span style={{ fontSize: "0.75rem", color: form.videoFile ? "#2563EB" : "#64748B", fontWeight: form.videoFile ? 700 : 500 }}>
+                      {form.videoFile ? `Selected: ${form.videoFile.name}` : "Click to upload MP4/WebM video"}
+                    </span>
+                    {form.videoFile && <p style={{ fontSize: "0.65rem", color: "#94A3B8", marginTop: 2 }}>{(form.videoFile.size / (1024 * 1024)).toFixed(2)} MB</p>}
+                  </div>
+                  <input ref={videoFileRef} type="file" accept="video/*" style={{ display: "none" }} onChange={handleVideoFile} />
+                </div>
+
+                <div style={{ position: "relative", textAlign: "center" }}>
+                   <hr style={{ border: "0", borderTop: "1px solid #E2E8F0", margin: "10px 0" }} />
+                   <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", background: "#fff", padding: "0 10px", fontSize: "0.65rem", color: "#94A3B8", fontWeight: 700 }}>OR</span>
+                </div>
+
+                <div>
+                  <label className="form-label">Video URL {!form.videoFile && <span style={{ color: "#EF4444" }}>*</span>}</label>
+                  <input type="url" value={form.videoUrl} onChange={e => handleVideoUrlChange(e.target.value)} className="form-input" placeholder="YouTube or external URL" required={!form.videoFile} />
                   {getYtId(form.videoUrl) && <p style={{ fontSize: "0.72rem", color: "#2563EB", margin: "0.25rem 0 0 0" }}>✓ YouTube detected — thumbnail auto-generated</p>}
                 </div>
 
                 {/* Thumbnail upload */}
                 <div>
-                  <label className="form-label">Thumbnail {!editingItem && <span style={{ color: "#EF4444" }}>*</span>}</label>
-                  <div onClick={() => fileRef.current?.click()} style={{ border: "2px dashed #CBD5E1", borderRadius: 10, background: "#F8FAFC", cursor: "pointer", overflow: "hidden", height: thumbPreview ? "auto" : 80, display: "flex", alignItems: "center", justifyContent: "center", transition: "border-color 0.2s" }}>
+                  <label className="form-label">Thumbnail {(!editingItem && !getYtId(form.videoUrl)) && <span style={{ color: "#EF4444" }}>*</span>}</label>
+                  <div onClick={() => fileRef.current?.click()} style={{ border: "2px dashed #CBD5E1", borderRadius: 10, background: "#F8FAFC", cursor: "pointer", overflow: "hidden", minHeight: 80, display: "flex", alignItems: "center", justifyContent: "center", transition: "border-color 0.2s" }}>
                     {thumbPreview ? (
                       <img src={thumbPreview} alt="Thumbnail" style={{ width: "100%", height: 130, objectFit: "cover" }} />
                     ) : (
