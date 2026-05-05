@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import CountUpStat from './CountUpStat';
 
 const AboutUs = () => {
   const stats = [
@@ -59,7 +59,9 @@ const AboutUs = () => {
         }}>
           {stats.map((stat, index) => (
             <div key={index} style={{ textAlign: 'center' }}>
-              <h3 style={{ fontSize: '42px', color: '#1F3D3F', fontFamily: "'Marcellus', serif", marginBottom: '10px', fontWeight: '400' }}>{stat.value}</h3>
+              <h3 style={{ fontSize: '42px', color: '#1F3D3F', fontFamily: "'Marcellus', serif", marginBottom: '10px', fontWeight: '400' }}>
+                <CountUpStat value={stat.value} />
+              </h3>
               <p style={{ fontSize: '18px', color: '#1F3D3F', fontFamily: "'Marcellus', serif", marginBottom: '20px' }}>{stat.label}</p>
               
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
