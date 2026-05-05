@@ -20,8 +20,13 @@ const videoUploadFields = upload.fields([
   { name: "thumbnail", maxCount: 1 }
 ]);
 
-router.route("/").post(videoUploadFields, createVideo).get(getVideos);
-router.route("/:id").put(videoUploadFields, updateVideo).delete(deleteVideo);
+router.route("/")
+  .post(videoUploadFields, createVideo)
+  .get(getVideos);
+
+router.route("/:id")
+  .put(videoUploadFields, updateVideo)
+  .delete(deleteVideo);
 
 router.patch("/status/:id", toggleVideoStatus);
 router.patch("/order/:id", updateVideoOrder);

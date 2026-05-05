@@ -7,6 +7,7 @@ const uploadToSupabase = require("../utils/uploadToSupabase");
 
 const createVideo = async (req, res, next) => {
   try {
+    console.log("[Video System] createVideo - req.files received:", req.files);
     const body = { ...req.body };
 
     // 1. Handle Video File Upload
@@ -95,6 +96,7 @@ const getVideos = async (req, res, next) => {
 
 const updateVideo = async (req, res, next) => {
   try {
+    console.log("[Video System] updateVideo - req.files received:", req.files);
     const body = { ...req.body };
 
     // 1. Handle Video File Upload
