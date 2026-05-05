@@ -14,8 +14,13 @@ const router = express.Router();
 
 router.use(protect, adminOnly);
 
-router.route("/").post(upload.single("thumbnail"), createVideo).get(getVideos);
-router.route("/:id").put(upload.single("thumbnail"), updateVideo).delete(deleteVideo);
+const uploadFields = upload.fields([
+  { name: "thumbnail", maxCount: 1 },
+  { name: "videoFile", maxCount: 1 },
+]);
+
+router.route("/").post(uploadFields, createVideo).get(getVideos);
+router.route("/:id").put(uploadFields, updateVideo).delete(deleteVideo);
 
 router.patch("/status/:id", toggleVideoStatus);
 router.patch("/order/:id", updateVideoOrder);

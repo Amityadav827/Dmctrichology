@@ -5,21 +5,21 @@ const mapToSupabase = (data) => {
   return {
     title: data.title,
     author: data.author,
-    show_type: data.showType,
-    layout_type: data.layoutType,
-    admin_description: data.adminDescription,
-    short_description: data.shortDescription,
-    full_description: data.fullDescription,
-    blog_image: data.blogImage,
-    banner_image: data.bannerImage,
-    alt_tag: data.altTag,
+    show_type: data.show_type || data.showType,
+    layout_type: data.layout_type || data.layoutType,
+    admin_description: data.admin_description || data.adminDescription,
+    short_description: data.short_description || data.shortDescription,
+    full_description: data.full_description || data.fullDescription,
+    blog_image: data.blog_image || data.blogImage,
+    banner_image: data.banner_image || data.bannerImage,
+    alt_tag: data.alt_tag || data.altTag,
     tags: data.tags,
     slug: data.slug,
-    meta_title: data.metaTitle,
-    meta_keywords: data.metaKeywords,
-    meta_description: data.metaDescription,
-    canonical_url: data.canonicalUrl,
-    blog_date: data.blogDate,
+    meta_title: data.meta_title || data.metaTitle,
+    meta_keywords: data.meta_keywords || data.metaKeywords,
+    meta_description: data.meta_description || data.metaDescription,
+    canonical_url: data.canonical_url || data.canonicalUrl,
+    blog_date: data.blog_date || data.blogDate,
     status: data.status,
   };
 };
@@ -59,21 +59,27 @@ const createBlog = async (req, res, next) => {
     // Handle Image Uploads to Supabase Storage
     if (req.files) {
       if (req.files.blogImage && req.files.blogImage[0]) {
-        body.blogImage = await uploadToSupabase(req.files.blogImage[0], 'blogs');
+        body.blog_image = await uploadToSupabase(req.files.blogImage[0], 'blogs');
       }
       if (req.files.bannerImage && req.files.bannerImage[0]) {
-        body.bannerImage = await uploadToSupabase(req.files.bannerImage[0], 'blogs');
+        body.banner_image = await uploadToSupabase(req.files.bannerImage[0], 'blogs');
       }
     }
 
     const supabaseData = mapToSupabase(body);
+    console.log("[Create Blog] Data to insert:", supabaseData);
+
     const { data, error } = await supabase
       .from('blogs')
       .insert([supabaseData])
       .select()
       .single();
 
-    if (error) return res.status(500).json({ success: false, message: error.message });
+    if (error) {
+      console.error("[Create Blog ERROR]:", error.message);
+      return res.status(500).json({ success: false, message: error.message });
+    }
+
     return res.status(201).json({ success: true, data: mapFromSupabase(data) });
   } catch (error) {
     next(error);
@@ -143,18 +149,31 @@ const updateBlog = async (req, res, next) => {
     // Handle Image Uploads to Supabase Storage
     if (req.files) {
       if (req.files.blogImage && req.files.blogImage[0]) {
-        body.blogImage = await uploadToSupabase(req.files.blogImage[0], 'blogs');
+        body.blog_image = await uploadToSupabase(req.files.blogImage[0], 'blogs');
       }
       if (req.files.bannerImage && req.files.bannerImage[0]) {
-        body.bannerImage = await uploadToSupabase(req.files.bannerImage[0], 'blogs');
+        body.banner_image = await uploadToSupabase(req.files.bannerImage[0], 'blogs');
       }
     }
 
     const updates = mapToSupabase(body);
+    // Remove undefined fields
     Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
 
-    const { data, error } = await supabase.from('blogs').update(updates).eq('id', req.params.id).select().single();
-    if (error || !data) return res.status(404).json({ success: false, message: error ? error.message : "Blog not found" });
+    console.log("[Update Blog] Updates to apply:", updates);
+
+    const { data, error } = await supabase
+      .from('blogs')
+      .update(updates)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      console.error("[Update Blog ERROR]:", error ? error.message : "Not found");
+      return res.status(404).json({ success: false, message: error ? error.message : "Blog not found" });
+    }
+
     return res.status(200).json({ success: true, data: mapFromSupabase(data) });
   } catch (error) {
     next(error);

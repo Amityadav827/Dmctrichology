@@ -5,14 +5,25 @@ const createVideo = async (req, res, next) => {
   try {
     const body = { ...req.body };
 
-    // Handle Thumbnail Upload to Supabase Storage
-    if (req.file) {
-      body.thumbnail = await uploadToSupabase(req.file, 'videos');
+    // Handle Thumbnail and Video File Uploads to Supabase Storage
+    if (req.files) {
+      if (req.files.thumbnail && req.files.thumbnail[0]) {
+        body.thumbnail = await uploadToSupabase(req.files.thumbnail[0], 'videos/thumbnails');
+      }
+      if (req.files.videoFile && req.files.videoFile[0]) {
+        body.video_url = await uploadToSupabase(req.files.videoFile[0], 'videos/files');
+      }
     }
 
-    const { categoryId, title, videoUrl, thumbnail, order, status } = body;
-    if (!categoryId || !title || !videoUrl || !body.thumbnail) {
-      return res.status(400).json({ success: false, message: "Required fields missing" });
+    // Use videoUrl from body if no file was uploaded (YouTube case)
+    if (!body.video_url && body.videoUrl) {
+      body.video_url = body.videoUrl;
+    }
+
+    const { categoryId, title, order, status } = body;
+    
+    if (!categoryId || !title || !body.video_url) {
+      return res.status(400).json({ success: false, message: "Required fields missing (Category, Title, and Video URL/File)" });
     }
 
     const { data, error } = await supabase
@@ -20,15 +31,19 @@ const createVideo = async (req, res, next) => {
       .insert([{
         category_id: categoryId,
         title,
-        video_url: videoUrl,
-        thumbnail: body.thumbnail,
-        order: order || 0,
+        video_url: body.video_url,
+        thumbnail: body.thumbnail || '',
+        order: Number(order) || 0,
         status: status || 'active'
       }])
       .select(`*, category:video_categories(name)`)
       .single();
 
-    if (error) return res.status(500).json({ success: false, message: error.message });
+    if (error) {
+      console.error("[Create Video ERROR]:", error.message);
+      return res.status(500).json({ success: false, message: error.message });
+    }
+
     return res.status(201).json({
       success: true,
       data: {
@@ -67,24 +82,45 @@ const updateVideo = async (req, res, next) => {
   try {
     const body = { ...req.body };
 
-    // Handle Thumbnail Upload to Supabase Storage
-    if (req.file) {
-      body.thumbnail = await uploadToSupabase(req.file, 'videos');
+    // Handle Thumbnail and Video File Uploads to Supabase Storage
+    if (req.files) {
+      if (req.files.thumbnail && req.files.thumbnail[0]) {
+        body.thumbnail = await uploadToSupabase(req.files.thumbnail[0], 'videos/thumbnails');
+      }
+      if (req.files.videoFile && req.files.videoFile[0]) {
+        body.video_url = await uploadToSupabase(req.files.videoFile[0], 'videos/files');
+      }
     }
 
-    const { categoryId, title, videoUrl, order, status } = body;
+    // Use videoUrl from body if no file was uploaded
+    if (!body.video_url && body.videoUrl) {
+      body.video_url = body.videoUrl;
+    }
+
+    const { categoryId, title, order, status } = body;
     const updates = {
       category_id: categoryId,
       title,
-      video_url: videoUrl,
+      video_url: body.video_url,
       thumbnail: body.thumbnail,
-      order,
+      order: order !== undefined ? Number(order) : undefined,
       status
     };
+    
+    // Remove undefined fields
     Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
 
-    const { data, error } = await supabase.from('videos').update(updates).eq('id', req.params.id).select(`*, category:video_categories(name)`).single();
-    if (error || !data) return res.status(404).json({ success: false, message: "Video not found" });
+    const { data, error } = await supabase
+      .from('videos')
+      .update(updates)
+      .eq('id', req.params.id)
+      .select(`*, category:video_categories(name)`)
+      .single();
+
+    if (error || !data) {
+      console.error("[Update Video ERROR]:", error ? error.message : "Not found");
+      return res.status(404).json({ success: false, message: error ? error.message : "Video not found" });
+    }
 
     return res.status(200).json({
       success: true,
