@@ -47,7 +47,7 @@ const mapFromSupabase = (data) => {
     metaDescription: data.meta_description,
     canonicalUrl: data.canonical_url,
     blogDate: data.blog_date,
-    status: data.status,
+    status: data.status || "Published",
     categoryId: data.category_id,
     category: data.category,
     createdAt: data.created_at,

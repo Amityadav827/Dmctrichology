@@ -4,6 +4,7 @@ import { Plus, Edit2, Trash2, ArrowLeft, Image as ImageIcon, Search, Eye, Filter
 import Loader from "../components/Loader";
 import Table from "../components/Table";
 import api from "../api/client";
+import { getBlogCategories } from "../api/services";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -216,6 +217,7 @@ const slugify = (text) => {
 
 function Blogs() {
   const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState("list"); // 'list' | 'form'
   const [editingId, setEditingId] = useState(null);
@@ -244,6 +246,7 @@ function Blogs() {
     metaDescription: "",
     canonicalUrl: "",
     slug: "",
+    categoryId: "",
     status: "Published"
   };
 
@@ -256,7 +259,17 @@ function Blogs() {
 
   useEffect(() => {
     fetchBlogs();
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const { data } = await getBlogCategories();
+      setCategories(data || []);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   // Cleanup object URLs to avoid memory leaks
   // Cleanup blob URLs only on unmount or when explicitly replaced
@@ -307,6 +320,7 @@ function Blogs() {
       metaDescription: item.metaDescription || "",
       canonicalUrl: item.canonicalUrl || "",
       slug: item.slug || "",
+      categoryId: item.categoryId || "",
       status: item.status || "Published"
     });
     
@@ -703,6 +717,18 @@ function Blogs() {
                   <input type="text" name="canonicalUrl" value={formData.canonicalUrl} onChange={handleChange} className="form-input" />
                 </div>
 
+                {/* Category Selection */}
+                <SidebarDropdown
+                  label="Category"
+                  name="categoryId"
+                  value={formData.categoryId}
+                  onChange={handleChange}
+                  options={[
+                    { label: "Uncategorized", value: "" },
+                    ...categories.map(cat => ({ label: cat.name, value: cat._id }))
+                  ]}
+                />
+
                 {/* Show Type & Layout Type */}
                 <SidebarDropdown
                   label="Show Type"
@@ -771,6 +797,7 @@ function Blogs() {
           { key: "image", label: "Image" },
           { key: "title", label: "Title" },
           { key: "author", label: "Author" },
+          { key: "category", label: "Category" },
           { key: "date", label: "Date" },
           { key: "status", label: "Status" },
           { key: "actions", label: "Actions", align: "right" },
@@ -797,6 +824,11 @@ function Blogs() {
                 {item.title}
               </td>
               <td style={{ padding: "0.875rem 1.25rem", color: "#475569", fontSize: "0.875rem" }}>{item.author}</td>
+              <td style={{ padding: "0.875rem 1.25rem" }}>
+                <span style={{ fontSize: "0.75rem", fontWeight: 600, padding: "0.25rem 0.625rem", borderRadius: "20px", background: "#F1F5F9", color: "#475569" }}>
+                  {item.category?.name || "Uncategorized"}
+                </span>
+              </td>
               <td style={{ padding: "0.875rem 1.25rem", color: "#475569", whiteSpace: "nowrap", fontSize: "0.875rem" }}>
                 {item.blogDate ? new Date(item.blogDate).toLocaleDateString() : "—"}
               </td>

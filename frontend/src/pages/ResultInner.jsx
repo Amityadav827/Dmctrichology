@@ -134,7 +134,7 @@ function ResultInner() {
       setItems(response.data);
       setOrderMap(
         response.data.reduce((acc, item) => {
-          acc[item._id] = item.order;
+          acc[item._id] = item.order || 0;
           return acc;
         }, {})
       );
@@ -152,7 +152,8 @@ function ResultInner() {
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
-      const matchesCategory = categoryFilter ? item.categoryId?._id === categoryFilter : true;
+      const catId = item.categoryId?._id || item.categoryId;
+      const matchesCategory = categoryFilter ? catId === categoryFilter : true;
       const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase());
       const matchesStatus = statusFilter ? item.status === statusFilter : true;
       return matchesCategory && matchesSearch && matchesStatus;
@@ -179,8 +180,9 @@ function ResultInner() {
 
   const openEditModal = (item) => {
     setEditingItem(item);
+    const catId = item.categoryId?._id || item.categoryId || "";
     setForm({
-      categoryId: item.categoryId?._id || "",
+      categoryId: catId,
       title: item.title,
       order: item.order,
       status: item.status,

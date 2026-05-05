@@ -26,7 +26,14 @@ const createResultInner = async (req, res, next) => {
       .single();
 
     if (error) return res.status(500).json({ success: false, message: error.message });
-    return res.status(201).json({ success: true, data: { ...data, _id: data.id } });
+    return res.status(201).json({ 
+      success: true, 
+      data: { 
+        ...data, 
+        _id: data.id,
+        categoryId: data.category ? { ...data.category, _id: data.category_id } : data.category_id
+      } 
+    });
   } catch (error) {
     next(error);
   }
@@ -40,7 +47,11 @@ const getResultInners = async (req, res, next) => {
     const { data, error } = await query.order('order', { ascending: true });
     if (error) return res.status(500).json({ success: false, message: error.message });
 
-    const formattedData = data.map(item => ({ ...item, _id: item.id }));
+    const formattedData = data.map(item => ({ 
+      ...item, 
+      _id: item.id,
+      categoryId: item.category ? { ...item.category, _id: item.category_id } : item.category_id
+    }));
     return res.status(200).json({ success: true, count: formattedData.length, data: formattedData });
   } catch (error) {
     next(error);
@@ -69,8 +80,18 @@ const updateResultInner = async (req, res, next) => {
 
     const { data, error } = await supabase.from('result_inner').update(updates).eq('id', req.params.id).select().single();
     if (error || !data) return res.status(404).json({ success: false, message: "Result item not found" });
+    
+    // Fetch again with category to keep format consistent
+    const { data: updated } = await supabase.from('result_inner').select(`*, category:result_categories(name)`).eq('id', data.id).single();
 
-    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
+    return res.status(200).json({ 
+      success: true, 
+      data: { 
+        ...updated, 
+        _id: updated.id,
+        categoryId: updated.category ? { ...updated.category, _id: updated.category_id } : updated.category_id
+      } 
+    });
   } catch (error) {
     next(error);
   }

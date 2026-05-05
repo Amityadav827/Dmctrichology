@@ -19,7 +19,7 @@ const initialForm = {
   email: "",
   phone: "",
   password: "",
-  role: "",
+  role_id: "",
   status: "active",
 };
 
@@ -134,7 +134,7 @@ function UserList() {
 
   const openAddModal = () => {
     setEditingItem(null);
-    setForm({ ...initialForm, role: roles[0]?._id || "" });
+    setForm({ ...initialForm, role_id: roles[0]?._id || "" });
     setModalOpen(true);
   };
 
@@ -145,7 +145,7 @@ function UserList() {
       email: item.email,
       phone: item.phone || "",
       password: "",
-      role: item.role?._id || "",
+      role_id: item.role?._id || "",
       status: item.status,
     });
     setModalOpen(true);
@@ -420,8 +420,8 @@ function UserList() {
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">Assign Role</label>
                   <CustomDropdown
-                    value={form.role}
-                    onChange={(val) => setForm({ ...form, role: val })}
+                    value={form.role_id}
+                    onChange={(val) => setForm({ ...form, role_id: val })}
                     options={roles.map(r => ({ label: r.name.toUpperCase(), value: r._id }))}
                     placeholder="Select Role"
                   />
