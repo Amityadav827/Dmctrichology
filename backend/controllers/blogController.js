@@ -70,19 +70,22 @@ const createBlog = async (req, res, next) => {
     }
 
     const supabaseData = mapToSupabase(body);
-    console.log("[Create Blog] Data to insert:", supabaseData);
+    console.log("[Create Blog] Attempting insert with data:", JSON.stringify(supabaseData, null, 2));
 
+    // Try to insert and only select columns we definitely know exist
     const { data, error } = await supabase
       .from('blogs')
       .insert([supabaseData])
-      .select()
+      .select('id, title, slug, created_at, updated_at')
       .single();
 
     if (error) {
       console.error("[Create Blog ERROR]:", error.message);
+      console.error("[Create Blog Details]:", JSON.stringify(error, null, 2));
       return res.status(500).json({ success: false, message: error.message });
     }
 
+    console.log("[Create Blog SUCCESS]:", data.id);
     return res.status(201).json({ success: true, data: mapFromSupabase(data) });
   } catch (error) {
     next(error);
