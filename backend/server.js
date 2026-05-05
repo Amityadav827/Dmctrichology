@@ -142,6 +142,9 @@ app.use(errorHandler);
 // ========================
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🔥 Server running on port ${PORT}`);
 });
+
+// Set server timeout to 5 minutes for large file uploads
+server.timeout = 300000;

@@ -206,6 +206,13 @@ export default function VideoInner() {
       return;
     }
 
+    console.log("[Video Upload] Starting submission...", {
+      title: form.title,
+      hasVideoFile: !!form.videoFile,
+      hasThumbnailFile: !!form.thumbnail,
+      videoUrl: form.videoUrl
+    });
+
     setSaving(true);
     try {
       const fd = new FormData();
@@ -215,21 +222,36 @@ export default function VideoInner() {
       fd.append("order", form.order);
       fd.append("status", form.status);
 
-      if (form.videoFile instanceof File) fd.append("video", form.videoFile);
-      if (form.thumbnail instanceof File) fd.append("thumbnail", form.thumbnail);
-
-      if (editingItem) {
-        await updateVideo(editingItem._id, fd);
-        toast.success("Video updated");
-      } else {
-        await createVideo(fd);
-        toast.success("Video added");
+      if (form.videoFile instanceof File) {
+        console.log("[Video Upload] Attaching video file:", form.videoFile.name, form.videoFile.size);
+        fd.append("video", form.videoFile);
       }
+      if (form.thumbnail instanceof File) {
+        console.log("[Video Upload] Attaching thumbnail file:", form.thumbnail.name);
+        fd.append("thumbnail", form.thumbnail);
+      }
+
+      let response;
+      if (editingItem) {
+        console.log("[Video Upload] Updating existing video:", editingItem._id);
+        response = await updateVideo(editingItem._id, fd);
+      } else {
+        console.log("[Video Upload] Creating new video...");
+        response = await createVideo(fd);
+      }
+      
+      console.log("[Video Upload] Success response:", response);
+      toast.success(editingItem ? "Video updated" : "Video added");
       closePanel();
       fetchVideos();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Save failed");
-    } finally { setSaving(false); }
+      console.error("[Video Upload] Submission ERROR:", err);
+      const msg = err.response?.data?.message || err.message || "Save failed";
+      toast.error(msg);
+    } finally { 
+      console.log("[Video Upload] Submission finished.");
+      setSaving(false); 
+    }
   };
 
   const handleDelete = async (id) => {
