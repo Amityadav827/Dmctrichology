@@ -31,6 +31,7 @@ const videoCategoryRoutes = require("./routes/videoCategoryRoutes");
 const videoRoutes = require("./routes/videoRoutes");
 const redirectRoutes = require("./routes/redirectRoutes");
 const pageRoutes = require("./routes/pageRoutes");
+const blogCategoryRoutes = require("./routes/blogCategoryRoutes");
 
 // Middleware
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
@@ -120,6 +121,7 @@ app.use("/api/video-categories", videoCategoryRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/redirects", redirectRoutes);
 app.use("/api/pages", pageRoutes);
+app.use("/api/blog-categories", blogCategoryRoutes);
 
 // SEO
 app.get(

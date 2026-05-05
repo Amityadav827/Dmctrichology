@@ -107,6 +107,32 @@ export const toggleServiceFaqStatus = async (id) => {
   return data;
 };
 
+// Blog Categories
+export const getBlogCategories = async (params) => {
+  const { data } = await api.get("/blog-categories", { params });
+  return data;
+};
+
+export const createBlogCategory = async (payload) => {
+  const { data } = await api.post("/blog-categories", payload);
+  return data;
+};
+
+export const updateBlogCategory = async (id, payload) => {
+  const { data } = await api.put(`/blog-categories/${id}`, payload);
+  return data;
+};
+
+export const deleteBlogCategory = async (id) => {
+  const { data } = await api.delete(`/blog-categories/${id}`);
+  return data;
+};
+
+export const toggleBlogCategoryStatus = async (id) => {
+  const { data } = await api.patch(`/blog-categories/${id}/toggle-status`);
+  return data;
+};
+
 export const getResultCategories = async (params) => {
   const { data } = await api.get("/result-categories", { params });
   return data;

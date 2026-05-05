@@ -21,6 +21,7 @@ const mapToSupabase = (data) => {
     canonical_url: data.canonical_url || data.canonicalUrl,
     blog_date: data.blog_date || data.blogDate,
     status: data.status,
+    category_id: data.category_id || data.categoryId,
   };
 };
 
@@ -47,6 +48,8 @@ const mapFromSupabase = (data) => {
     canonicalUrl: data.canonical_url,
     blogDate: data.blog_date,
     status: data.status,
+    categoryId: data.category_id,
+    category: data.category,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };
@@ -93,9 +96,13 @@ const getBlogs = async (req, res, next) => {
     const skip = (page - 1) * limit;
     const search = String(req.query.search || "").trim();
 
-    let query = supabase.from('blogs').select('*', { count: 'exact' });
+    let query = supabase.from('blogs').select('*, category:blog_categories(name)', { count: 'exact' });
     if (search) {
       query = query.or(`title.ilike.%${search}%,author.ilike.%${search}%,short_description.ilike.%${search}%`);
+    }
+
+    if (req.query.categoryId) {
+      query = query.eq('category_id', req.query.categoryId);
     }
 
     const { data, count, error } = await query

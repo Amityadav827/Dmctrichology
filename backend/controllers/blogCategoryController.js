@@ -1,31 +1,31 @@
 const supabase = require("../config/supabase");
 
 /**
- * Production-ready Video Category Controller
- * Includes: Duplicate checks, Deletion safety, and Consistency fixes.
+ * Blog Category Controller
  */
 
-const createVideoCategory = async (req, res, next) => {
+const createBlogCategory = async (req, res, next) => {
   try {
-    const { name, description, order, status } = req.body;
-    if (!name) return res.status(400).json({ success: false, message: "Name is required" });
+    const { name, slug, description, order, status } = req.body;
+    if (!name || !slug) return res.status(400).json({ success: false, message: "Name and slug are required" });
 
-    // 1. Duplicate Check
+    // Duplicate Check
     const { data: existing } = await supabase
-      .from('video_categories')
+      .from('blog_categories')
       .select('id')
-      .ilike('name', name.trim())
+      .or(`name.ilike."${name.trim()}",slug.eq."${slug.trim().toLowerCase()}"`)
       .single();
 
     if (existing) {
-      return res.status(400).json({ success: false, message: `Category with name "${name}" already exists.` });
+      return res.status(400).json({ success: false, message: "Category name or slug already exists" });
     }
 
     const { data, error } = await supabase
-      .from('video_categories')
+      .from('blog_categories')
       .insert([{ 
         name: name.trim(), 
-        description: description || "", 
+        slug: slug.trim().toLowerCase(), 
+        description: description || "",
         order: Number(order) || 0, 
         status: status || 'active' 
       }])
@@ -39,16 +39,15 @@ const createVideoCategory = async (req, res, next) => {
   }
 };
 
-const getVideoCategories = async (req, res, next) => {
+const getBlogCategories = async (req, res, next) => {
   try {
     const { data, error } = await supabase
-      .from('video_categories')
+      .from('blog_categories')
       .select('*')
       .order('order', { ascending: true })
       .order('created_at', { ascending: false });
 
     if (error) return res.status(500).json({ success: false, message: error.message });
-    
     const formattedData = data.map(item => ({ ...item, _id: item.id }));
     return res.status(200).json({ success: true, count: formattedData.length, data: formattedData });
   } catch (error) {
@@ -56,29 +55,42 @@ const getVideoCategories = async (req, res, next) => {
   }
 };
 
-const updateVideoCategory = async (req, res, next) => {
+const getBlogCategoryById = async (req, res, next) => {
   try {
-    const { name, description, order, status } = req.body;
+    const { data, error } = await supabase.from('blog_categories').select('*').eq('id', req.params.id).single();
+    if (error || !data) return res.status(404).json({ success: false, message: "Category not found" });
+    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateBlogCategory = async (req, res, next) => {
+  try {
+    const { name, slug, description, order, status } = req.body;
     
-    // Duplicate check for rename
-    if (name) {
+    // Duplicate check
+    if (name || slug) {
+      const orConditions = [];
+      if (name) orConditions.push(`name.ilike."${name.trim()}"`);
+      if (slug) orConditions.push(`slug.eq."${slug.trim().toLowerCase()}"`);
+      
       const { data: existing } = await supabase
-        .from('video_categories')
+        .from('blog_categories')
         .select('id')
-        .ilike('name', name.trim())
+        .or(orConditions.join(','))
         .neq('id', req.params.id)
         .single();
-      
-      if (existing) {
-        return res.status(400).json({ success: false, message: `Another category with name "${name}" already exists.` });
-      }
+        
+      if (existing) return res.status(400).json({ success: false, message: "Category name or slug already exists" });
     }
 
     const { data, error } = await supabase
-      .from('video_categories')
+      .from('blog_categories')
       .update({ 
         name: name?.trim(), 
-        description, 
+        slug: slug?.trim().toLowerCase(), 
+        description,
         order: order !== undefined ? Number(order) : undefined, 
         status 
       })
@@ -93,52 +105,39 @@ const updateVideoCategory = async (req, res, next) => {
   }
 };
 
-const deleteVideoCategory = async (req, res, next) => {
+const deleteBlogCategory = async (req, res, next) => {
   try {
-    // 1. Deletion Safety - Check for linked videos
+    // Safety check - Check for linked blogs
     const { count, error: countError } = await supabase
-      .from('videos')
+      .from('blogs')
       .select('*', { count: 'exact', head: true })
       .eq('category_id', req.params.id);
 
     if (countError) return res.status(500).json({ success: false, message: countError.message });
-    
     if (count > 0) {
       return res.status(400).json({ 
         success: false, 
-        message: `Cannot delete category. It is currently linked to ${count} video(s). Please reassign or delete the videos first.` 
+        message: `Cannot delete. This category has ${count} blog(s) linked to it.` 
       });
     }
 
-    const { error } = await supabase.from('video_categories').delete().eq('id', req.params.id);
+    const { error } = await supabase.from('blog_categories').delete().eq('id', req.params.id);
     if (error) return res.status(500).json({ success: false, message: error.message });
-    
     return res.status(200).json({ success: true, message: "Category deleted successfully" });
   } catch (error) {
     next(error);
   }
 };
 
-const toggleVideoCategoryStatus = async (req, res, next) => {
+const toggleBlogCategoryStatus = async (req, res, next) => {
   try {
-    const { data: current, error: fetchError } = await supabase.from('video_categories').select('status').eq('id', req.params.id).single();
+    const { data: current, error: fetchError } = await supabase.from('blog_categories').select('status').eq('id', req.params.id).single();
     if (fetchError || !current) return res.status(404).json({ success: false, message: "Category not found" });
 
     const newStatus = current.status === "active" ? "inactive" : "active";
-    const { data, error } = await supabase.from('video_categories').update({ status: newStatus }).eq('id', req.params.id).select().single();
+    const { data, error } = await supabase.from('blog_categories').update({ status: newStatus }).eq('id', req.params.id).select().single();
     
     if (error) return res.status(500).json({ success: false, message: error.message });
-    return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const updateVideoCategoryOrder = async (req, res, next) => {
-  try {
-    const { order } = req.body;
-    const { data, error } = await supabase.from('video_categories').update({ order: Number(order) }).eq('id', req.params.id).select().single();
-    if (error || !data) return res.status(404).json({ success: false, message: "Category not found" });
     return res.status(200).json({ success: true, data: { ...data, _id: data.id } });
   } catch (error) {
     next(error);
@@ -146,10 +145,10 @@ const updateVideoCategoryOrder = async (req, res, next) => {
 };
 
 module.exports = {
-  createVideoCategory,
-  getVideoCategories,
-  updateVideoCategory,
-  deleteVideoCategory,
-  toggleVideoCategoryStatus,
-  updateVideoCategoryOrder,
+  createBlogCategory,
+  getBlogCategories,
+  getBlogCategoryById,
+  updateBlogCategory,
+  deleteBlogCategory,
+  toggleBlogCategoryStatus,
 };
