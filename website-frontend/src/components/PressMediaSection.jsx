@@ -84,7 +84,7 @@ export default function PressMediaSection() {
               gap: '60px',
               minWidth: '350px'
             }}>
-              <button style={{
+              <button className="free-consult-btn" style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '15px',
@@ -97,17 +97,19 @@ export default function PressMediaSection() {
                 fontSize: '16px',
                 fontWeight: '500',
                 fontFamily: "'Marcellus', serif",
-                marginTop: '0px'
+                marginTop: '0px',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
               }}>
                 Get Free Consulting
-                <div style={{ 
+                <div className="arrow-container" style={{ 
                   width: '45px', 
                   height: '45px', 
                   backgroundColor: '#fff', 
                   borderRadius: '50%', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  transition: 'transform 0.3s ease'
                 }}>
                    <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" alt="arrow" style={{ width: '32px' }} />
                 </div>
@@ -133,6 +135,21 @@ export default function PressMediaSection() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .free-consult-btn:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .free-consult-btn:hover .arrow-container {
+          transform: rotate(-10deg) scale(1.1);
+        }
+        @media (max-width: 768px) {
+          div[style*="flexDirection: column"] { alignItems: center !important; }
+          .section-title { text-align: center !important; margin-bottom: 30px !important; }
+          div[style*="alignItems: center"] { justify-content: center !important; }
+        }
+      `}</style>
     </section>
   );
 }
