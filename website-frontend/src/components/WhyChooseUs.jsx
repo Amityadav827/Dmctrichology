@@ -32,24 +32,24 @@ export default function WhyChooseUs() {
   const iconUrl = "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png";
 
   const renderCard = (feat) => (
-    <div style={{ 
-      backgroundColor: '#000', 
-      borderRadius: '24px', 
-      padding: '20px', 
-      display: 'flex', 
-      alignItems: 'center', 
-      gap: '20px', 
+    <div style={{
+      backgroundColor: '#000',
+      borderRadius: '24px',
+      padding: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '20px',
       width: '400px',
       color: '#fff',
       textAlign: 'left',
       zIndex: 2,
       boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
     }}>
-      <div style={{ 
-        backgroundColor: '#FEF0D7', 
-        borderRadius: '16px', 
-        padding: '12px', 
-        minWidth: '85px', 
+      <div style={{
+        backgroundColor: '#FEF0D7',
+        borderRadius: '16px',
+        padding: '12px',
+        minWidth: '85px',
         height: '85px',
         display: 'flex',
         alignItems: 'center',
@@ -73,23 +73,23 @@ export default function WhyChooseUs() {
         </span>
       </div>
 
-      <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 100px', textAlign: 'center' }}>
+      <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 100px !important', textAlign: 'center' }}>
         Why DMC Trichology Is The Best Hair Transplant Clinic In Delhi
       </h2>
 
-      <div style={{ 
-        position: 'relative', 
-        maxWidth: '1300px', 
-        height: '650px', 
+      <div style={{
+        position: 'relative',
+        maxWidth: '1300px',
+        height: '650px',
         margin: '0 auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
         {/* Central Circular Head Image */}
-        <div style={{ 
-          width: '500px', 
-          height: '500px', 
+        <div style={{
+          width: '500px',
+          height: '500px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
