@@ -33,7 +33,7 @@ const EnquirySection = () => {
                   </div>
                   <div>
                     <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Marcellus', serif" }}>{item.label}</p>
-                    <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold', color: '#000', fontFamily: "'Marcellus', serif" }}>{item.value}</p>
+                    <p style={{ margin: 0, fontSize: '14px', color: '#000', fontFamily: "'Marcellus', serif" }}>{item.value}</p>
                   </div>
                 </div>
               ))}
@@ -60,7 +60,15 @@ const EnquirySection = () => {
                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '12px', pointerEvents: 'none' }} alt="icon" />
               </div>
               <div style={{ position: 'relative' }}>
-                 <input type="text" placeholder="Select Date & Time*" className="premium-input date-input" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif", transition: 'all 0.3s ease' }} />
+                 <input 
+                   type="text" 
+                   placeholder="Select Date & Time*" 
+                   className="premium-input date-input" 
+                   onFocus={(e) => (e.target.type = 'datetime-local')}
+                   onBlur={(e) => (e.target.type = 'text')}
+                   onClick={(e) => (e.target.type = 'datetime-local')}
+                   style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif", transition: 'all 0.3s ease' }} 
+                 />
                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/bze1cv4xanahe5dvljhb.png" className="calendar-icon" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '30px', pointerEvents: 'none', transition: 'all 0.3s ease' }} alt="icon" />
               </div>
               <div style={{ gridColumn: 'span 2' }}>
