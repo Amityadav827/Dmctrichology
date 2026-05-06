@@ -32,12 +32,21 @@ const videoRoutes = require("./routes/videoRoutes");
 const redirectRoutes = require("./routes/redirectRoutes");
 const pageRoutes = require("./routes/pageRoutes");
 const blogCategoryRoutes = require("./routes/blogCategoryRoutes");
+const heroRoutes = require("./routes/heroRoutes");
 
-// Middleware
+// Database Connection
+const connectDB = require("./config/db");
+const { seedDefaultHero } = require("./controllers/heroController");
+
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const redirectMiddleware = require("./middleware/redirectMiddleware");
 
 const app = express();
+
+// Connect to MongoDB
+connectDB().then(() => {
+  seedDefaultHero();
+});
 
 // ========================
 // ✅ Global Middleware
@@ -122,6 +131,7 @@ app.use("/api/videos", videoRoutes);
 app.use("/api/redirects", redirectRoutes);
 app.use("/api/pages", pageRoutes);
 app.use("/api/blog-categories", blogCategoryRoutes);
+app.use("/api/hero", heroRoutes);
 
 // SEO
 app.get(

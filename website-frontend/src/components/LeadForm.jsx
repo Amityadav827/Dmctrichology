@@ -1,8 +1,9 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { submitLead } from '../services/api';
+import { submitLead, fetchHeroSlides } from '../services/api';
 
 export default function LeadForm() {
+  const [heroData, setHeroData] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
@@ -21,6 +22,9 @@ export default function LeadForm() {
 
   useEffect(() => {
     generateCaptcha();
+    fetchHeroSlides().then(data => {
+      if (data) setHeroData(data);
+    });
   }, []);
 
   const handleChange = (e) => {
@@ -59,7 +63,9 @@ export default function LeadForm() {
       </div>
       
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', gap: '15px', height: '50px' }}>
-        <h2 className="section-title" style={{ fontSize: '2.2rem', whiteSpace: 'nowrap', textTransform: 'none' }}>Request A Call</h2>
+        <h2 className="section-title" style={{ fontSize: '2.2rem', whiteSpace: 'nowrap', textTransform: 'none' }}>
+          {heroData?.formTitle || "Request A Call"}
+        </h2>
         <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ display: 'flex', height: '30px' }}>
             {[1,2,3,4].map(i => (
