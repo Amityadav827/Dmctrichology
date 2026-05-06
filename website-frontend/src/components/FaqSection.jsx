@@ -215,11 +215,9 @@ export default function FaqSection() {
           border-color: #000 !important;
         }
         .view-all-faq-btn:hover {
-          background-color: #000 !important;
-          color: #fff !important;
-          border-color: #000 !important;
           transform: translateY(-3px);
-          box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+          border-color: #ddd !important;
         }
         .view-all-faq-btn:hover .btn-arrow {
           transform: translateX(8px);
