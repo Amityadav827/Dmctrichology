@@ -67,20 +67,6 @@ const VideoCard = ({ name, image, height = "400px", onPlay }) => (
       alignItems: 'center'
     }}>
       <h4 style={{ color: '#fff', fontSize: '20px', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>{name}</h4>
-      <div style={{ 
-        width: '60px', 
-        height: '60px', 
-        borderRadius: '50%', 
-        backgroundColor: 'rgba(255,255,255,0.2)', 
-        backdropFilter: 'blur(10px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        border: '1px solid rgba(255,255,255,0.3)',
-        transition: 'all 0.3s ease'
-      }} className="play-button-overlay">
-        <div style={{ width: 0, height: 0, borderTop: '10px solid transparent', borderBottom: '10px solid transparent', borderLeft: '15px solid #fff', marginLeft: '5px' }}></div>
-      </div>
     </div>
   </div>
 );
@@ -272,11 +258,6 @@ const TestimonialSection = () => {
         .premium-video-card:hover {
           transform: translateY(-8px) scale(1.02);
           box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
-        }
-        .premium-video-card:hover .play-button-overlay {
-          transform: scale(1.2);
-          background-color: rgba(228, 183, 83, 0.9);
-          border-color: #E4B753;
         }
         .view-all-testimonials-btn:hover {
           background-color: #000 !important;
