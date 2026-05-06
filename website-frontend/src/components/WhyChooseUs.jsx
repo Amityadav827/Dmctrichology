@@ -112,7 +112,7 @@ export default function WhyChooseUs() {
         <span className="section-subtitle">Best Hair Graft Clinic</span>
       </div>
 
-      <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 80px', textAlign: 'center' }}>
+      <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 80px !important', textAlign: 'center' }}>
         Why DMC Trichology Is The Best Hair Transplant Clinic In Delhi
       </h2>
 
