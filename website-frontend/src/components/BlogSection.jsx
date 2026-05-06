@@ -155,15 +155,12 @@ export default function BlogSection() {
 
       <style jsx>{`
         .view-all-blogs-btn:hover {
-          background-color: #000 !important;
-          color: #fff !important;
-          border-color: #000 !important;
           transform: translateY(-3px);
-          box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+          border-color: #ddd !important;
         }
         .view-all-blogs-btn:hover .btn-arrow {
           transform: translateX(8px);
-          filter: brightness(0) invert(1);
         }
         @media (max-width: 768px) {
           section { padding: 60px 5% !important; }
