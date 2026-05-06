@@ -105,8 +105,8 @@ export default function Footer() {
               {/* Social Icons - Size Reduced to 32px */}
               <div style={{ display: 'flex', gap: '15px' }}>
                 {socialIcons.map((url, i) => (
-                  <a key={i} href="#" style={{ textDecoration: 'none' }}>
-                    <img src={url} alt="social" style={{ width: '32px' }} />
+                  <a key={i} href="#" className="social-icon-link" style={{ textDecoration: 'none', transition: 'all 0.3s ease' }}>
+                    <img src={url} alt="social" style={{ width: '32px', transition: 'all 0.3s ease' }} />
                   </a>
                 ))}
               </div>
@@ -206,6 +206,18 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .social-icon-link:hover img {
+          transform: translateY(-5px) scale(1.15);
+          filter: brightness(1.2);
+        }
+        @media (max-width: 992px) {
+          footer > div { padding: 40px 5% !important; }
+          div[style*="marginTop: -120px"] { margin-top: 0 !important; }
+          div[style*="justifyContent: space-between"] { justify-content: center !important; text-align: center; }
+        }
+      `}</style>
     </footer>
   );
 }
