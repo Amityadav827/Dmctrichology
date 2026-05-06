@@ -1,5 +1,11 @@
 "use client";
 import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/autoplay';
 
 export default function PressMediaSection() {
   const logos = [
@@ -7,6 +13,9 @@ export default function PressMediaSection() {
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777700309/dmc-trichology/pvyogcawczl9mv7wb82v.png",
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777700309/dmc-trichology/tixdm9gnhknxtwvlj3xd.png"
   ];
+
+  // Duplicate logos for a smoother infinite effect
+  const sliderLogos = [...logos, ...logos, ...logos];
 
   const avatars = [
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png",
@@ -28,7 +37,7 @@ export default function PressMediaSection() {
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'flex-start', 
-            gap: '0',
+            gap: '30px',
             flexWrap: 'wrap'
           }}>
             
@@ -75,13 +84,13 @@ export default function PressMediaSection() {
               </div>
             </div>
 
-            {/* Right Side: Button + Logos */}
+            {/* Right Side: Button + Logo Slider */}
             <div style={{ 
               flex: '1', 
               display: 'flex', 
               flexDirection: 'column', 
               alignItems: 'flex-end', 
-              gap: '60px',
+              gap: '40px',
               minWidth: '350px'
             }}>
               <button className="free-consult-btn" style={{
@@ -115,20 +124,37 @@ export default function PressMediaSection() {
                 </div>
               </button>
 
-              {/* Logos in one horizontal row */}
+              {/* Logo Slider Wrapper */}
               <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '0', 
-                justifyContent: 'flex-end',
                 width: '100%',
-                marginTop: '60px'
+                marginTop: '40px',
+                overflow: 'hidden'
               }}>
-                {logos.map((url, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src={url} alt="media logo" style={{ maxHeight: '60px', maxWidth: '100%', objectFit: 'contain' }} />
-                  </div>
-                ))}
+                <Swiper
+                  modules={[Autoplay]}
+                  spaceBetween={30}
+                  slidesPerView={2}
+                  loop={true}
+                  speed={2000}
+                  autoplay={{
+                    delay: 0,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                  }}
+                  breakpoints={{
+                    320: { slidesPerView: 1, spaceBetween: 20 },
+                    480: { slidesPerView: 1.5, spaceBetween: 25 },
+                    768: { slidesPerView: 2, spaceBetween: 30 },
+                    1024: { slidesPerView: 2.5, spaceBetween: 30 }
+                  }}
+                  style={{ width: '100%' }}
+                >
+                  {sliderLogos.map((url, i) => (
+                    <SwiperSlide key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <img src={url} alt="media logo" style={{ maxHeight: '55px', maxWidth: '100%', objectFit: 'contain' }} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </div>
 
@@ -144,10 +170,14 @@ export default function PressMediaSection() {
         .free-consult-btn:hover .arrow-container {
           transform: rotate(-10deg) scale(1.1);
         }
+        :global(.swiper-wrapper) {
+          transition-timing-function: linear !important;
+        }
         @media (max-width: 768px) {
           div[style*="flexDirection: column"] { alignItems: center !important; }
-          .section-title { text-align: center !important; margin-bottom: 30px !important; }
+          .section-title { text-align: center !important; margin-bottom: 30px !important; font-size: 28px !important; }
           div[style*="alignItems: center"] { justify-content: center !important; }
+          div[style*="marginTop: 40px"] { margin-top: 20px !important; }
         }
       `}</style>
     </section>
