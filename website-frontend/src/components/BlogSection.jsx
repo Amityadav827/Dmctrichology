@@ -124,11 +124,11 @@ export default function BlogSection() {
 
         {/* View All Button */}
         <div style={{ textAlign: 'center', marginTop: '60px' }}>
-          <button style={{
+          <button className="view-all-blogs-btn" style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '12px',
-            padding: '8px 12px 8px 24px',
+            padding: '10px 15px 10px 25px',
             borderRadius: '50px',
             border: '1px solid #E5E5E5',
             backgroundColor: '#fff',
@@ -136,14 +136,39 @@ export default function BlogSection() {
             cursor: 'pointer',
             fontSize: '14px',
             fontWeight: '600',
-            fontFamily: "'Marcellus', serif"
+            fontFamily: "'Marcellus', serif",
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            position: 'relative',
+            zIndex: 1
           }}>
             View All
-            <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777698274/dmc-trichology/dh9kblxoinqmi5kvoona.png" alt="arrow" style={{ width: '32px' }} />
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777698274/dmc-trichology/dh9kblxoinqmi5kvoona.png" 
+              className="btn-arrow"
+              alt="arrow" 
+              style={{ width: '32px', height: '32px', transition: 'all 0.3s ease' }} 
+            />
           </button>
         </div>
 
       </div>
+
+      <style jsx>{`
+        .view-all-blogs-btn:hover {
+          background-color: #000 !important;
+          color: #fff !important;
+          border-color: #000 !important;
+          transform: translateY(-3px);
+          box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .view-all-blogs-btn:hover .btn-arrow {
+          transform: translateX(8px);
+          filter: brightness(0) invert(1);
+        }
+        @media (max-width: 768px) {
+          section { padding: 60px 5% !important; }
+        }
+      `}</style>
     </section>
   );
 }
