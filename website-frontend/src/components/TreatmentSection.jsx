@@ -26,9 +26,9 @@ export default function TreatmentSection() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
              <div style={{ width: '40px', height: '1px', backgroundColor: '#E4B753' }}></div>
              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#E4B753' }}></div>
-             <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1C1C1C', textTransform: 'uppercase', letterSpacing: '1px', fontFamily: "'Marcellus', serif" }}>REVIEWS</span>
+             <span className="section-subtitle">REVIEWS</span>
           </div>
-          <h2 style={{ fontSize: '48px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400' }}>Know the Right Treatment for You</h2>
+          <h2 className="section-title">Know the Right Treatment for You</h2>
         </div>
 
         {/* Cards Container */}

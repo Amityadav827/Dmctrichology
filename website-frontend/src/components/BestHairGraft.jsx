@@ -6,13 +6,7 @@ export default function BestHairGraft() {
     <section className="hair-graft-section" style={{ backgroundColor: '#ffffff', padding: '100px 5%' }}>
       <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
         <div style={{ marginBottom: '40px' }}>
-          <h2 style={{ 
-            fontSize: '54px', 
-            color: '#1F3D3F', 
-            fontFamily: "'Marcellus', serif", 
-            marginBottom: '24px',
-            lineHeight: '1.2' 
-          }}>
+          <h2 className="section-title">
             Best Hair Graft Clinic
           </h2>
           <p style={{ 
@@ -57,9 +51,6 @@ export default function BestHairGraft() {
           border-color: #F09819;
           transform: translateY(-5px);
           box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        @media (max-width: 768px) {
-          h2 { font-size: 36px !important; }
         }
       `}</style>
     </section>

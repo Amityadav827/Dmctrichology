@@ -83,9 +83,9 @@ const TestimonialSection = () => {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
             <div style={{ width: '40px', height: '2px', backgroundColor: '#E4B753' }}></div>
             <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#E4B753' }}></div>
-            <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1C1C1C', textTransform: 'uppercase', letterSpacing: '2px', fontFamily: "'Marcellus', serif" }}>REVIEWS</span>
+            <span className="section-subtitle">REVIEWS</span>
           </div>
-          <h2 style={{ fontSize: '48px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px' }}>
+          <h2 className="section-title">
             See the Results. Hear the Stories.
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
@@ -259,9 +259,6 @@ const TestimonialSection = () => {
         @media (max-width: 992px) {
           .testimonial-staggered-grid > div:nth-child(3) {
             display: none;
-          }
-          .testimonials-grid-section h2 {
-            font-size: 36px !important;
           }
         }
         @media (max-width: 768px) {

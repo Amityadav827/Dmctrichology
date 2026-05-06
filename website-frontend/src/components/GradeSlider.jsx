@@ -75,22 +75,9 @@ export default function GradeSlider() {
              alt="icon" 
              style={{ width: '50px', height: 'auto' }} 
            />
-           <span style={{ 
-             fontSize: '12px', 
-             lineHeight: '28px',
-             fontWeight: '400', 
-             textTransform: 'uppercase', 
-             color: '#fff', 
-             fontFamily: "'Marcellus', serif" 
-           }}>EQUIP YOUR RECOVERY</span>
+           <span className="section-subtitle">EQUIP YOUR RECOVERY</span>
         </div>
-        <h2 style={{ 
-          fontSize: '44px', 
-          lineHeight: '60px',
-          color: '#fff', 
-          fontFamily: "'Marcellus', serif", 
-          fontWeight: '400' 
-        }}>Know Your Grade For Hair Transplant</h2>
+        <h2 className="section-title" style={{ color: '#fff !important' }}>Know Your Grade For Hair Transplant</h2>
       </div>
 
       <div className="slider-container" style={{ position: 'relative' }}>
@@ -244,7 +231,6 @@ export default function GradeSlider() {
           transform: rotateY(180deg);
         }
         @media (max-width: 1024px) {
-          h2 { font-size: 36px !important; }
           .grade-section { padding-top: 60px !important; padding-bottom: 60px !important; }
         }
       `}</style>

@@ -37,6 +37,38 @@ h6 {
   font-weight: 400;
 }
 
+/* ===================== SECTION TYPOGRAPHY ===================== */
+.section-subtitle {
+  font-family: 'Marcellus', serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  color: #F09819 !important;
+}
+
+.section-title {
+  font-family: 'Marcellus', serif !important;
+  font-size: 44px !important;
+  line-height: 1.2 !important;
+  font-weight: 400 !important;
+  color: #1F3D3F !important;
+  margin: 0 !important;
+  text-transform: uppercase !important;
+}
+
+@media (max-width: 992px) {
+  .section-title {
+    font-size: 36px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 28px !important;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;

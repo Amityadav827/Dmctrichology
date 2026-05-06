@@ -47,9 +47,9 @@ export default function FaqSection() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
               <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto' }} />
-              <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#1C1C1C', textTransform: 'uppercase', letterSpacing: '1px', fontFamily: "'Marcellus', serif" }}>TRUSTED CARE SERVICES</span>
+              <span className="section-subtitle">TRUSTED CARE SERVICES</span>
             </div>
-            <h2 style={{ fontSize: '48px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', margin: 0 }}>Frequently Asked Question?</h2>
+            <h2 className="section-title">Frequently Asked Question?</h2>
           </div>
 
           {/* Tabs */}
@@ -161,9 +161,6 @@ export default function FaqSection() {
         .faq-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-        }
-        @media (max-width: 768px) {
-          h2 { font-size: 32px !important; }
         }
       `}</style>
     </section>

@@ -18,25 +18,10 @@ const AboutUs = () => {
              alt="icon" 
              style={{ width: '40px', height: 'auto' }} 
            />
-           <span style={{ 
-             fontSize: '12px', 
-             fontWeight: '400', 
-             textTransform: 'uppercase', 
-             color: '#000', 
-             fontFamily: "'Marcellus', serif",
-             letterSpacing: '1px'
-           }}>ABOUT US CARE</span>
+           <span className="section-subtitle">ABOUT US CARE</span>
         </div>
 
-        <h2 style={{ 
-          fontSize: '44px', 
-          lineHeight: '60px',
-          color: '#1F3D3F', 
-          fontFamily: "'Marcellus', serif", 
-          marginBottom: '0',
-          fontWeight: '400',
-          textTransform: 'uppercase'
-        }}>WELCOME TO DMC TRICHOLOGY®</h2>
+        <h2 className="section-title">WELCOME TO DMC TRICHOLOGY®</h2>
 
 
         <p style={{ 
@@ -82,7 +67,6 @@ const AboutUs = () => {
 
       <style jsx>{`
         @media (max-width: 768px) {
-          h2 { font-size: 36px !important; }
           p { font-size: 18px !important; }
           .stats-grid { grid-template-columns: 1fr 1fr !important; }
         }

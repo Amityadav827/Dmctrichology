@@ -39,9 +39,9 @@ export default function BlogSection() {
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto' }} />
-             <span style={{ fontSize: '12px', fontWeight: 'bold', color: '#1C1C1C', textTransform: 'uppercase', letterSpacing: '1px', fontFamily: "'Marcellus', serif" }}>OUR LATEST BLOGS</span>
+             <span className="section-subtitle">OUR LATEST BLOGS</span>
           </div>
-          <h2 style={{ fontSize: '48px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '20px' }}>News & Wellness Advice</h2>
+          <h2 className="section-title">News & Wellness Advice</h2>
           <p style={{ maxWidth: '700px', margin: '0 auto', fontSize: '15px', color: '#666', fontFamily: "'Lato', sans-serif", lineHeight: '1.6' }}>
             Our Expert Therapists Work With You To Create Tailored Recovery Plans That Target Your Specific Needs And Goals.
           </p>

@@ -43,9 +43,9 @@ export default function ServiceSlider() {
               alt="icon" 
               style={{ width: '40px', height: 'auto' }} 
             />
-            <span style={{ fontSize: '14px', letterSpacing: '2.5px', color: '#1C1C1C', fontWeight: '600' }}>SERVICES</span>
+            <span className="section-subtitle">SERVICES</span>
           </div>
-          <h2 style={{ fontSize: '42px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>
+          <h2 className="section-title">
             Our Hair Transplant Services
           </h2>
           <a href="#" style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>

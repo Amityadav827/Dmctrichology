@@ -82,22 +82,9 @@ export default function ResultsSlider() {
                alt="icon" 
                style={{ width: '50px', height: 'auto' }} 
              />
-             <span style={{ 
-               fontSize: '12px', 
-               lineHeight: '28px',
-               fontWeight: '400', 
-               textTransform: 'uppercase', 
-               color: '#1F3D3F', 
-               fontFamily: "'Marcellus', serif" 
-             }}>BEFORE AND AFTER</span>
+             <span className="section-subtitle">BEFORE AND AFTER</span>
           </div>
-          <h2 style={{ 
-            fontSize: '44px', 
-            lineHeight: '60px',
-            color: '#1F3D3F', 
-            fontFamily: "'Marcellus', serif", 
-            fontWeight: '400' 
-          }}>Results that speak for themselves</h2>
+          <h2 className="section-title">Results that speak for themselves</h2>
         </div>
 
 
@@ -273,9 +260,6 @@ export default function ResultsSlider() {
           }
           .results-section {
             padding: 60px 5% !important;
-          }
-          h2 {
-            font-size: 36px !important;
           }
         }
       `}</style>

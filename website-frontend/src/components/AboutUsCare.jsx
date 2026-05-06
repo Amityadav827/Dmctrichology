@@ -40,24 +40,10 @@ const AboutUsCare = () => {
                alt="icon" 
                style={{ width: '40px', height: 'auto' }} 
              />
-             <span style={{ 
-               fontSize: '11px', 
-               lineHeight: '24px',
-               fontWeight: '400', 
-               textTransform: 'uppercase', 
-               color: '#1F3D3F', 
-               fontFamily: "'Marcellus', serif" 
-             }}>ABOUT US CARE</span>
+             <span className="section-subtitle">ABOUT US CARE</span>
           </div>
 
-          <h2 style={{ 
-            fontSize: '36px', 
-            lineHeight: '48px',
-            color: '#1F3D3F', 
-            fontFamily: "'Marcellus', serif", 
-            fontWeight: '400',
-            marginBottom: '15px'
-          }}>WHY CHOOSE DMC <br /> TRICHOLOGY?</h2>
+          <h2 className="section-title">WHY CHOOSE DMC <br /> TRICHOLOGY?</h2>
 
           <p style={{ 
             fontSize: '14px', 
@@ -116,7 +102,6 @@ const AboutUsCare = () => {
 
       <style jsx>{`
         @media (max-width: 1024px) {
-          h2 { font-size: 36px !important; line-height: 48px !important; }
           .about-us-care { padding: 60px 5% !important; }
         }
         @media (max-width: 640px) {

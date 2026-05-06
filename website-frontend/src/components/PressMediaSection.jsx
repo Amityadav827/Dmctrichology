@@ -34,15 +34,7 @@ export default function PressMediaSection() {
             
             {/* Left Side: Heading + Rating */}
             <div style={{ flex: '1.2', minWidth: '350px' }}>
-              <h2 style={{ 
-                fontSize: '48px', 
-                color: '#1C1C1C', 
-                fontFamily: "'Marcellus', serif", 
-                fontWeight: '400', 
-                margin: '0 0 50px 0',
-                lineHeight: '1.25',
-                maxWidth: '650px'
-              }}>
+              <h2 className="section-title" style={{ margin: '0 0 50px 0', maxWidth: '650px' }}>
                 What The Press And Media Are Saying About Our Clinic
               </h2>
 

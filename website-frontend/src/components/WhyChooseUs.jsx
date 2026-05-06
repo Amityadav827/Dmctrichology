@@ -68,28 +68,12 @@ export default function WhyChooseUs() {
     <section className="why-choose-us" style={{ padding: '0', backgroundColor: '#fff', textAlign: 'center', overflow: 'hidden' }}>
       <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
         <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
-        <span style={{ 
-          fontFamily: "'Marcellus', serif", 
-          fontSize: '12px', 
-          lineHeight: '28px', 
-          textTransform: 'uppercase', 
-          color: '#1C1C1C',
-          fontWeight: 400
-        }}>
+        <span className="section-subtitle">
           Best Hair Graft Clinic
         </span>
       </div>
 
-      <h2 style={{ 
-        fontFamily: "'Marcellus', serif", 
-        fontSize: '44px', 
-        lineHeight: '60px', 
-        color: '#000', 
-        marginBottom: '100px',
-        fontWeight: 400,
-        maxWidth: '1000px',
-        margin: '0 auto 100px'
-      }}>
+      <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 100px' }}>
         Why DMC Trichology Is The Best Hair Transplant Clinic In Delhi
       </h2>
 

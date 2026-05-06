@@ -15,9 +15,9 @@ const EnquirySection = () => {
           <div style={{ flex: '1 1 500px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
               <img src={iconUrl} alt="icon" style={{ width: '40px', height: 'auto' }} />
-              <span style={{ fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', color: '#1C1C1C', fontFamily: "'Marcellus', serif" }}>WHY CHOOSE US SERVICES</span>
+              <span className="section-subtitle">WHY CHOOSE US SERVICES</span>
             </div>
-            <h2 style={{ fontSize: '44px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px', lineHeight: '1.2' }}>REQUEST A <br />CONSULTATION</h2>
+            <h2 className="section-title">REQUEST A <br />CONSULTATION</h2>
             <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Lato', sans-serif", marginBottom: '30px' }}>Clinic Timings ( By Appointments Only)</p>
 
             {/* Contact Info Grid */}
@@ -111,7 +111,6 @@ const EnquirySection = () => {
       <style jsx>{`
         @media (max-width: 1024px) {
           .enquiry-section { padding: 60px 5% !important; }
-          h2 { font-size: 36px !important; }
         }
         @media (max-width: 640px) {
           form { grid-template-columns: 1fr !important; }

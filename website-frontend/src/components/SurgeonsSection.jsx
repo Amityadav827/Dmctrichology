@@ -43,20 +43,9 @@ const SurgeonsSection = () => {
               alt="icon" 
               style={{ width: '40px', height: 'auto' }} 
             />
-            <span style={{ 
-              fontSize: '11px', 
-              fontWeight: 'bold', 
-              textTransform: 'uppercase', 
-              color: '#1C1C1C', 
-              fontFamily: "'Marcellus', serif" 
-            }}>TRUSTED CARE SERVICES</span>
+            <span className="section-subtitle">TRUSTED CARE SERVICES</span>
           </div>
-          <h2 style={{ 
-            fontSize: '44px', 
-            color: '#000', 
-            fontFamily: "'Marcellus', serif", 
-            fontWeight: '400' 
-          }}>Meet Our Hair Transplant Surgeons</h2>
+          <h2 className="section-title">Meet Our Hair Transplant Surgeons</h2>
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', alignItems: 'flex-start' }}>
@@ -183,7 +172,6 @@ const SurgeonsSection = () => {
       <style jsx>{`
         @media (max-width: 1024px) {
           .surgeons-section { padding: 60px 5% !important; }
-          h2 { font-size: 36px !important; }
         }
       `}</style>
     </section>
