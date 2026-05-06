@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 
 const features = [
   {
@@ -36,67 +37,94 @@ export default function WhyChooseUs() {
   const centralImage = "https://res.cloudinary.com/dseixl6px/image/upload/v1777550637/dmc-trichology/mprq5pm7g2utm2olrnj1.png";
   const iconUrl = "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png";
 
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-      { threshold: 0.2 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const springConfig = { damping: 25, stiffness: 150 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
 
   const handleMouseMove = (e) => {
     if (!sectionRef.current) return;
     const rect = sectionRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMousePos({ x, y });
+    mouseX.set(x);
+    mouseY.set(y);
   };
 
   const renderCard = (feat, index) => {
     const isLeft = feat.pos.includes('left');
+    
     return (
-      <div 
-        className={`feature-card ${isLeft ? 'slide-left' : 'slide-right'} ${isVisible ? 'animate' : ''}`}
+      <motion.div 
+        initial={{ opacity: 0, x: isLeft ? -80 : 80, scale: 0.95 }}
+        whileInView={{ opacity: 1, x: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1, delay: index * 0.2, ease: [0.22, 1, 0.36, 1] }}
+        whileHover={{ 
+          y: -10, 
+          scale: 1.02,
+          rotateX: isLeft ? 5 : -5,
+          rotateY: index < 2 ? 5 : -5,
+          boxShadow: '0 35px 70px rgba(0,0,0,0.4)',
+          border: '1px solid rgba(254, 240, 215, 0.4)'
+        }}
         style={{
           backgroundColor: '#000',
           borderRadius: '24px',
-          padding: '20px',
+          padding: '25px',
           display: 'flex',
           alignItems: 'center',
           gap: '20px',
-          width: '400px',
+          width: '410px',
           color: '#fff',
           textAlign: 'left',
           zIndex: 10,
-          boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
-          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-          transform: `translate(${mousePos.x * (isLeft ? -15 : 15)}px, ${mousePos.y * 15}px)`,
-          animationDelay: `${index * 0.15}s`
+          cursor: 'pointer',
+          position: 'relative',
+          overflow: 'hidden',
+          x: useTransform(smoothX, (v) => v * (isLeft ? -20 : 20)),
+          y: useTransform(smoothY, (v) => v * 20),
         }}
       >
-        <div className="icon-box" style={{
-          backgroundColor: '#FEF0D7',
-          borderRadius: '16px',
-          padding: '12px',
-          minWidth: '85px',
-          height: '85px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'transform 0.3s ease'
-        }}>
-          <img src={feat.icon} alt={feat.title} style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+        {/* Card Ambient Glow */}
+        <motion.div 
+          className="card-glow"
+          animate={{ opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 3, repeat: Infinity }}
+          style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'radial-gradient(circle at 50% 50%, rgba(254, 240, 215, 0.05) 0%, transparent 80%)',
+            pointerEvents: 'none'
+          }}
+        />
+
+        <motion.div 
+          whileHover={{ scale: 1.15, rotate: 8 }}
+          className="icon-box" 
+          style={{
+            backgroundColor: '#FEF0D7',
+            borderRadius: '18px',
+            padding: '14px',
+            minWidth: '90px',
+            height: '90px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 10px 20px rgba(254, 240, 215, 0.15)'
+          }}
+        >
+          <img src={feat.icon} alt={feat.title} style={{ width: '55px', height: '55px', objectFit: 'contain' }} />
+        </motion.div>
+        
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '26px', marginBottom: '8px', fontWeight: 400, color: '#FEF0D7' }}>{feat.title}</h4>
+          <p style={{ fontFamily: "'Marcellus', serif", fontSize: '14px', lineHeight: '22px', color: 'rgba(255,255,255,0.8)' }}>{feat.desc}</p>
         </div>
-        <div>
-          <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '24px', marginBottom: '8px', fontWeight: 400, color: '#FEF0D7' }}>{feat.title}</h4>
-          <p style={{ fontFamily: "'Marcellus', serif", fontSize: '13px', lineHeight: '20px', color: '#FFFFFF' }}>{feat.desc}</p>
-        </div>
-      </div>
+      </motion.div>
     );
   };
 
@@ -105,150 +133,219 @@ export default function WhyChooseUs() {
       ref={sectionRef}
       onMouseMove={handleMouseMove}
       className="why-choose-us" 
-      style={{ padding: '80px 0', backgroundColor: '#fff', textAlign: 'center', overflow: 'hidden' }}
+      style={{ padding: '100px 0', backgroundColor: '#fff', textAlign: 'center', overflow: 'hidden', perspective: '1200px' }}
     >
-      <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
-        <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
-        <span className="section-subtitle">Best Hair Graft Clinic</span>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="section-tag" 
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '30px' }}
+      >
+        <img src={iconUrl} alt="icon" style={{ width: '55px', height: 'auto' }} />
+        <span className="section-subtitle" style={{ letterSpacing: '2px' }}>Best Hair Graft Clinic</span>
+      </motion.div>
 
-      <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 80px !important', textAlign: 'center' }}>
+      <motion.h2 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.2 }}
+        className="section-title" 
+        style={{ maxWidth: '1000px', margin: '0 auto 100px !important', textAlign: 'center' }}
+      >
         Why DMC Trichology Is The Best Hair Transplant Clinic In Delhi
-      </h2>
+      </motion.h2>
 
       <div style={{
         position: 'relative',
-        maxWidth: '1300px',
-        height: '650px',
+        maxWidth: '1400px',
+        height: '700px',
         margin: '0 auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        {/* Animated Connector Lines */}
+        {/* Energy Connector Lines SVG */}
         <svg style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}>
-          {/* Top Left */}
-          <path d="M 650 325 L 400 180" className="connector-path" />
-          {/* Bottom Left */}
-          <path d="M 650 325 L 400 480" className="connector-path" />
-          {/* Top Right */}
-          <path d="M 650 325 L 900 70" className="connector-path" />
-          {/* Bottom Right */}
-          <path d="M 650 325 L 900 370" className="connector-path" />
+          <defs>
+            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="rgba(254, 240, 215, 0.1)" />
+              <stop offset="50%" stopColor="rgba(254, 240, 215, 0.5)" />
+              <stop offset="100%" stopColor="rgba(254, 240, 215, 0.1)" />
+            </linearGradient>
+            <filter id="lineGlow">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          {/* Staggered Path Drawing */}
+          {[
+            { d: "M 700 350 L 410 180", delay: 0.5 },
+            { d: "M 700 350 L 410 500", delay: 0.7 },
+            { d: "M 700 350 L 990 80", delay: 0.9 },
+            { d: "M 700 350 L 990 400", delay: 1.1 }
+          ].map((path, i) => (
+            <React.Fragment key={i}>
+              <motion.path 
+                d={path.d} 
+                stroke="rgba(254, 240, 215, 0.15)"
+                strokeWidth="1.5"
+                fill="none"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                transition={{ duration: 2, delay: path.delay, ease: "easeInOut" }}
+              />
+              {/* Energy Pulse Circle */}
+              <motion.circle 
+                r="3"
+                fill="#FEF0D7"
+                filter="url(#lineGlow)"
+                animate={{
+                  offsetDistance: ["0%", "100%"]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  delay: path.delay,
+                  ease: "linear"
+                }}
+                style={{ offsetPath: `path("${path.d}")` }}
+              />
+            </React.Fragment>
+          ))}
         </svg>
 
-        {/* Central Image Container */}
-        <div className={`central-container ${isVisible ? 'reveal' : ''}`} style={{
-          width: '500px',
-          height: '500px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 5,
-          position: 'relative',
-          transform: `translate(${mousePos.x * 25}px, ${mousePos.y * 25}px)`
-        }}>
-          {/* Glowing Ring */}
-          <div className="glowing-ring"></div>
-          <div className="rotating-ring"></div>
+        {/* Central Luxury Ecosystem */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.7, filter: 'blur(15px)' }}
+          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          className="central-ecosystem" 
+          style={{
+            width: '550px',
+            height: '550px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 5,
+            position: 'relative',
+            x: useTransform(smoothX, (v) => v * 40),
+            y: useTransform(smoothY, (v) => v * 40),
+          }}
+        >
+          {/* Layered Floating Rings */}
+          <motion.div 
+            animate={{ rotate: 360 }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              border: '1px solid rgba(254, 240, 215, 0.1)',
+              borderRadius: '50%',
+              padding: '20px'
+            }}
+          >
+            <div style={{ width: '100%', height: '100%', border: '1px dashed rgba(254, 240, 215, 0.2)', borderRadius: '50%' }} />
+          </motion.div>
+
+          <motion.div 
+            animate={{ rotate: -360 }}
+            transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+            style={{
+              position: 'absolute',
+              width: '85%',
+              height: '85%',
+              background: 'conic-gradient(from 0deg, transparent, rgba(254, 240, 215, 0.1), transparent)',
+              borderRadius: '50%',
+              filter: 'blur(10px)'
+            }}
+          />
+
+          {/* Deep Ambient Aura */}
+          <motion.div 
+            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              position: 'absolute',
+              width: '70%',
+              height: '70%',
+              background: 'radial-gradient(circle, rgba(254, 240, 215, 0.25) 0%, transparent 70%)',
+              filter: 'blur(30px)',
+              zIndex: 1
+            }}
+          />
+
+          {/* Particles Ecosystem */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              animate={{ 
+                y: [0, -30, 0],
+                x: [0, 15, 0],
+                opacity: [0.2, 0.5, 0.2]
+              }}
+              transition={{
+                duration: 4 + i,
+                repeat: Infinity,
+                delay: i * 0.5
+              }}
+              style={{
+                position: 'absolute',
+                width: '4px', height: '4px',
+                backgroundColor: '#FEF0D7',
+                borderRadius: '50%',
+                top: `${20 + i * 15}%`,
+                left: `${30 + (i % 3) * 20}%`,
+                filter: 'blur(1px)'
+              }}
+            />
+          ))}
           
-          <img 
+          <motion.img 
             src={centralImage} 
             alt="Head Visualization" 
-            className="floating-image"
-            style={{ width: '100%', height: 'auto', position: 'relative', zIndex: 6 }} 
+            style={{ 
+              width: '90%', 
+              height: 'auto', 
+              position: 'relative', 
+              zIndex: 6,
+              filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.4))'
+            }}
+            animate={{ 
+              y: [0, -25, 0],
+              rotate: [0, 1.5, -1.5, 0],
+              scale: [1, 1.02, 1]
+            }}
+            transition={{ 
+              duration: 8, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
           />
-        </div>
+        </motion.div>
 
-        {/* Feature Cards */}
-        <div style={{ position: 'absolute', top: '130px', left: '0' }}>{renderCard(features[0], 1)}</div>
-        <div style={{ position: 'absolute', top: '430px', left: '0' }}>{renderCard(features[1], 2)}</div>
-        <div style={{ position: 'absolute', top: '20px', right: '0' }}>{renderCard(features[2], 3)}</div>
-        <div style={{ position: 'absolute', top: '320px', right: '0' }}>{renderCard(features[3], 4)}</div>
+        {/* Feature Cards with Coordinated Breathing */}
+        <div style={{ position: 'absolute', top: '120px', left: '0' }}>{renderCard(features[0], 0)}</div>
+        <div style={{ position: 'absolute', top: '440px', left: '0' }}>{renderCard(features[1], 1)}</div>
+        <div style={{ position: 'absolute', top: '30px', right: '0' }}>{renderCard(features[2], 2)}</div>
+        <div style={{ position: 'absolute', top: '350px', right: '0' }}>{renderCard(features[3], 3)}</div>
       </div>
 
       <style jsx>{`
-        .feature-card:hover {
-          transform: translateY(-8px) scale(1.02) !important;
-          box-shadow: 0 30px 60px rgba(0,0,0,0.3) !important;
-          border: 1px solid rgba(254, 240, 215, 0.3);
+        .why-choose-us {
+          background-image: radial-gradient(circle at 10% 20%, rgba(254, 240, 215, 0.03) 0%, transparent 40%),
+                            radial-gradient(circle at 90% 80%, rgba(254, 240, 215, 0.03) 0%, transparent 40%);
         }
-        .feature-card:hover .icon-box {
-          transform: scale(1.1) rotate(5deg);
-          box-shadow: 0 0 20px rgba(254, 240, 215, 0.4);
-        }
-        
-        .floating-image {
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        
-        .glowing-ring {
-          position: absolute;
-          width: 80%;
-          height: 80%;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(254, 240, 215, 0.2) 0%, transparent 70%);
-          animation: pulse 4s ease-in-out infinite;
-          z-index: 1;
-        }
-        
-        .rotating-ring {
-          position: absolute;
-          width: 90%;
-          height: 90%;
-          border: 1px dashed rgba(254, 240, 215, 0.3);
-          border-radius: 50%;
-          animation: rotate 20s linear infinite;
-          z-index: 2;
-        }
-        
-        @keyframes rotate {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 0.5; }
-          50% { transform: scale(1.2); opacity: 0.8; }
-        }
-        
-        .connector-path {
-          fill: none;
-          stroke: rgba(254, 240, 215, 0.2);
-          stroke-width: 2;
-          stroke-dasharray: 10, 10;
-          animation: dashMove 30s linear infinite;
-        }
-        
-        @keyframes dashMove {
-          from { stroke-dashoffset: 500; }
-          to { stroke-dashoffset: 0; }
-        }
-        
-        .connector-path::after {
-          content: "";
-          /* Simulated via another path for light pulse */
-        }
-        
-        /* Viewport Entry Animations */
-        .slide-left { opacity: 0; transform: translateX(-50px); transition: all 0.8s ease-out; }
-        .slide-right { opacity: 0; transform: translateX(50px); transition: all 0.8s ease-out; }
-        .central-container { opacity: 0; transform: scale(0.8); transition: all 1s ease-out; }
-        
-        .animate.slide-left, .animate.slide-right { opacity: 1; transform: translateX(0) !important; }
-        .reveal.central-container { opacity: 1; transform: scale(1) !important; }
-
-        @media (max-width: 1024px) {
-          div[style*="height: 650px"] { height: auto !important; flex-direction: column !important; }
-          div[style*="position: absolute"] { position: relative !important; top: auto !important; left: auto !important; right: auto !important; margin: 10px auto !important; }
-          .feature-card { width: 90% !important; max-width: 400px; }
+        @media (max-width: 1100px) {
+          div[style*="height: 700px"] { height: auto !important; flex-direction: column !important; }
+          div[style*="position: absolute"] { position: relative !important; top: auto !important; left: auto !important; right: auto !important; margin: 15px auto !important; transform: none !important; }
+          .central-ecosystem { width: 350px !important; height: 350px !important; margin: 50px auto !important; transform: none !important; }
           svg { display: none; }
-          .central-container { width: 300px !important; height: 300px !important; margin: 40px auto; }
+          .feature-card { width: 90% !important; max-width: 420px; }
         }
       `}</style>
     </section>
