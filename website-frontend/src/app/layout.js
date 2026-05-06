@@ -1,15 +1,18 @@
 import './globals.css';
+import { BuilderProvider } from '../context/BuilderContext';
 
 export const metadata = {
-  title: 'Dynamic Website Frontend',
-  description: 'WordPress-like CMS Controlled',
+  title: 'DMC Trichology | Best Hair Transplant Clinic In Delhi',
+  description: 'Experience The Art Of Natural Hair Restoration at DMC Trichology.',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        {children}
+        <BuilderProvider>
+          {children}
+        </BuilderProvider>
         <svg width="0" height="0" className="hidden" style={{ display: 'none' }}>
           <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">

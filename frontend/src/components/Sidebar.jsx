@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Search, Star, PhoneCall, Mail, CalendarCheck,
   FileText, Scissors, Layers, HelpCircle, Activity, List,
   Video, PlayCircle, Image as ImageIcon, Users, Shield,
-  Key, Menu as MenuIcon, Settings, Wrench, Globe, Link as LinkIcon, Bot, Monitor
+  Key, Menu as MenuIcon, Settings, Wrench, Globe, Link as LinkIcon, Bot
 } from "lucide-react";
 
 const getNavClass = ({ isActive }) =>
@@ -107,11 +107,6 @@ function Sidebar() {
             {hasPermission("cms") && (
               <NavLink to="/pages" className={getNavClass}>
                 <Layers size={16} /> Pages
-              </NavLink>
-            )}
-            {hasPermission("cms") && (
-              <NavLink to="/hero-cms" className={getNavClass}>
-                <Monitor size={16} /> Hero CMS
               </NavLink>
             )}
 

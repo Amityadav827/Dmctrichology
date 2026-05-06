@@ -30,7 +30,6 @@ import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
 import RobotsEditor from "./pages/RobotsEditor";
 import PlaceholderPage from "./pages/PlaceholderPage";
-import HeroCMS from "./pages/HeroCMS";
 
 function App() {
   return (
@@ -155,14 +154,6 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <Pages />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="hero-cms"
-          element={
-            <ProtectedRoute permission="cms">
-              <HeroCMS />
             </ProtectedRoute>
           }
         />

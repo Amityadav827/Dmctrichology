@@ -27,7 +27,7 @@ export const fetchMenu = async () => {
 export const fetchHeroSlides = async () => {
   try {
     const res = await api.get('/api/hero');
-    return res.data.data;
+    return res.data;
   } catch (error) {
     console.error('Error fetching hero slides', error);
     return null;
