@@ -53,7 +53,13 @@ const EnquirySection = () => {
                   </div>
                   <div>
                     <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Marcellus', serif" }}>{item.label}</p>
-                    <p style={{ margin: 0, fontSize: '14px', color: '#000', fontFamily: "'Marcellus', serif" }}>{item.value}</p>
+                    {item.label === 'Phone Number' ? (
+                      <a href={`tel:${item.value}`} style={{ textDecoration: 'none', color: '#000' }}>
+                        <p style={{ margin: 0, fontSize: '14px', color: '#000', fontFamily: "'Marcellus', serif" }}>{item.value}</p>
+                      </a>
+                    ) : (
+                      <p style={{ margin: 0, fontSize: '14px', color: '#000', fontFamily: "'Marcellus', serif" }}>{item.value}</p>
+                    )}
                   </div>
                 </div>
               ))}
