@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Marcellus&display=swap&font-display=swap');
 
 :root {
-  --text-primary: #1F3D3F;
+  --text-primary: #000000;
   --form-bg: #FFFAF1;
   --input-border: #B8B8B8;
   --input-text: #8C8C8C;
@@ -62,7 +62,7 @@ h6 {
   font-size: 44px !important;
   line-height: 1.2 !important;
   font-weight: 400 !important;
-  color: #1F3D3F !important;
+  color: #000000 !important;
   margin: 0 !important;
   text-transform: uppercase !important;
 }
@@ -494,7 +494,7 @@ a {
 .nav-item {
   position: relative;
   font-family: 'Marcellus', serif;
-  color: #1F3D3F;
+  color: #000000;
   font-size: 16px;
   font-weight: 400;
   cursor: pointer;
@@ -562,7 +562,7 @@ a {
   border: none;
   cursor: pointer;
   font-size: 24px;
-  color: #1F3D3F;
+  color: #000000;
   padding: 8px;
   border-radius: 8px;
   transition: background-color 0.2s ease;
