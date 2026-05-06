@@ -1,9 +1,28 @@
-"use client";
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const EnquirySection = () => {
   const iconUrl = "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png";
-  
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedDateTime, setSelectedDateTime] = useState('');
+  const calendarRef = useRef(null);
+
+  // Close calendar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setShowCalendar(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleDateSelect = (e) => {
+    setSelectedDateTime(e.target.value);
+    // Don't close immediately to let them select time if we had a combined one, 
+    // but for simple date input we can.
+  };
+
   return (
     <section className="enquiry-section" style={{ padding: '100px 5%', backgroundColor: '#fff' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -59,17 +78,69 @@ const EnquirySection = () => {
                  </select>
                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '12px', pointerEvents: 'none' }} alt="icon" />
               </div>
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: 'relative' }} ref={calendarRef}>
                  <input 
                    type="text" 
                    placeholder="Select Date & Time*" 
-                   className="premium-input date-input" 
-                   onFocus={(e) => (e.target.type = 'datetime-local')}
-                   onBlur={(e) => (e.target.type = 'text')}
-                   onClick={(e) => (e.target.type = 'datetime-local')}
-                   style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif", transition: 'all 0.3s ease' }} 
+                   readOnly
+                   value={selectedDateTime}
+                   className="premium-input-readonly" 
+                   style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif", transition: 'all 0.3s ease', cursor: 'default' }} 
                  />
-                 <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/bze1cv4xanahe5dvljhb.png" className="calendar-icon" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '30px', pointerEvents: 'none', transition: 'all 0.3s ease' }} alt="icon" />
+                 <div 
+                    onClick={() => setShowCalendar(!showCalendar)}
+                    className="calendar-trigger-btn"
+                    style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', width: '40px', height: '40px', backgroundColor: '#000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s ease', zIndex: 5 }}
+                 >
+                    <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/bze1cv4xanahe5dvljhb.png" style={{ width: '22px', height: '22px', filter: 'invert(1)' }} alt="icon" />
+                 </div>
+
+                 {/* Premium Calendar Popup */}
+                 {showCalendar && (
+                   <div style={{
+                     position: 'absolute',
+                     top: '110%',
+                     right: '0',
+                     width: '320px',
+                     backgroundColor: '#fff',
+                     borderRadius: '20px',
+                     boxShadow: '0 15px 40px rgba(0,0,0,0.15)',
+                     padding: '20px',
+                     zIndex: 1000,
+                     border: '1px solid #f0f0f0',
+                     animation: 'fadeInUp 0.3s ease'
+                   }}>
+                     <div style={{ marginBottom: '15px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+                        <p style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', fontFamily: "'Marcellus', serif", color: '#333' }}>Schedule Appointment</p>
+                     </div>
+                     
+                     <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '12px', color: '#777', marginBottom: '5px', fontFamily: "'Marcellus', serif" }}>Pick Date</label>
+                          <input 
+                            type="date" 
+                            onChange={(e) => setSelectedDateTime(prev => e.target.value + (prev.split(' ')[1] ? ' ' + prev.split(' ')[1] : ''))}
+                            style={{ width: '100%', padding: '10px', borderRadius: '10px', border: '1px solid #eee', outline: 'none', fontFamily: "'Marcellus', serif" }} 
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '12px', color: '#777', marginBottom: '5px', fontFamily: "'Marcellus', serif" }}>Pick Time</label>
+                          <input 
+                            type="time" 
+                            onChange={(e) => setSelectedDateTime(prev => (prev.split(' ')[0] || '') + ' ' + e.target.value)}
+                            style={{ width: '100%', padding: '10px', borderRadius: '10px', border: '1px solid #eee', outline: 'none', fontFamily: "'Marcellus', serif" }} 
+                          />
+                        </div>
+                        <button 
+                          type="button"
+                          onClick={() => setShowCalendar(false)}
+                          style={{ width: '100%', padding: '10px', backgroundColor: '#000', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontFamily: "'Marcellus', serif", fontSize: '14px', marginTop: '5px' }}
+                        >
+                          Confirm Selection
+                        </button>
+                     </div>
+                   </div>
+                 )}
               </div>
               <div style={{ gridColumn: 'span 2' }}>
                 <textarea placeholder="Enter Your Message Here*" className="premium-textarea" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif", minHeight: '100px', resize: 'none', transition: 'all 0.3s ease' }}></textarea>
@@ -129,9 +200,9 @@ const EnquirySection = () => {
         .premium-input:hover, .premium-select:hover, .premium-textarea:hover {
           background-color: #ededed;
         }
-        .date-input:focus + .calendar-icon {
-          transform: translateY(-50%) scale(1.2) !important;
-          filter: brightness(0) saturate(100%) invert(77%) sepia(35%) saturate(830%) hue-rotate(346deg) brightness(97%) contrast(85%);
+        .calendar-trigger-btn:hover {
+          transform: translateY(-50%) scale(1.1) !important;
+          background-color: #333 !important;
         }
         .premium-submit-btn:hover {
           transform: translateY(-4px);
@@ -143,6 +214,10 @@ const EnquirySection = () => {
         }
         .premium-submit-btn:active {
           transform: translateY(-1px);
+        }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 1024px) {
           .enquiry-section { padding: 60px 5% !important; }
