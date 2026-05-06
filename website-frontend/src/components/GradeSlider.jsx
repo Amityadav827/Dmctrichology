@@ -67,24 +67,24 @@ export default function GradeSlider() {
   const activeFlippedIndex = hoveredIndex !== null ? hoveredIndex : 1;
 
   return (
-    <section className="grade-section" style={{ backgroundColor: '#000', padding: '60px 0 60px 5%', position: 'relative', overflow: 'hidden' }}>
-      <div className="grade-header" style={{ marginBottom: '40px', maxWidth: '1400px' }}>
+    <section className="grade-section" style={{ backgroundColor: '#000', padding: '60px 5%', position: 'relative', overflow: 'hidden' }}>
+      <div className="grade-header" style={{ marginBottom: '40px', maxWidth: '1400px', margin: '0 auto 40px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
            <img 
              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
              alt="icon" 
              style={{ width: '40px', height: 'auto' }} 
            />
-           <span className="section-subtitle" style={{ color: '#ffffff' }}>EQUIP YOUR RECOVERY</span>
+           <span className="section-subtitle" style={{ color: '#ffffff !important' }}>EQUIP YOUR RECOVERY</span>
         </div>
         <h2 className="section-title" style={{ color: '#fff !important' }}>Know Your Grade For Hair Transplant</h2>
       </div>
 
-      <div className="slider-container" style={{ position: 'relative' }}>
+      <div className="slider-container" style={{ position: 'relative', maxWidth: '1400px', margin: '0 auto' }}>
         <Swiper
           modules={[Navigation, Autoplay]}
-          spaceBetween={20}
-          slidesPerView={1.2}
+          spaceBetween={25}
+          slidesPerView={1}
           navigation={{
             nextEl: '.grade-next-btn',
             prevEl: '.grade-prev-btn',
@@ -93,7 +93,7 @@ export default function GradeSlider() {
           breakpoints={{
             640: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
-            1400: { slidesPerView: 5 },
+            1400: { slidesPerView: 4 },
           }}
           className="grade-swiper"
           style={{ padding: '10px 0' }}
@@ -184,7 +184,7 @@ export default function GradeSlider() {
         </Swiper>
 
         {/* Custom Navigation Buttons */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '40px', paddingRight: '5%' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '40px' }}>
           <button className="grade-prev-btn" style={{
             background: 'transparent',
             border: 'none',
@@ -194,7 +194,8 @@ export default function GradeSlider() {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            zIndex: 10
           }}>
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/apdtgxwhhkwjz2c6l7lv.png" 
@@ -211,7 +212,8 @@ export default function GradeSlider() {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            zIndex: 10
           }}>
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" 
