@@ -10,8 +10,10 @@ const ReviewCard = ({ name, text }) => (
     boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
     marginBottom: '24px',
     textAlign: 'left',
-    border: '1px solid #f0f0f0'
-  }}>
+    border: '1px solid #f0f0f0',
+    cursor: 'pointer',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+  }} className="premium-review-card">
     <div style={{ display: 'flex', gap: '4px', marginBottom: '15px' }}>
       {[1, 2, 3, 4, 5].map(s => (
         <span key={s} style={{ color: '#E4B753', fontSize: '18px' }}>★</span>
@@ -27,7 +29,7 @@ const ReviewCard = ({ name, text }) => (
       {text}
     </p>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-      <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#000' }}>- {name}.</span>
+      <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#333' }}>- {name}.</span>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" alt="Google Review" style={{ width: '60px', height: 'auto' }} />
@@ -44,8 +46,9 @@ const VideoCard = ({ name, image, height = "400px", onPlay }) => (
     borderRadius: '30px',
     overflow: 'hidden',
     marginBottom: '24px',
-    cursor: 'pointer'
-  }} onClick={onPlay}>
+    cursor: 'pointer',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+  }} onClick={onPlay} className="premium-video-card">
     <Image
       src={image}
       alt={name}
@@ -64,7 +67,20 @@ const VideoCard = ({ name, image, height = "400px", onPlay }) => (
       alignItems: 'center'
     }}>
       <h4 style={{ color: '#fff', fontSize: '20px', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>{name}</h4>
-      <div style={{ height: '20px' }}></div>
+      <div style={{ 
+        width: '60px', 
+        height: '60px', 
+        borderRadius: '50%', 
+        backgroundColor: 'rgba(255,255,255,0.2)', 
+        backdropFilter: 'blur(10px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1px solid rgba(255,255,255,0.3)',
+        transition: 'all 0.3s ease'
+      }} className="play-button-overlay">
+        <div style={{ width: 0, height: 0, borderTop: '10px solid transparent', borderBottom: '10px solid transparent', borderLeft: '15px solid #fff', marginLeft: '5px' }}></div>
+      </div>
     </div>
   </div>
 );
@@ -81,8 +97,11 @@ const TestimonialSection = () => {
         {/* Header Section */}
         <div style={{ textAlign: 'center', marginBottom: '80px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-            <div style={{ width: '40px', height: '2px', backgroundColor: '#E4B753' }}></div>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#E4B753' }}></div>
+            <img 
+              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
+              alt="icon" 
+              style={{ width: '32px', height: 'auto', objectFit: 'contain' }} 
+            />
             <span className="section-subtitle">REVIEWS</span>
           </div>
           <h2 className="section-title">
@@ -245,10 +264,26 @@ const TestimonialSection = () => {
         .testimonial-staggered-grid {
           transition: all 0.5s ease;
         }
+        .premium-review-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+          border-color: #E4B753 !important;
+        }
+        .premium-video-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
+        }
+        .premium-video-card:hover .play-button-overlay {
+          transform: scale(1.2);
+          background-color: rgba(228, 183, 83, 0.9);
+          border-color: #E4B753;
+        }
         .view-all-testimonials-btn:hover {
           background-color: #000 !important;
           color: #fff !important;
           border-color: #000 !important;
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         @media (max-width: 1200px) {
           .testimonial-staggered-grid > div:nth-child(4),
