@@ -77,7 +77,7 @@ export default function LeadForm() {
             ))}
           </div>
           <div style={{ textAlign: 'left', minWidth: '110px' }}>
-            <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#000000', whiteSpace: 'nowrap', fontFamily: "'Marcellus', serif" }}>225+ Patients</div>
+            <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#333333', whiteSpace: 'nowrap', fontFamily: "'Marcellus', serif" }}>225+ Patients</div>
             <div style={{ display: 'flex', gap: '2px', marginTop: '2px', height: '10px' }}>
               {[1,2,3,4,5].map(star => <img key={star} src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" alt="star" style={{ width: '10px', height: '10px' }} />)}
             </div>

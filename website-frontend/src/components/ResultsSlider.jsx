@@ -131,7 +131,7 @@ export default function ResultsSlider() {
                     marginBottom: '24px', 
                     fontFamily: "'Marcellus', serif",
                     fontWeight: '600',
-                    color: '#000000',
+                    color: '#333333',
                     minHeight: '48px',
                     display: 'flex',
                     alignItems: 'center',
@@ -216,7 +216,7 @@ export default function ResultsSlider() {
             justifyContent: 'center',
             boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
             cursor: 'pointer',
-            color: '#000000',
+            color: '#333333',
             transition: 'all 0.3s ease'
           }}>
             <ChevronLeft size={24} />
@@ -237,7 +237,7 @@ export default function ResultsSlider() {
             justifyContent: 'center',
             boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
             cursor: 'pointer',
-            color: '#000000',
+            color: '#333333',
             transition: 'all 0.3s ease'
           }}>
             <ChevronRight size={24} />

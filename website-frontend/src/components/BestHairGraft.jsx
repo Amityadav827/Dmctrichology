@@ -40,7 +40,7 @@ export default function BestHairGraft() {
               transition: 'all 0.3s ease',
               backgroundColor: '#fff'
             }} className="feature-item">
-              <h4 style={{ fontSize: '22px', marginBottom: '15px', color: '#000000' }}>{feature.title}</h4>
+              <h4 style={{ fontSize: '22px', marginBottom: '15px', color: '#333333' }}>{feature.title}</h4>
               <p style={{ color: '#666', fontSize: '15px' }}>{feature.desc}</p>
             </div>
           ))}
