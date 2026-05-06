@@ -23,10 +23,19 @@ export default function TreatmentSection() {
         
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-             <div style={{ width: '40px', height: '1px', backgroundColor: '#E4B753' }}></div>
-             <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#E4B753' }}></div>
-             <span className="section-subtitle">REVIEWS</span>
+          <div style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '12px', 
+            marginBottom: '20px',
+            flexWrap: 'nowrap'
+          }}>
+             <img 
+               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
+               alt="icon" 
+               style={{ width: '45px', height: 'auto', objectFit: 'contain' }} 
+             />
+             <span className="section-subtitle" style={{ whiteSpace: 'nowrap' }}>TREATMENT PLAN</span>
           </div>
           <h2 className="section-title">Know the Right Treatment for You</h2>
         </div>
