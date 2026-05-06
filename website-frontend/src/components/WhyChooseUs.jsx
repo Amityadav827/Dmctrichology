@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
 
 const features = [
   {
@@ -41,7 +41,7 @@ export default function WhyChooseUs() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { damping: 25, stiffness: 150 };
+  const springConfig = { damping: 30, stiffness: 120 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
@@ -59,71 +59,82 @@ export default function WhyChooseUs() {
     
     return (
       <motion.div 
-        initial={{ opacity: 0, x: isLeft ? -80 : 80, scale: 0.95 }}
-        whileInView={{ opacity: 1, x: 0, scale: 1 }}
+        initial={{ opacity: 0, x: isLeft ? -100 : 100, filter: 'blur(10px)' }}
+        whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1, delay: index * 0.2, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1.2, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ 
-          y: -10, 
-          scale: 1.02,
-          rotateX: isLeft ? 5 : -5,
-          rotateY: index < 2 ? 5 : -5,
-          boxShadow: '0 35px 70px rgba(0,0,0,0.4)',
-          border: '1px solid rgba(254, 240, 215, 0.4)'
+          y: -12, 
+          scale: 1.03,
+          rotateX: isLeft ? 6 : -6,
+          rotateY: index < 2 ? 6 : -6,
+          boxShadow: '0 40px 80px rgba(0,0,0,0.5)',
+          border: '1px solid rgba(254, 240, 215, 0.5)'
         }}
         style={{
           backgroundColor: '#000',
           borderRadius: '24px',
-          padding: '25px',
+          padding: '28px',
           display: 'flex',
           alignItems: 'center',
-          gap: '20px',
-          width: '410px',
+          gap: '24px',
+          width: '420px',
           color: '#fff',
           textAlign: 'left',
           zIndex: 10,
           cursor: 'pointer',
           position: 'relative',
           overflow: 'hidden',
-          x: useTransform(smoothX, (v) => v * (isLeft ? -20 : 20)),
-          y: useTransform(smoothY, (v) => v * 20),
+          x: useTransform(smoothX, (v) => v * (isLeft ? -25 : 25)),
+          y: useTransform(smoothY, (v) => v * 25),
+          perspective: '1000px'
         }}
       >
-        {/* Card Ambient Glow */}
+        {/* Layered Interactive Glow */}
         <motion.div 
           className="card-glow"
-          animate={{ opacity: [0.1, 0.3, 0.1] }}
-          transition={{ duration: 3, repeat: Infinity }}
+          animate={{ 
+            opacity: [0.05, 0.2, 0.05],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           style={{
             position: 'absolute',
-            top: 0, left: 0, right: 0, bottom: 0,
-            background: 'radial-gradient(circle at 50% 50%, rgba(254, 240, 215, 0.05) 0%, transparent 80%)',
-            pointerEvents: 'none'
+            top: '-50%', left: '-50%', right: '-50%', bottom: '-50%',
+            background: 'radial-gradient(circle at center, rgba(254, 240, 215, 0.08) 0%, transparent 70%)',
+            pointerEvents: 'none',
+            zIndex: 0
           }}
         />
 
         <motion.div 
-          whileHover={{ scale: 1.15, rotate: 8 }}
+          whileHover={{ scale: 1.18, rotate: 12, boxShadow: '0 15px 30px rgba(254, 240, 215, 0.25)' }}
           className="icon-box" 
           style={{
             backgroundColor: '#FEF0D7',
-            borderRadius: '18px',
-            padding: '14px',
-            minWidth: '90px',
-            height: '90px',
+            borderRadius: '20px',
+            padding: '16px',
+            minWidth: '95px',
+            height: '95px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 10px 20px rgba(254, 240, 215, 0.15)'
+            boxShadow: '0 12px 24px rgba(254, 240, 215, 0.15)',
+            zIndex: 2,
+            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
           }}
         >
-          <img src={feat.icon} alt={feat.title} style={{ width: '55px', height: '55px', objectFit: 'contain' }} />
+          <img src={feat.icon} alt={feat.title} style={{ width: '60px', height: '60px', objectFit: 'contain' }} />
         </motion.div>
         
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '26px', marginBottom: '8px', fontWeight: 400, color: '#FEF0D7' }}>{feat.title}</h4>
-          <p style={{ fontFamily: "'Marcellus', serif", fontSize: '14px', lineHeight: '22px', color: 'rgba(255,255,255,0.8)' }}>{feat.desc}</p>
-        </div>
+        <motion.div 
+          style={{ position: 'relative', zIndex: 2 }}
+          whileHover={{ x: 5 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '28px', marginBottom: '10px', fontWeight: 400, color: '#FEF0D7', letterSpacing: '0.5px' }}>{feat.title}</h4>
+          <p style={{ fontFamily: "'Marcellus', serif", fontSize: '15px', lineHeight: '24px', color: 'rgba(255,255,255,0.85)' }}>{feat.desc}</p>
+        </motion.div>
       </motion.div>
     );
   };
@@ -133,80 +144,80 @@ export default function WhyChooseUs() {
       ref={sectionRef}
       onMouseMove={handleMouseMove}
       className="why-choose-us" 
-      style={{ padding: '100px 0', backgroundColor: '#fff', textAlign: 'center', overflow: 'hidden', perspective: '1200px' }}
+      style={{ padding: '120px 0', backgroundColor: '#fff', textAlign: 'center', overflow: 'hidden', perspective: '1500px' }}
     >
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 30, scale: 0.9 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className="section-tag" 
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '30px' }}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '35px' }}
       >
-        <img src={iconUrl} alt="icon" style={{ width: '55px', height: 'auto' }} />
-        <span className="section-subtitle" style={{ letterSpacing: '2px' }}>Best Hair Graft Clinic</span>
+        <img src={iconUrl} alt="icon" style={{ width: '60px', height: 'auto' }} />
+        <span className="section-subtitle" style={{ letterSpacing: '3px', fontWeight: '500' }}>Best Hair Graft Clinic</span>
       </motion.div>
 
       <motion.h2 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true }}
-        transition={{ delay: 0.2 }}
+        transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         className="section-title" 
-        style={{ maxWidth: '1000px', margin: '0 auto 100px !important', textAlign: 'center' }}
+        style={{ maxWidth: '1000px', margin: '0 auto 120px !important', textAlign: 'center' }}
       >
         Why DMC Trichology Is The Best Hair Transplant Clinic In Delhi
       </motion.h2>
 
       <div style={{
         position: 'relative',
-        maxWidth: '1400px',
-        height: '700px',
+        maxWidth: '1440px',
+        height: '750px',
         margin: '0 auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        {/* Energy Connector Lines SVG */}
+        {/* High-End Energy Connector SVG */}
         <svg style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}>
           <defs>
-            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(254, 240, 215, 0.1)" />
-              <stop offset="50%" stopColor="rgba(254, 240, 215, 0.5)" />
-              <stop offset="100%" stopColor="rgba(254, 240, 215, 0.1)" />
-            </linearGradient>
-            <filter id="lineGlow">
-              <feGaussianBlur stdDeviation="3" result="blur" />
+            <filter id="energyGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
+            <linearGradient id="energyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="rgba(254, 240, 215, 0)" />
+              <stop offset="50%" stopColor="rgba(254, 240, 215, 0.8)" />
+              <stop offset="100%" stopColor="rgba(254, 240, 215, 0)" />
+            </linearGradient>
           </defs>
 
-          {/* Staggered Path Drawing */}
           {[
-            { d: "M 700 350 L 410 180", delay: 0.5 },
-            { d: "M 700 350 L 410 500", delay: 0.7 },
-            { d: "M 700 350 L 990 80", delay: 0.9 },
-            { d: "M 700 350 L 990 400", delay: 1.1 }
+            { d: "M 720 375 L 420 180", delay: 0.6 },
+            { d: "M 720 375 L 420 550", delay: 0.8 },
+            { d: "M 720 375 L 1020 80", delay: 1.0 },
+            { d: "M 720 375 L 1020 450", delay: 1.2 }
           ].map((path, i) => (
             <React.Fragment key={i}>
               <motion.path 
                 d={path.d} 
-                stroke="rgba(254, 240, 215, 0.15)"
+                stroke="rgba(254, 240, 215, 0.12)"
                 strokeWidth="1.5"
                 fill="none"
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 2, delay: path.delay, ease: "easeInOut" }}
+                transition={{ duration: 2.5, delay: path.delay, ease: "easeInOut" }}
               />
-              {/* Energy Pulse Circle */}
+              {/* Energy Pulse with Glow Trail */}
               <motion.circle 
-                r="3"
+                r="3.5"
                 fill="#FEF0D7"
-                filter="url(#lineGlow)"
+                filter="url(#energyGlow)"
                 animate={{
                   offsetDistance: ["0%", "100%"]
                 }}
                 transition={{
-                  duration: 4,
+                  duration: 3.5,
                   repeat: Infinity,
                   delay: path.delay,
                   ease: "linear"
@@ -217,135 +228,136 @@ export default function WhyChooseUs() {
           ))}
         </svg>
 
-        {/* Central Luxury Ecosystem */}
+        {/* Central Futuristic Medical Ecosystem */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.7, filter: 'blur(15px)' }}
+          initial={{ opacity: 0, scale: 0.6, filter: 'blur(20px)' }}
           whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           viewport={{ once: true }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
           className="central-ecosystem" 
           style={{
-            width: '550px',
-            height: '550px',
+            width: '600px',
+            height: '600px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 5,
             position: 'relative',
-            x: useTransform(smoothX, (v) => v * 40),
-            y: useTransform(smoothY, (v) => v * 40),
+            x: useTransform(smoothX, (v) => v * 50),
+            y: useTransform(smoothY, (v) => v * 50),
           }}
         >
-          {/* Layered Floating Rings */}
+          {/* Layered Advanced Rings */}
           <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            animate={{ rotate: 360, scale: [1, 1.05, 1] }}
+            transition={{ rotate: { duration: 40, repeat: Infinity, ease: "linear" }, scale: { duration: 8, repeat: Infinity, ease: "easeInOut" } }}
             style={{
               position: 'absolute',
-              width: '100%',
-              height: '100%',
-              border: '1px solid rgba(254, 240, 215, 0.1)',
+              width: '100%', height: '100%',
+              border: '1.5px solid rgba(254, 240, 215, 0.08)',
               borderRadius: '50%',
-              padding: '20px'
+              padding: '25px'
             }}
           >
-            <div style={{ width: '100%', height: '100%', border: '1px dashed rgba(254, 240, 215, 0.2)', borderRadius: '50%' }} />
+            <div style={{ width: '100%', height: '100%', border: '1px dashed rgba(254, 240, 215, 0.15)', borderRadius: '50%' }} />
           </motion.div>
 
           <motion.div 
             animate={{ rotate: -360 }}
-            transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
             style={{
               position: 'absolute',
-              width: '85%',
-              height: '85%',
-              background: 'conic-gradient(from 0deg, transparent, rgba(254, 240, 215, 0.1), transparent)',
+              width: '88%', height: '88%',
+              background: 'conic-gradient(from 0deg, transparent, rgba(254, 240, 215, 0.05), transparent 60%)',
               borderRadius: '50%',
-              filter: 'blur(10px)'
+              filter: 'blur(15px)'
             }}
           />
 
-          {/* Deep Ambient Aura */}
+          {/* Luxury Ambient Pulse Aura */}
           <motion.div 
-            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             style={{
               position: 'absolute',
-              width: '70%',
-              height: '70%',
-              background: 'radial-gradient(circle, rgba(254, 240, 215, 0.25) 0%, transparent 70%)',
-              filter: 'blur(30px)',
+              width: '75%', height: '75%',
+              background: 'radial-gradient(circle, rgba(254, 240, 215, 0.3) 0%, transparent 75%)',
+              filter: 'blur(40px)',
               zIndex: 1
             }}
           />
 
-          {/* Particles Ecosystem */}
-          {[...Array(6)].map((_, i) => (
+          {/* Cinematic Floating Particles */}
+          {[...Array(10)].map((_, i) => (
             <motion.div
               key={i}
               animate={{ 
-                y: [0, -30, 0],
-                x: [0, 15, 0],
-                opacity: [0.2, 0.5, 0.2]
+                y: [0, -40, 0],
+                x: [0, 20, 0],
+                opacity: [0.1, 0.4, 0.1],
+                scale: [1, 1.5, 1]
               }}
               transition={{
-                duration: 4 + i,
+                duration: 5 + i,
                 repeat: Infinity,
-                delay: i * 0.5
+                delay: i * 0.4,
+                ease: "easeInOut"
               }}
               style={{
                 position: 'absolute',
-                width: '4px', height: '4px',
+                width: i % 2 === 0 ? '3px' : '5px', 
+                height: i % 2 === 0 ? '3px' : '5px',
                 backgroundColor: '#FEF0D7',
                 borderRadius: '50%',
-                top: `${20 + i * 15}%`,
-                left: `${30 + (i % 3) * 20}%`,
-                filter: 'blur(1px)'
+                top: `${15 + Math.random() * 70}%`,
+                left: `${15 + Math.random() * 70}%`,
+                filter: 'blur(1.5px)',
+                zIndex: 2
               }}
             />
           ))}
           
           <motion.img 
             src={centralImage} 
-            alt="Head Visualization" 
+            alt="Medical Visualization" 
             style={{ 
-              width: '90%', 
+              width: '92%', 
               height: 'auto', 
               position: 'relative', 
               zIndex: 6,
-              filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.4))'
+              filter: 'drop-shadow(0 40px 100px rgba(0,0,0,0.5))'
             }}
             animate={{ 
-              y: [0, -25, 0],
-              rotate: [0, 1.5, -1.5, 0],
-              scale: [1, 1.02, 1]
+              y: [0, -30, 0],
+              rotate: [0, 2, -2, 0],
+              scale: [1, 1.03, 1]
             }}
             transition={{ 
-              duration: 8, 
+              duration: 10, 
               repeat: Infinity, 
               ease: "easeInOut" 
             }}
           />
         </motion.div>
 
-        {/* Feature Cards with Coordinated Breathing */}
-        <div style={{ position: 'absolute', top: '120px', left: '0' }}>{renderCard(features[0], 0)}</div>
-        <div style={{ position: 'absolute', top: '440px', left: '0' }}>{renderCard(features[1], 1)}</div>
-        <div style={{ position: 'absolute', top: '30px', right: '0' }}>{renderCard(features[2], 2)}</div>
-        <div style={{ position: 'absolute', top: '350px', right: '0' }}>{renderCard(features[3], 3)}</div>
+        {/* Coordinated Premium Feature Cards */}
+        <div style={{ position: 'absolute', top: '100px', left: '0' }}>{renderCard(features[0], 0)}</div>
+        <div style={{ position: 'absolute', top: '480px', left: '0' }}>{renderCard(features[1], 1)}</div>
+        <div style={{ position: 'absolute', top: '0px', right: '0' }}>{renderCard(features[2], 2)}</div>
+        <div style={{ position: 'absolute', top: '380px', right: '0' }}>{renderCard(features[3], 3)}</div>
       </div>
 
       <style jsx>{`
         .why-choose-us {
-          background-image: radial-gradient(circle at 10% 20%, rgba(254, 240, 215, 0.03) 0%, transparent 40%),
-                            radial-gradient(circle at 90% 80%, rgba(254, 240, 215, 0.03) 0%, transparent 40%);
+          background: radial-gradient(circle at 15% 15%, rgba(254, 240, 215, 0.04) 0%, transparent 35%),
+                      radial-gradient(circle at 85% 85%, rgba(254, 240, 215, 0.04) 0%, transparent 35%);
         }
-        @media (max-width: 1100px) {
-          div[style*="height: 700px"] { height: auto !important; flex-direction: column !important; }
-          div[style*="position: absolute"] { position: relative !important; top: auto !important; left: auto !important; right: auto !important; margin: 15px auto !important; transform: none !important; }
-          .central-ecosystem { width: 350px !important; height: 350px !important; margin: 50px auto !important; transform: none !important; }
+        @media (max-width: 1200px) {
+          div[style*="height: 750px"] { height: auto !important; flex-direction: column !important; padding: 40px 0; }
+          div[style*="position: absolute"] { position: relative !important; top: auto !important; left: auto !important; right: auto !important; margin: 20px auto !important; transform: none !important; }
+          .central-ecosystem { width: 400px !important; height: 400px !important; margin: 60px auto !important; transform: none !important; }
           svg { display: none; }
-          .feature-card { width: 90% !important; max-width: 420px; }
+          .feature-card { width: 92% !important; max-width: 440px; }
         }
       `}</style>
     </section>
