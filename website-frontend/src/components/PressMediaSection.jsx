@@ -58,7 +58,7 @@ export default function PressMediaSection() {
 
                 {/* Rating Info */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                  <div style={{ fontSize: '16px', fontWeight: '500', color: '#1C1C1C', fontFamily: "'Lato', sans-serif" }}>
+                  <div style={{ fontSize: '16px', fontWeight: '500', color: '#1C1C1C', fontFamily: "'Marcellus', serif" }}>
                     225+ Satisfied Patients
                   </div>
                   <div style={{ display: 'flex', gap: '4px' }}>
@@ -96,7 +96,7 @@ export default function PressMediaSection() {
                 cursor: 'pointer',
                 fontSize: '16px',
                 fontWeight: '500',
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: "'Marcellus', serif",
                 marginTop: '0px'
               }}>
                 Get Free Consulting

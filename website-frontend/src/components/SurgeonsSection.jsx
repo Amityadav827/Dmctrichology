@@ -125,7 +125,7 @@ const SurgeonsSection = () => {
                 fontSize: '14px', 
                 lineHeight: '22px', 
                 color: '#333', 
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: "'Marcellus', serif",
                 marginBottom: '20px'
               }}>{activeSurgeon.role}</p>
 
@@ -137,7 +137,7 @@ const SurgeonsSection = () => {
                       alt="check" 
                       style={{ width: '16px', height: 'auto' }} 
                     />
-                    <span style={{ fontSize: '13px', color: '#333', fontFamily: "'Lato', sans-serif" }}>{feature}</span>
+                    <span style={{ fontSize: '13px', color: '#333', fontFamily: "'Marcellus', serif" }}>{feature}</span>
                   </div>
                 ))}
               </div>
@@ -147,7 +147,7 @@ const SurgeonsSection = () => {
                 borderRadius: '30px', 
                 border: '1px solid #000', 
                 backgroundColor: 'transparent',
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: "'Marcellus', serif",
                 fontSize: '14px',
                 display: 'flex',
                 alignItems: 'center',

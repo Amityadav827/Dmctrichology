@@ -34,7 +34,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ width: '100%', fontFamily: "'Lato', sans-serif" }}>
+    <footer style={{ width: '100%', fontFamily: "'Marcellus', serif" }}>
 
       {/* Top Footer Section (Beige) */}
       <div style={{ backgroundColor: '#F9F4EA', padding: '80px 5% 150px 5%' }}>

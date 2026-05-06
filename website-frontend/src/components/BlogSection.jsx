@@ -42,7 +42,7 @@ export default function BlogSection() {
              <span className="section-subtitle">OUR LATEST BLOGS</span>
           </div>
           <h2 className="section-title">News & Wellness Advice</h2>
-          <p style={{ maxWidth: '700px', margin: '0 auto', fontSize: '15px', color: '#666', fontFamily: "'Lato', sans-serif", lineHeight: '1.6' }}>
+          <p style={{ maxWidth: '700px', margin: '0 auto', fontSize: '15px', color: '#666', fontFamily: "'Marcellus', serif", lineHeight: '1.6' }}>
             Our Expert Therapists Work With You To Create Tailored Recovery Plans That Target Your Specific Needs And Goals.
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function BlogSection() {
                   padding: '6px 20px', 
                   borderRadius: '30px',
                   fontSize: '13px',
-                  fontFamily: "'Lato', sans-serif"
+                  fontFamily: "'Marcellus', serif"
                 }}>
                   {blog.date}
                 </div>
@@ -89,7 +89,7 @@ export default function BlogSection() {
                 <div>
                    <img src={blog.authorIcon} alt="author" style={{ width: '32px' }} />
                 </div>
-                <span style={{ fontSize: '16px', color: blog.isActive ? 'rgba(255,255,255,0.7)' : '#666', fontFamily: "'Lato', sans-serif" }}>
+                <span style={{ fontSize: '16px', color: blog.isActive ? 'rgba(255,255,255,0.7)' : '#666', fontFamily: "'Marcellus', serif" }}>
                   {blog.author}
                 </span>
               </div>
@@ -111,7 +111,7 @@ export default function BlogSection() {
                 style={{ 
                   fontSize: '14px', 
                   color: blog.isActive ? '#fff' : '#000', 
-                  fontFamily: "'Lato', sans-serif", 
+                  fontFamily: "'Marcellus', serif", 
                   textDecoration: 'underline',
                   fontWeight: 'bold'
                 }}

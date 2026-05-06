@@ -55,11 +55,11 @@ export default function LeadForm() {
     <div className="form-container" style={{ backgroundColor: '#FFFBF0', borderRadius: '24px', padding: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', height: '30px' }}>
         <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
-        <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#1F3D3F', fontWeight: 'bold' }}>Book a Session</span>
+        <span className="section-subtitle" style={{ fontSize: '11px' }}>Book a Session</span>
       </div>
       
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', gap: '15px', height: '50px' }}>
-        <h2 style={{ fontSize: '2.2rem', color: '#000', margin: 0, fontFamily: "'Marcellus', serif", whiteSpace: 'nowrap' }}>Request A Call</h2>
+        <h2 className="section-title" style={{ fontSize: '2.2rem', whiteSpace: 'nowrap', textTransform: 'none' }}>Request A Call</h2>
         <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ display: 'flex', height: '30px' }}>
             {[1,2,3,4].map(i => (
@@ -77,7 +77,7 @@ export default function LeadForm() {
             ))}
           </div>
           <div style={{ textAlign: 'left', minWidth: '110px' }}>
-            <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#1F3D3F', whiteSpace: 'nowrap' }}>225+ Patients</div>
+            <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#1F3D3F', whiteSpace: 'nowrap', fontFamily: "'Marcellus', serif" }}>225+ Patients</div>
             <div style={{ display: 'flex', gap: '2px', marginTop: '2px', height: '10px' }}>
               {[1,2,3,4,5].map(star => <img key={star} src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" alt="star" style={{ width: '10px', height: '10px' }} />)}
             </div>

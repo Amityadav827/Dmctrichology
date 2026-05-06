@@ -49,7 +49,7 @@ const AboutUsCare = () => {
             fontSize: '14px', 
             lineHeight: '22px', 
             color: '#666', 
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "'Marcellus', serif",
             marginBottom: '30px',
             maxWidth: '500px'
           }}>
@@ -90,7 +90,7 @@ const AboutUsCare = () => {
               {points.map((point, index) => (
                 <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '6px', zIndex: 2 }}>
                   <CheckCircle2 size={14} color="#fff" />
-                  <span style={{ color: '#fff', fontSize: '12px', fontFamily: "'Lato', sans-serif" }}>{point}</span>
+                  <span style={{ color: '#fff', fontSize: '12px', fontFamily: "'Marcellus', serif" }}>{point}</span>
                 </div>
               ))}
             </div>

@@ -22,7 +22,7 @@ const ReviewCard = ({ name, text }) => (
       color: '#444',
       lineHeight: '1.6',
       marginBottom: '20px',
-      fontFamily: "'Lato', sans-serif"
+      fontFamily: "'Marcellus', serif"
     }}>
       {text}
     </p>

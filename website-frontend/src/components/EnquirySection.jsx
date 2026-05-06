@@ -18,7 +18,7 @@ const EnquirySection = () => {
               <span className="section-subtitle">WHY CHOOSE US SERVICES</span>
             </div>
             <h2 className="section-title">REQUEST A <br />CONSULTATION</h2>
-            <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Lato', sans-serif", marginBottom: '30px' }}>Clinic Timings ( By Appointments Only)</p>
+            <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Marcellus', serif", marginBottom: '30px' }}>Clinic Timings ( By Appointments Only)</p>
 
             {/* Contact Info Grid */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px' }}>
@@ -32,8 +32,8 @@ const EnquirySection = () => {
                     <img src={item.icon} alt="icon" style={{ width: '30px' }} />
                   </div>
                   <div>
-                    <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Lato', sans-serif" }}>{item.label}</p>
-                    <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold', color: '#000', fontFamily: "'Lato', sans-serif" }}>{item.value}</p>
+                    <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Marcellus', serif" }}>{item.label}</p>
+                    <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold', color: '#000', fontFamily: "'Marcellus', serif" }}>{item.value}</p>
                   </div>
                 </div>
               ))}
@@ -44,23 +44,23 @@ const EnquirySection = () => {
           <div style={{ flex: '1 1 400px', paddingTop: '55px', position: 'relative', zIndex: 2 }}>
             <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
               <div>
-                 <input type="text" placeholder="Name*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif" }} />
+                 <input type="text" placeholder="Name*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif" }} />
               </div>
               <div>
-                 <input type="email" placeholder="E-Mail Address*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif" }} />
+                 <input type="email" placeholder="E-Mail Address*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif" }} />
               </div>
               <div style={{ position: 'relative' }}>
-                 <select style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif", appearance: 'none' }}>
+                 <select style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif", appearance: 'none' }}>
                    <option>Type Of Service Enquiry*</option>
                  </select>
                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/qcrzwotm1zyqsdbu6ttb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '12px' }} alt="icon" />
               </div>
               <div style={{ position: 'relative' }}>
-                 <input type="text" placeholder="Select Date & Time*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif" }} />
+                 <input type="text" placeholder="Select Date & Time*" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif" }} />
                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/bze1cv4xanahe5dvljhb.png" style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', width: '30px' }} alt="icon" />
               </div>
               <div style={{ gridColumn: 'span 2' }}>
-                <textarea placeholder="Enter Your Message Here*" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Lato', sans-serif", minHeight: '100px', resize: 'none' }}></textarea>
+                <textarea placeholder="Enter Your Message Here*" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif", minHeight: '100px', resize: 'none' }}></textarea>
               </div>
               <div style={{ gridColumn: 'span 2' }}>
                 <button style={{ 

@@ -75,7 +75,7 @@ export default function FaqSection() {
                   fontSize: '14px',
                   fontWeight: '500',
                   transition: 'all 0.3s ease',
-                  fontFamily: "'Lato', sans-serif"
+                  fontFamily: "'Marcellus', serif"
                 }}
               >
                 {tab}
@@ -125,7 +125,7 @@ export default function FaqSection() {
                 <p style={{
                   fontSize: '14px',
                   color: faq.isActive ? 'rgba(255,255,255,0.8)' : '#666',
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "'Marcellus', serif",
                   lineHeight: '1.6'
                 }}>
                   {faq.answer}

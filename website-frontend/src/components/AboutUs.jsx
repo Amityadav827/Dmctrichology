@@ -55,7 +55,7 @@ const AboutUs = () => {
                   alt="divider" 
                   style={{ width: '60px', height: 'auto', marginBottom: '10px' }} 
                 />
-                <p style={{ fontSize: '12px', color: '#777', fontFamily: "'Lato', sans-serif", maxWidth: '180px', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '12px', color: '#777', fontFamily: "'Marcellus', serif", maxWidth: '180px', lineHeight: '1.6' }}>
                   Experience Compassionate Care Healthier Care Certified Brighter Smile.
                 </p>
               </div>

@@ -14,7 +14,7 @@ export default function BestHairGraft() {
             margin: '0 auto', 
             color: '#666', 
             lineHeight: '1.8',
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "'Marcellus', serif",
             fontSize: '18px'
           }}>
             Experience the most advanced hair restoration techniques at DMC Trichology. Our expert surgeons specialize in high-density hair transplants with natural-looking results, tailored to your unique needs.

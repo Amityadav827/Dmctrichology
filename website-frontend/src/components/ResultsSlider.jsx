@@ -129,7 +129,7 @@ export default function ResultsSlider() {
                   <h3 style={{ 
                     fontSize: '14px', 
                     marginBottom: '24px', 
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: "'Marcellus', serif",
                     fontWeight: '600',
                     color: '#1F3D3F',
                     minHeight: '48px',
@@ -189,7 +189,7 @@ export default function ResultsSlider() {
                   <p style={{ 
                     fontSize: '15px', 
                     color: '#666', 
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: "'Marcellus', serif",
                     fontWeight: '500'
                   }}>
                     {result.sessions}

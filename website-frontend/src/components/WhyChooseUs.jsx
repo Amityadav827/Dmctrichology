@@ -59,7 +59,7 @@ export default function WhyChooseUs() {
       </div>
       <div>
         <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '24px', marginBottom: '8px', fontWeight: 400, color: '#FEF0D7' }}>{feat.title}</h4>
-        <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '13px', lineHeight: '20px', color: '#FFFFFF' }}>{feat.desc}</p>
+        <p style={{ fontFamily: "'Marcellus', serif", fontSize: '13px', lineHeight: '20px', color: '#FFFFFF' }}>{feat.desc}</p>
       </div>
     </div>
   );

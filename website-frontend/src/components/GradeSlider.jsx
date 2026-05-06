@@ -154,7 +154,7 @@ export default function GradeSlider() {
                     textAlign: 'left'
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                      <span style={{ fontSize: '18px', fontWeight: '600', color: '#333', fontFamily: "'Lato', sans-serif" }}>{item.grade}</span>
+                      <span style={{ fontSize: '18px', fontWeight: '600', color: '#333', fontFamily: "'Marcellus', serif" }}>{item.grade}</span>
                       <img src={item.image} alt={item.grade} style={{ width: '50px', height: '50px', borderRadius: '50%', border: '2px solid #F09819' }} />
                     </div>
 

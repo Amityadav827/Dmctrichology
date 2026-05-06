@@ -50,7 +50,7 @@ export default function TreatmentSection() {
               {/* Content Side */}
               <div style={{ flex: 1, padding: '40px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <h3 style={{ fontSize: '28px', color: '#000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '15px' }}>{card.title}</h3>
-                <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Lato', sans-serif", lineHeight: '1.6', marginBottom: '30px' }}>{card.desc}</p>
+                <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Marcellus', serif", lineHeight: '1.6', marginBottom: '30px' }}>{card.desc}</p>
                 
                 <a href={card.link} className="treatment-btn" style={{ 
                   display: 'flex', 

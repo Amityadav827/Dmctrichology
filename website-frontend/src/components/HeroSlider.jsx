@@ -69,12 +69,12 @@ export default function HeroSlider() {
           <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 255, 0.2)', zIndex: 1 }}></div>
 
           <div className={`slide-content ${index === currentSlide && contentReady ? 'slide-content-animate' : ''}`}>
-            <span className="slide-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#1F3D3F', fontWeight: 'bold' }}>
+            <span className="section-subtitle" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
               <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto', objectFit: 'contain' }} />
               {slide.tag}
             </span>
-            <h1 className="slide-title" style={{ fontFamily: "'Marcellus', serif", fontSize: '54px', color: '#000', marginBottom: '16px' }}>{slide.title}</h1>
-            <p className="slide-desc" style={{ fontFamily: "'Lato', sans-serif", fontSize: '18px', color: '#333' }}>{slide.description}</p>
+            <h1 className="section-title" style={{ fontSize: '54px', marginBottom: '16px', textTransform: 'none' }}>{slide.title}</h1>
+            <p className="slide-desc" style={{ fontFamily: "'Marcellus', serif", fontSize: '18px', color: '#333' }}>{slide.description}</p>
           </div>
         </div>
       ))}
