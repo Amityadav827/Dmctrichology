@@ -67,15 +67,15 @@ export default function GradeSlider() {
   const activeFlippedIndex = hoveredIndex !== null ? hoveredIndex : 1;
 
   return (
-    <section className="grade-section" style={{ backgroundColor: '#000', padding: '100px 0 100px 5%', position: 'relative', overflow: 'hidden' }}>
-      <div className="grade-header" style={{ marginBottom: '60px', maxWidth: '1400px' }}>
+    <section className="grade-section" style={{ backgroundColor: '#000', padding: '60px 0 60px 5%', position: 'relative', overflow: 'hidden' }}>
+      <div className="grade-header" style={{ marginBottom: '40px', maxWidth: '1400px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
            <img 
              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
              alt="icon" 
-             style={{ width: '50px', height: 'auto' }} 
+             style={{ width: '40px', height: 'auto' }} 
            />
-           <span className="section-subtitle">EQUIP YOUR RECOVERY</span>
+           <span className="section-subtitle" style={{ color: '#ffffff' }}>EQUIP YOUR RECOVERY</span>
         </div>
         <h2 className="section-title" style={{ color: '#fff !important' }}>Know Your Grade For Hair Transplant</h2>
       </div>
@@ -83,7 +83,7 @@ export default function GradeSlider() {
       <div className="slider-container" style={{ position: 'relative' }}>
         <Swiper
           modules={[Navigation, Autoplay]}
-          spaceBetween={25}
+          spaceBetween={20}
           slidesPerView={1.2}
           navigation={{
             nextEl: '.grade-next-btn',
@@ -91,12 +91,12 @@ export default function GradeSlider() {
           }}
           loop={true}
           breakpoints={{
-            640: { slidesPerView: 2.2 },
-            1024: { slidesPerView: 3.5 },
-            1400: { slidesPerView: 4.5 },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1400: { slidesPerView: 5 },
           }}
           className="grade-swiper"
-          style={{ padding: '20px 0' }}
+          style={{ padding: '10px 0' }}
         >
           {gradeData.map((item, index) => (
             <SwiperSlide key={item.id}>
@@ -106,7 +106,7 @@ export default function GradeSlider() {
                 onMouseLeave={() => setHoveredIndex(null)}
                 style={{ 
                   perspective: '1500px',
-                  height: '400px',
+                  height: '320px',
                   cursor: 'pointer'
                 }}
               >
@@ -128,14 +128,14 @@ export default function GradeSlider() {
                     height: '100%',
                     backfaceVisibility: 'hidden',
                     backgroundColor: '#FFFAF1',
-                    borderRadius: '30px',
-                    padding: '40px 30px',
+                    borderRadius: '25px',
+                    padding: '20px',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}>
-                    <img src={item.image} alt={item.grade} style={{ width: '180px', height: 'auto', objectFit: 'contain' }} />
+                    <img src={item.image} alt={item.grade} style={{ width: '140px', height: 'auto', objectFit: 'contain' }} />
                   </div>
 
                   {/* Back Side */}
@@ -145,35 +145,35 @@ export default function GradeSlider() {
                     height: '100%',
                     backfaceVisibility: 'hidden',
                     backgroundColor: '#FFFAF1',
-                    borderRadius: '30px',
-                    padding: '40px 30px',
+                    borderRadius: '25px',
+                    padding: '25px 20px',
                     transform: 'rotateY(180deg)',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'flex-start',
                     textAlign: 'left'
                   }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                      <span style={{ fontSize: '18px', fontWeight: '600', color: '#333', fontFamily: "'Marcellus', serif" }}>{item.grade}</span>
-                      <img src={item.image} alt={item.grade} style={{ width: '50px', height: '50px', borderRadius: '50%', border: '2px solid #F09819' }} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                      <span style={{ fontSize: '16px', fontWeight: '600', color: '#333', fontFamily: "'Marcellus', serif" }}>{item.grade}</span>
+                      <img src={item.image} alt={item.grade} style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid #F09819' }} />
                     </div>
 
                     <div style={{ flexGrow: 1 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #eee' }}>
-                        <span style={{ color: '#666', fontSize: '14px' }}>Approx Area</span>
-                        <span style={{ fontWeight: '600', color: '#333' }}>{item.area}</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #eee' }}>
+                        <span style={{ color: '#666', fontSize: '13px' }}>Approx Area</span>
+                        <span style={{ fontWeight: '600', color: '#333', fontSize: '13px' }}>{item.area}</span>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #eee' }}>
-                        <span style={{ color: '#666', fontSize: '14px' }}>Avg. Density</span>
-                        <span style={{ fontWeight: '600', color: '#333' }}>{item.density}</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #eee' }}>
+                        <span style={{ color: '#666', fontSize: '13px' }}>Avg. Density</span>
+                        <span style={{ fontWeight: '600', color: '#333', fontSize: '13px' }}>{item.density}</span>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', backgroundColor: '#FBEED7', margin: '12px -10px', paddingLeft: '10px', paddingRight: '10px', borderRadius: '8px' }}>
-                        <span style={{ color: '#666', fontSize: '14px' }}>No. of Grafts</span>
-                        <span style={{ fontWeight: '700', color: '#F09819' }}>{item.grafts}</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', backgroundColor: '#FBEED7', margin: '8px -5px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '6px' }}>
+                        <span style={{ color: '#666', fontSize: '13px' }}>No. of Grafts</span>
+                        <span style={{ fontWeight: '700', color: '#F09819', fontSize: '13px' }}>{item.grafts}</span>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0' }}>
-                        <span style={{ color: '#666', fontSize: '14px' }}>Session</span>
-                        <span style={{ fontWeight: '600', color: '#333' }}>{item.session}</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
+                        <span style={{ color: '#666', fontSize: '13px' }}>Session</span>
+                        <span style={{ fontWeight: '600', color: '#333', fontSize: '13px' }}>{item.session}</span>
                       </div>
                     </div>
                   </div>
