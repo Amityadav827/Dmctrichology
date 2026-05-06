@@ -66,7 +66,12 @@ export default function HeroSlider() {
             className={`slide-bg ${index === currentSlide ? 'slide-bg-zoom' : ''}`}
             style={{ backgroundImage: `url(${slide.image})` }}
           />
-          <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 255, 0.2)', zIndex: 1 }}></div>
+          <div style={{ 
+            position: 'absolute', 
+            inset: 0, 
+            background: 'linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%)', 
+            zIndex: 1 
+          }}></div>
 
           <div className={`slide-content ${index === currentSlide && contentReady ? 'slide-content-animate' : ''}`}>
             <span className="section-subtitle" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
