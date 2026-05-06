@@ -147,8 +147,7 @@ export default function FaqSection() {
                     style={{
                       width: '50px',
                       height: '50px',
-                      filter: isActive ? 'brightness(0) invert(1)' : 'none',
-                      transition: 'filter 0.3s ease'
+                      transition: 'transform 0.3s ease'
                     }}
                   />
                 </div>
@@ -194,14 +193,16 @@ export default function FaqSection() {
             fontSize: '14px',
             fontWeight: '600',
             fontFamily: "'Marcellus', serif",
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            position: 'relative',
+            zIndex: 1
           }}>
             View All Questions
             <img 
               src="https://res.cloudinary.com/dseixl6px/image/upload/v1777698274/dmc-trichology/dh9kblxoinqmi5kvoona.png" 
               className="btn-arrow"
               alt="arrow" 
-              style={{ width: '32px', height: '32px', transition: 'transform 0.3s ease' }} 
+              style={{ width: '32px', height: '32px', transition: 'all 0.3s ease' }} 
             />
           </button>
         </div>
@@ -217,12 +218,11 @@ export default function FaqSection() {
           background-color: #000 !important;
           color: #fff !important;
           border-color: #000 !important;
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+          transform: translateY(-3px);
+          box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         .view-all-faq-btn:hover .btn-arrow {
-          transform: translateX(5px);
-          filter: brightness(0) invert(1);
+          transform: translateX(8px);
         }
         @media (max-width: 768px) {
           section { padding: 60px 5% !important; }
