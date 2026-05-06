@@ -73,7 +73,7 @@ export default function WhyChooseUs() {
         </span>
       </div>
 
-      <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 100px' }}>
+      <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 100px', textAlign: 'center' }}>
         Why DMC Trichology Is The Best Hair Transplant Clinic In Delhi
       </h2>
 
