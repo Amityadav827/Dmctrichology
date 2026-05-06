@@ -6,7 +6,7 @@ export default function BlogSection() {
   const blogs = [
     {
       date: "May 9, 2025",
-      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777639996/dmc-trichology/hhr1froywuxce7joupag.png",
+      image: "http://dmctrichology-1.onrender.com/uploads/gallery/frame-134637-1778052227822.png",
       author: "Dr. Alisha Verma, Physiotherapist",
       authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777699290/dmc-trichology/xfi18qjzfi3nlsrf4taa.png",
       title: "PRP Hair Treatment – How Many Sessions Needed?",
@@ -23,7 +23,7 @@ export default function BlogSection() {
     },
     {
       date: "May 9, 2025",
-      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777639995/dmc-trichology/imnwwbaiz0g1z70et338.png",
+      image: "http://dmctrichology-1.onrender.com/uploads/gallery/frame-134664-1778052226564.png",
       author: "Dr. Rahul Kapoor, Neuro & Expert",
       authorIcon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777699290/dmc-trichology/xfi18qjzfi3nlsrf4taa.png",
       title: "Hair Regrowth Timeline — What To Realistically Expect And When To Actually See Results",
