@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "../api/axios";
-import { toast } from "react-toastify";
+import axios from "../api/client";
+import toast from "react-hot-toast";
 import { Upload, Save, Loader2 } from "lucide-react";
 
 export default function WebsiteSettings() {
