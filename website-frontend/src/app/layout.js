@@ -11,24 +11,7 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  let settings = null;
-  let topBarData = null;
-  let heroData = null;
-
-  try {
-    // Ultra-safe fetching: isolated each call to prevent Promise.allSettled issues if Axios throws synchronously
-    const fetchS = async () => { try { return await fetchSiteSettings(); } catch(e) { return null; } };
-    const fetchT = async () => { try { return await fetchTopBar(); } catch(e) { return null; } };
-    const fetchH = async () => { try { return await fetchHeroSlides(); } catch(e) { return null; } };
-
-    const results = await Promise.all([fetchS(), fetchT(), fetchH()]);
-    
-    settings = results[0];
-    topBarData = results[1];
-    heroData = results[2];
-  } catch (error) {
-    console.error("Critical RootLayout Error:", error);
-  }
+  const settings = await fetchSiteSettings();
   
   const primaryColor = settings?.primaryColor || "#C19A5B";
   const secondaryColor = settings?.secondaryColor || "#000000";

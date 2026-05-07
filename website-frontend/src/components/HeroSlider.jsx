@@ -1,12 +1,11 @@
+"use client";
+import { useState, useEffect } from 'react';
 import { fetchHeroSlides } from '../services/api';
 import EditableText from './Editable/EditableText';
 import EditableSection from './Editable/EditableSection';
-import { useBuilder } from '../context/BuilderContext';
 
 export default function HeroSlider() {
-  const { heroCMS, setHeroCMS } = useBuilder();
-  
-  const [slides, setSlides] = useState(heroCMS?.slides || [
+  const [slides, setSlides] = useState([
     {
       backgroundImage: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png',
       tag: 'TRUSTED CARE',
@@ -21,7 +20,6 @@ export default function HeroSlider() {
     fetchHeroSlides().then(data => {
       if (data && data.data && data.data.slides) {
         setSlides(data.data.slides);
-        setHeroCMS(data.data);
       }
     });
     // Trigger entrance animation shortly after mount
