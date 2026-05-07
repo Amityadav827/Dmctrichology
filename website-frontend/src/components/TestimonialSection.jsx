@@ -1,8 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import axios from 'axios';
+import EditableSection from './Editable/EditableSection';
+import EditableText from './Editable/EditableText';
 
-const ReviewCard = ({ name, text }) => (
+const ReviewCard = ({ name, text, sectionId, index }) => (
   <div style={{
     backgroundColor: '#fff',
     padding: '24px',
@@ -26,19 +29,22 @@ const ReviewCard = ({ name, text }) => (
       marginBottom: '20px',
       fontFamily: "'Marcellus', serif"
     }}>
-      {text}
+      <EditableText sectionId={sectionId} fieldPath={`reviews.${index}.text`} tag="span">
+        {text}
+      </EditableText>
     </p>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-      <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#333' }}>- {name}.</span>
+      <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#333' }}>
+        - <EditableText sectionId={sectionId} fieldPath={`reviews.${index}.name`} tag="span">{name}</EditableText>.
+      </span>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777721827/dmc-trichology/ju75pcuuqsccgndqvnno.png" alt="Google Review" style={{ width: '60px', height: 'auto' }} />
       </div>
     </div>
   </div>
 );
 
-const VideoCard = ({ name, image, height = "400px", onPlay }) => (
+const VideoCard = ({ name, image, height = "400px", onPlay, sectionId, index }) => (
   <div style={{
     position: 'relative',
     width: '100%',
@@ -66,233 +72,133 @@ const VideoCard = ({ name, image, height = "400px", onPlay }) => (
       padding: '24px',
       alignItems: 'center'
     }}>
-      <h4 style={{ color: '#fff', fontSize: '20px', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>{name}</h4>
+      <h4 style={{ color: '#fff', fontSize: '20px', fontFamily: "'Marcellus', serif", fontWeight: '400', textAlign: 'center' }}>
+        <EditableText sectionId={sectionId} fieldPath={`videos.${index}.name`} tag="span">
+          {name}
+        </EditableText>
+      </h4>
     </div>
   </div>
 );
 
 const TestimonialSection = () => {
+  const [data, setData] = useState(null);
   const [activeVideo, setActiveVideo] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/sections/testimonials`);
+        if (res.data.success && res.data.data) {
+          setData(res.data.data);
+        }
+      } catch (err) {
+        console.error("Testimonials Fetch Error:", err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const title = data?.title || 'See the Results. Hear the Stories.';
+  const subtitle = data?.subtitle || 'REVIEWS';
+  const reviewsCount = data?.reviewsCount || '7000+ Reviews on';
+  
+  const reviews = data?.reviews || [
+    { name: "Anjali Kohli", text: "The full body laser session was excellent. The therapist was highly skilled and made the experience comfortable and effective." },
+    { name: "Ravi Malik", text: "The result of laser treatment is very nice. I have tried LHR from different places but find this the best." },
+    { name: "Priya Sharma", text: "Today is the first session of slimming the abdomen, and love handles inch loss. I am totally satisfied with service." },
+    { name: "Vikas sharma", text: "I really liked the way you handled that unwanted hair on my body. Avataar, you made it all so simple and quick" },
+    { name: "Sneha Aggrawal", text: "I highly recommend their services to anyone looking to enhance their natural beauty and enjoy a moment of relaxation." },
+    { name: "Rahul Tomar", text: "The results exceeded my expectations, and I felt pampered without the hassle of traveling to a salon." },
+    { name: "Priyal Sen", text: "The procedure was quick, comfortable... I've already started noticing positive changes since my first session." },
+    { name: "Viihan Rath", text: "The technician was very skilled, gentle, and made sure I was comfortable throughout the session." },
+    { name: "Simran Paul", text: "I've had a great experience with my laser hair reduction sessions. My therapist is highly professional and gentle." },
+    { name: "Alka Singh", text: "Thank you for the wonderful facial! The entire experience was relaxing and refreshing. You were very professional." }
+  ];
+
+  const videos = data?.videos || [
+    { name: "Real Results Story", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/ba79ohixgo962pduymyd.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { name: "Tanvi's Hydration", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/u1z7ggmemmekm84ep5hu.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { name: "Kritika Kamra", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/pgab6yn3skxpsx4oftws.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { name: "Shweta Tiwari", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/fgljhvgnh4lyhilbokdf.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    { name: "Influencer Dish", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/o0naqjvopw7otiwdzwsg.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+  ];
 
   const closeVideo = () => setActiveVideo(null);
 
   return (
-    <section className="testimonials-grid-section" style={{ padding: '0 5% 100px 5%', backgroundColor: '#fff' }}>
-      <div style={{ maxWidth: '1450px', margin: '0 auto' }}>
+    <EditableSection sectionId="testimonials" label="Testimonials Grid">
+      <section className="testimonials-grid-section" style={{ padding: '0 5% 100px 5%', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '1450px', margin: '0 auto' }}>
 
-        {/* Header Section */}
-        <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-            <img 
-              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
-              alt="icon" 
-              style={{ width: '32px', height: 'auto', objectFit: 'contain' }} 
-            />
-            <span className="section-subtitle">REVIEWS</span>
-          </div>
-          <h2 className="section-title">
-            See the Results. Hear the Stories.
-          </h2>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '16px', color: '#666' }}>7000+ Reviews on</span>
-            <Image
-              src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
-              alt="Google"
-              width={80}
-              height={26}
-              style={{ width: '80px', height: 'auto', marginTop: '4px' }}
-            />
-          </div>
-        </div>
-
-        {/* Staggered Grid */}
-        <div className="testimonial-staggered-grid" style={{
-          display: 'flex',
-          gap: '24px',
-          alignItems: 'flex-start'
-        }}>
-
-          {/* Column 1 */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <ReviewCard name="Anjali Kohli" text="The full body laser session was excellent. The therapist was highly skilled and made the experience comfortable and effective." />
-            <VideoCard
-              name="Real Results Story"
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/ba79ohixgo962pduymyd.png"
-              height="450px"
-              onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
-            />
-            <ReviewCard name="Ravi Malik" text="The result of laser treatment is very nice. I have tried LHR from different places but find this the best." />
+          {/* Header Section */}
+          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
+              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '32px', height: 'auto', objectFit: 'contain' }} />
+              <EditableText sectionId="testimonials" fieldPath="subtitle" tag="span" className="section-subtitle">
+                {subtitle}
+              </EditableText>
+            </div>
+            <h2 className="section-title">
+              <EditableText sectionId="testimonials" fieldPath="title" tag="span">
+                {title}
+              </EditableText>
+            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '16px', color: '#666' }}>
+                <EditableText sectionId="testimonials" fieldPath="reviewsCount" tag="span">{reviewsCount}</EditableText>
+              </span>
+              <Image src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" width={80} height={26} style={{ width: '80px', height: 'auto', marginTop: '4px' }} />
+            </div>
           </div>
 
-          {/* Column 2 - Staggered Down */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginTop: '60px' }}>
-            <VideoCard
-              name="Tanvi&apos;s Hydration"
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/u1z7ggmemmekm84ep5hu.png"
-              height="480px"
-              onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
-            />
-            <ReviewCard name="Priya Sharma" text="Today is the first session of slimming the abdomen, and love handles inch loss. I am totally satisfied with service." />
-            <ReviewCard name="Vikas sharma" text="I really liked the way you handled that unwanted hair on my body. Avataar, you made it all so simple and quick" />
+          {/* Staggered Grid */}
+          <div className="testimonial-staggered-grid" style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+            {/* Logic for 5 columns - staggered using slices */}
+            {[0, 1, 2, 3, 4].map((col) => (
+              <div key={col} className={`testimonial-col-${col}`} style={{ flex: 1, display: 'flex', flexDirection: 'column', marginTop: col % 2 !== 0 ? '60px' : '0' }}>
+                <ReviewCard sectionId="testimonials" index={col * 2} name={reviews[col * 2]?.name} text={reviews[col * 2]?.text} />
+                <VideoCard 
+                  sectionId="testimonials" 
+                  index={col} 
+                  name={videos[col]?.name} 
+                  image={videos[col]?.image} 
+                  height={col % 2 !== 0 ? "480px" : "450px"} 
+                  onPlay={() => setActiveVideo(videos[col]?.url)} 
+                />
+                <ReviewCard sectionId="testimonials" index={col * 2 + 1} name={reviews[col * 2 + 1]?.name} text={reviews[col * 2 + 1]?.text} />
+              </div>
+            ))}
           </div>
-
-          {/* Column 3 */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <ReviewCard name="Sneha Aggrawal" text="I highly recommend their services to anyone looking to enhance their natural beauty and enjoy a moment of relaxation." />
-            <VideoCard
-              name="Kritika Kamra"
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/pgab6yn3skxpsx4oftws.png"
-              height="450px"
-              onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
-            />
-            <ReviewCard name="Rahul Tomar" text="The results exceeded my expectations, and I felt pampered without the hassle of traveling to a salon." />
-          </div>
-
-          {/* Column 4 - Staggered Down */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginTop: '60px' }}>
-            <VideoCard
-              name="Shweta Tiwari"
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/fgljhvgnh4lyhilbokdf.png"
-              height="480px"
-              onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
-            />
-            <ReviewCard name="Priyal Sen" text="The procedure was quick, comfortable... I&apos;ve already started noticing positive changes since my first session." />
-            <ReviewCard name="Viihan Rath" text="The technician was very skilled, gentle, and made sure I was comfortable throughout the session." />
-          </div>
-
-          {/* Column 5 */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <ReviewCard name="Simran Paul" text="I&apos;ve had a great experience with my laser hair reduction sessions. My therapist is highly professional and gentle." />
-            <VideoCard
-              name="Influencer Dish"
-              image="https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/o0naqjvopw7otiwdzwsg.png"
-              height="450px"
-              onPlay={() => setActiveVideo("https://www.youtube.com/embed/dQw4w9WgXcQ")}
-            />
-            <ReviewCard name="Alka Singh" text="Thank you for the wonderful facial! The entire experience was relaxing and refreshing. You were very professional." />
-          </div>
-
-        </div>
-
-        {/* Bottom Button */}
-        <div style={{ textAlign: 'center', marginTop: '60px' }}>
-          <button style={{
-            padding: '12px 40px',
-            borderRadius: '10px',
-            border: '1px solid #ddd',
-            backgroundColor: '#fff',
-            color: '#1C1C1C',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease'
-          }} className="view-all-testimonials-btn">
-            View All
-          </button>
-        </div>
-
-      </div>
-
-      {/* Video Modal */}
-      {activeVideo && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(0,0,0,0.9)',
-          zIndex: 9999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '20px'
-        }} onClick={closeVideo}>
-          <div style={{
-            position: 'relative',
-            width: '100%',
-            maxWidth: '900px',
-            aspectRatio: '16/9',
-            backgroundColor: '#000',
-            borderRadius: '20px',
-            overflow: 'hidden'
-          }} onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={closeVideo}
-              style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                backgroundColor: 'rgba(255,255,255,0.2)',
-                color: '#fff',
-                border: 'none',
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                cursor: 'pointer',
-                fontSize: '20px',
-                zIndex: 10
-              }}
-            >
-              &times;
+          
+          <div style={{ textAlign: 'center', marginTop: '60px' }}>
+            <button className="view-all-testimonials-btn" style={{ padding: '12px 40px', borderRadius: '10px', border: '1px solid #ddd', backgroundColor: '#fff', color: '#1C1C1C', fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.3s ease' }}>
+              View All
             </button>
-            <iframe
-              width="100%"
-              height="100%"
-              src={`${activeVideo}?autoplay=1`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            ></iframe>
           </div>
         </div>
-      )}
 
-      <style jsx>{`
-        .testimonial-staggered-grid {
-          transition: all 0.5s ease;
-        }
-        .premium-review-card:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
-          border-color: #E4B753 !important;
-        }
-        .premium-video-card:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
-        }
-        .view-all-testimonials-btn:hover {
-          background-color: #000 !important;
-          color: #fff !important;
-          border-color: #000 !important;
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        @media (max-width: 1200px) {
-          .testimonial-staggered-grid > div:nth-child(4),
-          .testimonial-staggered-grid > div:nth-child(5) {
-            display: none;
+        {activeVideo && (
+          <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }} onClick={closeVideo}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '900px', aspectRatio: '16/9', backgroundColor: '#000', borderRadius: '20px', overflow: 'hidden' }} onClick={(e) => e.stopPropagation()}>
+              <button onClick={closeVideo} style={{ position: 'absolute', top: '20px', right: '20px', backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', border: 'none', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', fontSize: '20px', zIndex: 10 }}>&times;</button>
+              <iframe width="100%" height="100%" src={`${activeVideo}?autoplay=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+            </div>
+          </div>
+        )}
+
+        <style jsx>{`
+          .premium-review-card:hover, .premium-video-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important; border-color: #E4B753 !important; }
+          .view-all-testimonials-btn:hover { background-color: #000 !important; color: #fff !important; transform: translateY(-2px); }
+          @media (max-width: 1200px) { .testimonial-col-3, .testimonial-col-4 { display: none !important; } }
+          @media (max-width: 992px) { .testimonial-col-2 { display: none !important; } }
+          @media (max-width: 768px) {
+            .testimonial-staggered-grid { flex-direction: column; gap: 20px; }
+            .testimonial-staggered-grid > div { margin-top: 0 !important; width: 100%; display: flex !important; }
           }
-        }
-        @media (max-width: 992px) {
-          .testimonial-staggered-grid > div:nth-child(3) {
-            display: none;
-          }
-        }
-        @media (max-width: 768px) {
-          .testimonial-staggered-grid {
-            flex-direction: column;
-            gap: 20px;
-          }
-          .testimonial-staggered-grid > div {
-            margin-top: 0 !important;
-            width: 100%;
-          }
-          .testimonial-staggered-grid > div:nth-child(2),
-          .testimonial-staggered-grid > div:nth-child(3) {
-            display: flex;
-          }
-        }
-      `}</style>
-    </section>
+        `}</style>
+      </section>
+    </EditableSection>
   );
 };
 

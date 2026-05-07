@@ -39,6 +39,7 @@ const headerRoutes = require("./routes/headerRoutes");
 const pageCompositionRoutes = require("./routes/pageCompositionRoutes");
 const aboutUsRoutes = require("./routes/aboutUsRoutes");
 const serviceRoutes = require("./routes/serviceRoutes");
+const sectionRoutes = require("./routes/sectionRoutes");
 
 // Database Connection
 const connectDB = require("./config/db");
@@ -144,6 +145,7 @@ app.use("/api/header", headerRoutes);
 app.use("/api/page-compositions", pageCompositionRoutes);
 app.use("/api/about-us", aboutUsRoutes);
 app.use("/api/services", serviceRoutes);
+app.use("/api/sections", sectionRoutes);
 
 // SEO
 app.get(
