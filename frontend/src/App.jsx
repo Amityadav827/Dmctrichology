@@ -28,6 +28,7 @@ import Pages from "./pages/Pages";
 import WebsiteSettings from "./pages/WebsiteSettings";
 import TopBarCMS from "./pages/cms/TopBarCMS";
 import HeaderCMS from "./pages/cms/HeaderCMS";
+import HeroCMS from "./pages/cms/HeroCMS";
 
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
@@ -173,6 +174,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <HeaderCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/hero"
+          element={
+            <ProtectedRoute permission="cms">
+              <HeroCMS />
             </ProtectedRoute>
           }
         />

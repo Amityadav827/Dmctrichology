@@ -1,20 +1,11 @@
-const express = require("express");
+const express = require('express');
+const { getHero, updateHero } = require('../controllers/heroController');
+const { protect } = require('../middleware/authMiddleware');
+
 const router = express.Router();
-const {
-  getHero,
-  createHero,
-  updateHero,
-  deleteHero,
-} = require("../controllers/heroController");
-const { protect } = require("../middleware/authMiddleware");
-const upload = require("../middleware/uploadMiddleware");
 
-router.route("/")
+router.route('/')
   .get(getHero)
-  .post(protect, upload.single("backgroundImage"), createHero);
-
-router.route("/:id")
-  .put(protect, upload.single("backgroundImage"), updateHero)
-  .delete(protect, deleteHero);
+  .put(protect, updateHero);
 
 module.exports = router;

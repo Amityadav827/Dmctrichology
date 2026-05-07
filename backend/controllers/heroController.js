@@ -1,96 +1,58 @@
-const HeroSection = require("../models/HeroSection");
-const { uploadToCloudinary } = require("../utils/cloudinary");
+const Hero = require('../models/Hero');
 
-// Seed default data if none exists
 const seedDefaultHero = async () => {
   try {
-    const count = await HeroSection.countDocuments();
+    const count = await Hero.countDocuments();
     if (count === 0) {
-      await HeroSection.create({
-        heading: "EXPERIENCE THE ART OF NATURAL HAIR RESTORATION",
-        subheading: "Trusted By Over 10,000+ Happy Patients For Life-Changing Results.",
-        buttonText: "GET FREE CONSULTATION",
-        buttonLink: "#",
-        backgroundImage: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/hero-bg.jpg",
-        trustedText: "Trusted by 10k+ Patients",
-        formTitle: "Book Your Consultation",
-        isActive: true
+      await Hero.create({
+        slides: [
+          {
+            tag: "DMC TRICHOLOGY",
+            title: "Experience The Art Of Natural Hair Restoration",
+            description: "Advanced techniques tailored for your unique needs. Restore your confidence with our expert surgeons.",
+            backgroundImage: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530477/dmc-trichology/xun9sghr8p0bmbdf8p1r.png",
+            primaryBtnText: "Book Appointment",
+            primaryBtnLink: "/book-appointment"
+          },
+          {
+            tag: "BEST HAIR CLINIC",
+            title: "World-Class Hair Transplant Technology",
+            description: "Using the latest FUE & DHT techniques for maximum density and natural-looking results.",
+            backgroundImage: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530477/dmc-trichology/vtticvun32as1q2v6zxs.png",
+            primaryBtnText: "Our Services",
+            primaryBtnLink: "/services"
+          }
+        ]
       });
-      console.log("✅ Hero section default data seeded.");
+      console.log("✅ Hero default data seeded.");
     }
-  } catch (error) {
-    console.error("❌ Error seeding hero data:", error.message);
+  } catch (err) {
+    console.error("❌ Error seeding hero data:", err.message);
   }
 };
 
-// @desc    Get Hero section data
-// @route   GET /api/hero
-const getHero = async (req, res) => {
+const getHero = async (req, res, next) => {
   try {
-    let hero = await HeroSection.findOne({ isActive: true }).sort({ createdAt: -1 });
-    if (!hero) {
-      hero = await HeroSection.findOne().sort({ createdAt: -1 });
-    }
+    const hero = await Hero.findOne();
     res.status(200).json({ success: true, data: hero });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 
-// @desc    Create Hero section data
-// @route   POST /api/hero
-const createHero = async (req, res) => {
+const updateHero = async (req, res, next) => {
   try {
-    const body = { ...req.body };
-    if (req.file) {
-      body.backgroundImage = await uploadToCloudinary(req.file.buffer, "hero");
-    }
-    const hero = await HeroSection.create(body);
-    res.status(201).json({ success: true, data: hero });
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
+    let hero = await Hero.findOne();
+    if (!hero) hero = new Hero();
 
-// @desc    Update Hero section data
-// @route   PUT /api/hero/:id
-const updateHero = async (req, res) => {
-  try {
-    const body = { ...req.body };
-    if (req.file) {
-      body.backgroundImage = await uploadToCloudinary(req.file.buffer, "hero");
-    }
-    const hero = await HeroSection.findByIdAndUpdate(req.params.id, body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!hero) {
-      return res.status(404).json({ success: false, message: "Hero section not found" });
-    }
+    hero.slides = req.body.slides;
+    hero.isActive = req.body.isActive ?? true;
+
+    await hero.save();
     res.status(200).json({ success: true, data: hero });
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    next(error);
   }
 };
 
-// @desc    Delete Hero section data
-// @route   DELETE /api/hero/:id
-const deleteHero = async (req, res) => {
-  try {
-    const hero = await HeroSection.findByIdAndDelete(req.params.id);
-    if (!hero) {
-      return res.status(404).json({ success: false, message: "Hero section not found" });
-    }
-    res.status(200).json({ success: true, message: "Hero section deleted" });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-module.exports = {
-  getHero,
-  createHero,
-  updateHero,
-  deleteHero,
-  seedDefaultHero
-};
+module.exports = { getHero, updateHero, seedDefaultHero };

@@ -123,6 +123,9 @@ function Sidebar() {
                 <NavLink to="/cms/header" className={getNavClass}>
                   <LayoutDashboard size={16} /> Header
                 </NavLink>
+                <NavLink to="/cms/hero" className={getNavClass}>
+                  <LayoutDashboard size={16} /> Hero Section
+                </NavLink>
               </>
             )}
 

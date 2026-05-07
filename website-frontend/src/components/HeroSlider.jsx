@@ -39,8 +39,8 @@ export default function HeroSlider() {
 
   useEffect(() => {
     fetchHeroSlides().then(data => {
-      if (data && Array.isArray(data) && data.length > 0) {
-        setSlides(data);
+      if (data && data.data && data.data.slides) {
+        setSlides(data.data.slides);
       }
     });
     // Trigger entrance animation shortly after mount
@@ -67,7 +67,7 @@ export default function HeroSlider() {
             {/* Background with zoom animation */}
             <div
               className={`slide-bg ${index === currentSlide ? 'slide-bg-zoom' : ''}`}
-              style={{ backgroundImage: `url(${slide.image})` }}
+              style={{ backgroundImage: `url(${slide.backgroundImage || slide.image})` }}
             />
             <div style={{ 
               position: 'absolute', 
@@ -91,6 +91,13 @@ export default function HeroSlider() {
                   {slide.description}
                 </EditableText>
               </p>
+              {slide.primaryBtnText && (
+                <div style={{ marginTop: '24px' }}>
+                  <a href={slide.primaryBtnLink || '#'} className="btn-primary" style={{ padding: '12px 32px' }}>
+                    {slide.primaryBtnText}
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         ))}
