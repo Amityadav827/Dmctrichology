@@ -1,6 +1,6 @@
 import './globals.css';
 import { BuilderProvider } from '../context/BuilderContext';
-import { fetchSiteSettings, fetchTopBar, fetchHeroSlides } from '../services/api';
+import { fetchSiteSettings } from '../services/api';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -44,10 +44,7 @@ export default async function RootLayout({ children }) {
         `}} />
       </head>
       <body>
-        <BuilderProvider 
-          initialTopBar={topBarData?.data} 
-          initialHero={heroData?.data}
-        >
+        <BuilderProvider>
           {children}
         </BuilderProvider>
         <svg width="0" height="0" className="hidden" style={{ display: 'none' }}>

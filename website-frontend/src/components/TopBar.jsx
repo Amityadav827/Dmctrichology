@@ -1,3 +1,5 @@
+"use client";
+import { useEffect } from 'react';
 import { fetchTopBar } from '../services/api';
 import { useBuilder } from '../context/BuilderContext';
 
