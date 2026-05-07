@@ -20,6 +20,7 @@ export default function LeadForm() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
     generateCaptcha();
   }, []);
 

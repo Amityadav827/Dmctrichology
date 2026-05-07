@@ -12,6 +12,7 @@ export const BuilderProvider = ({ children }) => {
     // Check if we are in edit mode via URL parameter or postMessage
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get("edit") === "true") {
+      // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
       setIsEditMode(true);
     }
 

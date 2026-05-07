@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import { fetchSiteSettings } from '../services/api';
+import Link from 'next/link';
 
 export default function Header() {
   const [logoUrl, setLogoUrl] = useState('https://res.cloudinary.com/dseixl6px/image/upload/v1777530477/dmc-trichology/pntwhlftziotd6k0kdkg.png');
@@ -16,9 +17,9 @@ export default function Header() {
     <header className="header">
       <div className="header-container">
         <div className="logo">
-          <a href="/" aria-label="Go to homepage">
+          <Link href="/" aria-label="Go to homepage">
             <img src={logoUrl} alt="DMC Trichology Logo" />
-          </a>
+          </Link>
         </div>
         
         <Navbar />
