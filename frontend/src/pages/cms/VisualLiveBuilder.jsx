@@ -33,38 +33,107 @@ export default function VisualLiveBuilder() {
   // URL for the real frontend
   const frontendUrl = `https://dmctrichology-mkm4.vercel.app/${slug === 'home' ? '' : slug}?edit=true`;
 
+  const pendingChanges = useRef({});
+  const saveTimeout = useRef(null);
+
   useEffect(() => {
     // Listen for messages from the iframe (frontend)
     const handleMessage = (event) => {
-      // Security check: only listen to our frontend
       if (event.data.type === 'SECTION_CLICKED') {
         setActiveSection(event.data.payload);
         setActiveTab("settings");
       }
       if (event.data.type === 'FIELD_UPDATED') {
+        const { sectionId, fieldPath, value } = event.data.payload;
+        
+        // 1. Update local UI state
         setSiteConfig(prev => ({
           ...prev,
-          [`${event.data.payload.sectionId}.${event.data.payload.fieldPath}`]: event.data.payload.value
+          [`${sectionId}.${fieldPath}`]: value
         }));
+
+        // 2. Queue for persistence
+        if (!pendingChanges.current[sectionId]) {
+          pendingChanges.current[sectionId] = {};
+        }
+        
+        // Handle nested fields like slides.0.title
+        pendingChanges.current[sectionId][fieldPath] = value;
+        
+        // 3. Debounced Auto-save
+        if (saveTimeout.current) clearTimeout(saveTimeout.current);
+        saveTimeout.current = setTimeout(() => {
+          persistChanges();
+        }, 2000); // 2 second debounce
       }
     };
 
     window.addEventListener("message", handleMessage);
     setLoading(false);
-    return () => window.removeEventListener("message", handleMessage);
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      if (saveTimeout.current) clearTimeout(saveTimeout.current);
+    };
   }, []);
 
-  const handleSave = async () => {
+  const persistChanges = async () => {
+    const sectionsToUpdate = Object.keys(pendingChanges.current);
+    if (sectionsToUpdate.length === 0) return;
+
     setSaving(true);
     try {
-      // This would normally batch update the CMS APIs based on siteConfig
-      // For now, we'll simulate success
-      await new Promise(r => setTimeout(r, 1000));
-      toast.success("All changes published live!");
+      for (const sectionId of sectionsToUpdate) {
+        const updates = pendingChanges.current[sectionId];
+        let endpoint = '';
+        
+        // Map sectionId to correct API endpoint
+        switch(sectionId) {
+          case 'topbar': endpoint = '/topbar'; break;
+          case 'header': endpoint = '/header'; break;
+          case 'hero': endpoint = '/hero'; break;
+          default: continue;
+        }
+
+        // Fetch current data first to avoid overwriting other fields
+        const { data: currentData } = await axios.get(endpoint);
+        const existingData = currentData.data || {};
+        
+        // Merge updates
+        const updatedPayload = { ...existingData };
+        
+        Object.keys(updates).forEach(path => {
+          // Simple nested path handling (e.g. "slides.0.title")
+          if (path.includes('.')) {
+            const parts = path.split('.');
+            let current = updatedPayload;
+            for (let i = 0; i < parts.length - 1; i++) {
+              if (!current[parts[i]]) current[parts[i]] = isNaN(parts[i+1]) ? {} : [];
+              current = current[parts[i]];
+            }
+            current[parts[parts.length - 1]] = updates[path];
+          } else {
+            updatedPayload[path] = updates[path];
+          }
+        });
+
+        await axios.put(endpoint, updatedPayload);
+        delete pendingChanges.current[sectionId];
+      }
+      
+      toast.success("Changes saved successfully", { id: 'auto-save' });
     } catch (error) {
-      toast.error("Failed to publish changes");
+      console.error("Save Error:", error);
+      toast.error("Failed to auto-save changes");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (Object.keys(pendingChanges.current).length > 0) {
+      await persistChanges();
+    } else {
+      toast.success("No pending changes to save");
     }
   };
 
