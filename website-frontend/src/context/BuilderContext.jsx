@@ -50,7 +50,9 @@ export const BuilderProvider = ({ children, initialTopBar, initialHero }) => {
   return (
     <BuilderContext.Provider value={{ 
       isEditMode, 
+      setIsEditMode,
       siteConfig, 
+      setSiteConfig,
       topBarCMS,
       setTopBarCMS,
       heroCMS,
@@ -59,7 +61,9 @@ export const BuilderProvider = ({ children, initialTopBar, initialHero }) => {
       setActiveElement, 
       updateField 
     }}>
-      {children}
+      <div className={isEditMode ? "builder-active" : ""}>
+        {children}
+      </div>
     </BuilderContext.Provider>
   );
 };

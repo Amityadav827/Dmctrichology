@@ -124,6 +124,9 @@ function Sidebar() {
                     <NavLink to="/cms/page-builder/home" className={getNavClass + " flex-1"}>
                       <Layers size={16} /> Home Page
                     </NavLink>
+                    <NavLink to="/cms/visual-builder/home" target="_blank" className="p-1 hover:bg-blue-100 rounded text-blue-500 transition-colors mr-2" title="Edit with Visual Builder">
+                      <Eye size={16} />
+                    </NavLink>
                     <button 
                       onClick={(e) => { e.preventDefault(); setIsHomeOpen(!isHomeOpen); }}
                       className="p-1 hover:bg-slate-100 rounded text-slate-400 transition-colors"
@@ -157,12 +160,22 @@ function Sidebar() {
             {hasPermission("cms") && (
               <>
                 <SectionLabel>Global Components</SectionLabel>
-                <NavLink to="/cms/header" className={getNavClass}>
-                  <Layers size={16} /> Header
-                </NavLink>
-                <NavLink to="/cms/topbar" className={getNavClass}>
-                  <Layers size={16} /> Top Bar
-                </NavLink>
+                <div className="flex items-center justify-between group">
+                  <NavLink to="/cms/header" className={getNavClass + " flex-1"}>
+                    <Layers size={16} /> Header
+                  </NavLink>
+                  <NavLink to="/cms/visual-builder/home" target="_blank" className="p-1 opacity-0 group-hover:opacity-100 hover:bg-blue-100 rounded text-blue-500 transition-all mr-2" title="Visual Edit">
+                    <Eye size={14} />
+                  </NavLink>
+                </div>
+                <div className="flex items-center justify-between group">
+                  <NavLink to="/cms/topbar" className={getNavClass + " flex-1"}>
+                    <Layers size={16} /> Top Bar
+                  </NavLink>
+                  <NavLink to="/cms/visual-builder/home" target="_blank" className="p-1 opacity-0 group-hover:opacity-100 hover:bg-blue-100 rounded text-blue-500 transition-all mr-2" title="Visual Edit">
+                    <Eye size={14} />
+                  </NavLink>
+                </div>
                 <NavLink to="/settings/website" className={getNavClass}>
                   <Settings size={16} /> Website Settings
                 </NavLink>

@@ -803,3 +803,64 @@ a {
     flex-direction: column !important;
   }
 }
+
+/* ===================== VISUAL BUILDER ===================== */
+.builder-mode {
+  padding-right: 0 !important;
+}
+
+.editable-section {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.builder-active .editable-section:hover {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+  cursor: pointer;
+}
+
+.builder-active .editable-section:hover::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #2563eb;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.builder-active .editable-text:hover {
+  background: rgba(37, 99, 235, 0.1);
+  outline: 1px dashed #2563eb;
+  cursor: text;
+}
+
+.builder-active [contenteditable="true"]:focus {
+  outline: 2px solid #2563eb;
+  background: white !important;
+  color: black !important;
+}
+
+.builder-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(37, 99, 235, 0.05);
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.editable-section:hover .builder-overlay {
+  opacity: 1;
+}
+
+.builder-active .hide-in-builder {
+  display: none !important;
+}

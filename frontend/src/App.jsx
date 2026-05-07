@@ -30,6 +30,7 @@ import TopBarCMS from "./pages/cms/TopBarCMS";
 import HeaderCMS from "./pages/cms/HeaderCMS";
 import HeroCMS from "./pages/cms/HeroCMS";
 import PageCompositionEditor from "./pages/cms/PageCompositionEditor";
+import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
@@ -191,6 +192,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <PageCompositionEditor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/visual-builder/:slug"
+          element={
+            <ProtectedRoute permission="cms">
+              <VisualLiveBuilder />
             </ProtectedRoute>
           }
         />

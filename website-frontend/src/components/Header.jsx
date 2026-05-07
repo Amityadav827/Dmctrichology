@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import { fetchHeader } from '../services/api';
 import Link from 'next/link';
+import EditableSection from './Editable/EditableSection';
+import EditableText from './Editable/EditableText';
 
 export default function Header() {
   const [headerData, setHeaderData] = useState(null);
@@ -18,29 +20,33 @@ export default function Header() {
   const buttonLink = headerData?.appointmentButtonLink || '#book';
 
   return (
-    <header className="header">
-      <div className="header-container">
-        <div className="logo">
-          <Link href="/" aria-label="Go to homepage">
-            <img src={logoUrl} alt="DMC Trichology Logo" />
-          </Link>
-        </div>
-        
-        <Navbar cmsMenu={headerData?.menuItems} />
+    <EditableSection sectionId="header" label="Header">
+      <header className="header">
+        <div className="header-container">
+          <div className="logo">
+            <Link href="/" aria-label="Go to homepage">
+              <img src={logoUrl} alt="DMC Trichology Logo" />
+            </Link>
+          </div>
+          
+          <Navbar cmsMenu={headerData?.menuItems} />
 
-        <div className="header-right" style={{display: 'flex', gap: '16px', alignItems: 'center'}}>
-          <a
-            href={buttonLink}
-            className="btn-primary header-appointment-btn"
-            style={{ color: '#ffffff', borderRadius: '50px', padding: '10px 10px 10px 24px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}
-          >
-            <span style={{ fontFamily: "'Marcellus', serif" }}>{buttonText}</span>
-            <div className="icon-circle btn-arrow-circle" style={{ width: '32px', height: '32px', backgroundColor: '#ffffff' }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" className="btn-arrow-icon" style={{ width: '12px', height: '12px', objectFit: 'contain', filter: 'brightness(0)' }} />
-            </div>
-          </a>
+          <div className="header-right" style={{display: 'flex', gap: '16px', alignItems: 'center'}}>
+            <a
+              href={buttonLink}
+              className="btn-primary header-appointment-btn"
+              style={{ color: '#ffffff', borderRadius: '50px', padding: '10px 10px 10px 24px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}
+            >
+              <EditableText sectionId="header" fieldPath="appointmentButtonText" tag="span" style={{ fontFamily: "'Marcellus', serif" }}>
+                {buttonText}
+              </EditableText>
+              <div className="icon-circle btn-arrow-circle" style={{ width: '32px', height: '32px', backgroundColor: '#ffffff' }}>
+                <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" className="btn-arrow-icon" style={{ width: '12px', height: '12px', objectFit: 'contain', filter: 'brightness(0)' }} />
+              </div>
+            </a>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </EditableSection>
   );
 }

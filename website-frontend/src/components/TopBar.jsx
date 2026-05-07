@@ -2,6 +2,8 @@
 import { useEffect } from 'react';
 import { fetchTopBar } from '../services/api';
 import { useBuilder } from '../context/BuilderContext';
+import EditableSection from './Editable/EditableSection';
+import EditableText from './Editable/EditableText';
 
 export default function TopBar() {
   const { topBarCMS, setTopBarCMS } = useBuilder();
@@ -45,30 +47,38 @@ export default function TopBar() {
   if (!isVisible && topBarData !== null) return null;
 
   return (
-    <div className="topbar">
-      <div className="topbar-left">
-        {announcementText && (
-          <>
-            <span className="topbar-contact-item" style={{ color: '#E4B753', fontWeight: '500' }}>{announcementText}</span>
-            <span className="topbar-sep">|</span>
-          </>
-        )}
-        {phones.map((phone, i) => (
-          <span key={i} className="topbar-contact-item">
-            <a href={`tel:${phone.replace(/\s/g, '')}`} className="topbar-link">{phone}</a>
-            {i < phones.length - 1 && <span className="topbar-sep">|</span>}
-          </span>
-        ))}
-        <span className="topbar-sep">|</span>
-        <a href={`mailto:${email}`} className="topbar-link">{email}</a>
+    <EditableSection sectionId="topbar" label="Top Bar">
+      <div className="topbar">
+        <div className="topbar-left">
+          {announcementText && (
+            <>
+              <EditableText sectionId="topbar" fieldPath="announcementText" tag="span" className="topbar-contact-item" style={{ color: '#E4B753', fontWeight: '500' }}>
+                {announcementText}
+              </EditableText>
+              <span className="topbar-sep">|</span>
+            </>
+          )}
+          {phones.map((phone, i) => (
+            <span key={i} className="topbar-contact-item">
+              <EditableText sectionId="topbar" fieldPath={`phone${i+1}`} tag="span">
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="topbar-link">{phone}</a>
+              </EditableText>
+              {i < phones.length - 1 && <span className="topbar-sep">|</span>}
+            </span>
+          ))}
+          <span className="topbar-sep">|</span>
+          <EditableText sectionId="topbar" fieldPath="email" tag="span">
+            <a href={`mailto:${email}`} className="topbar-link">{email}</a>
+          </EditableText>
+        </div>
+        <div className="topbar-right">
+          {socials.map((social, i) => (
+            <a key={i} href={social.link} target="_blank" rel="noreferrer" className="social-icon">
+              {renderIcon(social)}
+            </a>
+          ))}
+        </div>
       </div>
-      <div className="topbar-right">
-        {socials.map((social, i) => (
-          <a key={i} href={social.link} target="_blank" rel="noreferrer" className="social-icon">
-            {renderIcon(social)}
-          </a>
-        ))}
-      </div>
-    </div>
+    </EditableSection>
   );
 }
