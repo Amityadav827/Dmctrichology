@@ -110,6 +110,16 @@ function Sidebar() {
               </NavLink>
             )}
 
+            {/* 7. WEBSITE CMS */}
+            {hasPermission("cms") && (
+              <>
+                <SectionLabel>Website CMS</SectionLabel>
+                <NavLink to="/cms/topbar" className={getNavClass}>
+                  <LayoutDashboard size={16} /> Top Bar
+                </NavLink>
+              </>
+            )}
+
             {/* Media */}
             {hasPermission("gallery") && (
               <>

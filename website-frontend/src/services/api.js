@@ -14,6 +14,16 @@ export const fetchSiteSettings = async () => {
   }
 };
 
+export const fetchTopBar = async () => {
+  try {
+    const res = await api.get('/api/topbar');
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching topbar', error);
+    return null;
+  }
+};
+
 export const fetchMenu = async () => {
   try {
     const res = await api.get('/api/menu');

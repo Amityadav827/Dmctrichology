@@ -34,11 +34,13 @@ const pageRoutes = require("./routes/pageRoutes");
 const blogCategoryRoutes = require("./routes/blogCategoryRoutes");
 const heroRoutes = require("./routes/heroRoutes");
 const settingsRoutes = require("./routes/settingsRoutes");
+const topbarRoutes = require("./routes/topbarRoutes");
 
 // Database Connection
 const connectDB = require("./config/db");
 const { seedDefaultHero } = require("./controllers/heroController");
 const { seedDefaultSettings } = require("./controllers/settingsController");
+const { seedDefaultTopBar } = require("./controllers/topbarController");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const redirectMiddleware = require("./middleware/redirectMiddleware");
@@ -49,6 +51,7 @@ const app = express();
 connectDB().then(() => {
   seedDefaultHero();
   seedDefaultSettings();
+  seedDefaultTopBar();
 });
 
 // ========================
@@ -128,6 +131,7 @@ app.use("/api/pages", pageRoutes);
 app.use("/api/blog-categories", blogCategoryRoutes);
 app.use("/api/hero", heroRoutes);
 app.use("/api/site-settings", settingsRoutes);
+app.use("/api/topbar", topbarRoutes);
 
 // SEO
 app.get(

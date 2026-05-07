@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { fetchSiteSettings } from '../services/api';
+import { fetchTopBar } from '../services/api';
 
 export default function TopBar() {
-  const [settings, setSettings] = useState(null);
+  const [topBarData, setTopBarData] = useState(null);
 
   useEffect(() => {
-    fetchSiteSettings().then(data => {
-      if(data) setSettings(data);
+    fetchTopBar().then(data => {
+      if(data && data.data) setTopBarData(data.data);
     });
   }, []);
 
@@ -23,19 +23,30 @@ export default function TopBar() {
     ]
   };
 
-  const phones = settings?.phone1 ? [settings.phone1, settings.phone2].filter(Boolean) : fallbackSettings.phones;
-  const email = settings?.email || fallbackSettings.email;
-  const socials = settings?.socialLinks 
-    ? fallbackSettings.socials.map(s => ({ ...s, link: settings.socialLinks[s.name] || s.link }))
+  const isVisible = topBarData?.isVisible ?? true;
+  const phones = topBarData?.phone1 ? [topBarData.phone1, topBarData.phone2].filter(Boolean) : fallbackSettings.phones;
+  const email = topBarData?.email || fallbackSettings.email;
+  const announcementText = topBarData?.announcementText || "";
+  
+  const socials = topBarData?.socialLinks && topBarData.socialLinks.length > 0 
+    ? topBarData.socialLinks
     : fallbackSettings.socials;
 
   const renderIcon = (social) => {
     return <img src={social.iconUrl} alt={social.name} style={{ width: '24px', height: '24px', objectFit: 'contain' }} />;
   };
 
+  if (!isVisible) return null;
+
   return (
     <div className="topbar">
       <div className="topbar-left">
+        {announcementText && (
+          <>
+            <span className="topbar-contact-item" style={{ color: '#E4B753', fontWeight: '500' }}>{announcementText}</span>
+            <span className="topbar-sep">|</span>
+          </>
+        )}
         {phones.map((phone, i) => (
           <span key={i} className="topbar-contact-item">
             <a href={`tel:${phone.replace(/\s/g, '')}`} className="topbar-link">{phone}</a>
