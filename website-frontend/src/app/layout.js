@@ -11,11 +11,23 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const [settings, topBarData, heroData] = await Promise.all([
-    fetchSiteSettings(),
-    fetchTopBar(),
-    fetchHeroSlides()
-  ]);
+  let settings = null;
+  let topBarData = null;
+  let heroData = null;
+
+  try {
+    const results = await Promise.allSettled([
+      fetchSiteSettings(),
+      fetchTopBar(),
+      fetchHeroSlides()
+    ]);
+    
+    settings = results[0].status === 'fulfilled' ? results[0].value : null;
+    topBarData = results[1].status === 'fulfilled' ? results[1].value : null;
+    heroData = results[2].status === 'fulfilled' ? results[2].value : null;
+  } catch (error) {
+    console.error("RootLayout SSR Fetch Error:", error);
+  }
   
   const primaryColor = settings?.primaryColor || "#C19A5B";
   const secondaryColor = settings?.secondaryColor || "#000000";
