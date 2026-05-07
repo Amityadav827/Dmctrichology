@@ -37,6 +37,7 @@ const settingsRoutes = require("./routes/settingsRoutes");
 const topbarRoutes = require("./routes/topbarRoutes");
 const headerRoutes = require("./routes/headerRoutes");
 const pageCompositionRoutes = require("./routes/pageCompositionRoutes");
+const aboutUsRoutes = require("./routes/aboutUsRoutes");
 
 // Database Connection
 const connectDB = require("./config/db");
@@ -140,6 +141,7 @@ app.use("/api/site-settings", settingsRoutes);
 app.use("/api/topbar", topbarRoutes);
 app.use("/api/header", headerRoutes);
 app.use("/api/page-compositions", pageCompositionRoutes);
+app.use("/api/about-us", aboutUsRoutes);
 
 // SEO
 app.get(

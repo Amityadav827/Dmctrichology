@@ -11,7 +11,8 @@ const seedHomePage = async () => {
           { sectionId: "topbar", type: "global", order: 0, isActive: true },
           { sectionId: "header", type: "global", order: 1, isActive: true },
           { sectionId: "hero", type: "section", order: 2, isActive: true },
-          { sectionId: "services", type: "section", order: 3, isActive: true },
+          { sectionId: "about-us", type: "section", order: 3, isActive: true },
+          { sectionId: "services", type: "section", order: 4, isActive: true },
           { sectionId: "footer", type: "global", order: 100, isActive: true }
         ],
         metadata: {
