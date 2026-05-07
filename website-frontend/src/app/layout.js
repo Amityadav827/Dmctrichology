@@ -2,6 +2,9 @@ import './globals.css';
 import { BuilderProvider } from '../context/BuilderContext';
 import { fetchSiteSettings } from '../services/api';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata = {
   title: 'DMC Trichology | Best Hair Transplant Clinic In Delhi',
   description: 'Experience The Art Of Natural Hair Restoration at DMC Trichology.',

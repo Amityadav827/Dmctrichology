@@ -16,7 +16,7 @@ export const fetchSiteSettings = async () => {
 
 export const fetchTopBar = async () => {
   try {
-    const res = await api.get('/api/topbar');
+    const res = await api.get(`/api/topbar?t=${Date.now()}`);
     return res.data;
   } catch (error) {
     console.error('Error fetching topbar', error);

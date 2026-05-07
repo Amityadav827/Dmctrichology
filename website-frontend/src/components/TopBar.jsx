@@ -34,7 +34,10 @@ export default function TopBar() {
     return <img src={social.iconUrl} alt={social.name} style={{ width: '24px', height: '24px', objectFit: 'contain' }} />;
   };
 
+  if (topBarData === null) return null; // Wait for initial fetch
   if (!isVisible) return null;
+
+  console.log('TopBar Rendering Data:', topBarData); // Debugging on live site
 
   return (
     <div className="topbar">
