@@ -91,6 +91,7 @@ export default function VisualLiveBuilder() {
           case 'topbar': endpoint = '/topbar'; break;
           case 'header': endpoint = '/header'; break;
           case 'hero': endpoint = '/hero'; break;
+          case 'about-us': endpoint = '/about-us'; break;
           default: continue;
         }
 
@@ -273,7 +274,12 @@ export default function VisualLiveBuilder() {
                       <p className="text-xs text-slate-500 font-medium mb-4 leading-relaxed">Changes you make here or inline will reflect in the live preview instantly.</p>
                       <button 
                         onClick={() => {
-                          const routeMap = { 'Top Bar': '/cms/topbar', 'Header': '/cms/header', 'Hero Slider': '/cms/hero' };
+                          const routeMap = { 
+                            'Top Bar': '/cms/topbar', 
+                            'Header': '/cms/header', 
+                            'Hero Slider': '/cms/hero',
+                            'About Us': '/cms/about-us'
+                          };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
                         className="w-full py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
