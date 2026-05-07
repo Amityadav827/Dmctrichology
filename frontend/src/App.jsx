@@ -30,6 +30,7 @@ import TopBarCMS from "./pages/cms/TopBarCMS";
 import HeaderCMS from "./pages/cms/HeaderCMS";
 import HeroCMS from "./pages/cms/HeroCMS";
 import PageCompositionEditor from "./pages/cms/PageCompositionEditor";
+import AboutUsCMS from "./pages/cms/AboutUsCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 
 import RedirectList from "./pages/RedirectList";
@@ -52,6 +53,14 @@ function App() {
         }
       >
         <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route
+          path="cms/about-us"
+          element={
+            <ProtectedRoute permission="cms">
+              <AboutUsCMS />
+            </ProtectedRoute>
+          }
+        />
         <Route path="services" element={<Navigate to="/services/categories" replace />} />
         <Route path="results" element={<Navigate to="/results/categories" replace />} />
         <Route path="videos" element={<Navigate to="/videos/categories" replace />} />

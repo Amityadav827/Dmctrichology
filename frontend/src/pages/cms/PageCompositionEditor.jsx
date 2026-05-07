@@ -79,6 +79,7 @@ export default function PageCompositionEditor({ slug = "home" }) {
       case 'topbar': return <LayoutDashboard size={18} className="text-blue-500" />;
       case 'header': return <Monitor size={18} className="text-indigo-500" />;
       case 'hero': return <LayoutDashboard size={18} className="text-purple-500" />;
+      case 'about-us': return <SettingsIcon size={18} className="text-emerald-500" />;
       default: return <SettingsIcon size={18} className="text-gray-500" />;
     }
   };
@@ -88,7 +89,8 @@ export default function PageCompositionEditor({ slug = "home" }) {
     const routeMap = {
       'topbar': '/cms/topbar',
       'header': '/cms/header',
-      'hero': '/cms/hero'
+      'hero': '/cms/hero',
+      'about-us': '/cms/about-us'
     };
     if (routeMap[sectionId]) {
       navigate(routeMap[sectionId]);

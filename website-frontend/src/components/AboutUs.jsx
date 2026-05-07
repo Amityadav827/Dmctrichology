@@ -21,15 +21,16 @@ const AboutUs = () => {
   }, []);
 
   const stats = data?.stats || [
-    { value: '2k+', label: 'Patients Healed', subText: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.' },
-    { value: '15+', label: 'Certified Doctors', subText: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.' },
-    { value: '4.9', label: 'Average Patient Rating', subText: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.' },
-    { value: '100+', label: 'New Equipments', subText: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.' }
+    { value: '2k+', label: 'Patients Healed', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true },
+    { value: '15+', label: 'Certified Doctors', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true },
+    { value: '4.9', label: 'Average Patient Rating', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true },
+    { value: '100+', label: 'New Equipments', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true }
   ];
 
   const title = data?.title || 'WELCOME TO DMC TRICHOLOGY®';
   const subtitle = data?.subtitle || 'ABOUT US CARE';
   const description = data?.description || 'At DMC Trichology, Advanced Hair Transplant Techniques Restore Your Hairline And Boost Confidence';
+  const sectionIcon = data?.icon || "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png";
 
   return (
     <EditableSection sectionId="about-us" label="About Us">
@@ -37,7 +38,7 @@ const AboutUs = () => {
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
             <img 
-              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
+              src={sectionIcon} 
               alt="icon" 
               style={{ width: '40px', height: 'auto' }} 
             />
@@ -86,14 +87,16 @@ const AboutUs = () => {
                 </p>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                  <img 
-                    src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
-                    alt="divider" 
-                    style={{ width: '60px', height: 'auto', marginBottom: '10px' }} 
-                  />
+                  {stat.showDivider !== false && (
+                    <img 
+                      src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
+                      alt="divider" 
+                      style={{ width: '60px', height: 'auto', marginBottom: '10px' }} 
+                    />
+                  )}
                   <p style={{ fontSize: '12px', color: '#777', fontFamily: "'Marcellus', serif", maxWidth: '180px', lineHeight: '1.6' }}>
-                    <EditableText sectionId="about-us" fieldPath={`stats.${index}.subText`} tag="span">
-                      {stat.subText}
+                    <EditableText sectionId="about-us" fieldPath={`stats.${index}.description`} tag="span">
+                      {stat.description}
                     </EditableText>
                   </p>
                 </div>
