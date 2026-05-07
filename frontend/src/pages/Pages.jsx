@@ -381,6 +381,13 @@ function Pages() {
             </h2>
           </div>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <button 
+              type="button" 
+              onClick={() => window.open(`/cms/visual-builder/${formData.slug === 'home' ? 'home' : formData.slug}`, '_blank')} 
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-all text-sm shadow-md"
+            >
+              <Eye size={16} /> Edit With Visual Builder
+            </button>
             <button type="button" onClick={() => setShowPreviewModal(true)} className="btn-secondary">
               <Eye size={15} /> Preview
             </button>
