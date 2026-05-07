@@ -16,17 +16,18 @@ export default async function RootLayout({ children }) {
   let heroData = null;
 
   try {
-    const results = await Promise.allSettled([
-      fetchSiteSettings(),
-      fetchTopBar(),
-      fetchHeroSlides()
-    ]);
+    // Ultra-safe fetching: isolated each call to prevent Promise.allSettled issues if Axios throws synchronously
+    const fetchS = async () => { try { return await fetchSiteSettings(); } catch(e) { return null; } };
+    const fetchT = async () => { try { return await fetchTopBar(); } catch(e) { return null; } };
+    const fetchH = async () => { try { return await fetchHeroSlides(); } catch(e) { return null; } };
+
+    const results = await Promise.all([fetchS(), fetchT(), fetchH()]);
     
-    settings = results[0].status === 'fulfilled' ? results[0].value : null;
-    topBarData = results[1].status === 'fulfilled' ? results[1].value : null;
-    heroData = results[2].status === 'fulfilled' ? results[2].value : null;
+    settings = results[0];
+    topBarData = results[1];
+    heroData = results[2];
   } catch (error) {
-    console.error("RootLayout SSR Fetch Error:", error);
+    console.error("Critical RootLayout Error:", error);
   }
   
   const primaryColor = settings?.primaryColor || "#C19A5B";
