@@ -65,14 +65,6 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 
-// Ensure upload directories exist
-const uploadDir = path.join(__dirname, "uploads");
-const galleryDir = path.join(uploadDir, "gallery");
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-if (!fs.existsSync(galleryDir)) fs.mkdirSync(galleryDir, { recursive: true });
-
-// Static files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Dynamic Redirects (MUST be before API routes if you want to redirect old URLs)
 app.use(redirectMiddleware);
