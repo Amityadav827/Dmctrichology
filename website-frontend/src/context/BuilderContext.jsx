@@ -3,10 +3,11 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const BuilderContext = createContext();
 
-export const BuilderProvider = ({ children, initialTopBar }) => {
+export const BuilderProvider = ({ children, initialTopBar, initialHero }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [siteConfig, setSiteConfig] = useState({});
   const [topBarCMS, setTopBarCMS] = useState(initialTopBar || null);
+  const [heroCMS, setHeroCMS] = useState(initialHero || null);
   const [activeElement, setActiveElement] = useState(null);
 
   useEffect(() => {
@@ -52,6 +53,8 @@ export const BuilderProvider = ({ children, initialTopBar }) => {
       siteConfig, 
       topBarCMS,
       setTopBarCMS,
+      heroCMS,
+      setHeroCMS,
       activeElement, 
       setActiveElement, 
       updateField 

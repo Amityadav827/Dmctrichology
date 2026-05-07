@@ -1,6 +1,6 @@
 import './globals.css';
 import { BuilderProvider } from '../context/BuilderContext';
-import { fetchSiteSettings, fetchTopBar } from '../services/api';
+import { fetchSiteSettings, fetchTopBar, fetchHeroSlides } from '../services/api';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -10,9 +10,11 @@ export const metadata = {
   description: 'Experience The Art Of Natural Hair Restoration at DMC Trichology.',
 };
 
-  const [settings, topBarData] = await Promise.all([
+export default async function RootLayout({ children }) {
+  const [settings, topBarData, heroData] = await Promise.all([
     fetchSiteSettings(),
-    fetchTopBar()
+    fetchTopBar(),
+    fetchHeroSlides()
   ]);
   
   const primaryColor = settings?.primaryColor || "#C19A5B";
@@ -29,7 +31,10 @@ export const metadata = {
         `}} />
       </head>
       <body>
-        <BuilderProvider initialTopBar={topBarData?.data}>
+        <BuilderProvider 
+          initialTopBar={topBarData?.data} 
+          initialHero={heroData?.data}
+        >
           {children}
         </BuilderProvider>
         <svg width="0" height="0" className="hidden" style={{ display: 'none' }}>

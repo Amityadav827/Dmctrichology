@@ -1,36 +1,16 @@
-"use client";
-import { useState, useEffect } from 'react';
 import { fetchHeroSlides } from '../services/api';
 import EditableText from './Editable/EditableText';
 import EditableSection from './Editable/EditableSection';
+import { useBuilder } from '../context/BuilderContext';
 
 export default function HeroSlider() {
-  const [slides, setSlides] = useState([
+  const { heroCMS, setHeroCMS } = useBuilder();
+  
+  const [slides, setSlides] = useState(heroCMS?.slides || [
     {
-      image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png',
+      backgroundImage: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png',
       tag: 'TRUSTED CARE',
-      tagIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png',
-      patientsIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png',
-      starIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png',
       title: 'Recover Stronger, Move Freely, Live Pain-Free',
-      description: 'Experience Compassionate Care And Advanced Trichology Solutions For Healthier, Stronger Hair.'
-    },
-    {
-      image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png',
-      tag: 'TRUSTED CARE',
-      tagIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png',
-      patientsIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png',
-      starIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png',
-      title: 'Expert Trichology Care for Healthy Hair',
-      description: 'Experience Compassionate Care And Advanced Trichology Solutions For Healthier, Stronger Hair.'
-    },
-    {
-      image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png',
-      tag: 'TRUSTED CARE',
-      tagIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png',
-      patientsIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png',
-      starIcon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png',
-      title: 'Advanced Hair Solutions You Can Trust',
       description: 'Experience Compassionate Care And Advanced Trichology Solutions For Healthier, Stronger Hair.'
     }
   ]);
@@ -41,6 +21,7 @@ export default function HeroSlider() {
     fetchHeroSlides().then(data => {
       if (data && data.data && data.data.slides) {
         setSlides(data.data.slides);
+        setHeroCMS(data.data);
       }
     });
     // Trigger entrance animation shortly after mount
