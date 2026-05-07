@@ -27,6 +27,7 @@ import AppointmentList from "./pages/AppointmentList";
 import Pages from "./pages/Pages";
 import WebsiteSettings from "./pages/WebsiteSettings";
 import TopBarCMS from "./pages/cms/TopBarCMS";
+import HeaderCMS from "./pages/cms/HeaderCMS";
 
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
@@ -164,6 +165,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <TopBarCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/header"
+          element={
+            <ProtectedRoute permission="cms">
+              <HeaderCMS />
             </ProtectedRoute>
           }
         />

@@ -3,25 +3,22 @@ import { useEffect, useState, useRef } from 'react';
 import { fetchMenu } from '../services/api';
 import { ChevronDown, Menu as MenuIcon, X } from 'lucide-react';
 
-export default function Navbar() {
-  const [menuItems, setMenuItems] = useState([
+export default function Navbar({ cmsMenu }) {
+  const [defaultMenuItems] = useState([
     { label: 'Home', link: '/' },
-    { label: 'About', link: '/about', dropdown: [{label: 'Our Story', link: '#'}] },
-    { label: 'Pages', link: '#', dropdown: [{label: 'Page 1', link: '#'}, {label: 'Page 2', link: '#'}] },
-    { label: 'Services', link: '/services' },
+    { label: 'About Us', link: '/about-us' },
+    { label: 'Services', link: '/services', dropdown: [{label: 'Hair Transplant', link: '/services/hair-transplant'}] },
+    { label: 'Results', link: '/results' },
+    { label: 'Testimonials', link: '/testimonials' },
     { label: 'Blog', link: '/blog' },
-    { label: 'Contact', link: '/contact' }
+    { label: 'Contact Us', link: '/contact' }
   ]);
+  
+  const menuItems = cmsMenu && cmsMenu.length > 0 ? cmsMenu : defaultMenuItems;
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null);
 
-  useEffect(() => {
-    fetchMenu().then(data => {
-      if(data && data.length > 0) {
-        setMenuItems(data);
-      }
-    });
-  }, []);
+  // Static items for now, dynamic fetch handled by Header parent
 
   // Close menu on outside click
   useEffect(() => {
@@ -65,10 +62,10 @@ export default function Navbar() {
             >
               {item.label}
             </a>
-            {item.dropdown && <ChevronDown size={14} className="nav-chevron" />}
-            {item.dropdown && (
+            {((item.dropdown && item.dropdown.length > 0) || (item.submenu && item.submenu.length > 0)) && <ChevronDown size={14} className="nav-chevron" />}
+            {((item.dropdown && item.dropdown.length > 0) || (item.submenu && item.submenu.length > 0)) && (
               <div className="dropdown-menu">
-                {item.dropdown.map((sub, j) => (
+                {(item.dropdown || item.submenu).map((sub, j) => (
                   <a
                     key={j}
                     href={sub.link}

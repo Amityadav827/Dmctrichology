@@ -1,22 +1,21 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Navbar from './Navbar';
-import { fetchSiteSettings } from '../services/api';
+import { fetchHeader } from '../services/api';
 import Link from 'next/link';
 
 export default function Header() {
-  const [logoUrl, setLogoUrl] = useState('https://res.cloudinary.com/dseixl6px/image/upload/v1777530477/dmc-trichology/pntwhlftziotd6k0kdkg.png');
-
-  const [buttonText, setButtonText] = useState('Book Appointment');
+  const [headerData, setHeaderData] = useState(null);
 
   useEffect(() => {
-    fetchSiteSettings().then(data => {
-      if(data) {
-        if (data.logo) setLogoUrl(data.logo);
-        if (data.appointmentButtonText) setButtonText(data.appointmentButtonText);
-      }
+    fetchHeader().then(data => {
+      if(data && data.data) setHeaderData(data.data);
     });
   }, []);
+
+  const logoUrl = headerData?.logoUrl || 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530477/dmc-trichology/pntwhlftziotd6k0kdkg.png';
+  const buttonText = headerData?.appointmentButtonText || 'Book Appointment';
+  const buttonLink = headerData?.appointmentButtonLink || '#book';
 
   return (
     <header className="header">
@@ -27,11 +26,11 @@ export default function Header() {
           </Link>
         </div>
         
-        <Navbar />
+        <Navbar cmsMenu={headerData?.menuItems} />
 
         <div className="header-right" style={{display: 'flex', gap: '16px', alignItems: 'center'}}>
           <a
-            href="#book"
+            href={buttonLink}
             className="btn-primary header-appointment-btn"
             style={{ color: '#ffffff', borderRadius: '50px', padding: '10px 10px 10px 24px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}
           >

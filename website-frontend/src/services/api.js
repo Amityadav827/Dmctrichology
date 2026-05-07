@@ -24,6 +24,16 @@ export const fetchTopBar = async () => {
   }
 };
 
+export const fetchHeader = async () => {
+  try {
+    const res = await api.get(`/header?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching header', error);
+    return null;
+  }
+};
+
 export const fetchMenu = async () => {
   try {
     const res = await api.get('/menu');
