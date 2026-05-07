@@ -29,6 +29,7 @@ import WebsiteSettings from "./pages/WebsiteSettings";
 import TopBarCMS from "./pages/cms/TopBarCMS";
 import HeaderCMS from "./pages/cms/HeaderCMS";
 import HeroCMS from "./pages/cms/HeroCMS";
+import PageCompositionEditor from "./pages/cms/PageCompositionEditor";
 
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
@@ -182,6 +183,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <HeroCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/page-builder/:slug"
+          element={
+            <ProtectedRoute permission="cms">
+              <PageCompositionEditor />
             </ProtectedRoute>
           }
         />

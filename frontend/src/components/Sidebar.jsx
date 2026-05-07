@@ -119,30 +119,33 @@ function Sidebar() {
                 <SectionLabel>Pages</SectionLabel>
                 
                 {/* Home Page - Collapsible */}
-                <div 
-                  onClick={() => setIsHomeOpen(!isHomeOpen)}
-                  className="nav-item" 
-                  style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <Layers size={16} /> Home Page
+                <div className="flex flex-col">
+                  <div className="flex items-center justify-between pr-2">
+                    <NavLink to="/cms/page-builder/home" className={getNavClass + " flex-1"}>
+                      <Layers size={16} /> Home Page
+                    </NavLink>
+                    <button 
+                      onClick={(e) => { e.preventDefault(); setIsHomeOpen(!isHomeOpen); }}
+                      className="p-1 hover:bg-slate-100 rounded text-slate-400 transition-colors"
+                    >
+                      {isHomeOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                    </button>
                   </div>
-                  {isHomeOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                </div>
 
-                {isHomeOpen && (
-                  <div style={{ paddingLeft: '1rem', borderLeft: '1px solid #E2E8F0', marginLeft: '1.25rem', marginTop: '0.25rem', marginBottom: '0.5rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                    <NavLink to="/cms/topbar" className={getNavClass}>
-                       Top Bar
-                    </NavLink>
-                    <NavLink to="/cms/header" className={getNavClass}>
-                       Header
-                    </NavLink>
-                    <NavLink to="/cms/hero" className={getNavClass}>
-                       Hero Section
-                    </NavLink>
-                  </div>
-                )}
+                  {isHomeOpen && (
+                    <div style={{ paddingLeft: '1rem', borderLeft: '1px solid #E2E8F0', marginLeft: '1.25rem', marginTop: '0.25rem', marginBottom: '0.5rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      <NavLink to="/cms/topbar" className={getNavClass + " text-[13px]"}>
+                         Top Bar
+                      </NavLink>
+                      <NavLink to="/cms/header" className={getNavClass + " text-[13px]"}>
+                         Header
+                      </NavLink>
+                      <NavLink to="/cms/hero" className={getNavClass + " text-[13px]"}>
+                         Hero Section
+                      </NavLink>
+                    </div>
+                  )}
+                </div>
                 
                 <NavLink to="/cms/about" className={getNavClass + " opacity-50 pointer-events-none"}>
                   <Layers size={16} /> About Page (Soon)
