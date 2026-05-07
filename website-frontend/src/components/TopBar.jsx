@@ -23,14 +23,12 @@ export default function TopBar() {
     ]
   };
 
-  const isVisible = topBarData?.isVisible ?? true;
-  const phones = topBarData?.phone1 ? [topBarData.phone1, topBarData.phone2].filter(Boolean) : fallbackSettings.phones;
-  const email = topBarData?.email || fallbackSettings.email;
-  const announcementText = topBarData?.announcementText || "";
+  const isVisible = topBarData ? topBarData.isVisible : true;
+  const phones = topBarData ? [topBarData.phone1, topBarData.phone2].filter(Boolean) : fallbackSettings.phones;
+  const email = topBarData ? topBarData.email : fallbackSettings.email;
+  const announcementText = topBarData ? topBarData.announcementText : "";
   
-  const socials = topBarData?.socialLinks && topBarData.socialLinks.length > 0 
-    ? topBarData.socialLinks
-    : fallbackSettings.socials;
+  const socials = topBarData ? topBarData.socialLinks : fallbackSettings.socials;
 
   const renderIcon = (social) => {
     return <img src={social.iconUrl} alt={social.name} style={{ width: '24px', height: '24px', objectFit: 'contain' }} />;
