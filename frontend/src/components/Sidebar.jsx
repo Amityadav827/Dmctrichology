@@ -113,22 +113,19 @@ function Sidebar() {
               </NavLink>
             )}
 
-            {/* 7. WEBSITE CMS */}
+            {/* 7. PAGES */}
             {hasPermission("cms") && (
               <>
-                <SectionLabel>Website CMS</SectionLabel>
-                <NavLink to="/settings/website" className={getNavClass}>
-                  <Settings size={16} /> Website Settings
-                </NavLink>
-
-                {/* Home Group - Collapsible */}
+                <SectionLabel>Pages</SectionLabel>
+                
+                {/* Home Page - Collapsible */}
                 <div 
                   onClick={() => setIsHomeOpen(!isHomeOpen)}
                   className="nav-item" 
                   style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <Home size={16} /> Home
+                    <Layers size={16} /> Home Page
                   </div>
                   {isHomeOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 </div>
@@ -146,6 +143,26 @@ function Sidebar() {
                     </NavLink>
                   </div>
                 )}
+                
+                <NavLink to="/cms/about" className={getNavClass + " opacity-50 pointer-events-none"}>
+                  <Layers size={16} /> About Page (Soon)
+                </NavLink>
+              </>
+            )}
+
+            {/* 8. GLOBAL COMPONENTS */}
+            {hasPermission("cms") && (
+              <>
+                <SectionLabel>Global Components</SectionLabel>
+                <NavLink to="/cms/header" className={getNavClass}>
+                  <Layers size={16} /> Header
+                </NavLink>
+                <NavLink to="/cms/topbar" className={getNavClass}>
+                  <Layers size={16} /> Top Bar
+                </NavLink>
+                <NavLink to="/settings/website" className={getNavClass}>
+                  <Settings size={16} /> Website Settings
+                </NavLink>
               </>
             )}
 
