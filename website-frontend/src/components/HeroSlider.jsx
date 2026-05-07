@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { fetchHeroSlides } from '../services/api';
+import EditableText from './Editable/EditableText';
+import EditableSection from './Editable/EditableSection';
 
 export default function HeroSlider() {
   const [slides, setSlides] = useState([
@@ -37,7 +39,7 @@ export default function HeroSlider() {
 
   useEffect(() => {
     fetchHeroSlides().then(data => {
-      if (data && data.length > 0) {
+      if (data && Array.isArray(data) && data.length > 0) {
         setSlides(data);
       }
     });
@@ -55,43 +57,53 @@ export default function HeroSlider() {
   }, [slides]);
 
   return (
-    <div className="hero-slider-container">
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`slide ${index === currentSlide ? 'active' : ''}`}
-        >
-          {/* Background with zoom animation */}
-          <div
-            className={`slide-bg ${index === currentSlide ? 'slide-bg-zoom' : ''}`}
-            style={{ backgroundImage: `url(${slide.image})` }}
-          />
-          <div style={{ 
-            position: 'absolute', 
-            inset: 0, 
-            background: 'linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%)', 
-            zIndex: 1 
-          }}></div>
-
-          <div className={`slide-content ${index === currentSlide && contentReady ? 'slide-content-animate' : ''}`}>
-            <span className="section-subtitle" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto', objectFit: 'contain' }} />
-              {slide.tag}
-            </span>
-            <h1 className="section-title" style={{ fontSize: '54px', marginBottom: '16px', textTransform: 'none' }}>{slide.title}</h1>
-            <p className="slide-desc" style={{ fontFamily: "'Marcellus', serif", fontSize: '18px', color: '#333' }}>{slide.description}</p>
-          </div>
-        </div>
-      ))}
-      <div className="slider-dots">
-        {slides.map((_, index) => (
+    <EditableSection sectionId="hero" label="Hero Slider">
+      <div className="hero-slider-container">
+        {slides.map((slide, index) => (
           <div
             key={index}
-            className={`dot ${index === currentSlide ? 'active' : ''}`}
-            onClick={() => setCurrentSlide(index)}
-          ></div>
+            className={`slide ${index === currentSlide ? 'active' : ''}`}
+          >
+            {/* Background with zoom animation */}
+            <div
+              className={`slide-bg ${index === currentSlide ? 'slide-bg-zoom' : ''}`}
+              style={{ backgroundImage: `url(${slide.image})` }}
+            />
+            <div style={{ 
+              position: 'absolute', 
+              inset: 0, 
+              background: 'linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%)', 
+              zIndex: 1 
+            }}></div>
+
+            <div className={`slide-content ${index === currentSlide && contentReady ? 'slide-content-animate' : ''}`}>
+              <span className="section-subtitle" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto', objectFit: 'contain' }} />
+                {slide.tag}
+              </span>
+              <h1 className="section-title" style={{ fontSize: '54px', marginBottom: '16px', textTransform: 'none' }}>
+                <EditableText sectionId="hero" fieldPath={`slides.${index}.title`} tag="span">
+                  {slide.title}
+                </EditableText>
+              </h1>
+              <p className="slide-desc" style={{ fontFamily: "'Marcellus', serif", fontSize: '18px', color: '#333' }}>
+                <EditableText sectionId="hero" fieldPath={`slides.${index}.description`} tag="span">
+                  {slide.description}
+                </EditableText>
+              </p>
+            </div>
+          </div>
         ))}
+        <div className="slider-dots">
+          {slides.map((_, index) => (
+            <div
+              key={index}
+              className={`dot ${index === currentSlide ? 'active' : ''}`}
+              onClick={() => setCurrentSlide(index)}
+            ></div>
+          ))}
+        </div>
       </div>
-    </div>
+    </EditableSection>
   );
 }

@@ -32,12 +32,21 @@ const videoRoutes = require("./routes/videoRoutes");
 const redirectRoutes = require("./routes/redirectRoutes");
 const pageRoutes = require("./routes/pageRoutes");
 const blogCategoryRoutes = require("./routes/blogCategoryRoutes");
+const heroRoutes = require("./routes/heroRoutes");
 
-// Middleware
+// Database Connection
+const connectDB = require("./config/db");
+const { seedDefaultHero } = require("./controllers/heroController");
+
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const redirectMiddleware = require("./middleware/redirectMiddleware");
 
 const app = express();
+
+// Connect to MongoDB
+connectDB().then(() => {
+  seedDefaultHero();
+});
 
 // ========================
 // ✅ Global Middleware
@@ -56,14 +65,6 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 
-// Ensure upload directories exist
-const uploadDir = path.join(__dirname, "uploads");
-const galleryDir = path.join(uploadDir, "gallery");
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-if (!fs.existsSync(galleryDir)) fs.mkdirSync(galleryDir, { recursive: true });
-
-// Static files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Dynamic Redirects (MUST be before API routes if you want to redirect old URLs)
 app.use(redirectMiddleware);
@@ -122,6 +123,7 @@ app.use("/api/videos", videoRoutes);
 app.use("/api/redirects", redirectRoutes);
 app.use("/api/pages", pageRoutes);
 app.use("/api/blog-categories", blogCategoryRoutes);
+app.use("/api/hero", heroRoutes);
 
 // SEO
 app.get(
