@@ -9,10 +9,10 @@ exports.getAboutUs = async (req, res) => {
         title: 'WELCOME TO DMC TRICHOLOGY®',
         description: 'At DMC Trichology, Advanced Hair Transplant Techniques Restore Your Hairline And Boost Confidence',
         stats: [
-          { value: '2k+', label: 'Patients Healed', subText: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.' },
-          { value: '15+', label: 'Certified Doctors', subText: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.' },
-          { value: '4.9', label: 'Average Patient Rating', subText: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.' },
-          { value: '100+', label: 'New Equipments', subText: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.' }
+          { value: '2k+', label: 'Patients Healed', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true },
+          { value: '15+', label: 'Certified Doctors', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true },
+          { value: '4.9', label: 'Average Patient Rating', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true },
+          { value: '100+', label: 'New Equipments', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true }
         ]
       });
     }

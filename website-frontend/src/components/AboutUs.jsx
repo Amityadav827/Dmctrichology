@@ -11,7 +11,8 @@ const AboutUs = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/about-us`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/about-us?t=${Date.now()}`);
+        console.log("AboutUs Data Fetched:", res.data.data);
         if (res.data.success) setData(res.data.data);
       } catch (err) {
         console.error("AboutUs Fetch Error:", err);
