@@ -1,10 +1,12 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { hasPermission } from "../utils/auth";
 import {
   LayoutDashboard, Search, Star, PhoneCall, Mail, CalendarCheck,
   FileText, Scissors, Layers, HelpCircle, Activity, List,
   Video, PlayCircle, Image as ImageIcon, Users, Shield,
-  Key, Menu as MenuIcon, Settings, Wrench, Globe, Link as LinkIcon, Bot
+  Key, Menu as MenuIcon, Settings, Wrench, Globe, Link as LinkIcon, Bot,
+  ChevronDown, ChevronRight, Home
 } from "lucide-react";
 
 const getNavClass = ({ isActive }) =>
@@ -26,6 +28,7 @@ const SectionLabel = ({ children }) => (
 );
 
 function Sidebar() {
+  const [isHomeOpen, setIsHomeOpen] = React.useState(true);
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       {/* Brand Header */}
@@ -117,15 +120,32 @@ function Sidebar() {
                 <NavLink to="/settings/website" className={getNavClass}>
                   <Settings size={16} /> Website Settings
                 </NavLink>
-                <NavLink to="/cms/topbar" className={getNavClass}>
-                  <LayoutDashboard size={16} /> Top Bar
-                </NavLink>
-                <NavLink to="/cms/header" className={getNavClass}>
-                  <LayoutDashboard size={16} /> Header
-                </NavLink>
-                <NavLink to="/cms/hero" className={getNavClass}>
-                  <LayoutDashboard size={16} /> Hero Section
-                </NavLink>
+
+                {/* Home Group - Collapsible */}
+                <div 
+                  onClick={() => setIsHomeOpen(!isHomeOpen)}
+                  className="nav-item" 
+                  style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <Home size={16} /> Home
+                  </div>
+                  {isHomeOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                </div>
+
+                {isHomeOpen && (
+                  <div style={{ paddingLeft: '1rem', borderLeft: '1px solid #E2E8F0', marginLeft: '1.25rem', marginTop: '0.25rem', marginBottom: '0.5rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    <NavLink to="/cms/topbar" className={getNavClass}>
+                       Top Bar
+                    </NavLink>
+                    <NavLink to="/cms/header" className={getNavClass}>
+                       Header
+                    </NavLink>
+                    <NavLink to="/cms/hero" className={getNavClass}>
+                       Hero Section
+                    </NavLink>
+                  </div>
+                )}
               </>
             )}
 
