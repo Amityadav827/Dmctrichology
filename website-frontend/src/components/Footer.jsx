@@ -1,7 +1,15 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { fetchSiteSettings } from '../services/api';
 
 export default function Footer() {
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    fetchSiteSettings().then(data => {
+      if (data) setSettings(data);
+    });
+  }, []);
   const hairTransplants = [
     "Hair Transplant In Delhi",
     "Hair Transplant Cost In Delhi",
@@ -29,9 +37,21 @@ export default function Footer() {
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/trooomdx4mjupebkzsmy.png",
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/pzzrzqodtujxvlktyk2s.png",
     "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/jkidxsr5nbpwq7y7x0x0.png",
-    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/dgkcwru8nqurjw7f1lz6.png",
-    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lhgvbca5okvyge6atokb.png"
+    settings?.socialLinks?.youtube || "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/dgkcwru8nqurjw7f1lz6.png",
+    settings?.socialLinks?.linkedin || "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lhgvbca5okvyge6atokb.png"
   ];
+
+  const addressLines = settings?.address 
+    ? settings.address.split(', ') 
+    : [
+        "Vasant Vihar A 2/6 Vasant Vihar, New delhi 110057, India",
+        "Rajouri Garden J-12/25, First Floor, Rajouri Garden New Delhi 110027, India"
+      ];
+  const phone1 = settings?.phone1 || "+91-8527830194";
+  const phone2 = settings?.phone2 || "+91-9810939319";
+  const email = settings?.email || "info@dadumedicalcentre.com";
+  const logoUrl = settings?.logo || "https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png";
+  const footerCopyright = settings?.footerCopyright || "© 2024 . All Rights Reserved.";
 
   return (
     <footer style={{ width: '100%', fontFamily: "'Marcellus', serif" }}>
@@ -68,11 +88,12 @@ export default function Footer() {
           <div style={{ position: 'relative' }}>
             <h4 style={{ fontSize: '18px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", marginBottom: '25px', fontWeight: '400' }}>CONTACT US</h4>
             <div style={{ color: '#444', fontSize: '14px', lineHeight: '1.8' }}>
-              <p style={{ marginBottom: '15px' }}>Vasant Vihar A 2/6 Vasant Vihar, New delhi 110057, India</p>
-              <p style={{ marginBottom: '15px' }}>Rajouri Garden J-12/25, First Floor, Rajouri Garden New Delhi 110027, India</p>
-              <p style={{ marginBottom: '8px' }}>+91-8527830194,</p>
-              <p style={{ marginBottom: '15px' }}>+91-9810939319</p>
-              <p>info@dadumedicalcentre.com</p>
+              {addressLines.map((line, idx) => (
+                <p key={idx} style={{ marginBottom: '15px' }}>{line}</p>
+              ))}
+              <p style={{ marginBottom: '8px' }}>{phone1},</p>
+              <p style={{ marginBottom: '15px' }}>{phone2}</p>
+              <p>{email}</p>
             </div>
           </div>
         </div>
@@ -92,7 +113,7 @@ export default function Footer() {
           {/* Left Side: Logo & About - Flexed Side by Side (Sizes Reduced) */}
           <div style={{ flex: '1', minWidth: '400px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '30px' }}>
             <img
-              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png"
+              src={logoUrl}
               alt="logo"
               style={{ width: '180px', flexShrink: 0 }}
             />
@@ -185,17 +206,17 @@ export default function Footer() {
               <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png" alt="phone" style={{ width: '32px' }} />
-                  <span style={{ fontSize: '16px', fontWeight: '600', color: '#1C1C1C' }}>+91-8527830194</span>
+                  <span style={{ fontSize: '16px', fontWeight: '600', color: '#1C1C1C' }}>{phone1}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777703175/dmc-trichology/vj4qbxtxftqzqslowwgd.png" alt="arrow" style={{ width: '32px' }} />
-                  <span style={{ fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>Info@Dadumedicalcentre.Com</span>
+                  <span style={{ fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>{email}</span>
                 </div>
               </div>
 
               {/* Card Footer Links */}
               <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#777' }}>
-                <span>© 2024 . All Rights Reserved.</span>
+                <span>{footerCopyright}</span>
                 <div style={{ display: 'flex', gap: '15px' }}>
                   <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>Terms And Condition</a>
                   <span>|</span>

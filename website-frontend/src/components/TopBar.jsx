@@ -23,9 +23,11 @@ export default function TopBar() {
     ]
   };
 
-  const phones = settings?.phones || fallbackSettings.phones;
+  const phones = settings?.phone1 ? [settings.phone1, settings.phone2].filter(Boolean) : fallbackSettings.phones;
   const email = settings?.email || fallbackSettings.email;
-  const socials = settings?.socials || fallbackSettings.socials;
+  const socials = settings?.socialLinks 
+    ? fallbackSettings.socials.map(s => ({ ...s, link: settings.socialLinks[s.name] || s.link }))
+    : fallbackSettings.socials;
 
   const renderIcon = (social) => {
     return <img src={social.iconUrl} alt={social.name} style={{ width: '24px', height: '24px', objectFit: 'contain' }} />;

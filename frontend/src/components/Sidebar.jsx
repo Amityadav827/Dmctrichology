@@ -213,6 +213,9 @@ function Sidebar() {
         {hasPermission("users") && (
           <>
             <SectionLabel>System & Users</SectionLabel>
+            <NavLink to="/settings/website" className={getNavClass}>
+              <Settings size={16} /> Website Settings
+            </NavLink>
             <NavLink to="/users/list" className={getNavClass}>
               <Users size={16} /> User List
             </NavLink>

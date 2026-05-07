@@ -33,10 +33,12 @@ const redirectRoutes = require("./routes/redirectRoutes");
 const pageRoutes = require("./routes/pageRoutes");
 const blogCategoryRoutes = require("./routes/blogCategoryRoutes");
 const heroRoutes = require("./routes/heroRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
 
 // Database Connection
 const connectDB = require("./config/db");
 const { seedDefaultHero } = require("./controllers/heroController");
+const { seedDefaultSettings } = require("./controllers/settingsController");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const redirectMiddleware = require("./middleware/redirectMiddleware");
@@ -46,6 +48,7 @@ const app = express();
 // Connect to MongoDB
 connectDB().then(() => {
   seedDefaultHero();
+  seedDefaultSettings();
 });
 
 // ========================
@@ -124,6 +127,7 @@ app.use("/api/redirects", redirectRoutes);
 app.use("/api/pages", pageRoutes);
 app.use("/api/blog-categories", blogCategoryRoutes);
 app.use("/api/hero", heroRoutes);
+app.use("/api/site-settings", settingsRoutes);
 
 // SEO
 app.get(

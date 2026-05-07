@@ -7,9 +7,14 @@ import Link from 'next/link';
 export default function Header() {
   const [logoUrl, setLogoUrl] = useState('https://res.cloudinary.com/dseixl6px/image/upload/v1777530477/dmc-trichology/pntwhlftziotd6k0kdkg.png');
 
+  const [buttonText, setButtonText] = useState('Book Appointment');
+
   useEffect(() => {
     fetchSiteSettings().then(data => {
-      if(data && data.logo) setLogoUrl(data.logo);
+      if(data) {
+        if (data.logo) setLogoUrl(data.logo);
+        if (data.appointmentButtonText) setButtonText(data.appointmentButtonText);
+      }
     });
   }, []);
 
@@ -30,7 +35,7 @@ export default function Header() {
             className="btn-primary header-appointment-btn"
             style={{ color: '#ffffff', borderRadius: '50px', padding: '10px 10px 10px 24px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}
           >
-            <span style={{ fontFamily: "'Marcellus', serif" }}>Book Appointment</span>
+            <span style={{ fontFamily: "'Marcellus', serif" }}>{buttonText}</span>
             <div className="icon-circle btn-arrow-circle" style={{ width: '32px', height: '32px', backgroundColor: '#ffffff' }}>
               <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" className="btn-arrow-icon" style={{ width: '12px', height: '12px', objectFit: 'contain', filter: 'brightness(0)' }} />
             </div>

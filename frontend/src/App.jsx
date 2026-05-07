@@ -25,6 +25,7 @@ import Contact from "./pages/Contact";
 import Blogs from "./pages/Blogs";
 import AppointmentList from "./pages/AppointmentList";
 import Pages from "./pages/Pages";
+import WebsiteSettings from "./pages/WebsiteSettings";
 
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
@@ -234,6 +235,14 @@ function App() {
           element={
             <ProtectedRoute permission="users">
               <Contact />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="settings/website"
+          element={
+            <ProtectedRoute permission="cms">
+              <WebsiteSettings />
             </ProtectedRoute>
           }
         />
