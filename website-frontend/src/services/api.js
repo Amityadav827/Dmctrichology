@@ -6,7 +6,7 @@ const api = axios.create({
 
 export const fetchSiteSettings = async () => {
   try {
-    const res = await api.get('/api/site-settings');
+    const res = await api.get('/site-settings');
     return res.data;
   } catch (error) {
     console.error('Error fetching site settings', error);
@@ -16,7 +16,7 @@ export const fetchSiteSettings = async () => {
 
 export const fetchTopBar = async () => {
   try {
-    const res = await api.get(`/api/topbar?t=${Date.now()}`);
+    const res = await api.get(`/topbar?t=${Date.now()}`);
     return res.data;
   } catch (error) {
     console.error('Error fetching topbar', error);
@@ -26,7 +26,7 @@ export const fetchTopBar = async () => {
 
 export const fetchMenu = async () => {
   try {
-    const res = await api.get('/api/menu');
+    const res = await api.get('/menu');
     return res.data;
   } catch (error) {
     console.error('Error fetching menu', error);
@@ -36,7 +36,7 @@ export const fetchMenu = async () => {
 
 export const fetchHeroSlides = async () => {
   try {
-    const res = await api.get('/api/hero');
+    const res = await api.get('/hero');
     return res.data;
   } catch (error) {
     console.error('Error fetching hero slides', error);
@@ -46,7 +46,7 @@ export const fetchHeroSlides = async () => {
 
 export const submitLead = async (data) => {
   try {
-    const res = await api.post('/api/lead', data);
+    const res = await api.post('/lead', data);
     return res.data;
   } catch (error) {
     console.error('Error submitting lead', error);
