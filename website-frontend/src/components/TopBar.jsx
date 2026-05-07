@@ -7,6 +7,7 @@ export default function TopBar() {
 
   useEffect(() => {
     fetchTopBar().then(data => {
+      console.log("🔍 TOP BAR FETCHED DATA:", data);
       if(data && data.data) setTopBarData(data.data);
     });
   }, []);
