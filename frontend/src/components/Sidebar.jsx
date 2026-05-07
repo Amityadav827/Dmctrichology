@@ -6,7 +6,7 @@ import {
   FileText, Scissors, Layers, HelpCircle, Activity, List,
   Video, PlayCircle, Image as ImageIcon, Users, Shield,
   Key, Menu as MenuIcon, Settings, Wrench, Globe, Link as LinkIcon, Bot,
-  ChevronDown, ChevronRight, Home
+  ChevronDown, ChevronRight, Home, Eye
 } from "lucide-react";
 
 const getNavClass = ({ isActive }) =>
