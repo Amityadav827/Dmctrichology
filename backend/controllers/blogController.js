@@ -21,7 +21,7 @@ const mapToSupabase = (data) => {
     canonical_url: data.canonical_url || data.canonicalUrl,
     blog_date: data.blog_date || data.blogDate,
     status: data.status,
-    category_id: data.category_id || data.categoryId,
+    category_id: data.category_id || data.categoryId || null,
   };
 };
 
