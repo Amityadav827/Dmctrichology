@@ -1,22 +1,19 @@
-"use client";
-import { useEffect, useState } from 'react';
 import { fetchTopBar } from '../services/api';
+import { useBuilder } from '../context/BuilderContext';
 
 export default function TopBar() {
-  const [topBarData, setTopBarData] = useState(null);
+  const { topBarCMS, setTopBarCMS } = useBuilder();
 
   useEffect(() => {
-    console.log('TopBar: Fetching data...');
+    // Background sync to ensure data is fresh
     fetchTopBar().then(data => {
-      console.log('TopBar: API Raw Response:', data);
       if(data && data.data) {
-        console.log('TopBar: Setting state with:', data.data);
-        setTopBarData(data.data);
-      } else {
-        console.warn('TopBar: API response invalid or empty');
+        setTopBarCMS(data.data);
       }
     });
-  }, []);
+  }, [setTopBarCMS]);
+
+  const topBarData = topBarCMS;
 
   const fallbackSettings = {
     phones: ['+91-8527830194', '+91-9810939319'],
@@ -41,10 +38,9 @@ export default function TopBar() {
     return <img src={social.iconUrl} alt={social.name} style={{ width: '24px', height: '24px', objectFit: 'contain' }} />;
   };
 
-  if (topBarData === null) return null; // Wait for initial fetch
-  if (!isVisible) return null;
-
-  console.log('TopBar Rendering Data:', topBarData); // Debugging on live site
+  // Do not return null anymore. Use fallback data if API data isn't ready.
+  // This prevents layout shift (CLS).
+  if (!isVisible && topBarData !== null) return null;
 
   return (
     <div className="topbar">
