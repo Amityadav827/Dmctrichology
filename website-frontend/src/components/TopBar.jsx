@@ -6,8 +6,15 @@ export default function TopBar() {
   const [topBarData, setTopBarData] = useState(null);
 
   useEffect(() => {
+    console.log('TopBar: Fetching data...');
     fetchTopBar().then(data => {
-      if(data && data.data) setTopBarData(data.data);
+      console.log('TopBar: API Raw Response:', data);
+      if(data && data.data) {
+        console.log('TopBar: Setting state with:', data.data);
+        setTopBarData(data.data);
+      } else {
+        console.warn('TopBar: API response invalid or empty');
+      }
     });
   }, []);
 
