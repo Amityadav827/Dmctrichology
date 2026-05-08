@@ -1,5 +1,5 @@
 "use client";
-import { EditableText } from '../context/BuilderContext';
+import EditableText from './Editable/EditableText';
 
 const ServiceHero = ({ data }) => {
   if (!data) return null;

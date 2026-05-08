@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Star, Clock, ChevronRight } from 'lucide-react';
-import { EditableText } from '../context/BuilderContext';
+import EditableText from './Editable/EditableText';
 
 const ServiceListing = ({ services = [], categories = [] }) => {
   const [activeCategory, setActiveCategory] = useState('all');
