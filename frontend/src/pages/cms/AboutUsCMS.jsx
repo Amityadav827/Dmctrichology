@@ -82,8 +82,6 @@ export default function AboutUsCMS() {
 
   const handlePublish = async () => {
     await handleSave();
-    toast.success("Published to live website!", { icon: "🚀" });
-    window.open("https://dmctrichology-mkm4.vercel.app/", "_blank");
   };
 
   if (loading) {
