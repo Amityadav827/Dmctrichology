@@ -34,6 +34,9 @@ import AboutUsCMS from "./pages/cms/AboutUsCMS";
 import ServicesCMS from "./pages/cms/ServicesCMS";
 import MarqueeFeaturesCMS from "./pages/cms/MarqueeFeaturesCMS";
 import WhyChooseUsCMS from "./pages/cms/WhyChooseUsCMS";
+import ResultsSliderCMS from "./pages/cms/ResultsSliderCMS";
+import GradeSliderCMS from "./pages/cms/GradeSliderCMS";
+import WhyChooseDMCCMS from "./pages/cms/WhyChooseDMCCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 
 import RedirectList from "./pages/RedirectList";
@@ -85,6 +88,30 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <WhyChooseUsCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/before-after-results"
+          element={
+            <ProtectedRoute permission="cms">
+              <ResultsSliderCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/hair-transplant-grades"
+          element={
+            <ProtectedRoute permission="cms">
+              <GradeSliderCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/why-choose-dmc"
+          element={
+            <ProtectedRoute permission="cms">
+              <WhyChooseDMCCMS />
             </ProtectedRoute>
           }
         />

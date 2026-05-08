@@ -94,6 +94,36 @@ export const fetchWhyChooseUs = async () => {
   }
 };
 
+export const fetchResultsSlider = async () => {
+  try {
+    const res = await api.get(`/results-slider?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching results slider', error);
+    return null;
+  }
+};
+
+export const fetchGradeSlider = async () => {
+  try {
+    const res = await api.get(`/grade-slider?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching grade slider', error);
+    return null;
+  }
+};
+
+export const fetchWhyChooseDMC = async () => {
+  try {
+    const res = await api.get(`/why-choose-dmc?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching why choose dmc', error);
+    return null;
+  }
+};
+
 export const submitLead = async (data) => {
   try {
     const res = await api.post('/lead', data);

@@ -95,7 +95,10 @@ export default function VisualLiveBuilder() {
           case 'services': endpoint = '/services'; break;
           case 'marquee-features': endpoint = '/marquee-features'; break;
           case 'why-choose-us': endpoint = '/why-choose-us'; break;
-          default: continue;
+          case 'results-slider': endpoint = '/results-slider'; break;
+          case 'grade-slider': endpoint = '/grade-slider'; break;
+          case 'why-choose-dmc': endpoint = '/why-choose-dmc'; break;
+          default: endpoint = `/sections/${sectionId}`;
         }
 
         // Fetch current data first to avoid overwriting other fields
@@ -263,7 +266,10 @@ export default function VisualLiveBuilder() {
                       { id: 'about-us', label: 'About Us' },
                       { id: 'services', label: 'Services Slider' },
                       { id: 'marquee-features', label: 'Marquee Features' },
-                      { id: 'why-choose-us', label: 'Why Choose Us' }
+                      { id: 'why-choose-us', label: 'Why Choose Us' },
+                      { id: 'results-slider', label: 'Before & After Results' },
+                      { id: 'grade-slider', label: 'Hair Transplant Grades' },
+                      { id: 'why-choose-dmc', label: 'Why Choose DMC' }
                     ].map((section, i) => (
                       <div 
                         key={i} 
@@ -318,7 +324,10 @@ export default function VisualLiveBuilder() {
                             'About Us': '/cms/about-us',
                             'Services Slider': '/cms/services',
                             'Marquee Features': '/cms/marquee-features',
-                            'Why Choose Us': '/cms/why-choose-us'
+                            'Why Choose Us': '/cms/why-choose-us',
+                            'Before & After Results': '/cms/before-after-results',
+                            'Hair Transplant Grades': '/cms/hair-transplant-grades',
+                            'Why Choose DMC': '/cms/why-choose-dmc'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}

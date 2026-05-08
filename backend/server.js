@@ -40,6 +40,9 @@ const pageCompositionRoutes = require("./routes/pageCompositionRoutes");
 const aboutUsRoutes = require("./routes/aboutUsRoutes");
 const marqueeRoutes = require("./routes/marqueeRoutes");
 const whyChooseUsRoutes = require("./routes/whyChooseUsRoutes");
+const resultsSliderRoutes = require("./routes/resultsSliderRoutes");
+const gradeSliderRoutes = require("./routes/gradeSliderRoutes");
+const whyChooseDMCRoutes = require("./routes/whyChooseDMCRoutes");
 const sectionRoutes = require("./routes/sectionRoutes");
 
 // Database Connection
@@ -147,6 +150,9 @@ app.use("/api/page-compositions", pageCompositionRoutes);
 app.use("/api/about-us", aboutUsRoutes);
 app.use("/api/marquee-features", marqueeRoutes);
 app.use("/api/why-choose-us", whyChooseUsRoutes);
+app.use("/api/results-slider", resultsSliderRoutes);
+app.use("/api/grade-slider", gradeSliderRoutes);
+app.use("/api/why-choose-dmc", whyChooseDMCRoutes);
 app.use("/api/sections", sectionRoutes);
 
 // SEO
