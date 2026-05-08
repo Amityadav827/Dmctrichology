@@ -239,8 +239,9 @@ export default function GradeSlider() {
         </div>
 
         <style jsx>{`
-          .grade-badge-text {
-            color: #fff !important;
+          /* Extremely specific to override globals.css !important */
+          .grade-section span.section-subtitle.grade-badge-text {
+            color: #ffffff !important;
           }
           .grade-prev-btn:hover, .grade-next-btn:hover {
             transform: scale(1.1);
