@@ -117,7 +117,7 @@ const WhyChooseUs = () => {
           </EditableText>
         </div>
 
-        <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 100px', textAlign: 'center' }}>
+        <h2 className="section-title" style={{ maxWidth: '1000px', margin: '0 auto 100px !important', textAlign: 'center' }}>
           <EditableText sectionId="why-choose-us" fieldPath="title" tag="span">
             {title}
           </EditableText>
