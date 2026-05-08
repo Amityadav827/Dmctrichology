@@ -117,21 +117,11 @@ export default function FaqSection() {
                   }}
                 >
                   <div style={{ flexShrink: 0 }}>
-                    <div style={{ 
-                      width: '50px', 
-                      height: '50px', 
-                      backgroundColor: '#000', 
-                      borderRadius: '50%', 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'center' 
-                    }}>
-                      <img 
-                        src={faq.icon} 
-                        alt="icon" 
-                        style={{ width: '25px', height: '25px', filter: 'invert(1)' }} 
-                      />
-                    </div>
+                    <img 
+                      src={faq.icon} 
+                      alt="icon" 
+                      style={{ width: '50px', height: '50px', objectFit: 'contain' }} 
+                    />
                   </div>
                   <div>
                     <h3 style={{ fontSize: '22px', color: '#333', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px', lineHeight: '1.3' }}>
