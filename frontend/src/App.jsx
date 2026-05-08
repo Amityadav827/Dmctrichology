@@ -37,6 +37,9 @@ import WhyChooseUsCMS from "./pages/cms/WhyChooseUsCMS";
 import ResultsSliderCMS from "./pages/cms/ResultsSliderCMS";
 import GradeSliderCMS from "./pages/cms/GradeSliderCMS";
 import WhyChooseDMCCMS from "./pages/cms/WhyChooseDMCCMS";
+import SurgeonsCMS from "./pages/cms/SurgeonsCMS";
+import ConsultationCMS from "./pages/cms/ConsultationCMS";
+import ReviewsCMS from "./pages/cms/ReviewsCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 
 import RedirectList from "./pages/RedirectList";
@@ -112,6 +115,30 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <WhyChooseDMCCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/surgeons"
+          element={
+            <ProtectedRoute permission="cms">
+              <SurgeonsCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/consultation"
+          element={
+            <ProtectedRoute permission="cms">
+              <ConsultationCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/reviews"
+          element={
+            <ProtectedRoute permission="cms">
+              <ReviewsCMS />
             </ProtectedRoute>
           }
         />

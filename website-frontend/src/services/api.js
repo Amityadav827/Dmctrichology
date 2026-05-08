@@ -124,6 +124,36 @@ export const fetchWhyChooseDMC = async () => {
   }
 };
 
+export const fetchSurgeons = async () => {
+  try {
+    const res = await api.get(`/surgeons?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching surgeons', error);
+    return null;
+  }
+};
+
+export const fetchConsultation = async () => {
+  try {
+    const res = await api.get(`/consultation?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching consultation', error);
+    return null;
+  }
+};
+
+export const fetchReviews = async () => {
+  try {
+    const res = await api.get(`/reviews?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching reviews', error);
+    return null;
+  }
+};
+
 export const submitLead = async (data) => {
   try {
     const res = await api.post('/lead', data);

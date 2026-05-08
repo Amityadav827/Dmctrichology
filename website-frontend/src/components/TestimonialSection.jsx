@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import axios from 'axios';
+import { fetchReviews } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 
@@ -86,48 +86,25 @@ const TestimonialSection = () => {
   const [activeVideo, setActiveVideo] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/sections/testimonials`);
-        if (res.data.success && res.data.data) {
-          setData(res.data.data);
-        }
-      } catch (err) {
-        console.error("Testimonials Fetch Error:", err);
+    fetchReviews().then(res => {
+      if (res && res.success && res.data) {
+        setData(res.data);
       }
-    };
-    fetchData();
+    });
   }, []);
 
-  const title = data?.title || 'See the Results. Hear the Stories.';
-  const subtitle = data?.subtitle || 'REVIEWS';
-  const reviewsCount = data?.reviewsCount || '7000+ Reviews on';
-  
-  const reviews = data?.reviews || [
-    { name: "Anjali Kohli", text: "The full body laser session was excellent. The therapist was highly skilled and made the experience comfortable and effective." },
-    { name: "Ravi Malik", text: "The result of laser treatment is very nice. I have tried LHR from different places but find this the best." },
-    { name: "Priya Sharma", text: "Today is the first session of slimming the abdomen, and love handles inch loss. I am totally satisfied with service." },
-    { name: "Vikas sharma", text: "I really liked the way you handled that unwanted hair on my body. Avataar, you made it all so simple and quick" },
-    { name: "Sneha Aggrawal", text: "I highly recommend their services to anyone looking to enhance their natural beauty and enjoy a moment of relaxation." },
-    { name: "Rahul Tomar", text: "The results exceeded my expectations, and I felt pampered without the hassle of traveling to a salon." },
-    { name: "Priyal Sen", text: "The procedure was quick, comfortable... I've already started noticing positive changes since my first session." },
-    { name: "Viihan Rath", text: "The technician was very skilled, gentle, and made sure I was comfortable throughout the session." },
-    { name: "Simran Paul", text: "I've had a great experience with my laser hair reduction sessions. My therapist is highly professional and gentle." },
-    { name: "Alka Singh", text: "Thank you for the wonderful facial! The entire experience was relaxing and refreshing. You were very professional." }
-  ];
+  if (data && data.enabled === false) return null;
 
-  const videos = data?.videos || [
-    { name: "Real Results Story", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/ba79ohixgo962pduymyd.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { name: "Tanvi's Hydration", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/u1z7ggmemmekm84ep5hu.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { name: "Kritika Kamra", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/pgab6yn3skxpsx4oftws.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { name: "Shweta Tiwari", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716930/dmc-trichology/fgljhvgnh4lyhilbokdf.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    { name: "Influencer Dish", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/o0naqjvopw7otiwdzwsg.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
-  ];
+  const title = data ? (data.heading || '') : 'See the Results. Hear the Stories.';
+  const subtitle = data ? (data.badgeText || '') : 'REVIEWS';
+  const reviewsCount = data ? (data.googleReviewText || '') : '7000+ Reviews on';
+  const reviews = Array.isArray(data?.reviews) ? data.reviews : [];
+  const videos = Array.isArray(data?.videos) ? data.videos : [];
 
   const closeVideo = () => setActiveVideo(null);
 
   return (
-    <EditableSection sectionId="testimonials" label="Testimonials Grid">
+    <EditableSection sectionId="reviews-section" label="Testimonials Grid">
       <section className="testimonials-grid-section" style={{ padding: '0 5% 100px 5%', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '1450px', margin: '0 auto' }}>
 
@@ -135,18 +112,18 @@ const TestimonialSection = () => {
           <div style={{ textAlign: 'center', marginBottom: '80px' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
               <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '32px', height: 'auto', objectFit: 'contain' }} />
-              <EditableText sectionId="testimonials" fieldPath="subtitle" tag="span" className="section-subtitle">
+              <EditableText sectionId="reviews-section" fieldPath="badgeText" tag="span" className="section-subtitle">
                 {subtitle}
               </EditableText>
             </div>
             <h2 className="section-title">
-              <EditableText sectionId="testimonials" fieldPath="title" tag="span">
+              <EditableText sectionId="reviews-section" fieldPath="heading" tag="span">
                 {title}
               </EditableText>
             </h2>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
               <span style={{ fontSize: '16px', color: '#666' }}>
-                <EditableText sectionId="testimonials" fieldPath="reviewsCount" tag="span">{reviewsCount}</EditableText>
+                <EditableText sectionId="reviews-section" fieldPath="googleReviewText" tag="span">{reviewsCount}</EditableText>
               </span>
               <Image src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" width={80} height={26} style={{ width: '80px', height: 'auto', marginTop: '4px' }} />
             </div>
@@ -154,19 +131,20 @@ const TestimonialSection = () => {
 
           {/* Staggered Grid */}
           <div className="testimonial-staggered-grid" style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
-            {/* Logic for 5 columns - staggered using slices */}
             {[0, 1, 2, 3, 4].map((col) => (
               <div key={col} className={`testimonial-col-${col}`} style={{ flex: 1, display: 'flex', flexDirection: 'column', marginTop: col % 2 !== 0 ? '60px' : '0' }}>
-                <ReviewCard sectionId="testimonials" index={col * 2} name={reviews[col * 2]?.name} text={reviews[col * 2]?.text} />
-                <VideoCard 
-                  sectionId="testimonials" 
-                  index={col} 
-                  name={videos[col]?.name} 
-                  image={videos[col]?.image} 
-                  height={col % 2 !== 0 ? "480px" : "450px"} 
-                  onPlay={() => setActiveVideo(videos[col]?.url)} 
-                />
-                <ReviewCard sectionId="testimonials" index={col * 2 + 1} name={reviews[col * 2 + 1]?.name} text={reviews[col * 2 + 1]?.text} />
+                {reviews[col * 2] && <ReviewCard sectionId="reviews-section" index={col * 2} name={reviews[col * 2]?.name} text={reviews[col * 2]?.text} />}
+                {videos[col] && (
+                  <VideoCard 
+                    sectionId="reviews-section" 
+                    index={col} 
+                    name={videos[col]?.name} 
+                    image={videos[col]?.image} 
+                    height={col % 2 !== 0 ? "480px" : "450px"} 
+                    onPlay={() => setActiveVideo(videos[col]?.url)} 
+                  />
+                )}
+                {reviews[col * 2 + 1] && <ReviewCard sectionId="reviews-section" index={col * 2 + 1} name={reviews[col * 2 + 1]?.name} text={reviews[col * 2 + 1]?.text} />}
               </div>
             ))}
           </div>

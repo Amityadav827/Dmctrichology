@@ -43,6 +43,9 @@ const whyChooseUsRoutes = require("./routes/whyChooseUsRoutes");
 const resultsSliderRoutes = require("./routes/resultsSliderRoutes");
 const gradeSliderRoutes = require("./routes/gradeSliderRoutes");
 const whyChooseDMCRoutes = require("./routes/whyChooseDMCRoutes");
+const surgeonRoutes = require("./routes/surgeonRoutes");
+const consultationRoutes = require("./routes/consultationRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 const sectionRoutes = require("./routes/sectionRoutes");
 
 // Database Connection
@@ -153,6 +156,9 @@ app.use("/api/why-choose-us", whyChooseUsRoutes);
 app.use("/api/results-slider", resultsSliderRoutes);
 app.use("/api/grade-slider", gradeSliderRoutes);
 app.use("/api/why-choose-dmc", whyChooseDMCRoutes);
+app.use("/api/surgeons", surgeonRoutes);
+app.use("/api/consultation", consultationRoutes);
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/sections", sectionRoutes);
 
 // SEO
