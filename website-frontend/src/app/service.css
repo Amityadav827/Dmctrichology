@@ -3,7 +3,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 260px 5% 160px; /* Maximum luxury spaciousness */
+  padding: 170px 5% 100px; /* Reduced by ~35% for a more compact look */
   text-align: center;
   position: relative;
   z-index: 10;
@@ -11,58 +11,51 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 550px;
+  min-height: 380px; /* Scaled down */
 }
 
 .service-hero-premium::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, #F5F7FA, #E8EBF3); /* Light premium medical gray gradient */
+  background: linear-gradient(to bottom, #F5F7FA, #E8EBF3);
   z-index: -1;
-  opacity: 1;
 }
 
 .service-hero-title {
   font-family: 'Marcellus', serif !important;
-  font-size: 84px !important; /* Bold luxury scale */
+  font-size: 54px !important; /* Reduced by ~35% (84 -> 54) */
   color: #111111 !important;
-  margin: 0 0 24px !important;
+  margin: 0 0 16px !important;
   text-transform: capitalize !important;
   font-weight: 400 !important;
-  letter-spacing: -1px !important; /* Elegant tighter spacing for large text */
-  line-height: 1.1 !important;
+  letter-spacing: 1px !important;
+  line-height: 1.2 !important;
 }
 
 .service-hero-breadcrumb {
   font-family: 'Marcellus', serif !important;
-  font-size: 18px !important;
+  font-size: 14px !important; /* Scaled down */
   color: #555555 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 12px !important;
+  gap: 8px !important;
   font-weight: 400 !important;
-  opacity: 0.9 !important;
+  opacity: 0.8 !important;
 }
 
 .service-hero-breadcrumb a {
   color: #888888 !important;
   text-decoration: none !important;
-  transition: all 0.3s ease !important;
-}
-
-.service-hero-breadcrumb a:hover {
-  color: #111111 !important;
 }
 
 .service-hero-breadcrumb .sep {
   color: #cccccc !important;
-  font-size: 14px !important;
 }
 
 .service-hero-breadcrumb .current {
-  color: #333333 !important;
+  color: #111111 !important;
 }
 
 .service-page-container {
