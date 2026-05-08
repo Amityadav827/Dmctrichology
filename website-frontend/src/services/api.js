@@ -184,6 +184,26 @@ export const fetchHomeBlog = async () => {
   }
 };
 
+export const fetchPressMedia = async () => {
+  try {
+    const res = await api.get(`/press-media?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching press media', error);
+    return null;
+  }
+};
+
+export const fetchFooter = async () => {
+  try {
+    const res = await api.get(`/footer?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching footer', error);
+    return null;
+  }
+};
+
 export const submitLead = async (data) => {
   try {
     const res = await api.post('/lead', data);

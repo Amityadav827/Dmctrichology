@@ -43,6 +43,8 @@ import ReviewsCMS from "./pages/cms/ReviewsCMS";
 import TreatmentPlanCMS from "./pages/cms/TreatmentPlanCMS";
 import FaqCMS from "./pages/cms/FaqCMS";
 import BlogsHomeCMS from "./pages/cms/BlogsHomeCMS";
+import PressMediaCMS from "./pages/cms/PressMediaCMS";
+import FooterCMS from "./pages/cms/FooterCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 
 import RedirectList from "./pages/RedirectList";
@@ -166,6 +168,22 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <BlogsHomeCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/press-media"
+          element={
+            <ProtectedRoute permission="cms">
+              <PressMediaCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/footer"
+          element={
+            <ProtectedRoute permission="cms">
+              <FooterCMS />
             </ProtectedRoute>
           }
         />

@@ -1,244 +1,224 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { fetchSiteSettings } from '../services/api';
+import React, { useState, useEffect } from "react";
+import { fetchFooter } from "../services/api";
+import EditableSection from "./Editable/EditableSection";
+import EditableText from "./Editable/EditableText";
 
-export default function Footer() {
-  const [settings, setSettings] = useState(null);
+const Footer = () => {
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetchSiteSettings().then(data => {
-      if (data) setSettings(data);
-    });
+    const loadData = async () => {
+      const res = await fetchFooter();
+      if (res?.success) {
+        setData(res.data);
+      }
+    };
+    loadData();
+
+    const handleCmsUpdate = (e) => {
+      if (e.detail.sectionId === "footer-section") {
+        const { fieldPath, value } = e.detail;
+        setData((prev) => {
+          if (!prev) return prev;
+          const newData = { ...prev };
+          if (fieldPath.includes(".")) {
+            const parts = fieldPath.split(".");
+            let curr = newData;
+            for (let i = 0; i < parts.length - 1; i++) curr = curr[parts[i]];
+            curr[parts[parts.length - 1]] = value;
+          } else {
+            newData[fieldPath] = value;
+          }
+          return newData;
+        });
+      }
+    };
+
+    window.addEventListener("cms-update", handleCmsUpdate);
+    return () => window.removeEventListener("cms-update", handleCmsUpdate);
   }, []);
-  const hairTransplants = [
-    "Hair Transplant In Delhi",
-    "Hair Transplant Cost In Delhi",
-    "FUE Hair Transplant",
-    "Body Hair Transplant",
-    "Beard Hair Transplant",
-    "Women Hair Transplant",
-    "Repair Hair Transplant",
-    "DMC – Golden Touch",
-    "Hair Transplant In India",
-    "Hair Transplant Cost In India"
-  ];
 
-  const hairTreatments = [
-    "DMC-Mesogrow",
-    "DMC- Root Restore therapy®",
-    "DMC- Advance HGP®",
-    "DMC-Advanced HGP 2.0 ®",
-    "DMC- Keravive Hair",
-    "DMC- Hair Rituals",
-    "GFC Hair Restoration"
-  ];
+  if (!data?.enabled && data !== null) return null;
 
-  const socialIcons = [
-    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/trooomdx4mjupebkzsmy.png",
-    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/pzzrzqodtujxvlktyk2s.png",
-    "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/jkidxsr5nbpwq7y7x0x0.png",
-    settings?.socialLinks?.youtube || "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/dgkcwru8nqurjw7f1lz6.png",
-    settings?.socialLinks?.linkedin || "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lhgvbca5okvyge6atokb.png"
-  ];
-
-  const addressLines = settings?.address 
-    ? settings.address.split(', ') 
-    : [
-        "Vasant Vihar A 2/6 Vasant Vihar, New delhi 110057, India",
-        "Rajouri Garden J-12/25, First Floor, Rajouri Garden New Delhi 110027, India"
-      ];
-  const phone1 = settings?.phone1 || "+91-8527830194";
-  const phone2 = settings?.phone2 || "+91-9810939319";
-  const email = settings?.email || "info@dadumedicalcentre.com";
-  const logoUrl = settings?.logo || "https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png";
-  const footerCopyright = settings?.footerCopyright || "© 2024 . All Rights Reserved.";
+  const columns = data?.columns || [];
+  const contact = data?.contact || {};
+  const disclaimer = data?.disclaimer || "";
+  const newsletter = data?.newsletter || {};
+  const branding = data?.branding || {};
+  const socials = data?.socials || [];
+  const bottomFooter = data?.bottomFooter || {};
 
   return (
-    <footer style={{ width: '100%', fontFamily: "'Marcellus', serif" }}>
+    <EditableSection sectionId="footer-section" label="Footer Section">
+      <footer style={{ backgroundColor: "#F9F7F2", padding: "80px 5% 40px", borderTop: "1px solid #E5E5E5" }}>
+        <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "40px", marginBottom: "60px" }}>
+            
+            {/* Dynamic Columns */}
+            {columns.map((col, cIdx) => (
+              <div key={cIdx}>
+                <h4 style={{ fontSize: "18px", color: "#1A1A1A", fontFamily: "'Marcellus', serif", marginBottom: "25px" }}>
+                  <EditableText sectionId="footer-section" fieldPath={`columns.${cIdx}.title`} tag="span">
+                    {col.title}
+                  </EditableText>
+                </h4>
+                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                  {(col.links || []).map((link, lIdx) => (
+                    <li key={lIdx} style={{ marginBottom: "12px" }}>
+                      <a href={link.url} style={{ color: "#666", textDecoration: "none", fontSize: "14px", fontFamily: "'Lato', sans-serif", transition: "color 0.3s ease" }}>
+                        <EditableText sectionId="footer-section" fieldPath={`columns.${cIdx}.links.${lIdx}.label`} tag="span">
+                          {link.label}
+                        </EditableText>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
-      {/* Top Footer Section (Beige) */}
-      <div style={{ backgroundColor: '#F9F4EA', padding: '80px 5% 150px 5%' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '50px' }}>
-
-          {/* Column 1: Hair Transplant */}
-          <div>
-            <h4 style={{ fontSize: '18px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", marginBottom: '25px', fontWeight: '400' }}>HAIR TRANSPLANT</h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {hairTransplants.map((item, i) => (
-                <li key={i} style={{ marginBottom: '12px' }}>
-                  <a href="#" style={{ color: '#444', fontSize: '14px', textDecoration: 'none', transition: 'color 0.3s' }}>{item}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 2: Hair Treatments */}
-          <div>
-            <h4 style={{ fontSize: '18px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", marginBottom: '25px', fontWeight: '400' }}>HAIR TREATMENTS</h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {hairTreatments.map((item, i) => (
-                <li key={i} style={{ marginBottom: '12px' }}>
-                  <a href="#" style={{ color: '#444', fontSize: '14px', textDecoration: 'none', transition: 'color 0.3s' }}>{item}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Contact Us */}
-          <div style={{ position: 'relative' }}>
-            <h4 style={{ fontSize: '18px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", marginBottom: '25px', fontWeight: '400' }}>CONTACT US</h4>
-            <div style={{ color: '#444', fontSize: '14px', lineHeight: '1.8' }}>
-              {addressLines.map((line, idx) => (
-                <p key={idx} style={{ marginBottom: '15px' }}>{line}</p>
-              ))}
-              <p style={{ marginBottom: '8px' }}>{phone1},</p>
-              <p style={{ marginBottom: '15px' }}>{phone2}</p>
-              <p>{email}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Disclaimer Area - Updated to 50% width and right aligned */}
-        <div style={{ width: '50%', marginLeft: 'auto', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '25px 0', margin: '0 0 0 auto' }}>
-          <p style={{ fontSize: '14px', color: '#444', lineHeight: '1.6', textAlign: 'right' }}>
-            <strong>Disclaimer:</strong> Content is for awareness and education only, not medical advice. Consult a qualified trichologist or dermatologist for proper diagnosis and treatment. Results may vary for each individual.
-          </p>
-        </div>
-      </div>
-
-      {/* Bottom Footer Section (Black) */}
-      <div style={{ backgroundColor: '#000', padding: '0 5% 0 5%', position: 'relative' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '100px' }}>
-
-          {/* Left Side: Logo & About - Flexed Side by Side (Sizes Reduced) */}
-          <div style={{ flex: '1', minWidth: '400px', paddingTop: '80px', paddingBottom: '60px', display: 'flex', alignItems: 'center', gap: '30px' }}>
-            <img
-              src={logoUrl}
-              alt="logo"
-              style={{ width: '180px', flexShrink: 0 }}
-            />
+            {/* Contact Column */}
             <div>
-              <h5 style={{ color: '#fff', fontSize: '14px', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: '500', fontFamily: "'Marcellus', serif" }}>ABOUT DMC TRICHOLOGY</h5>
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', maxWidth: '380px', lineHeight: '1.6', marginBottom: '20px' }}>
-                One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures.
-              </p>
+              <h4 style={{ fontSize: "18px", color: "#1A1A1A", fontFamily: "'Marcellus', serif", marginBottom: "25px" }}>
+                <EditableText sectionId="footer-section" fieldPath="contact.heading" tag="span">
+                  {contact.heading}
+                </EditableText>
+              </h4>
+              <div style={{ color: "#666", fontSize: "14px", fontFamily: "'Lato', sans-serif", lineHeight: "1.8" }}>
+                <p style={{ margin: "0 0 10px" }}>
+                  <EditableText sectionId="footer-section" fieldPath="contact.address1" tag="span">
+                    {contact.address1}
+                  </EditableText>
+                  <br />
+                  <EditableText sectionId="footer-section" fieldPath="contact.address2" tag="span">
+                    {contact.address2}
+                  </EditableText>
+                </p>
+                <p style={{ margin: "0 0 10px" }}>
+                  <EditableText sectionId="footer-section" fieldPath="contact.phone1" tag="span">
+                    {contact.phone1}
+                  </EditableText>
+                  <br />
+                  <EditableText sectionId="footer-section" fieldPath="contact.phone2" tag="span">
+                    {contact.phone2}
+                  </EditableText>
+                </p>
+                <p style={{ margin: 0 }}>
+                  <EditableText sectionId="footer-section" fieldPath="contact.email" tag="span">
+                    {contact.email}
+                  </EditableText>
+                </p>
+              </div>
+            </div>
 
-              {/* Social Icons - Size Reduced to 32px */}
-              <div style={{ display: 'flex', gap: '15px' }}>
-                {socialIcons.map((url, i) => (
-                  <a key={i} href="#" className="social-icon-link" style={{ textDecoration: 'none', transition: 'all 0.3s ease' }}>
-                    <img src={url} alt="social" style={{ width: '32px', transition: 'all 0.3s ease' }} />
+            {/* Newsletter Column */}
+            <div>
+              <h4 style={{ fontSize: "18px", color: "#1A1A1A", fontFamily: "'Marcellus', serif", marginBottom: "20px" }}>
+                <EditableText sectionId="footer-section" fieldPath="newsletter.heading" tag="span">
+                  {newsletter.heading}
+                </EditableText>
+              </h4>
+              <p style={{ color: "#666", fontSize: "13px", marginBottom: "20px", lineHeight: "1.6" }}>
+                <EditableText sectionId="footer-section" fieldPath="newsletter.description" tag="span">
+                  {newsletter.description}
+                </EditableText>
+              </p>
+              <div style={{ position: "relative" }}>
+                <input 
+                  type="email" 
+                  placeholder={newsletter.placeholder} 
+                  style={{ 
+                    width: "100%", 
+                    padding: "15px 20px", 
+                    borderRadius: "50px", 
+                    border: "1px solid #ddd",
+                    fontSize: "14px"
+                  }} 
+                />
+                <button style={{ 
+                  position: "absolute", 
+                  right: "5px", 
+                  top: "5px", 
+                  bottom: "5px",
+                  padding: "0 25px",
+                  backgroundColor: "#000",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "50px",
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  cursor: "pointer"
+                }}>
+                  <EditableText sectionId="footer-section" fieldPath="newsletter.buttonText" tag="span">
+                    {newsletter.buttonText}
+                  </EditableText>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <div style={{ borderTop: "1px solid #E5E5E5", padding: "40px 0 20px" }}>
+            <p style={{ color: "#999", fontSize: "12px", textAlign: "center", fontStyle: "italic", marginBottom: "40px" }}>
+              <EditableText sectionId="footer-section" fieldPath="disclaimer" tag="span">
+                {disclaimer}
+              </EditableText>
+            </p>
+            
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "30px" }}>
+              <div style={{ maxWidth: "400px" }}>
+                <img src={branding.logo || "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/logo-main.png"} alt="DMC Logo" style={{ height: "45px", marginBottom: "15px" }} />
+                <p style={{ color: "#666", fontSize: "13px", lineHeight: "1.6", margin: 0 }}>
+                  <EditableText sectionId="footer-section" fieldPath="branding.aboutText" tag="span">
+                    {branding.aboutText}
+                  </EditableText>
+                </p>
+              </div>
+
+              <div style={{ display: "flex", gap: "15px" }}>
+                {socials.map((social, sIdx) => (
+                  <a key={sIdx} href={social.url} style={{ 
+                    width: "40px", 
+                    height: "40px", 
+                    borderRadius: "50%", 
+                    backgroundColor: "#000", 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center",
+                    transition: "all 0.3s ease"
+                  }}>
+                    <span style={{ color: "#fff", fontSize: "14px" }}>{social.icon.charAt(0).toUpperCase()}</span>
                   </a>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Right Side: Overlap Card - Width Reduced & Spacing Fixed */}
-          <div style={{
-            flex: '1',
-            minWidth: '350px',
-            maxWidth: '750px',
-            marginTop: '-120px',
-            zIndex: '10'
-          }}>
-            <div style={{
-              backgroundColor: '#FEF9F1',
-              borderRadius: '40px',
-              padding: '60px 50px',
-              boxShadow: '0 20px 50px rgba(0,0,0,0.15)',
-              textAlign: 'center'
-            }}>
-              <h2 style={{ fontSize: '32px', color: '#1C1C1C', fontFamily: "'Marcellus', serif", marginBottom: '20px', fontWeight: '400' }}>
-                Stay Connected With Expert Care Support
-              </h2>
-              <p style={{ fontSize: '15px', color: '#555', marginBottom: '35px', lineHeight: '1.6' }}>
-                We&apos;re Here For You Monday To Friday With Tailored Treatments, Hands And A Commitment To Your Recovery Every Step Of The Way.
-              </p>
-
-              {/* Newsletter Input */}
-              <div style={{
-                display: 'flex',
-                backgroundColor: '#000',
-                borderRadius: '50px',
-                padding: '0',
-                marginBottom: '20px',
-                alignItems: 'center'
-              }}>
-                <input
-                  type="email"
-                  placeholder="Your Email Adress"
-                  style={{
-                    flex: 1,
-                    background: 'transparent',
-                    border: 'none',
-                    padding: '12px 25px',
-                    color: '#fff',
-                    fontSize: '14px',
-                    outline: 'none'
-                  }}
-                />
-                <button style={{ 
-                  backgroundColor: '#fff', 
-                  color: '#000', 
-                  border: 'revert', 
-                  borderRadius: '50px', 
-                  padding: '12px 12px 12px 24px', 
-                  fontWeight: '600', 
-                  fontSize: '14px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  cursor: 'pointer'
-                }}>
-                  Submit
-                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" alt="email" style={{ width: '24px' }} />
-                </button>
-              </div>
-
-              {/* Subscription Checkbox */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '35px' }}>
-                <input type="checkbox" id="subscribe" style={{ cursor: 'pointer' }} />
-                <label htmlFor="subscribe" style={{ fontSize: '13px', color: '#444', cursor: 'pointer' }}>Subscribe For Health Tips & Updates</label>
-              </div>
-
-              {/* Contact Info Pills */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', marginBottom: '20px', flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png" alt="phone" style={{ width: '32px' }} />
-                  <span style={{ fontSize: '16px', fontWeight: '600', color: '#1C1C1C' }}>{phone1}</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777703175/dmc-trichology/vj4qbxtxftqzqslowwgd.png" alt="arrow" style={{ width: '32px' }} />
-                  <span style={{ fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>{email}</span>
-                </div>
-              </div>
-
-              {/* Card Footer Links */}
-              <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#777' }}>
-                <span>{footerCopyright}</span>
-                <div style={{ display: 'flex', gap: '15px' }}>
-                  <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>Terms And Condition</a>
-                  <span>|</span>
-                  <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>Privacy Policy</a>
-                </div>
-              </div>
+          <div style={{ borderTop: "1px solid #E5E5E5", padding: "20px 0", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "20px" }}>
+            <p style={{ color: "#999", fontSize: "13px", margin: 0 }}>
+              <EditableText sectionId="footer-section" fieldPath="bottomFooter.copyright" tag="span">
+                {bottomFooter.copyright}
+              </EditableText>
+            </p>
+            <div style={{ display: "flex", gap: "30px" }}>
+              <a href={bottomFooter.termsLink} style={{ color: "#999", fontSize: "13px", textDecoration: "none" }}>
+                <EditableText sectionId="footer-section" fieldPath="bottomFooter.termsText" tag="span">
+                  {bottomFooter.termsText}
+                </EditableText>
+              </a>
+              <a href={bottomFooter.privacyLink} style={{ color: "#999", fontSize: "13px", textDecoration: "none" }}>
+                <EditableText sectionId="footer-section" fieldPath="bottomFooter.privacyText" tag="span">
+                  {bottomFooter.privacyText}
+                </EditableText>
+              </a>
             </div>
           </div>
-        </div>
-      </div>
 
-      <style jsx>{`
-        .social-icon-link:hover img {
-          transform: translateY(-5px) scale(1.15);
-          filter: brightness(1.2);
-        }
-        @media (max-width: 992px) {
-          footer > div { padding: 40px 5% !important; }
-          div[style*="marginTop: -120px"] { margin-top: 0 !important; }
-          div[style*="justifyContent: space-between"] { justify-content: center !important; text-align: center; }
-        }
-      `}</style>
-    </footer>
+        </div>
+      </footer>
+    </EditableSection>
   );
-}
+};
+
+export default Footer;

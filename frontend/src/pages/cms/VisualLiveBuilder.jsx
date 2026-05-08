@@ -104,6 +104,8 @@ export default function VisualLiveBuilder() {
           case 'treatment-plan-section': endpoint = '/treatment-plan'; break;
           case 'faq-section': endpoint = '/home-faq'; break;
           case 'blogs-home-section': endpoint = '/blogs-home'; break;
+          case 'press-media-section': endpoint = '/press-media'; break;
+          case 'footer-section': endpoint = '/footer'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 
@@ -281,7 +283,9 @@ export default function VisualLiveBuilder() {
                       { id: 'reviews-section', label: 'Reviews & Stories' },
                       { id: 'treatment-plan-section', label: 'Know The Right Treatment' },
                       { id: 'faq-section', label: 'Frequently Asked Question?' },
-                      { id: 'blogs-home-section', label: 'News & Wellness Advice' }
+                      { id: 'blogs-home-section', label: 'News & Wellness Advice' },
+                      { id: 'press-media-section', label: 'Press & Media' },
+                      { id: 'footer-section', label: 'Footer' }
                     ].map((section, i) => (
                       <div 
                         key={i} 
@@ -345,7 +349,9 @@ export default function VisualLiveBuilder() {
                             'Reviews & Stories': '/cms/reviews',
                             'Know The Right Treatment': '/cms/treatment-plan',
                             'Frequently Asked Question?': '/cms/faq',
-                            'News & Wellness Advice': '/cms/blogs-home'
+                            'News & Wellness Advice': '/cms/blogs-home',
+                            'Press & Media Section': '/cms/press-media',
+                            'Footer Section': '/cms/footer'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}

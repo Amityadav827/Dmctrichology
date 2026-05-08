@@ -49,6 +49,8 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const treatmentPlanRoutes = require("./routes/treatmentPlanRoutes");
 const homeFaqRoutes = require("./routes/homeFaqRoutes");
 const homeBlogRoutes = require("./routes/homeBlogRoutes");
+const pressMediaRoutes = require("./routes/pressMediaRoutes");
+const footerRoutes = require("./routes/footerRoutes");
 const sectionRoutes = require("./routes/sectionRoutes");
 
 // Database Connection
@@ -165,6 +167,8 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/treatment-plan", treatmentPlanRoutes);
 app.use("/api/home-faq", homeFaqRoutes);
 app.use("/api/blogs-home", homeBlogRoutes);
+app.use("/api/press-media", pressMediaRoutes);
+app.use("/api/footer", footerRoutes);
 app.use("/api/sections", sectionRoutes);
 
 // SEO
