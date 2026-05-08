@@ -117,8 +117,8 @@ export default function Footer() {
       <footer style={{ backgroundColor: '#FEF9F1', position: 'relative', overflow: 'hidden' }}>
         
         {/* Top Footer Section (Beige) */}
-        <div style={{ padding: '80px 5% 60px 5%', maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', marginBottom: '40px' }}>
+        <div style={{ padding: '80px 5% 180px 5%', maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px' }}>
             
             {/* Dynamic Columns */}
             {columns.map((col, cIdx) => (
@@ -168,13 +168,6 @@ export default function Footer() {
               </div>
             </div>
           </div>
-
-          {/* Disclaimer Area */}
-          <div style={{ width: '50%', marginLeft: 'auto', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '25px 0', margin: '0 0 0 auto' }}>
-            <p style={{ fontSize: '14px', color: '#444', lineHeight: '1.6', textAlign: 'right' }}>
-              <strong>Disclaimer:</strong> <EditableText sectionId="footer-section" fieldPath="disclaimer" tag="span">{disclaimer}</EditableText>
-            </p>
-          </div>
         </div>
 
         {/* Bottom Footer Section (Black) */}
@@ -210,7 +203,7 @@ export default function Footer() {
               flex: '1',
               minWidth: '350px',
               maxWidth: '750px',
-              marginTop: '-120px',
+              marginTop: '-160px',
               zIndex: '10'
             }}>
               <div style={{
@@ -285,6 +278,13 @@ export default function Footer() {
                     <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777703175/dmc-trichology/vj4qbxtxftqzqslowwgd.png" alt="arrow" style={{ width: '32px' }} />
                     <span style={{ fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>{contact.email.toUpperCase()}</span>
                   </div>
+                </div>
+
+                {/* Disclaimer Area - Moved Inside Card Footer to prevent overlap */}
+                <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', padding: '20px 0', margin: '20px 0' }}>
+                  <p style={{ fontSize: '12px', color: '#666', lineHeight: '1.6', textAlign: 'center' }}>
+                    <strong>Disclaimer:</strong> <EditableText sectionId="footer-section" fieldPath="disclaimer" tag="span">{disclaimer}</EditableText>
+                  </p>
                 </div>
 
                 {/* Card Footer Links */}
