@@ -44,7 +44,7 @@ export default function TreatmentSection() {
   const cards = data?.cards || [];
 
   return (
-    <EditableSection sectionId="treatment-plan-section" label="KNOW THE RIGHT TREATMENT">
+    <EditableSection sectionId="treatment-plan-section" label="Know The Right Treatment">
       <section style={{ padding: '0', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           
