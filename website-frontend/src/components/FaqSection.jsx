@@ -7,7 +7,6 @@ import EditableText from './Editable/EditableText';
 export default function FaqSection() {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState('');
-  const [activeFaqId, setActiveFaqId] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -54,38 +53,19 @@ export default function FaqSection() {
 
   return (
     <EditableSection sectionId="faq-section" label="Frequently Asked Question?">
-      <section style={{ padding: '100px 5% 80px', backgroundColor: '#fff' }}>
+      <section style={{ padding: '80px 5%', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
 
           {/* Header Area */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'flex-end', 
-            marginBottom: '50px', 
-            flexWrap: 'wrap', 
-            gap: '30px' 
-          }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '60px', flexWrap: 'wrap', gap: '30px' }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                <div style={{ width: '8px', height: '8px', backgroundColor: '#E4B753', borderRadius: '50%' }}></div>
-                <EditableText sectionId="faq-section" fieldPath="badgeText" tag="span" style={{ 
-                  fontSize: '14px', 
-                  color: '#666', 
-                  fontFamily: "'Marcellus', serif", 
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase'
-                }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
+                <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto' }} />
+                <EditableText sectionId="faq-section" fieldPath="badgeText" tag="span" className="section-subtitle">
                   {badgeText}
                 </EditableText>
               </div>
-              <h2 style={{ 
-                fontSize: 'clamp(32px, 5vw, 48px)', 
-                color: '#1A1A1A', 
-                fontFamily: "'Marcellus', serif", 
-                fontWeight: '400',
-                margin: 0
-              }}>
+              <h2 className="section-title">
                 <EditableText sectionId="faq-section" fieldPath="heading" tag="span">
                   {heading}
                 </EditableText>
@@ -93,29 +73,21 @@ export default function FaqSection() {
             </div>
 
             {/* Tabs */}
-            <div style={{ 
-              display: 'flex', 
-              backgroundColor: '#fff', 
-              border: '1px solid #E5E5E5', 
-              borderRadius: '100px', 
-              padding: '6px', 
-              gap: '4px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.02)'
-            }}>
+            <div style={{ display: 'flex', backgroundColor: '#fff', border: '1px solid #E5E5E5', borderRadius: '50px', padding: '5px', gap: '5px' }}>
               {categories.map((cat, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveTab(cat.title)}
                   style={{
-                    padding: '12px 28px',
-                    borderRadius: '100px',
+                    padding: '12px 25px',
+                    borderRadius: '50px',
                     border: 'none',
                     backgroundColor: activeTab === cat.title ? '#000' : 'transparent',
-                    color: activeTab === cat.title ? '#fff' : '#1A1A1A',
+                    color: activeTab === cat.title ? '#fff' : '#000',
                     cursor: 'pointer',
                     fontSize: '14px',
                     fontWeight: '500',
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: 'all 0.3s ease',
                     fontFamily: "'Marcellus', serif"
                   }}
                 >
@@ -125,90 +97,53 @@ export default function FaqSection() {
             </div>
           </div>
 
-          {/* Grid Area */}
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))', 
-            gap: '24px' 
-          }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '25px' }}>
             {(activeCategory?.faqs || []).map((faq, index) => {
               const catIndex = categories.indexOf(activeCategory);
-              const isActive = activeFaqId === `${catIndex}-${index}`;
               return (
                 <div
                   key={index}
-                  onClick={() => setActiveFaqId(isActive ? null : `${catIndex}-${index}`)}
-                  className={`faq-card ${isActive ? 'active' : ''}`}
+                  className="faq-card"
                   style={{
-                    backgroundColor: isActive ? '#000' : '#F9F8F3',
+                    backgroundColor: '#F9F7F2',
                     borderRadius: '40px',
-                    padding: '35px 40px',
+                    padding: '20px',
                     display: 'flex',
-                    gap: '25px',
+                    gap: '20px',
                     alignItems: 'center',
-                    border: '1px solid transparent',
-                    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                    cursor: 'pointer',
-                    minHeight: '140px',
-                    position: 'relative',
-                    overflow: 'hidden'
+                    border: '1px solid #E5E5E5',
+                    transition: 'all 0.3s ease',
+                    minHeight: '120px'
                   }}
                 >
-                  {/* Icon Circle */}
-                  <div style={{ 
-                    flexShrink: 0,
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '50%',
-                    backgroundColor: isActive ? '#fff' : '#000',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.5s ease'
-                  }}>
-                    <img 
-                      src={faq.icon} 
-                      alt="icon" 
-                      style={{ 
-                        width: '32px', 
-                        height: '32px', 
-                        filter: isActive ? 'none' : 'invert(1)'
-                      }} 
-                    />
-                  </div>
-
-                  <div style={{ flex: 1 }}>
-                    <h3 style={{ 
-                      fontSize: '24px', 
-                      color: isActive ? '#fff' : '#1A1A1A', 
-                      fontFamily: "'Marcellus', serif", 
-                      fontWeight: '400', 
-                      marginBottom: isActive ? '15px' : '0', 
-                      lineHeight: '1.2',
-                      transition: 'all 0.3s ease'
+                  <div style={{ flexShrink: 0 }}>
+                    <div style={{ 
+                      width: '50px', 
+                      height: '50px', 
+                      backgroundColor: '#000', 
+                      borderRadius: '50%', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center' 
                     }}>
+                      <img 
+                        src={faq.icon} 
+                        alt="icon" 
+                        style={{ width: '25px', height: '25px', filter: 'invert(1)' }} 
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '22px', color: '#333', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px', lineHeight: '1.3' }}>
                       <EditableText sectionId="faq-section" fieldPath={`categories.${catIndex}.faqs.${index}.question`} tag="span">
                         {faq.question}
                       </EditableText>
                     </h3>
-                    <div style={{ 
-                      maxHeight: isActive ? '200px' : '0', 
-                      overflow: 'hidden', 
-                      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                      opacity: isActive ? 1 : 0
-                    }}>
-                      <p style={{ 
-                        fontSize: '14px', 
-                        color: 'rgba(255,255,255,0.8)', 
-                        fontFamily: "'Marcellus', serif", 
-                        lineHeight: '1.6',
-                        margin: 0
-                      }}>
-                        <EditableText sectionId="faq-section" fieldPath={`categories.${catIndex}.faqs.${index}.answer`} tag="span">
-                          {faq.answer}
-                        </EditableText>
-                      </p>
-                    </div>
+                    <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Marcellus', serif", lineHeight: '1.6' }}>
+                      <EditableText sectionId="faq-section" fieldPath={`categories.${catIndex}.faqs.${index}.answer`} tag="span">
+                        {faq.answer}
+                      </EditableText>
+                    </p>
                   </div>
                 </div>
               );
@@ -217,63 +152,20 @@ export default function FaqSection() {
 
           {/* View All Button */}
           <div style={{ textAlign: 'center', marginTop: '60px' }}>
-            <button className="faq-view-all-btn" style={{ 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              gap: '15px', 
-              padding: '12px 35px', 
-              borderRadius: '100px', 
-              border: '1px solid #E5E5E5', 
-              backgroundColor: '#fff', 
-              color: '#1A1A1A', 
-              cursor: 'pointer', 
-              fontSize: '14px', 
-              fontWeight: '600', 
-              fontFamily: "'Marcellus', serif",
-              transition: 'all 0.4s ease'
-            }}>
+            <button className="view-all-faq-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '12px 30px', borderRadius: '50px', border: '1px solid #E5E5E5', backgroundColor: '#fff', color: '#000', cursor: 'pointer', fontSize: '14px', fontWeight: '600', fontFamily: "'Marcellus', serif" }}>
               <EditableText sectionId="faq-section" fieldPath="buttonText" tag="span">
                 {buttonText}
               </EditableText>
-              <div style={{ 
-                width: '32px', 
-                height: '32px', 
-                backgroundColor: '#000', 
-                borderRadius: '50%', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                transition: 'all 0.4s ease'
-              }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </div>
+              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777698274/dmc-trichology/dh9kblxoinqmi5kvoona.png" className="btn-arrow" alt="arrow" style={{ width: '32px', height: '32px' }} />
             </button>
           </div>
         </div>
 
         <style jsx>{`
-          .faq-card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05); 
-          }
-          .faq-card.active {
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-          }
-          .faq-view-all-btn:hover { 
-            background-color: #000 !important; 
-            color: #fff !important; 
-            transform: translateY(-3px); 
-          }
-          .faq-view-all-btn:hover div {
-            background-color: #fff !important;
-          }
-          .faq-view-all-btn:hover svg {
-            stroke: #000 !important;
-          }
-          @media (max-width: 992px) {
+          .faq-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+          .view-all-faq-btn:hover { background-color: #000 !important; color: #fff !important; transform: translateY(-3px); }
+          .view-all-faq-btn:hover .btn-arrow { transform: translateX(8px); filter: brightness(0) invert(1); }
+          @media (max-width: 768px) {
             div[style*="gridTemplateColumns"] { grid-template-columns: 1fr !important; }
           }
         `}</style>
