@@ -108,11 +108,14 @@ const ServiceListing = ({ services = [], categories = [] }) => {
                 />
               </div>
             </div>
-            </p>
+          ))
+        ) : (
+          <div className="col-span-2 text-center py-20 text-gray-400 font-medium">
+            No services found in this category.
           </div>
         )}
-      </div>
-    </section>
+      </main>
+    </div>
   );
 };
 
