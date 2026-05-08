@@ -51,7 +51,7 @@ const EnquirySection = () => {
   };
 
   return (
-    <EditableSection sectionId="consultation-section" label="Consultation Section">
+    <EditableSection sectionId="consultation-section" label="Request Consultation">
       <section className="enquiry-section" style={{ padding: '100px 5%', backgroundColor: bgColor }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           

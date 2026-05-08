@@ -104,7 +104,7 @@ const TestimonialSection = () => {
   const closeVideo = () => setActiveVideo(null);
 
   return (
-    <EditableSection sectionId="reviews-section" label="Testimonials Grid">
+    <EditableSection sectionId="reviews-section" label="Reviews & Stories">
       <section className="testimonials-grid-section" style={{ padding: '0 5% 100px 5%', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '1450px', margin: '0 auto' }}>
 

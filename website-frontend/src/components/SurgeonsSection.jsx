@@ -31,7 +31,7 @@ const SurgeonsSection = () => {
   const realActiveIndex = safeSurgeons.indexOf(currentSurgeon);
 
   return (
-    <EditableSection sectionId="surgeons-section" label="Surgeons Section">
+    <EditableSection sectionId="surgeons-section" label="Meet Our Surgeons">
       <section className="surgeons-section" style={{ padding: '100px 5%', backgroundColor: '#FFFAF1' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           
