@@ -2,7 +2,7 @@
 import React from 'react';
 import { useBuilder } from '../../context/BuilderContext';
 
-export default function EditableText({ sectionId, fieldPath, children, tag: Tag = "span", className = "", ...props }) {
+const EditableText = React.forwardRef(({ sectionId, fieldPath, children, tag: Tag = "span", className = "", ...props }, ref) => {
   const { isEditMode, updateField } = useBuilder();
 
   const handleBlur = (e) => {
@@ -13,6 +13,7 @@ export default function EditableText({ sectionId, fieldPath, children, tag: Tag 
 
   return (
     <Tag
+      ref={ref}
       className={`editable-text ${className} ${isEditMode ? 'builder-text-editable' : ''}`}
       contentEditable={isEditMode}
       suppressContentEditableWarning={true}
@@ -23,4 +24,6 @@ export default function EditableText({ sectionId, fieldPath, children, tag: Tag 
       {children}
     </Tag>
   );
-}
+});
+
+export default EditableText;

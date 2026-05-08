@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { fetchGradeSlider } from '../services/api';
@@ -21,6 +21,7 @@ const defaultGrades = [
 export default function GradeSlider() {
   const [data, setData] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const badgeRef = useRef(null);
 
   useEffect(() => {
     fetchGradeSlider().then(res => {
@@ -29,6 +30,13 @@ export default function GradeSlider() {
       }
     });
   }, []);
+
+  // Force pure white color with !important on the badge text
+  useEffect(() => {
+    if (badgeRef.current) {
+      badgeRef.current.style.setProperty('color', '#ffffff', 'important');
+    }
+  }, [data]);
 
   if (data && data.enabled === false) return null;
 
@@ -55,10 +63,12 @@ export default function GradeSlider() {
                style={{ width: '40px', height: 'auto' }} 
              />
              <EditableText 
+               ref={badgeRef}
                sectionId="grade-slider" 
                fieldPath="badgeText" 
                tag="span" 
                className="section-subtitle grade-badge-text"
+               style={{ color: '#ffffff' }}
              >
                {badgeText}
              </EditableText>
