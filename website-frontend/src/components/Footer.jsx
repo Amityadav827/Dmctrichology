@@ -41,28 +41,33 @@ export default function Footer() {
 
   if (!data?.enabled && data !== null) return null;
 
-  // FALLBACKS TO ORIGINAL DATA
-  const columns = data?.columns || [
+  // FALLBACKS TO EXACT ORIGINAL DATA AS REQUESTED
+  const columns = (data?.columns || []).length > 0 ? data.columns : [
     {
       title: "HAIR TRANSPLANT",
       links: [
-        { label: "FUE Hair Transplant", url: "#" },
-        { label: "DHI Hair Transplant", url: "#" },
-        { label: "Hair Restoration", url: "#" },
-        { label: "Beard Transplant", url: "#" },
-        { label: "Moustache Transplant", url: "#" },
-        { label: "Eyebrow Transplant", url: "#" }
+        { id: "ht1", label: "Hair Transplant In Delhi", url: "#" },
+        { id: "ht2", label: "Hair Transplant Cost In Delhi", url: "#" },
+        { id: "ht3", label: "FUE Hair Transplant", url: "#" },
+        { id: "ht4", label: "Body Hair Transplant", url: "#" },
+        { id: "ht5", label: "Beard Hair Transplant", url: "#" },
+        { id: "ht6", label: "Women Hair Transplant", url: "#" },
+        { id: "ht7", label: "Repair Hair Transplant", url: "#" },
+        { id: "ht8", label: "DMC – Golden Touch", url: "#" },
+        { id: "ht9", label: "Hair Transplant In India", url: "#" },
+        { id: "ht10", label: "Hair Transplant Cost In India", url: "#" }
       ]
     },
     {
       title: "HAIR TREATMENTS",
       links: [
-        { label: "DMC- Golden Touch", url: "#" },
-        { label: "DMC- PRP Therapy", url: "#" },
-        { label: "DMC- Meso Therapy", url: "#" },
-        { label: "DMC- Keravive Hair", url: "#" },
-        { label: "DMC- Hair Rituals", url: "#" },
-        { label: "GFC Hair Restoration", url: "#" }
+        { id: "tr1", label: "DMC-Mesogrow", url: "#" },
+        { id: "tr2", label: "DMC- Root Restore therapy®", url: "#" },
+        { id: "tr3", label: "DMC- Advance HGP®", url: "#" },
+        { id: "tr4", label: "DMC-Advanced HGP 2.0 ®", url: "#" },
+        { id: "tr5", label: "DMC- Keravive Hair", url: "#" },
+        { id: "tr6", label: "DMC- Hair Rituals", url: "#" },
+        { id: "tr7", label: "GFC Hair Restoration", url: "#" }
       ]
     }
   ];
@@ -91,7 +96,7 @@ export default function Footer() {
     checkboxLabel: "Subscribe For Health Tips & Updates"
   };
 
-  const socials = data?.socials || [
+  const socials = (data?.socials || []).length > 0 ? data.socials : [
     { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/trooomdx4mjupebkzsmy.png", url: "#" },
     { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/pzzrzqodtujxvlktyk2s.png", url: "#" },
     { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/jkidxsr5nbpwq7y7x0x0.png", url: "#" },
