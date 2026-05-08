@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Star, Clock } from 'lucide-react';
 import EditableText from './Editable/EditableText';
 import Link from 'next/link';
-
+import { useBuilder } from '../context/BuilderContext';
 import EditableSection from './Editable/EditableSection';
 
 const ServiceListing = ({ services: initialServices = [], categories = [] }) => {
