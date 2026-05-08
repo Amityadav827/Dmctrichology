@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchAboutUs } from '../services/api';
 import CountUpStat from './CountUpStat';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
@@ -9,18 +9,15 @@ const AboutUs = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/about-us?t=${Date.now()}`);
-        console.log("AboutUs Data Fetched:", res.data.data);
-        if (res.data.success) setData(res.data.data);
-      } catch (err) {
-        console.error("AboutUs Fetch Error:", err);
+    fetchAboutUs().then(res => {
+      if (res && res.success && res.data) {
+        setData(res.data);
       }
-    };
-    fetchData();
+    });
   }, []);
 
+  // Only use fallbacks if data has not loaded yet (null state)
+  // Once data loads from DB, always render DB values — no hardcoded override
   const stats = data?.stats || [
     { value: '2k+', label: 'Patients Healed', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true },
     { value: '15+', label: 'Certified Doctors', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true },
@@ -28,9 +25,9 @@ const AboutUs = () => {
     { value: '100+', label: 'New Equipments', description: 'Experience Compassionate Care Healthier Care Certified Brighter Smile.', showDivider: true }
   ];
 
-  const title = data?.title || 'WELCOME TO DMC TRICHOLOGY®';
-  const subtitle = data?.subtitle || 'ABOUT US CARE';
-  const description = data?.description || 'At DMC Trichology, Advanced Hair Transplant Techniques Restore Your Hairline And Boost Confidence';
+  const title = data ? (data.title || '') : 'WELCOME TO DMC TRICHOLOGY®';
+  const subtitle = data ? (data.subtitle || '') : 'ABOUT US CARE';
+  const description = data ? (data.description || '') : 'At DMC Trichology, Advanced Hair Transplant Techniques Restore Your Hairline And Boost Confidence';
   const sectionIcon = data?.icon || "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png";
 
   return (

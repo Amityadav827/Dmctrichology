@@ -24,9 +24,37 @@ exports.getAboutUs = async (req, res) => {
 
 exports.updateAboutUs = async (req, res) => {
   try {
-    const aboutUs = await AboutUs.findOneAndUpdate({}, req.body, { new: true, upsert: true });
+    let aboutUs = await AboutUs.findOne();
+    if (!aboutUs) {
+      aboutUs = new AboutUs();
+    }
+
+    const updates = req.body;
+
+    // Explicitly update each field so Mongoose tracks changes (markModified)
+    if (updates.subtitle !== undefined) aboutUs.subtitle = updates.subtitle;
+    if (updates.title !== undefined) aboutUs.title = updates.title;
+    if (updates.description !== undefined) aboutUs.description = updates.description;
+    if (updates.icon !== undefined) aboutUs.icon = updates.icon;
+
+    if (updates.stats !== undefined) {
+      try {
+        const parsedStats = typeof updates.stats === 'string' ? JSON.parse(updates.stats) : updates.stats;
+        if (Array.isArray(parsedStats)) {
+          aboutUs.stats = parsedStats;
+          aboutUs.markModified('stats');
+        }
+      } catch (e) {
+        console.error('Failed to parse stats array:', e.message);
+      }
+    }
+
+    aboutUs.updatedAt = new Date();
+    await aboutUs.save();
+
     res.json({ success: true, data: aboutUs });
   } catch (error) {
+    console.error('AboutUs update error:', error.message);
     res.status(500).json({ success: false, message: error.message });
   }
 };

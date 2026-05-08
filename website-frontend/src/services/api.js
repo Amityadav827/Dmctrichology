@@ -54,6 +54,16 @@ export const fetchHeroSlides = async () => {
   }
 };
 
+export const fetchAboutUs = async () => {
+  try {
+    const res = await api.get(`/about-us?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching about us data', error);
+    return null;
+  }
+};
+
 export const submitLead = async (data) => {
   try {
     const res = await api.post('/lead', data);

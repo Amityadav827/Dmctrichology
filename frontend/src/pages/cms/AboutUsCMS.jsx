@@ -58,13 +58,19 @@ export default function AboutUsCMS() {
     setData({ ...data, stats: updatedStats });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSave = async () => {
     setSaving(true);
     try {
-      const { data: res } = await axios.put("/about-us", data);
+      const payload = {
+        subtitle: data.subtitle,
+        title: data.title,
+        description: data.description,
+        icon: data.icon,
+        stats: data.stats,
+      };
+      const { data: res } = await axios.put("/about-us", payload);
       if (res.success) {
-        toast.success("About Us updated successfully");
+        toast.success("About Us saved successfully");
         setData(res.data);
       }
     } catch (error) {
@@ -72,6 +78,12 @@ export default function AboutUsCMS() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handlePublish = async () => {
+    await handleSave();
+    toast.success("Published to live website!", { icon: "🚀" });
+    window.open("https://dmctrichology-mkm4.vercel.app/", "_blank");
   };
 
   if (loading) {
@@ -86,14 +98,24 @@ export default function AboutUsCMS() {
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">About Us CMS</h1>
-        <button
-          onClick={handleSubmit}
-          disabled={saving}
-          className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 shadow-lg shadow-blue-200"
-        >
-          {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
-          {saving ? "Saving..." : "Save Changes"}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 shadow-lg shadow-blue-200"
+          >
+            {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+          <button
+            onClick={handlePublish}
+            disabled={saving}
+            className="flex items-center gap-2 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 shadow-lg shadow-green-200"
+          >
+            {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
+            {saving ? "Publishing..." : "Publish Live"}
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
