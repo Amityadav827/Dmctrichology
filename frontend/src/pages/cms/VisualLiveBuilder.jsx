@@ -31,7 +31,48 @@ export default function VisualLiveBuilder() {
   const navigate = useNavigate();
 
   // URL for the real frontend
-  const frontendUrl = `https://dmctrichology-mkm4.vercel.app/${slug === 'home' ? '' : slug}?edit=true`;
+  // Composition mapping for different editor modes
+  const getSectionsForSlug = (currentSlug) => {
+    const allSections = [
+      { id: 'topbar', label: 'Top Bar' },
+      { id: 'header', label: 'Header' },
+      { id: 'hero', label: 'Hero Slider' },
+      { id: 'about-us', label: 'About Us' },
+      { id: 'services', label: 'Services Slider' },
+      { id: 'marquee-features', label: 'Marquee Features' },
+      { id: 'why-choose-us', label: 'Why Choose Us' },
+      { id: 'results-slider', label: 'Before & After Results' },
+      { id: 'grade-slider', label: 'Hair Transplant Grades' },
+      { id: 'why-choose-dmc', label: 'Why Choose DMC' },
+      { id: 'surgeons-section', label: 'Meet Our Surgeons' },
+      { id: 'consultation-section', label: 'Request Consultation' },
+      { id: 'reviews-section', label: 'Reviews & Stories' },
+      { id: 'treatment-plan-section', label: 'Know The Right Treatment' },
+      { id: 'faq-section', label: 'Frequently Asked Question?' },
+      { id: 'blogs-home-section', label: 'News & Wellness Advice' },
+      { id: 'press-media-section', label: 'Press & Media' },
+      { id: 'footer-section', label: 'Footer' }
+    ];
+
+    if (currentSlug === 'header') {
+      return allSections.filter(s => ['topbar', 'header'].includes(s.id));
+    }
+    if (currentSlug === 'footer') {
+      return allSections.filter(s => ['footer-section'].includes(s.id));
+    }
+    if (currentSlug === 'home') {
+      // Home only sections (exclude global ones)
+      return allSections.filter(s => !['topbar', 'header', 'footer-section'].includes(s.id));
+    }
+    return allSections;
+  };
+
+  const sections = getSectionsForSlug(slug);
+
+  // URL for the real frontend
+  // Fix 404: header editor should point to /header, footer to /footer
+  const frontendPath = slug === 'home' ? '' : slug;
+  const frontendUrl = `https://dmctrichology-mkm4.vercel.app/${frontendPath}?edit=true&preview=true`;
 
   const pendingChanges = useRef({});
   const saveTimeout = useRef(null);
@@ -40,8 +81,14 @@ export default function VisualLiveBuilder() {
     // Listen for messages from the iframe (frontend)
     const handleMessage = (event) => {
       if (event.data.type === 'SECTION_CLICKED') {
-        setActiveSection(event.data.payload);
-        setActiveTab("settings");
+        const clickedSectionId = event.data.payload.sectionId;
+        const matched = sections.find(s => s.id === clickedSectionId);
+        if (matched) {
+            setActiveSection(event.data.payload);
+            setActiveTab("settings");
+        } else {
+            console.log("Section not in current composition:", clickedSectionId);
+        }
       }
       if (event.data.type === 'FIELD_UPDATED') {
         const { sectionId, fieldPath, value } = event.data.payload;
@@ -74,7 +121,7 @@ export default function VisualLiveBuilder() {
       window.removeEventListener("message", handleMessage);
       if (saveTimeout.current) clearTimeout(saveTimeout.current);
     };
-  }, []);
+  }, [sections]);
 
   const persistChanges = async () => {
     const sectionsToUpdate = Object.keys(pendingChanges.current);
@@ -194,7 +241,7 @@ export default function VisualLiveBuilder() {
           <div>
             <h1 className="text-sm font-black tracking-tight uppercase flex items-center gap-2">
               <Layers size={16} className="text-blue-400" />
-              Visual Builder
+              Visual Builder — {slug.toUpperCase()}
             </h1>
           </div>
         </div>
@@ -267,26 +314,7 @@ export default function VisualLiveBuilder() {
                 <div>
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Composition</h3>
                   <div className="space-y-2">
-                    {[
-                      { id: 'topbar', label: 'Top Bar' },
-                      { id: 'header', label: 'Header' },
-                      { id: 'hero', label: 'Hero Slider' },
-                      { id: 'about-us', label: 'About Us' },
-                      { id: 'services', label: 'Services Slider' },
-                      { id: 'marquee-features', label: 'Marquee Features' },
-                      { id: 'why-choose-us', label: 'Why Choose Us' },
-                      { id: 'results-slider', label: 'Before & After Results' },
-                      { id: 'grade-slider', label: 'Hair Transplant Grades' },
-                      { id: 'why-choose-dmc', label: 'Why Choose DMC' },
-                      { id: 'surgeons-section', label: 'Meet Our Surgeons' },
-                      { id: 'consultation-section', label: 'Request Consultation' },
-                      { id: 'reviews-section', label: 'Reviews & Stories' },
-                      { id: 'treatment-plan-section', label: 'Know The Right Treatment' },
-                      { id: 'faq-section', label: 'Frequently Asked Question?' },
-                      { id: 'blogs-home-section', label: 'News & Wellness Advice' },
-                      { id: 'press-media-section', label: 'Press & Media' },
-                      { id: 'footer-section', label: 'Footer' }
-                    ].map((section, i) => (
+                    {sections.map((section, i) => (
                       <div 
                         key={i} 
                         onClick={() => {

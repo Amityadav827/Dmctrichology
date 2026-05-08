@@ -1,6 +1,8 @@
 import './globals.css';
 import { BuilderProvider } from '../context/BuilderContext';
 import { fetchSiteSettings } from '../services/api';
+import GlobalLayoutWrapper from '../components/GlobalLayoutWrapper';
+import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -28,7 +30,11 @@ export default async function RootLayout({ children }) {
       </head>
       <body>
         <BuilderProvider>
-          {children}
+          <Suspense fallback={<div>Loading Layout...</div>}>
+            <GlobalLayoutWrapper>
+              {children}
+            </GlobalLayoutWrapper>
+          </Suspense>
         </BuilderProvider>
         <svg width="0" height="0" className="hidden" style={{ display: 'none' }}>
           <defs>

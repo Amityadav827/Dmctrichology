@@ -101,11 +101,31 @@ function Sidebar() {
         {/* 2. CONTENT */}
         {(hasPermission("blog") || hasPermission("cms") || hasPermission("gallery") || hasPermission("video") || hasPermission("users")) && (
           <>
-            <SectionLabel>Content</SectionLabel>
+            <SectionLabel>Global Layout</SectionLabel>
             {hasPermission("cms") && (
-              <NavLink to="/pages" className={getNavClass}>
-                <Layers size={16} /> Pages
-              </NavLink>
+              <>
+                <NavLink to="/cms/topbar" className={getNavClass}>
+                  <Globe size={16} /> Top Bar
+                </NavLink>
+                <NavLink to="/cms/header" className={getNavClass}>
+                  <MenuIcon size={16} /> Global Header
+                </NavLink>
+                <NavLink to="/cms/footer" className={getNavClass}>
+                  <Layers size={16} /> Global Footer
+                </NavLink>
+              </>
+            )}
+
+            <SectionLabel>Pages</SectionLabel>
+            {hasPermission("cms") && (
+              <>
+                <NavLink to="/cms/visual-builder/home" className={getNavClass}>
+                  <Home size={16} /> Home Page
+                </NavLink>
+                <NavLink to="/pages" className={getNavClass}>
+                  <Layers size={16} /> All Pages
+                </NavLink>
+              </>
             )}
             {hasPermission("blog") && (
               <NavLink to="/blogs" className={getNavClass}>
