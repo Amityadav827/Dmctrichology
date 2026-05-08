@@ -52,6 +52,9 @@ const homeBlogRoutes = require("./routes/homeBlogRoutes");
 const pressMediaRoutes = require("./routes/pressMediaRoutes");
 const footerRoutes = require("./routes/footerRoutes");
 const sectionRoutes = require("./routes/sectionRoutes");
+const servicePageSettingsRoutes = require("./routes/servicePageRoutes");
+const serviceListingCardRoutes = require("./routes/serviceCardRoutes");
+const serviceListingCategoryRoutes = require("./routes/serviceCategoryListingRoutes");
 
 // Database Connection
 const connectDB = require("./config/db");
@@ -170,6 +173,9 @@ app.use("/api/blogs-home", homeBlogRoutes);
 app.use("/api/press-media", pressMediaRoutes);
 app.use("/api/footer", footerRoutes);
 app.use("/api/sections", sectionRoutes);
+app.use("/api/service-page-settings", servicePageSettingsRoutes);
+app.use("/api/service-listing-cards", serviceListingCardRoutes);
+app.use("/api/service-listing-categories", serviceListingCategoryRoutes);
 
 // SEO
 app.get(

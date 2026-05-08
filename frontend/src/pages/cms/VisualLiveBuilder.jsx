@@ -64,6 +64,12 @@ export default function VisualLiveBuilder() {
       // Home only sections (exclude global ones)
       return allSections.filter(s => !['topbar', 'header', 'footer-section'].includes(s.id));
     }
+    if (currentSlug === 'service') {
+      return [
+        { id: 'service-hero', label: 'Service Banner' },
+        { id: 'service-listing', label: 'Services Grid' }
+      ];
+    }
     return allSections;
   };
 
@@ -153,6 +159,9 @@ export default function VisualLiveBuilder() {
           case 'blogs-home-section': endpoint = '/blogs-home'; break;
           case 'press-media-section': endpoint = '/press-media'; break;
           case 'footer-section': endpoint = '/footer'; break;
+          case 'service-hero': endpoint = '/service-page-settings'; break;
+          case 'service-listing': endpoint = '/service-listing-cards'; break;
+          case 'service-listing-categories': endpoint = '/service-listing-categories'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 
@@ -379,7 +388,10 @@ export default function VisualLiveBuilder() {
                             'Frequently Asked Question?': '/cms/faq',
                             'News & Wellness Advice': '/cms/blogs-home',
                             'Press & Media Section': '/cms/press-media',
-                            'Footer Section': '/cms/footer'
+                            'Footer Section': '/cms/footer',
+                            'Service Banner': '/cms/service-hero',
+                            'Service Grid': '/cms/service-listing',
+                            'Service Categories': '/cms/service-categories'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
