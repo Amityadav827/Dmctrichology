@@ -184,17 +184,6 @@ export default function BlogSection() {
         </div>
 
         <style jsx>{`
-          .view-all-blogs-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-            border-color: #ddd !important;
-            background-color: #000 !important;
-            color: #fff !important;
-          }
-          .view-all-blogs-btn:hover .btn-arrow {
-            transform: translateX(8px);
-            filter: brightness(0) invert(1);
-          }
           @media (max-width: 768px) {
             section { padding: 60px 5% !important; }
           }
