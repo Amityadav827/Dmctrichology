@@ -33,6 +33,7 @@ import PageCompositionEditor from "./pages/cms/PageCompositionEditor";
 import AboutUsCMS from "./pages/cms/AboutUsCMS";
 import ServicesCMS from "./pages/cms/ServicesCMS";
 import MarqueeFeaturesCMS from "./pages/cms/MarqueeFeaturesCMS";
+import WhyChooseUsCMS from "./pages/cms/WhyChooseUsCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 
 import RedirectList from "./pages/RedirectList";
@@ -76,6 +77,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <MarqueeFeaturesCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/why-choose-us"
+          element={
+            <ProtectedRoute permission="cms">
+              <WhyChooseUsCMS />
             </ProtectedRoute>
           }
         />

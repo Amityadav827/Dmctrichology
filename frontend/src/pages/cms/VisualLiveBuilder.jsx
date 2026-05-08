@@ -94,6 +94,7 @@ export default function VisualLiveBuilder() {
           case 'about-us': endpoint = '/about-us'; break;
           case 'services': endpoint = '/services'; break;
           case 'marquee-features': endpoint = '/marquee-features'; break;
+          case 'why-choose-us': endpoint = '/why-choose-us'; break;
           default: continue;
         }
 
@@ -301,7 +302,8 @@ export default function VisualLiveBuilder() {
                             'Hero Slider': '/cms/hero',
                             'About Us': '/cms/about-us',
                             'Services Slider': '/cms/services',
-                            'Marquee Features': '/cms/marquee-features'
+                            'Marquee Features': '/cms/marquee-features',
+                            'Why Choose Us': '/cms/why-choose-us'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
