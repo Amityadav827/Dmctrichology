@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../api/client';
 import { toast } from 'react-hot-toast';
 import { Save, Plus, Trash2, Layout, FileText, User } from 'lucide-react';
 
@@ -18,9 +18,9 @@ const SurgeonsCMS = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/surgeons`);
-      if (res.data.success) {
-        setData(res.data.data);
+      const { data: res } = await axios.get('/surgeons');
+      if (res.success && res.data) {
+        setData(res.data);
       }
     } catch (err) {
       toast.error('Failed to fetch surgeons data');
@@ -31,7 +31,7 @@ const SurgeonsCMS = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/surgeons`, data);
+      await axios.put('/surgeons', data);
       toast.success('Changes saved and published!');
     } catch (err) {
       toast.error('Failed to save changes');

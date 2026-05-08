@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../api/client';
 import { toast } from 'react-hot-toast';
 import { Save, Plus, Trash2, MessageSquare, Video, Star, Layout } from 'lucide-react';
 
@@ -20,9 +20,9 @@ const ReviewsCMS = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/reviews`);
-      if (res.data.success) {
-        setData(res.data.data);
+      const { data: res } = await axios.get('/reviews');
+      if (res.success && res.data) {
+        setData(res.data);
       }
     } catch (err) {
       toast.error('Failed to fetch reviews data');
@@ -33,7 +33,7 @@ const ReviewsCMS = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/reviews`, data);
+      await axios.put('/reviews', data);
       toast.success('Changes saved and published!');
     } catch (err) {
       toast.error('Failed to save changes');

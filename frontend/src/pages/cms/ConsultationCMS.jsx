@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../api/client';
 import { toast } from 'react-hot-toast';
 import { Save, Phone, Clock, FileText, Image as ImageIcon, Settings } from 'lucide-react';
 
@@ -28,9 +28,9 @@ const ConsultationCMS = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/consultation`);
-      if (res.data.success) {
-        setData(res.data.data);
+      const { data: res } = await axios.get('/consultation');
+      if (res.success && res.data) {
+        setData(res.data);
       }
     } catch (err) {
       toast.error('Failed to fetch consultation data');
@@ -41,7 +41,7 @@ const ConsultationCMS = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/consultation`, data);
+      await axios.put('/consultation', data);
       toast.success('Changes saved and published!');
     } catch (err) {
       toast.error('Failed to save changes');
