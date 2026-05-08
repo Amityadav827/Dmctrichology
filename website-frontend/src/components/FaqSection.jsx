@@ -153,8 +153,6 @@ export default function FaqSection() {
 
         <style jsx>{`
           .faq-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
-          .view-all-faq-btn:hover { background-color: #000 !important; color: #fff !important; transform: translateY(-3px); }
-          .view-all-faq-btn:hover .btn-arrow { transform: translateX(8px); filter: brightness(0) invert(1); }
           @media (max-width: 768px) {
             div[style*="gridTemplateColumns"] { grid-template-columns: 1fr !important; }
           }
