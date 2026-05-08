@@ -67,6 +67,13 @@ h6 {
   text-transform: uppercase !important;
 }
 
+/* Why Choose Us — force title to center with bottom spacing */
+.why-choose-us .section-title {
+  max-width: 1000px !important;
+  margin: 0 auto 100px !important;
+  text-align: center !important;
+}
+
 /* Global labels and small headings */
 .typography-marcellus {
   font-family: 'Marcellus', serif !important;
