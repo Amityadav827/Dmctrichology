@@ -64,6 +64,16 @@ export const fetchAboutUs = async () => {
   }
 };
 
+export const fetchServices = async () => {
+  try {
+    const res = await api.get(`/services?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching services data', error);
+    return null;
+  }
+};
+
 export const submitLead = async (data) => {
   try {
     const res = await api.post('/lead', data);

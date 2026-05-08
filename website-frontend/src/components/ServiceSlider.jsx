@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchServices } from '../services/api';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import EditableSection from './Editable/EditableSection';
@@ -11,32 +11,35 @@ import EditableText from './Editable/EditableText';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+const defaultServices = [
+  { title: "Follicular Unit Extraction (FUE)", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/dnnerjyyebzufaoya4hd.png", link: "#" },
+  { title: "Follicular Unit Transplantation (FUT)", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/scwz5ugmiwn9npmzpk5d.png", link: "#" },
+  { title: "Hair Replacement In Delhi – Non-Surgical Solutions", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/l141dtwrmlhc3xm8tlir.png", link: "#" },
+  { title: "Scalp Treatments For Healthy Hair", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/kuhwci9p4pp7r7mzmxof.png", link: "#" }
+];
+
 export default function ServiceSlider() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/services`);
-        if (res.data.success) setData(res.data.data);
-      } catch (err) {
-        console.error("Service Fetch Error:", err);
+    fetchServices().then(res => {
+      if (res && res.success && res.data) {
+        setData(res.data);
       }
-    };
-    fetchData();
+    });
   }, []);
 
-  const title = data?.title || 'Our Hair Transplant Services';
-  const subtitle = data?.subtitle || 'SERVICES';
-  const viewAllText = data?.viewAllText || 'View All';
-  const services = data?.services || [
-    { title: "Follicular Unit Extraction (FUE)", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/dnnerjyyebzufaoya4hd.png" },
-    { title: "Follicular Unit Transplantation (FUT)", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/scwz5ugmiwn9npmzpk5d.png" },
-    { title: "Hair Replacement In Delhi – Non-Surgical Solutions", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/l141dtwrmlhc3xm8tlir.png" },
-    { title: "Scalp Treatments For Healthy Hair", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/kuhwci9p4pp7r7mzmxof.png" }
-  ];
+  // Only use fallbacks when data === null (not yet loaded)
+  // Once DB data loads, always render DB values — no hardcoded override
+  const title = data ? (data.title || '') : 'Our Hair Transplant Services';
+  const subtitle = data ? (data.subtitle || '') : 'SERVICES';
+  const viewAllText = data ? (data.viewAllText || 'View All') : 'View All';
+  const viewAllLink = data ? (data.viewAllLink || '#') : '#';
+  const services = (data && data.services && data.services.length > 0)
+    ? data.services
+    : defaultServices;
 
-  // Double for loop
+  // Duplicate for infinite loop effect
   const duplicatedServices = [...services, ...services];
 
   return (
@@ -61,7 +64,7 @@ export default function ServiceSlider() {
                 {title}
               </EditableText>
             </h2>
-            <a href={data?.viewAllLink || '#'} style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <a href={viewAllLink} style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <EditableText sectionId="services" fieldPath="viewAllText" tag="span">
                 {viewAllText}
               </EditableText>

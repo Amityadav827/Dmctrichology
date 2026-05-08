@@ -31,6 +31,7 @@ import HeaderCMS from "./pages/cms/HeaderCMS";
 import HeroCMS from "./pages/cms/HeroCMS";
 import PageCompositionEditor from "./pages/cms/PageCompositionEditor";
 import AboutUsCMS from "./pages/cms/AboutUsCMS";
+import ServicesCMS from "./pages/cms/ServicesCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 
 import RedirectList from "./pages/RedirectList";
@@ -58,6 +59,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <AboutUsCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/services"
+          element={
+            <ProtectedRoute permission="cms">
+              <ServicesCMS />
             </ProtectedRoute>
           }
         />

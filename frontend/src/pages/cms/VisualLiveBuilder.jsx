@@ -92,6 +92,7 @@ export default function VisualLiveBuilder() {
           case 'header': endpoint = '/header'; break;
           case 'hero': endpoint = '/hero'; break;
           case 'about-us': endpoint = '/about-us'; break;
+          case 'services': endpoint = '/services'; break;
           default: continue;
         }
 
@@ -278,7 +279,8 @@ export default function VisualLiveBuilder() {
                             'Top Bar': '/cms/topbar', 
                             'Header': '/cms/header', 
                             'Hero Slider': '/cms/hero',
-                            'About Us': '/cms/about-us'
+                            'About Us': '/cms/about-us',
+                            'Services Slider': '/cms/services'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
