@@ -41,6 +41,7 @@ export default function Footer() {
 
   if (!data?.enabled && data !== null) return null;
 
+  // FALLBACKS TO ORIGINAL DATA
   const columns = data?.columns || [
     {
       title: "HAIR TRANSPLANT",
@@ -56,29 +57,29 @@ export default function Footer() {
     {
       title: "HAIR TREATMENTS",
       links: [
-        { label: "PRP Therapy", url: "#" },
-        { label: "GFC Therapy", url: "#" },
-        { label: "QR 678®", url: "#" },
-        { label: "Meso Therapy", url: "#" },
-        { label: "Cyclical Therapy", url: "#" },
-        { label: "Low-Level Laser Therapy", url: "#" }
+        { label: "DMC- Golden Touch", url: "#" },
+        { label: "DMC- PRP Therapy", url: "#" },
+        { label: "DMC- Meso Therapy", url: "#" },
+        { label: "DMC- Keravive Hair", url: "#" },
+        { label: "DMC- Hair Rituals", url: "#" },
+        { label: "GFC Hair Restoration", url: "#" }
       ]
     }
   ];
 
   const contact = data?.contact || {
     heading: "CONTACT US",
-    address1: "C-2/13, Ashok Vihar Phase II,",
-    address2: "Delhi, 110052",
-    phone1: "+91 91191 19011",
-    phone2: "+91 91191 19012",
-    email: "info@dmctrichology.com"
+    address1: "Vasant Vihar A 2/6 Vasant Vihar, New delhi 110057, India",
+    address2: "Rajouri Garden J-12/25, First Floor, Rajouri Garden New Delhi 110027, India",
+    phone1: "+91-8527830194",
+    phone2: "+91-9810939319",
+    email: "info@dadumedicalcentre.com"
   };
 
   const disclaimer = data?.disclaimer || "Content is for awareness and education only, not medical advice. Consult a qualified trichologist or dermatologist for proper diagnosis and treatment. Results may vary for each individual.";
   
   const branding = data?.branding || {
-    logo: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/logo-main.png",
+    logo: "https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png",
     aboutText: "One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures."
   };
 
@@ -91,16 +92,19 @@ export default function Footer() {
   };
 
   const socials = data?.socials || [
-    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777611843/dmc-trichology/vk680d2gvewscitof9p0.png", url: "#" },
-    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777611843/dmc-trichology/b05aycl6d1oflyv7m2y6.png", url: "#" },
-    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777611843/dmc-trichology/l55v89cl22rxtk5qivp8.png", url: "#" },
-    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777611843/dmc-trichology/n5u08cl22rxtk5qivp8.png", url: "#" }
+    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/trooomdx4mjupebkzsmy.png", url: "#" },
+    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/pzzrzqodtujxvlktyk2s.png", url: "#" },
+    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/jkidxsr5nbpwq7y7x0x0.png", url: "#" },
+    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/dgkcwru8nqurjw7f1lz6.png", url: "#" },
+    { icon: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lhgvbca5okvyge6atokb.png", url: "#" }
   ];
 
   const bottomFooter = data?.bottomFooter || {
-    copyright: "© DMC TRICHOLOGY. ALL RIGHTS RESERVED.",
+    copyright: "© 2024 . All Rights Reserved.",
     termsText: "Terms And Condition",
-    privacyText: "Privacy Policy"
+    termsLink: "#",
+    privacyText: "Privacy Policy",
+    privacyLink: "#"
   };
 
   return (
@@ -143,7 +147,8 @@ export default function Footer() {
               <div style={{ color: '#444', fontSize: '14px', lineHeight: '1.8' }}>
                 <p style={{ marginBottom: '15px' }}>
                   <EditableText sectionId="footer-section" fieldPath="contact.address1" tag="span">{contact.address1}</EditableText>
-                  <br />
+                </p>
+                <p style={{ marginBottom: '15px' }}>
                   <EditableText sectionId="footer-section" fieldPath="contact.address2" tag="span">{contact.address2}</EditableText>
                 </p>
                 <p style={{ marginBottom: '8px' }}>
@@ -273,7 +278,7 @@ export default function Footer() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777703175/dmc-trichology/vj4qbxtxftqzqslowwgd.png" alt="arrow" style={{ width: '32px' }} />
-                    <span style={{ fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>{contact.email}</span>
+                    <span style={{ fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>{contact.email.toUpperCase()}</span>
                   </div>
                 </div>
 
@@ -281,11 +286,11 @@ export default function Footer() {
                 <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#777' }}>
                   <span><EditableText sectionId="footer-section" fieldPath="bottomFooter.copyright" tag="span">{bottomFooter.copyright}</EditableText></span>
                   <div style={{ display: 'flex', gap: '15px' }}>
-                    <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>
+                    <a href={bottomFooter.termsLink} style={{ color: '#1C1C1C', textDecoration: 'none' }}>
                       <EditableText sectionId="footer-section" fieldPath="bottomFooter.termsText" tag="span">{bottomFooter.termsText}</EditableText>
                     </a>
                     <span>|</span>
-                    <a href="#" style={{ color: '#1C1C1C', textDecoration: 'none' }}>
+                    <a href={bottomFooter.privacyLink} style={{ color: '#1C1C1C', textDecoration: 'none' }}>
                       <EditableText sectionId="footer-section" fieldPath="bottomFooter.privacyText" tag="span">{bottomFooter.privacyText}</EditableText>
                     </a>
                   </div>

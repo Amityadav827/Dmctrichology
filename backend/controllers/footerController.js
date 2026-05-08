@@ -17,20 +17,22 @@ const defaultColumns = [
     id: 'col2',
     title: 'HAIR TREATMENTS',
     links: [
-      { id: 'l7', label: 'PRP Therapy', url: '#' },
-      { id: 'l8', label: 'GFC Therapy', url: '#' },
-      { id: 'l9', label: 'QR 678®', url: '#' },
-      { id: 'l10', label: 'Meso Therapy', url: '#' },
-      { id: 'l11', label: 'Cyclical Therapy', url: '#' },
-      { id: 'l12', label: 'Low-Level Laser Therapy', url: '#' }
+      { id: 'l7', label: 'DMC- Golden Touch', url: '#' },
+      { id: 'l8', label: 'DMC- PRP Therapy', url: '#' },
+      { id: 'l9', label: 'DMC- Meso Therapy', url: '#' },
+      { id: 'l10', label: 'DMC- Keravive Hair', url: '#' },
+      { id: 'l11', label: 'DMC- Hair Rituals', url: '#' },
+      { id: 'l12', label: 'GFC Hair Restoration', url: '#' }
     ]
   }
 ];
 
 const defaultSocials = [
-  { id: 's1', icon: 'facebook', url: 'https://facebook.com/dmctrichology' },
-  { id: 's2', icon: 'instagram', url: 'https://instagram.com/dmctrichology' },
-  { id: 's3', icon: 'youtube', url: 'https://youtube.com/dmctrichology' }
+  { id: 's1', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/trooomdx4mjupebkzsmy.png', url: '#' },
+  { id: 's2', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/pzzrzqodtujxvlktyk2s.png', url: '#' },
+  { id: 's3', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/jkidxsr5nbpwq7y7x0x0.png', url: '#' },
+  { id: 's4', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/dgkcwru8nqurjw7f1lz6.png', url: '#' },
+  { id: 's5', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lhgvbca5okvyge6atokb.png', url: '#' }
 ];
 
 exports.getFooter = async (req, res) => {
@@ -39,7 +41,26 @@ exports.getFooter = async (req, res) => {
     if (!data) {
       data = await Footer.create({
         columns: defaultColumns,
-        socials: defaultSocials
+        socials: defaultSocials,
+        contact: {
+          heading: "CONTACT US",
+          address1: "Vasant Vihar A 2/6 Vasant Vihar, New delhi 110057, India",
+          address2: "Rajouri Garden J-12/25, First Floor, Rajouri Garden New Delhi 110027, India",
+          phone1: "+91-8527830194",
+          phone2: "+91-9810939319",
+          email: "info@dadumedicalcentre.com"
+        },
+        branding: {
+          logo: "https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png",
+          aboutText: "One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures."
+        },
+        bottomFooter: {
+          copyright: "© 2024 . All Rights Reserved.",
+          termsText: "Terms And Condition",
+          termsLink: "#",
+          privacyText: "Privacy Policy",
+          privacyLink: "#"
+        }
       });
     }
     res.json({ success: true, data });
