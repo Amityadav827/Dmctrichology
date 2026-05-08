@@ -13,7 +13,11 @@ export default async function ServicePage() {
     fetchServiceListingCategories().catch(() => ({ data: [] }))
   ]);
 
-  const settings = settingsRes?.data?.hero || settingsRes?.data || {};
+  let settings = settingsRes?.data?.hero || settingsRes?.hero || {};
+  if (Object.keys(settings).length === 0 && settingsRes?.data) {
+     // Fallback if data is the hero object itself
+     if (settingsRes.data.pageTitle) settings = settingsRes.data;
+  }
   const services = Array.isArray(servicesRes?.data) ? servicesRes.data : (Array.isArray(servicesRes) ? servicesRes : []);
   const categories = Array.isArray(categoriesRes?.data) ? categoriesRes.data : (Array.isArray(categoriesRes) ? categoriesRes : []);
 
