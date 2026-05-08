@@ -338,6 +338,18 @@ function Pages() {
     });
   }, [items, searchQuery, statusFilter]);
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "Never Updated";
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Never Updated";
+    
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }).format(date);
+  };
+
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
   const currentItems = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -588,7 +600,7 @@ function Pages() {
                 /{item.slug}
               </td>
               <td style={{ padding: "0.875rem 1.25rem", color: "#475569", whiteSpace: "nowrap", fontSize: "0.875rem" }}>
-                {new Date(item.updatedAt).toLocaleDateString()}
+                {formatDate(item.updatedAt)}
               </td>
               <td style={{ padding: "0.875rem 1.25rem" }}>
                 <span style={{ padding: "0.2rem 0.6rem", borderRadius: "9999px", fontSize: "0.7rem", fontWeight: 700, background: item.status === "Published" ? "#D1FAE5" : "#FEF3C7", color: item.status === "Published" ? "#065F46" : "#92400E" }}>
