@@ -56,7 +56,7 @@ const ServiceListing = ({ services: initialServices = [], categories: initialCat
         <aside className="service-sidebar">
           <div className="sidebar-sticky">
 
-            {/* Results Count */}
+            {/* Results Count: large number + small label */}
             <div className="results-count-premium">
               <span className="count-number">{filteredServices.length}</span>
               <span className="count-label">Results Found</span>
@@ -99,11 +99,7 @@ const ServiceListing = ({ services: initialServices = [], categories: initialCat
                       {services.filter(s => s.category === cat.slug).length}
                     </span>
                   </div>
-                )) : (
-                  <div className="text-[10px] text-gray-400 font-medium py-4 uppercase tracking-widest px-2">
-                    No categories found
-                  </div>
-                )}
+                )) : null}
               </div>
             </div>
 
@@ -124,11 +120,66 @@ const ServiceListing = ({ services: initialServices = [], categories: initialCat
                 <div
                   key={service._id || index}
                   className="service-card-premium group"
-                  data-section-id={`service-card-${index}`}
                 >
+                  {/*
+                   * FIGMA CARD STRUCTURE:
+                   * [LEFT: text content] [RIGHT: image]
+                   * Controlled by CSS order: content=1, image=2
+                   */}
                   <div className="service-card-inner">
 
-                    {/* ─ Card Image ─ */}
+                    {/* ─ LEFT: Text Content ─ */}
+                    <div className="service-card-content">
+
+                      {/* Title */}
+                      <h3 className="service-card-title">
+                        <EditableText sectionId="service-listing" fieldPath={`${index}.title`}>
+                          {service.title}
+                        </EditableText>
+                      </h3>
+
+                      {/* Rating + Duration */}
+                      <div className="service-meta-row">
+                        <div className="service-rating">
+                          <Star size={11} fill="#D4AF37" color="#D4AF37" />
+                          <span>
+                            <EditableText sectionId="service-listing" fieldPath={`${index}.rating`}>
+                              {service.rating || "4.8"}
+                            </EditableText>
+                          </span>
+                        </div>
+                        <div className="service-duration">
+                          <Clock size={11} className="service-duration-icon" />
+                          <span>
+                            <EditableText sectionId="service-listing" fieldPath={`${index}.duration`}>
+                              {service.duration || "45 mins"}
+                            </EditableText>
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <div className="service-card-description">
+                        <EditableText sectionId="service-listing" fieldPath={`${index}.shortDescription`}>
+                          {service.shortDescription}
+                        </EditableText>
+                      </div>
+
+                      {/* CTA Button — small outlined Figma style */}
+                      <div className="service-card-footer">
+                        <Link
+                          href={service.buttonLink || "/contact"}
+                          className="service-card-cta"
+                        >
+                          <EditableText sectionId="service-listing" fieldPath={`${index}.buttonText`}>
+                            {service.buttonText || "View Details"}
+                          </EditableText>
+                        </Link>
+                      </div>
+
+                    </div>
+
+                    {/* ─ RIGHT: Image ─ */}
                     <div className="service-card-image-box">
                       <EditableImage
                         sectionId="service-listing"
@@ -138,59 +189,6 @@ const ServiceListing = ({ services: initialServices = [], categories: initialCat
                         className="h-full w-full"
                         imgClassName="h-full w-full object-cover"
                       />
-                      {/* Floating Category Badge */}
-                      <div className="category-tag-floating">
-                        {categories.find(c => c.slug === service.category)?.categoryName || service.category || 'Treatment'}
-                      </div>
-                    </div>
-
-                    {/* ─ Card Content ─ */}
-                    <div className="service-card-content">
-                      {/* Rating + Duration */}
-                      <div className="service-meta-row">
-                        <div className="service-rating">
-                          <Star size={12} fill="#D4AF37" color="#D4AF37" />
-                          <span>
-                            <EditableText sectionId="service-listing" fieldPath={`${index}.rating`}>
-                              {service.rating || "4.8"}
-                            </EditableText>
-                          </span>
-                        </div>
-                        <div className="service-duration">
-                          <Clock size={12} className="service-duration-icon" />
-                          <span>
-                            <EditableText sectionId="service-listing" fieldPath={`${index}.duration`}>
-                              {service.duration || "45 mins"}
-                            </EditableText>
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="service-card-title">
-                        <EditableText sectionId="service-listing" fieldPath={`${index}.title`}>
-                          {service.title}
-                        </EditableText>
-                      </h3>
-
-                      {/* Description */}
-                      <div className="service-card-description">
-                        <EditableText sectionId="service-listing" fieldPath={`${index}.shortDescription`}>
-                          {service.shortDescription}
-                        </EditableText>
-                      </div>
-                    </div>
-
-                    {/* ─ Card Footer / CTA ─ */}
-                    <div className="service-card-footer">
-                      <Link
-                        href={service.buttonLink || "/contact"}
-                        className="service-card-cta"
-                      >
-                        <EditableText sectionId="service-listing" fieldPath={`${index}.buttonText`}>
-                          {service.buttonText || "View Details"}
-                        </EditableText>
-                      </Link>
                     </div>
 
                   </div>
@@ -203,7 +201,20 @@ const ServiceListing = ({ services: initialServices = [], categories: initialCat
               <p>Try selecting a different category or check back later.</p>
               <button
                 onClick={() => setActiveCategory('all')}
-                style={{ marginTop: '24px', fontFamily: "'Lato', sans-serif", fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#111111', background: 'none', border: 'none', cursor: 'pointer', borderBottom: '1.5px solid #111111', paddingBottom: '2px' }}
+                style={{
+                  marginTop: '24px',
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  color: '#111111',
+                  background: 'none',
+                  border: '1.5px solid #cccccc',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  padding: '8px 18px'
+                }}
               >
                 Clear Filters
               </button>
