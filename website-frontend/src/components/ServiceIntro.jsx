@@ -29,6 +29,13 @@ const ServiceIntro = ({ data = {} }) => {
     }
   }, [isEditMode, siteConfig]);
 
+  const bullets = introData.bulletPoints || [];
+
+  return (
+    <EditableSection sectionId="service-intro" label="Service Details Intro">
+      <section className="details-intro-section" data-section-id="service-intro">
+        <div className="details-intro-container">
+
           {/* ─── LEFT: Video Player Section ─────────── */}
           <div className="details-gallery-col">
             <div className="details-video-player-wrapper" style={{ position: 'relative', width: '100%', aspectRatio: '4/3', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', backgroundColor: '#f8fafc' }}>
