@@ -418,7 +418,13 @@ export default function VisualLiveBuilder() {
                             'Footer Section': '/cms/footer',
                             'Service Banner': '/cms/service-hero',
                             'Services Grid': '/cms/service-listing',
-                            'Service Categories': '/cms/service-categories'
+                            'Service Categories': '/cms/service-categories',
+                            'Details Banner': '/cms/details-banner',
+                            'Service Intro': '/cms/service-intro',
+                            'Process Slider': '/cms/process-slider',
+                            'Before/After Treatment': '/cms/before-after',
+                            'FAQ & Enquiry Form': '/cms/faq-enquiry',
+                            'Ideal Frequency & CTA': '/cms/ideal-frequency'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}

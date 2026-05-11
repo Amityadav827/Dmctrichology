@@ -14,8 +14,17 @@ const IdealFrequency = ({ data = {} }) => {
   }, [data]);
 
   useEffect(() => {
-    if (isEditMode && siteConfig?.['ideal-frequency-section']) {
-      setSectionData(prev => ({ ...prev, ...siteConfig['ideal-frequency-section'] }));
+    if (isEditMode && siteConfig) {
+      let hasUpdates = false;
+      const nextData = { ...sectionData };
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('ideal-frequency-section.idealFrequency.')) {
+          const field = key.replace('ideal-frequency-section.idealFrequency.', '');
+          nextData[field] = siteConfig[key];
+          hasUpdates = true;
+        }
+      });
+      if (hasUpdates) setSectionData(nextData);
     }
   }, [isEditMode, siteConfig]);
 

@@ -17,8 +17,17 @@ const ServiceIntro = ({ data = {} }) => {
   }, [data]);
 
   useEffect(() => {
-    if (isEditMode && siteConfig?.['service-intro']) {
-      setIntroData(prev => ({ ...prev, ...siteConfig['service-intro'] }));
+    if (isEditMode && siteConfig) {
+      let hasUpdates = false;
+      const nextData = { ...introData };
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('service-intro.intro.')) {
+          const field = key.replace('service-intro.intro.', '');
+          nextData[field] = siteConfig[key];
+          hasUpdates = true;
+        }
+      });
+      if (hasUpdates) setIntroData(nextData);
     }
   }, [isEditMode, siteConfig]);
 

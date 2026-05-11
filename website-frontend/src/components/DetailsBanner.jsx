@@ -14,8 +14,17 @@ const DetailsBanner = ({ data = {} }) => {
   }, [data]);
 
   useEffect(() => {
-    if (isEditMode && siteConfig?.['details-banner']) {
-      setBannerData(prev => ({ ...prev, ...siteConfig['details-banner'] }));
+    if (isEditMode && siteConfig) {
+      let hasUpdates = false;
+      const nextData = { ...bannerData };
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('details-banner.banner.')) {
+          const field = key.replace('details-banner.banner.', '');
+          nextData[field] = siteConfig[key];
+          hasUpdates = true;
+        }
+      });
+      if (hasUpdates) setBannerData(nextData);
     }
   }, [isEditMode, siteConfig]);
 

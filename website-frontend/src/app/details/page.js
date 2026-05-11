@@ -40,9 +40,9 @@ export default async function DetailsPage() {
       <DetailsBanner data={banner} />
       <ServiceIntro data={intro} />
       <ProcessSlider data={process} />
+      <IdealFrequency data={idealFrequency} />
       <BeforeAfterTreatment data={beforeAfter} />
       <FaqEnquiry data={faqEnquiry} />
-      <IdealFrequency data={idealFrequency} />
     </div>
   );
 }

@@ -13,8 +13,17 @@ const BeforeAfterTreatment = ({ data = {} }) => {
   }, [data]);
 
   useEffect(() => {
-    if (isEditMode && siteConfig?.['before-after-section']) {
-      setSectionData(prev => ({ ...prev, ...siteConfig['before-after-section'] }));
+    if (isEditMode && siteConfig) {
+      let hasUpdates = false;
+      const nextData = { ...sectionData };
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('before-after-section.beforeAfter.')) {
+          const field = key.replace('before-after-section.beforeAfter.', '');
+          nextData[field] = siteConfig[key];
+          hasUpdates = true;
+        }
+      });
+      if (hasUpdates) setSectionData(nextData);
     }
   }, [isEditMode, siteConfig]);
 

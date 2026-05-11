@@ -18,8 +18,17 @@ const ProcessSlider = ({ data = {} }) => {
   }, [data]);
 
   useEffect(() => {
-    if (isEditMode && siteConfig?.['process-slider']) {
-      setProcessData(prev => ({ ...prev, ...siteConfig['process-slider'] }));
+    if (isEditMode && siteConfig) {
+      let hasUpdates = false;
+      const nextData = { ...processData };
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('process-slider.process.')) {
+          const field = key.replace('process-slider.process.', '');
+          nextData[field] = siteConfig[key];
+          hasUpdates = true;
+        }
+      });
+      if (hasUpdates) setProcessData(nextData);
     }
   }, [isEditMode, siteConfig]);
 

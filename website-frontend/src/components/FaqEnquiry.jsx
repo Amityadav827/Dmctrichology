@@ -15,8 +15,17 @@ const FaqEnquiry = ({ data = {} }) => {
   }, [data]);
 
   useEffect(() => {
-    if (isEditMode && siteConfig?.['faq-enquiry-section']) {
-      setSectionData(prev => ({ ...prev, ...siteConfig['faq-enquiry-section'] }));
+    if (isEditMode && siteConfig) {
+      let hasUpdates = false;
+      const nextData = { ...sectionData };
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('faq-enquiry-section.faqEnquiry.')) {
+          const field = key.replace('faq-enquiry-section.faqEnquiry.', '');
+          nextData[field] = siteConfig[key];
+          hasUpdates = true;
+        }
+      });
+      if (hasUpdates) setSectionData(nextData);
     }
   }, [isEditMode, siteConfig]);
 
