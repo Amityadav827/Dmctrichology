@@ -36,4 +36,15 @@ export const fetchServiceListingCategories = async () => {
   }
 };
 
+export const fetchDetailsPage = async () => {
+  try {
+    const res = await api.get(`/details-page?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching details page', error);
+    return null;
+  }
+};
+
 export default api;
+

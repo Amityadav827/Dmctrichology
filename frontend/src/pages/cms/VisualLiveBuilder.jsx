@@ -70,6 +70,13 @@ export default function VisualLiveBuilder() {
         { id: 'service-listing', label: 'Services Grid' }
       ];
     }
+    if (currentSlug === 'details') {
+      return [
+        { id: 'details-banner', label: 'Details Banner' },
+        { id: 'service-intro', label: 'Service Intro' },
+        { id: 'process-slider', label: 'Process Slider' }
+      ];
+    }
     return allSections;
   };
 
@@ -173,6 +180,9 @@ export default function VisualLiveBuilder() {
           case 'service-hero': endpoint = '/service-page-settings'; break;
           case 'service-listing': endpoint = '/service-listing-cards'; break;
           case 'service-listing-categories': endpoint = '/service-listing-categories'; break;
+          case 'details-banner': endpoint = '/details-page'; break;
+          case 'service-intro': endpoint = '/details-page'; break;
+          case 'process-slider': endpoint = '/details-page'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 

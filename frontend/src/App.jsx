@@ -49,6 +49,9 @@ import FaqCMS from "./pages/cms/FaqCMS";
 import BlogsHomeCMS from "./pages/cms/BlogsHomeCMS";
 import PressMediaCMS from "./pages/cms/PressMediaCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
+import DetailsBannerCMS from "./pages/cms/DetailsBannerCMS";
+import ServiceIntroCMS from "./pages/cms/ServiceIntroCMS";
+import ProcessSliderCMS from "./pages/cms/ProcessSliderCMS";
 
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
@@ -346,6 +349,30 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <ServiceListingCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/details-banner"
+          element={
+            <ProtectedRoute permission="cms">
+              <DetailsBannerCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/service-intro"
+          element={
+            <ProtectedRoute permission="cms">
+              <ServiceIntroCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/process-slider"
+          element={
+            <ProtectedRoute permission="cms">
+              <ProcessSliderCMS />
             </ProtectedRoute>
           }
         />

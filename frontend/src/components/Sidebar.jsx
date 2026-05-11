@@ -179,6 +179,21 @@ function Sidebar() {
             <NavLink to="/cms/visual-builder/service" className={getNavClass}>
               <Eye size={16} /> Visual Builder
             </NavLink>
+
+            {/* Details Page CMS */}
+            <SectionLabel>Details Page CMS</SectionLabel>
+            <NavLink to="/cms/details-banner" className={getNavClass}>
+              <Home size={16} /> Details Banner
+            </NavLink>
+            <NavLink to="/cms/service-intro" className={getNavClass}>
+              <List size={16} /> Service Intro
+            </NavLink>
+            <NavLink to="/cms/process-slider" className={getNavClass}>
+              <Activity size={16} /> Process Slider
+            </NavLink>
+            <NavLink to="/cms/visual-builder/details" className={getNavClass}>
+              <Eye size={16} /> Visual Builder
+            </NavLink>
           </>
         )}
 
