@@ -12,8 +12,9 @@ export default function ServiceIntroCMS() {
     subTitle: "",
     description: "",
     closingText: "",
+    videoType: "youtube",
     videoUrl: "",
-    galleryImages: [],
+    videoThumbnail: "",
     bulletPoints: [],
   });
   const [loading, setLoading] = useState(true);
@@ -31,14 +32,7 @@ export default function ServiceIntroCMS() {
 
   const updateField = (field, val) => setData(d => ({ ...d, [field]: val }));
 
-  // Gallery Images
-  const addImage = () => updateField("galleryImages", [...(data.galleryImages || []), ""]);
-  const updateImage = (i, val) => {
-    const imgs = [...(data.galleryImages || [])];
-    imgs[i] = val;
-    updateField("galleryImages", imgs);
-  };
-  const removeImage = (i) => updateField("galleryImages", (data.galleryImages || []).filter((_, idx) => idx !== i));
+  // Video fields mapped directly via updateField
 
   // Bullet Points
   const addBullet = () => updateField("bulletPoints", [...(data.bulletPoints || []), ""]);
@@ -102,11 +96,7 @@ export default function ServiceIntroCMS() {
               <input type="text" value={data.duration} onChange={e => updateField("duration", e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm outline-none" placeholder="180 mins" />
             </div>
-            <div>
-              <label className="block text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Video URL (optional)</label>
-              <input type="text" value={data.videoUrl} onChange={e => updateField("videoUrl", e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm outline-none" placeholder="YouTube embed URL" />
-            </div>
+
             <div className="md:col-span-2">
               <label className="block text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Sub-title (optional, supports line breaks)</label>
               <textarea value={data.subTitle} onChange={e => updateField("subTitle", e.target.value)}
@@ -125,28 +115,42 @@ export default function ServiceIntroCMS() {
           </div>
         </div>
 
-        {/* Gallery Images */}
+        {/* Video Configuration */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-sm font-black uppercase tracking-widest text-gray-400">Gallery Images</h2>
-            <button onClick={addImage} className="flex items-center gap-1.5 text-xs bg-gray-900 text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-700 transition-all">
-              <Plus size={13} /> Add Image
-            </button>
-          </div>
-          <div className="space-y-3">
-            {(data.galleryImages || []).map((img, i) => (
-              <div key={i} className="flex gap-3 items-center">
-                <span className="text-[10px] font-black text-gray-300 w-4 flex-shrink-0">{i + 1}</span>
-                <input type="text" value={img} onChange={e => updateImage(i, e.target.value)}
-                  className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none"
-                  placeholder={`Image URL ${i + 1}`} />
-                {img ? <img src={img} alt="" className="w-14 h-10 object-cover rounded-lg border flex-shrink-0" /> : <div className="w-14 h-10 bg-gray-100 rounded-lg border flex items-center justify-center flex-shrink-0"><ImageIcon size={14} className="text-gray-300" /></div>}
-                <button onClick={() => removeImage(i)} className="p-2 text-gray-300 hover:text-red-500 transition-colors"><Trash2 size={15} /></button>
+          <h2 className="text-sm font-black uppercase tracking-widest text-gray-400 mb-6">Video Configuration</h2>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Video Type</label>
+                <select value={data.videoType || 'youtube'} onChange={e => updateField("videoType", e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm outline-none bg-white">
+                  <option value="youtube">YouTube</option>
+                  <option value="vimeo">Vimeo</option>
+                  <option value="mp4">Uploaded MP4</option>
+                </select>
               </div>
-            ))}
-            {(data.galleryImages || []).length === 0 && (
-              <p className="text-sm text-gray-400 text-center py-4">No gallery images yet. Click "Add Image".</p>
-            )}
+              <div>
+                <label className="block text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Video URL</label>
+                <input type="text" value={data.videoUrl} onChange={e => updateField("videoUrl", e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="https://www.youtube.com/embed/..." />
+              </div>
+            </div>
+            <div>
+              <label className="block text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Custom Thumbnail URL (Optional)</label>
+              <div className="flex gap-4 items-start">
+                <input type="text" value={data.videoThumbnail || ''} onChange={e => updateField("videoThumbnail", e.target.value)}
+                  className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Paste thumbnail image URL..." />
+                {data.videoThumbnail ? (
+                  <img src={data.videoThumbnail} alt="" className="w-20 h-14 object-cover rounded-xl border flex-shrink-0" />
+                ) : (
+                  <div className="w-20 h-14 bg-gray-100 rounded-xl border flex items-center justify-center flex-shrink-0">
+                    <ImageIcon size={20} className="text-gray-300" />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

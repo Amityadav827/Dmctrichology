@@ -24,10 +24,6 @@ exports.updateDetailsPage = async (req, res) => {
       if (req.body.banner) Object.assign(data.banner, req.body.banner);
       if (req.body.intro) {
         Object.assign(data.intro, req.body.intro);
-        if (req.body.intro.galleryImages !== undefined) {
-          data.intro.galleryImages = req.body.intro.galleryImages;
-          data.markModified("intro.galleryImages");
-        }
         if (req.body.intro.bulletPoints !== undefined) {
           data.intro.bulletPoints = req.body.intro.bulletPoints;
           data.markModified("intro.bulletPoints");
