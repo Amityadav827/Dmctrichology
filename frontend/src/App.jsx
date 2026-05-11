@@ -52,6 +52,9 @@ import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 import DetailsBannerCMS from "./pages/cms/DetailsBannerCMS";
 import ServiceIntroCMS from "./pages/cms/ServiceIntroCMS";
 import ProcessSliderCMS from "./pages/cms/ProcessSliderCMS";
+import BeforeAfterCMS from "./pages/cms/BeforeAfterCMS";
+import FaqEnquiryCMS from "./pages/cms/FaqEnquiryCMS";
+import IdealFrequencyCMS from "./pages/cms/IdealFrequencyCMS";
 
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
@@ -373,6 +376,30 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <ProcessSliderCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/before-after"
+          element={
+            <ProtectedRoute permission="cms">
+              <BeforeAfterCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/faq-enquiry"
+          element={
+            <ProtectedRoute permission="cms">
+              <FaqEnquiryCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/ideal-frequency"
+          element={
+            <ProtectedRoute permission="cms">
+              <IdealFrequencyCMS />
             </ProtectedRoute>
           }
         />

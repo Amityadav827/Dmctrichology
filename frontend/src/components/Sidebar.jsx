@@ -191,6 +191,15 @@ function Sidebar() {
             <NavLink to="/cms/process-slider" className={getNavClass}>
               <Activity size={16} /> Process Slider
             </NavLink>
+            <NavLink to="/cms/before-after" className={getNavClass}>
+              <Layers size={16} /> Before / After
+            </NavLink>
+            <NavLink to="/cms/faq-enquiry" className={getNavClass}>
+              <HelpCircle size={16} /> FAQ & Enquiry
+            </NavLink>
+            <NavLink to="/cms/ideal-frequency" className={getNavClass}>
+              <List size={16} /> Ideal Frequency
+            </NavLink>
             <NavLink to="/cms/visual-builder/details" className={getNavClass}>
               <Eye size={16} /> Visual Builder
             </NavLink>

@@ -40,6 +40,39 @@ exports.updateDetailsPage = async (req, res) => {
           data.markModified("process.processSteps");
         }
       }
+      if (req.body.beforeAfter) {
+        Object.assign(data.beforeAfter, req.body.beforeAfter);
+        if (req.body.beforeAfter.beforePoints !== undefined) {
+          data.beforeAfter.beforePoints = req.body.beforeAfter.beforePoints;
+          data.markModified("beforeAfter.beforePoints");
+        }
+        if (req.body.beforeAfter.afterPoints !== undefined) {
+          data.beforeAfter.afterPoints = req.body.beforeAfter.afterPoints;
+          data.markModified("beforeAfter.afterPoints");
+        }
+      }
+      if (req.body.faqEnquiry) {
+        Object.assign(data.faqEnquiry, req.body.faqEnquiry);
+        if (req.body.faqEnquiry.faqItems !== undefined) {
+          data.faqEnquiry.faqItems = req.body.faqEnquiry.faqItems;
+          data.markModified("faqEnquiry.faqItems");
+        }
+        if (req.body.faqEnquiry.serviceOptions !== undefined) {
+          data.faqEnquiry.serviceOptions = req.body.faqEnquiry.serviceOptions;
+          data.markModified("faqEnquiry.serviceOptions");
+        }
+      }
+      if (req.body.idealFrequency) {
+        Object.assign(data.idealFrequency, req.body.idealFrequency);
+        if (req.body.idealFrequency.idealForPoints !== undefined) {
+          data.idealFrequency.idealForPoints = req.body.idealFrequency.idealForPoints;
+          data.markModified("idealFrequency.idealForPoints");
+        }
+        if (req.body.idealFrequency.notIdealForPoints !== undefined) {
+          data.idealFrequency.notIdealForPoints = req.body.idealFrequency.notIdealForPoints;
+          data.markModified("idealFrequency.notIdealForPoints");
+        }
+      }
       await data.save();
     }
     res.status(200).json({ success: true, data });

@@ -74,7 +74,10 @@ export default function VisualLiveBuilder() {
       return [
         { id: 'details-banner', label: 'Details Banner' },
         { id: 'service-intro', label: 'Service Intro' },
-        { id: 'process-slider', label: 'Process Slider' }
+        { id: 'process-slider', label: 'Process Slider' },
+        { id: 'before-after-section', label: 'Before/After Treatment' },
+        { id: 'faq-enquiry-section', label: 'FAQ & Enquiry Form' },
+        { id: 'ideal-frequency-section', label: 'Ideal Frequency & CTA' }
       ];
     }
     return allSections;
@@ -183,6 +186,9 @@ export default function VisualLiveBuilder() {
           case 'details-banner': endpoint = '/details-page'; break;
           case 'service-intro': endpoint = '/details-page'; break;
           case 'process-slider': endpoint = '/details-page'; break;
+          case 'before-after-section': endpoint = '/details-page'; break;
+          case 'faq-enquiry-section': endpoint = '/details-page'; break;
+          case 'ideal-frequency-section': endpoint = '/details-page'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 

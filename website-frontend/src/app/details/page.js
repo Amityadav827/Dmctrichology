@@ -1,6 +1,9 @@
 import DetailsBanner from '../../components/DetailsBanner';
 import ServiceIntro from '../../components/ServiceIntro';
 import ProcessSlider from '../../components/ProcessSlider';
+import BeforeAfterTreatment from '../../components/BeforeAfterTreatment';
+import FaqEnquiry from '../../components/FaqEnquiry';
+import IdealFrequency from '../../components/IdealFrequency';
 import '../service.css';
 import '../details.css';
 
@@ -28,12 +31,18 @@ export default async function DetailsPage() {
   const banner = pageData?.banner || {};
   const intro = pageData?.intro || {};
   const process = pageData?.process || {};
+  const beforeAfter = pageData?.beforeAfter || {};
+  const faqEnquiry = pageData?.faqEnquiry || {};
+  const idealFrequency = pageData?.idealFrequency || {};
 
   return (
     <div className="bg-white min-h-screen">
       <DetailsBanner data={banner} />
       <ServiceIntro data={intro} />
       <ProcessSlider data={process} />
+      <BeforeAfterTreatment data={beforeAfter} />
+      <FaqEnquiry data={faqEnquiry} />
+      <IdealFrequency data={idealFrequency} />
     </div>
   );
 }
