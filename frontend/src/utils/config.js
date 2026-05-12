@@ -4,9 +4,7 @@
 const isLocal = typeof window !== 'undefined' && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
 // The active frontend deployment domain (Next.js website)
-export const FRONTEND_URL = isLocal 
-  ? "http://localhost:3000" 
-  : "https://dmctrichology-mkm4.vercel.app";
+export const FRONTEND_URL = isLocal ? "http://localhost:3000" : "https://dmctrichology-mkm4.vercel.app";
 
 /**
  * Generates a preview URL for a given page slug

@@ -9,7 +9,7 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 
-Sitemap: https://dmctrichology.com/sitemap.xml`;
+Sitemap: https://dmctrichology-mkm4.vercel.app/sitemap.xml`;
 
 function RobotsEditor() {
   const [content, setContent] = useState("");
