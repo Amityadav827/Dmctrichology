@@ -1,6 +1,7 @@
 import ContactHero from '../../components/ContactHero';
 import EnquirySection from '../../components/EnquirySection';
 import MapSection from '../../components/MapSection';
+import '../service.css';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;

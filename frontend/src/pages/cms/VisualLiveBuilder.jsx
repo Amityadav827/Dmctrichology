@@ -83,7 +83,7 @@ export default function VisualLiveBuilder() {
     if (currentSlug === 'contact-us') {
       return [
         { id: 'contact-hero', label: 'Contact Hero Banner' },
-        { id: 'contact-consultation', label: 'Request Consultation' },
+        { id: 'contact-consultation', label: 'Contact Page Consultation' },
         { id: 'contact-map', label: 'Location Map Section' }
       ];
     }
@@ -443,7 +443,7 @@ export default function VisualLiveBuilder() {
                             'Ideal Frequency & CTA': '/cms/ideal-frequency',
                             'Contact Hero Banner': '/cms/contact-page',
                             'Location Map Section': '/cms/contact-page',
-                            'Request Consultation': '/cms/contact-page'
+                            'Contact Page Consultation': '/cms/contact-page'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
