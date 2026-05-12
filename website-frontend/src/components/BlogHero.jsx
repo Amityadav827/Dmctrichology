@@ -37,7 +37,7 @@ const BlogHero = ({ data: initialData }) => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           minHeight: bannerHeight || '400px',
-          padding: '80px 0',
+          padding: '170px 5% 100px',
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
@@ -47,18 +47,8 @@ const BlogHero = ({ data: initialData }) => {
           overflow: 'hidden'
         }}
       >
-        {/* Overlay Layer */}
-        <div 
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: `rgba(0,0,0,${overlayOpacity})`,
-            zIndex: 1
-          }}
-        />
-
         {/* Content Layer */}
-        <div className="container mx-auto px-4 relative" style={{ zIndex: 2 }}>
+        <div className="container mx-auto px-4 relative">
           <h1 
             style={{ 
               fontSize: '64px', 
