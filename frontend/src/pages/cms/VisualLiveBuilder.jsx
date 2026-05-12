@@ -18,6 +18,8 @@ import {
   Plus
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import VisualLiveBuilderSkeleton from "../../components/VisualLiveBuilderSkeleton";
+import { getFrontendPreviewUrl, FRONTEND_URL } from "../../utils/config";
 
 export default function VisualLiveBuilder() {
   const { slug = "home" } = useParams();
@@ -92,17 +94,9 @@ export default function VisualLiveBuilder() {
 
   const sections = getSectionsForSlug(slug);
 
-  // URL for the real frontend
-  const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-  const frontendPath = slug === 'home' ? '' : slug;
-  
-  // Restore stable original behavior: use hardcoded frontend domain in production
-  // This prevents the admin dashboard from loading inside the iframe
-  const baseUrl = isLocal 
-    ? "http://localhost:3000" 
-    : "https://dmctrichology.com"; 
-  
-  const frontendUrl = `${baseUrl}/${frontendPath}?edit=true&preview=true`;
+  // Use centralized configuration for preview URL
+  const frontendUrl = getFrontendPreviewUrl(slug);
+  const baseUrl = FRONTEND_URL;
 
   const pendingChanges = useRef({});
   const saveTimeout = useRef(null);

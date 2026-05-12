@@ -15,6 +15,7 @@ import {
   Settings as SettingsIcon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getFrontendPreviewUrl } from "../../utils/config";
 
 export default function PageCompositionEditor({ slug = "home" }) {
   const [page, setPage] = useState(null);
@@ -124,7 +125,7 @@ export default function PageCompositionEditor({ slug = "home" }) {
         
         <div className="flex items-center gap-3">
           <button 
-            onClick={() => window.open(`https://dmctrichology-mkm4.vercel.app/${slug === 'home' ? '' : slug}`, '_blank')}
+            onClick={() => window.open(getFrontendPreviewUrl(slug, false), '_blank')}
             className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-all text-sm shadow-sm"
           >
             <Eye size={16} /> View Live
