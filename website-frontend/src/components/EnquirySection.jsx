@@ -3,9 +3,36 @@ import React, { useState, useRef, useEffect } from 'react';
 import { fetchConsultation } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
+import { useBuilder } from '../context/BuilderContext';
 
+const EnquirySection = ({ sectionId = "consultation-section", data: propData }) => {
   const { isEditMode, siteConfig } = useBuilder();
   const [data, setData] = useState(propData || {});
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    mobile: '',
+    service: '',
+    message: ''
+  });
+  const [captcha, setCaptcha] = useState('');
+  const [captchaInput, setCaptchaInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedDateTime, setSelectedDateTime] = useState('');
+  const calendarRef = useRef(null);
+
+  // Generate 4-digit captcha
+  const generateCaptcha = () => {
+    setCaptcha(Math.floor(1000 + Math.random() * 9000).toString());
+  };
+
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
 
   // Real-time sync from Visual Builder
   useEffect(() => {

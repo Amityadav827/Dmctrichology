@@ -455,13 +455,15 @@ a {
 /* ===================== HEADER ===================== */
 .header {
   background-color: transparent;
-  padding: 15px 4%; 
-  position: relative;
+  padding: 30px 4%; /* Increased padding for more breathing room */
+  position: absolute;
+  top: 30px; /* Floating from the top */
+  left: 0;
+  right: 0;
   z-index: 100;
   display: flex;
   justify-content: center;
   transition: all 0.3s ease;
-  margin-bottom: -110px; /* Pull the hero up to stay under the header */
 }
 
 .header-container {
@@ -640,7 +642,7 @@ a {
 
   .header {
     padding: 12px 4%;
-    margin-bottom: -90px;
+    top: 36px;
   }
 
   .header-container {
