@@ -155,16 +155,6 @@ const ServiceIntro = ({ data = {} }) => {
                                 <Play fill="#1e293b" className="play-icon-svg" size={32} />
                               </div>
 
-                              {/* Floating Youtube Style Button */}
-                              {video.isYoutubeStyleButtonEnabled && (
-                                <div className={`floating-youtube-btn ${buttonSettings.floatingButtonPosition}`}>
-                                  <div className="youtube-btn-inner">
-                                    <YoutubeIcon size={20} />
-                                    <span className="youtube-btn-text">Watch Now</span>
-                                  </div>
-                                </div>
-                              )}
-
                               {/* Slide Title */}
                               {video.title && (
                                 <div className="slide-info-overlay">
@@ -203,41 +193,37 @@ const ServiceIntro = ({ data = {} }) => {
               </div>
             </div>
 
-            {/* ─── RIGHT SIDE: Content ───────────────────── */}
-            <div className="intro-content-column">
+            {/* ─── RIGHT SIDE: Content (Restored to Reference) ─── */}
+            <div className="details-content-col">
               {/* Badge */}
-              <div className="content-badge-box">
-                <span className="content-badge-premium">
-                  <EditableText sectionId="service-intro" fieldPath="intro.badgeText">
-                    {intro.badgeText || intro.badge || 'HAIR TREATMENT'}
-                  </EditableText>
-                </span>
-              </div>
+              <span className="details-badge">
+                <EditableText sectionId="service-intro" fieldPath="intro.badgeText">
+                  {intro.badgeText || intro.badge || 'FOR UNWANTED HAIR'}
+                </EditableText>
+              </span>
 
               {/* Title */}
-              <h1 className="intro-main-heading">
+              <h1 className="details-title">
                 <EditableText sectionId="service-intro" fieldPath="intro.title">
                   {intro.title || 'Follicular Unit Extraction (FUE)'}
                 </EditableText>
               </h1>
 
-              {/* Meta Stats */}
-              <div className="intro-meta-stats">
-                <div className="meta-stat-item">
-                  <div className="star-rating-row">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <Star key={s} size={14} fill="#fbbf24" className="star-icon" />
-                    ))}
-                  </div>
-                  <span className="rating-value">
-                    <EditableText sectionId="service-intro" fieldPath="intro.rating">
-                      {intro.rating || '4.85'}
-                    </EditableText>
-                  </span>
+              {/* Meta Row */}
+              <div className="details-meta-row">
+                <span className="details-rating-num">
+                  <EditableText sectionId="service-intro" fieldPath="intro.rating">
+                    {intro.rating || '4.85'}
+                  </EditableText>
+                </span>
+                <div className="details-stars">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} size={12} fill="#fbbf24" color="#fbbf24" />
+                  ))}
                 </div>
-                <div className="meta-stat-item divider-left">
-                  <Clock size={16} className="clock-icon" />
-                  <span className="duration-text">
+                <div className="details-duration">
+                  <Clock size={14} />
+                  <span>
                     <EditableText sectionId="service-intro" fieldPath="intro.duration">
                       {intro.duration || '180 mins'}
                     </EditableText>
@@ -245,33 +231,44 @@ const ServiceIntro = ({ data = {} }) => {
                 </div>
               </div>
 
-              {/* Descriptions */}
-              <div className="intro-description-box">
-                <div className="intro-short-desc">
+              {/* Subtitle / Service Name repeat */}
+              <h3 className="details-subtitle">
+                <EditableText sectionId="service-intro" fieldPath="intro.title">
+                  {intro.title || 'Follicular Unit Extraction (FUE)'}
+                </EditableText>
+                <div className="details-sub-subtitle">
                   <EditableText sectionId="service-intro" fieldPath="intro.shortDescription">
-                    {intro.shortDescription || intro.subTitle || 'Safe, smart & skin-friendly hair repair'}
+                    {intro.shortDescription || 'Safe, smart & skin-friendly'}
                   </EditableText>
                 </div>
-                <p className="intro-long-desc">
-                  <EditableText sectionId="service-intro" fieldPath="intro.longDescription">
-                    {intro.longDescription || intro.description || 'FUE is one of the most popular and limited modern procedure techniques for hair repair.'}
-                  </EditableText>
-                </p>
-              </div>
+              </h3>
 
-              {/* Benefits Checklist */}
+              {/* Main Description */}
+              <p className="details-description">
+                <EditableText sectionId="service-intro" fieldPath="intro.longDescription">
+                  {intro.longDescription || 'FUE is one of the most popular and limited modern procedure techniques for hair repair. Each hair follicle is removed individually and implanted into the thinning or bald areas, making sure that it\'s natural volume and growth.'}
+                </EditableText>
+              </p>
+
+              {/* Bullet Points */}
               {benefits.length > 0 && (
-                <div className="benefits-checklist-grid">
+                <ul className="details-bullets">
                   {benefits.map((benefit, i) => (
-                    <div key={i} className="benefit-check-item">
-                      <div className="check-dot-wrapper">
-                        <div className="check-dot-inner"></div>
-                      </div>
-                      <span className="benefit-label">{benefit.text}</span>
-                    </div>
+                    <li key={i}>
+                      <EditableText sectionId="service-intro" fieldPath={`benefits.${i}.text`}>
+                        {benefit.text}
+                      </EditableText>
+                    </li>
                   ))}
-                </div>
+                </ul>
               )}
+
+              {/* Closing Text */}
+              <p className="details-closing">
+                <EditableText sectionId="service-intro" fieldPath="intro.closingText">
+                  {intro.closingText || 'Our FUE procedure is performed by skilled hair transplant surgeons with years of experience, making us the best hair transplant centre in Delhi.'}
+                </EditableText>
+              </p>
             </div>
 
           </div>
