@@ -32,21 +32,38 @@ const BlogHero = ({ data: initialData }) => {
       <section 
         className="blog-hero-section"
         style={{ 
-          backgroundColor: '#F4F5FB',
+          backgroundImage: `url(${bannerImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          minHeight: bannerHeight || '400px',
           padding: '80px 0',
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          position: 'relative',
+          overflow: 'hidden'
         }}
       >
-        <div className="container mx-auto px-4">
+        {/* Overlay Layer */}
+        <div 
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: `rgba(0,0,0,${overlayOpacity})`,
+            zIndex: 1
+          }}
+        />
+
+        {/* Content Layer */}
+        <div className="container mx-auto px-4 relative" style={{ zIndex: 2 }}>
           <h1 
             style={{ 
               fontSize: '64px', 
               fontFamily: "'Marcellus', serif", 
-              color: '#111111',
+              color: '#ffffff',
               marginBottom: '16px',
               fontWeight: '400'
             }}
@@ -64,12 +81,12 @@ const BlogHero = ({ data: initialData }) => {
               gap: '10px',
               fontSize: '16px',
               fontFamily: "'Lato', sans-serif",
-              color: '#666666'
+              color: 'rgba(255,255,255,0.8)'
             }}
           >
             <span style={{ cursor: 'pointer' }}>Home</span>
-            <span style={{ color: '#CCCCCC' }}>/</span>
-            <span style={{ color: '#111111', fontWeight: '600' }}>
+            <span style={{ color: 'rgba(255,255,255,0.4)' }}>/</span>
+            <span style={{ color: '#ffffff', fontWeight: '600' }}>
                <EditableText sectionId="blog-hero" fieldPath="hero.breadcrumbText">
                   {breadcrumbText}
                </EditableText>
@@ -79,9 +96,6 @@ const BlogHero = ({ data: initialData }) => {
       </section>
 
       <style jsx>{`
-        .blog-hero-section {
-          min-height: 300px;
-        }
         @media (max-width: 768px) {
           .blog-hero-section h1 {
             font-size: 40px !important;
