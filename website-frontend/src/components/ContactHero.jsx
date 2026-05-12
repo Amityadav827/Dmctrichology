@@ -38,16 +38,6 @@ const ContactHero = ({ data: initialData }) => {
           position: 'relative'
         }}
       >
-        {/* Dynamic Overlay */}
-        <div 
-          className="hero-overlay"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: `rgba(0,0,0,${overlayOpacity})`,
-            zIndex: 1
-          }}
-        />
 
         <div className="max-w-[1400px] mx-auto w-full relative" style={{ zIndex: 2 }}>
           {/* Heading on Top */}
