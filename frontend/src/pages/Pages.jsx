@@ -4,6 +4,7 @@ import { Plus, Edit2, Trash2, ArrowLeft, Search, Eye, Filter, ChevronDown, Check
 import Loader from "../components/Loader";
 import Table from "../components/Table";
 import api from "../api/client";
+import { FRONTEND_URL } from "../utils/config";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -354,7 +355,7 @@ function Pages() {
   const currentItems = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   // URL Preview logic
-  const siteUrl = window.location.origin;
+  const siteUrl = FRONTEND_URL;
 
   if (loading) {
     return <Loader label="Loading pages..." />;
