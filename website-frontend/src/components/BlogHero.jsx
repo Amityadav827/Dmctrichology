@@ -53,7 +53,7 @@ const BlogHero = ({ data: initialData }) => {
             style={{ 
               fontSize: '64px', 
               fontFamily: "'Marcellus', serif", 
-              color: '#ffffff',
+              color: '#111',
               marginBottom: '16px',
               fontWeight: '400'
             }}
@@ -71,12 +71,12 @@ const BlogHero = ({ data: initialData }) => {
               gap: '10px',
               fontSize: '16px',
               fontFamily: "'Lato', sans-serif",
-              color: 'rgba(255,255,255,0.8)'
+              color: '#888'
             }}
           >
             <span style={{ cursor: 'pointer' }}>Home</span>
-            <span style={{ color: 'rgba(255,255,255,0.4)' }}>/</span>
-            <span style={{ color: '#ffffff', fontWeight: '600' }}>
+            <span style={{ color: '#ccc' }}>/</span>
+            <span style={{ color: '#111', fontWeight: '600' }}>
                <EditableText sectionId="blog-hero" fieldPath="hero.breadcrumbText">
                   {breadcrumbText}
                </EditableText>
