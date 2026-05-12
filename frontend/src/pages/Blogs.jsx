@@ -7,6 +7,7 @@ import api from "../api/client";
 import { getBlogCategories } from "../api/services";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { FRONTEND_URL } from "../utils/config";
 
 const modules = {
   toolbar: [
@@ -530,7 +531,7 @@ function Blogs() {
                 <Globe size={14} className="text-slate-400" />
                 <span style={{ fontSize: "0.8rem", color: "#64748B" }}>Permalink:</span>
                 <span style={{ fontSize: "0.8rem", color: "#2563EB", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {window.location.origin}/blog/{formData.slug || "..."}
+                  {FRONTEND_URL}/blog/{formData.slug || "..."}
                 </span>
                 {!isSlugManual && formData.title && (
                   <button 
@@ -839,7 +840,7 @@ function Blogs() {
               </td>
               <td style={{ padding: "0.875rem 1.25rem", textAlign: "right" }}>
                 <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
-                  <a href={`${window.location.origin}/blog/${item.slug}`} target="_blank" rel="noreferrer" title="View Blog"
+                  <a href={`${FRONTEND_URL}/blog/${item.slug}`} target="_blank" rel="noreferrer" title="View Blog"
                     style={{ padding: "0.375rem", borderRadius: "6px", background: "#F0F9FF", border: "1px solid #BAE6FD", cursor: "pointer", color: "#0284C7", display: "flex" }}>
                     <Eye size={15} />
                   </a>

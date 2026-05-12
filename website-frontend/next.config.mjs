@@ -16,6 +16,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'dmctrichology-1.onrender.com',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fxzkbhhinbjbeegkjnae.supabase.co',
+        pathname: '/**',
       }
     ],
   },

@@ -146,12 +146,12 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
                    </EditableText>
                 </h4>
                 <div className="recent-posts">
-                  {recentPosts.map((post, idx) => (
+                  {(blogs.slice(0, 4)).map((post, idx) => (
                     <div key={idx} className="recent-post-item">
                       <div 
                         className="post-thumb"
                         style={{
-                          backgroundImage: `url(${post.image || 'https://via.placeholder.com/80'})`,
+                          backgroundImage: `url(${post.blogImage || post.image || 'https://via.placeholder.com/80'})`,
                           backgroundSize: 'cover',
                           backgroundPosition: 'center',
                           backgroundColor: '#D9D9D9'
@@ -159,14 +159,12 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
                       ></div>
                       <div className="post-content">
                         <span className="post-date">
-                          <EditableText sectionId="blog-listing" fieldPath={`listing.recentPosts.${idx}.date`}>
-                            {post.date}
-                          </EditableText>
+                          {post.blogDate || post.date}
                         </span>
                         <h5 className="post-title">
-                          <EditableText sectionId="blog-listing" fieldPath={`listing.recentPosts.${idx}.title`}>
+                          <a href={`/blog/${post.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                             {post.title}
-                          </EditableText>
+                          </a>
                         </h5>
                       </div>
                     </div>
