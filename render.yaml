@@ -5,5 +5,17 @@ services:
     buildCommand: cd backend && npm install
     startCommand: cd backend && node server.js
     envVars:
+      # Required Render env vars configured in the Render dashboard:
+      # MONGO_URI
+      # SUPABASE_URL
+      # SUPABASE_SERVICE_KEY
+      # JWT_SECRET
+      # EMAIL_USER
+      # EMAIL_PASS
+      # Optional/feature-specific:
+      # JWT_EXPIRES_IN
+      # CLOUDINARY_CLOUD_NAME
+      # CLOUDINARY_API_KEY
+      # CLOUDINARY_API_SECRET
       - key: NODE_ENV
         value: production
