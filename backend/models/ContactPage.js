@@ -21,7 +21,11 @@ const contactPageSchema = new mongoose.Schema(
       serviceOptions: { type: [String], default: ['Hair Transplant', 'Laser Hair Removal', 'Skin Treatment', 'Others'] },
       enableDatePicker: { type: Boolean, default: true },
       enableTimePicker: { type: Boolean, default: true },
-      enableInquiryDropdown: { type: Boolean, default: true }
+      enableInquiryDropdown: { type: Boolean, default: true },
+      namePlaceholder: { type: String, default: "Name*" },
+      emailPlaceholder: { type: String, default: "E-Mail Address*" },
+      messagePlaceholder: { type: String, default: "Enter Your Message Here*" },
+      backgroundColor: { type: String, default: "#ffffff" }
     },
     map: {
       city: { type: String, default: "New Delhi" },

@@ -186,6 +186,28 @@ export default function ContactPageCMS() {
                     <input type="text" value={data.consultation.subtitle} onChange={e => updateSectionField("consultation", "subtitle", e.target.value)}
                       className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none transition-all" />
                   </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Section Background Color</label>
+                    <div className="flex gap-4 items-center">
+                      <input type="color" value={data.consultation.backgroundColor || "#ffffff"} onChange={e => updateSectionField("consultation", "backgroundColor", e.target.value)} className="w-12 h-12 rounded-xl cursor-pointer" />
+                      <input type="text" value={data.consultation.backgroundColor || "#ffffff"} onChange={e => updateSectionField("consultation", "backgroundColor", e.target.value)} className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Name Placeholder</label>
+                    <input type="text" value={data.consultation.namePlaceholder || ""} onChange={e => updateSectionField("consultation", "namePlaceholder", e.target.value)}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Email Placeholder</label>
+                    <input type="text" value={data.consultation.emailPlaceholder || ""} onChange={e => updateSectionField("consultation", "emailPlaceholder", e.target.value)}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Message Placeholder</label>
+                    <input type="text" value={data.consultation.messagePlaceholder || ""} onChange={e => updateSectionField("consultation", "messagePlaceholder", e.target.value)}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none transition-all" />
+                  </div>
                 </div>
               </div>
 

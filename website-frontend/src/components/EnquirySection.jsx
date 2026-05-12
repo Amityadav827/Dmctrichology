@@ -73,9 +73,9 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
   const phoneNumber = data ? (data.phoneNumber || '') : '+91-8527830194';
   const timingMonSat = data ? (data.serviceTimingMonSat || '') : '9:00 AM To 8:00 PM';
   const timingSun = data ? (data.serviceTimingSunday || '') : '10:00 AM To 7:00 PM';
-  const namePlaceholder = data ? (data.namePlaceholder || '') : 'Name*';
-  const emailPlaceholder = data ? (data.emailPlaceholder || '') : 'E-Mail Address*';
-  const messagePlaceholder = data ? (data.messagePlaceholder || '') : 'Enter Your Message Here*';
+  const namePlaceholder = data?.namePlaceholder || 'Name*';
+  const emailPlaceholder = data?.emailPlaceholder || 'E-Mail Address*';
+  const messagePlaceholder = data?.messagePlaceholder || 'Enter Your Message Here*';
   const serviceOptions = Array.isArray(data?.serviceOptions) ? data.serviceOptions : ['Hair Transplant', 'Laser Hair Removal', 'Skin Treatment', 'Others'];
   const buttonText = data ? (data.buttonText || '') : 'Schedule Your Visit';
   const beforeImage = data ? (data.beforeImage || '') : 'https://res.cloudinary.com/dseixl6px/image/upload/v1777623481/dmc-trichology/sfqfld2ikbs00iqncyse.png';
