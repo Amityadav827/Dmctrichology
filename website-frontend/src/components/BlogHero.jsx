@@ -36,18 +36,7 @@ const BlogHero = ({ data: initialData }) => {
           minHeight: bannerHeight,
         }}
       >
-        {/* Overlay */}
-        <div 
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: `rgba(0,0,0,${overlayOpacity})`,
-            zIndex: 1
-          }}
-        />
+
 
         <div className="max-w-[1400px] mx-auto w-full relative" style={{ zIndex: 2 }}>
           {/* Heading on Top */}
