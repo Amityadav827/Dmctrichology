@@ -204,6 +204,37 @@ export const fetchFooter = async () => {
   }
 };
 
+export const fetchBlogs = async (params) => {
+  try {
+    const res = await api.get('/blogs', { params });
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching blogs', error);
+    return null;
+  }
+};
+
+export const fetchBlogCategories = async () => {
+  try {
+    const res = await api.get('/blog-categories');
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching blog categories', error);
+    return null;
+  }
+};
+
+export const fetchBlogPage = async () => {
+  try {
+    const res = await api.get('/blog-page');
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching blog page data', error);
+    return null;
+  }
+};
+
+
 export const submitLead = async (data) => {
   try {
     const res = await api.post('/lead', data);

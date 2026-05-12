@@ -88,8 +88,17 @@ export default function VisualLiveBuilder() {
         { id: 'contact-map', label: 'Location Map Section' }
       ];
     }
+    if (currentSlug === 'blog') {
+      return [
+        { id: 'blog-hero', label: 'Blog Hero Banner' },
+        { id: 'blog-listing', label: 'Blog Listing Section' }
+      ];
+    }
     return allSections;
   };
+
+
+
 
   const sections = getSectionsForSlug(slug);
 
@@ -198,7 +207,10 @@ export default function VisualLiveBuilder() {
           case 'contact-hero': endpoint = '/contact-page'; break;
           case 'contact-consultation': endpoint = '/contact-page'; break;
           case 'contact-map': endpoint = '/contact-page'; break;
+          case 'blog-hero': endpoint = '/blog-page'; break;
+          case 'blog-listing': endpoint = '/blog-page'; break;
           default: endpoint = `/sections/${sectionId}`;
+
         }
 
         // Fetch current data first to avoid overwriting other fields
@@ -436,7 +448,9 @@ export default function VisualLiveBuilder() {
                             'Ideal Frequency & CTA': '/cms/ideal-frequency',
                             'Contact Hero Banner': '/cms/contact-page',
                             'Location Map Section': '/cms/contact-page',
-                            'Contact Page Consultation': '/cms/contact-page'
+                            'Contact Page Consultation': '/cms/contact-page',
+                            'Blog Hero Banner': '/cms/blog-page',
+                            'Blog Listing Section': '/cms/blog-page'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}

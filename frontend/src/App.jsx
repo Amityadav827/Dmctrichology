@@ -56,6 +56,8 @@ import BeforeAfterCMS from "./pages/cms/BeforeAfterCMS";
 import FaqEnquiryCMS from "./pages/cms/FaqEnquiryCMS";
 import IdealFrequencyCMS from "./pages/cms/IdealFrequencyCMS";
 import ContactPageCMS from "./pages/cms/ContactPageCMS";
+import BlogHeroCMS from "./pages/cms/BlogHeroCMS";
+
 
 import RedirectList from "./pages/RedirectList";
 import SitemapManager from "./pages/SitemapManager";
@@ -412,6 +414,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="cms/blog-page"
+          element={
+            <ProtectedRoute permission="cms">
+              <BlogHeroCMS />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="cms/hero"
           element={
