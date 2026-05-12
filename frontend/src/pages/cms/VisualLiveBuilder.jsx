@@ -92,17 +92,15 @@ export default function VisualLiveBuilder() {
 
   const sections = getSectionsForSlug(slug);
 
-  // Dynamic base URL detection
+  // URL for the real frontend
   const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
   const frontendPath = slug === 'home' ? '' : slug;
   
-  // If we're on a deployed version, use the current origin's domain for the frontend as well
-  // (Assuming frontend and backend/dashboard are on the same domain or siblings)
+  // Restore stable original behavior: use hardcoded frontend domain in production
+  // This prevents the admin dashboard from loading inside the iframe
   const baseUrl = isLocal 
     ? "http://localhost:3000" 
-    : (window.location.origin.includes('vercel.app') || window.location.origin.includes('render.com')
-        ? window.location.origin.replace('dashboard', 'website').replace('admin', 'www') // Heuristic for siblings
-        : "https://dmctrichology.com"); // Fallback to production domain
+    : "https://dmctrichology.com"; 
   
   const frontendUrl = `${baseUrl}/${frontendPath}?edit=true&preview=true`;
 
