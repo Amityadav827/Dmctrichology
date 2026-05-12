@@ -86,7 +86,18 @@ export default function BlogHeroCMS() {
     axios.get("/blog-page")
       .then(res => {
         if (res.data?.data) {
-          setData(res.data.data);
+          const fetchedData = res.data.data;
+          // Initialize missing listing fields with defaults from the initial state
+          fetchedData.listing = {
+            ...data.listing,
+            ...fetchedData.listing
+          };
+          // Double check arrays
+          if (!fetchedData.listing.categories?.length) fetchedData.listing.categories = data.listing.categories;
+          if (!fetchedData.listing.recentPosts?.length) fetchedData.listing.recentPosts = data.listing.recentPosts;
+          if (!fetchedData.listing.featuredBlogs?.length) fetchedData.listing.featuredBlogs = data.listing.featuredBlogs;
+          
+          setData(fetchedData);
         }
       })
       .catch(() => toast.error("Failed to load blog page data"))
@@ -310,45 +321,64 @@ export default function BlogHeroCMS() {
 
               {/* Featured Blogs Cards Management */}
               <div className="md:col-span-2 border-t border-slate-100 pt-8 mt-4">
-                <h3 className="text-xs font-black uppercase tracking-widest text-slate-900 mb-6">Featured Blog Cards (4 Cards)</h3>
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-slate-900">Featured Blog Cards (4 Cards)</h3>
+                  <button type="button" onClick={() => {
+                    const newBlogs = [...(data.listing.featuredBlogs || [])];
+                    newBlogs.push({
+                      image: "",
+                      title: "New Blog Post",
+                      author: "Author Name",
+                      date: "May 12, 2025",
+                      category: "Category",
+                      buttonText: "Explore More",
+                      buttonLink: "/blog/link"
+                    });
+                    updateSectionField("listing", "featuredBlogs", newBlogs);
+                  }} className="text-[10px] font-black text-blue-600 uppercase hover:underline">+ Add Card</button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {(data.listing.blogs || []).map((blog, idx) => (
+                  {(data.listing.featuredBlogs || []).map((blog, idx) => (
                     <div key={idx} className="bg-slate-50 p-6 rounded-3xl border border-slate-100 space-y-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">Card #{idx + 1}</span>
+                        <button type="button" onClick={() => {
+                          const newBlogs = data.listing.featuredBlogs.filter((_, i) => i !== idx);
+                          updateSectionField("listing", "featuredBlogs", newBlogs);
+                        }} className="text-[9px] font-black text-red-500 uppercase hover:underline">Remove Card</button>
                       </div>
                       <div className="space-y-4">
                         <div>
                           <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Featured Image URL</label>
                           <input type="text" value={blog.image} onChange={e => {
-                            const newBlogs = [...data.listing.blogs];
+                            const newBlogs = [...data.listing.featuredBlogs];
                             newBlogs[idx].image = e.target.value;
-                            updateSectionField("listing", "blogs", newBlogs);
+                            updateSectionField("listing", "featuredBlogs", newBlogs);
                           }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
                         </div>
                         <div>
                           <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Blog Title</label>
                           <input type="text" value={blog.title} onChange={e => {
-                            const newBlogs = [...data.listing.blogs];
+                            const newBlogs = [...data.listing.featuredBlogs];
                             newBlogs[idx].title = e.target.value;
-                            updateSectionField("listing", "blogs", newBlogs);
+                            updateSectionField("listing", "featuredBlogs", newBlogs);
                           }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                           <div>
                             <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Author</label>
                             <input type="text" value={blog.author} onChange={e => {
-                              const newBlogs = [...data.listing.blogs];
+                              const newBlogs = [...data.listing.featuredBlogs];
                               newBlogs[idx].author = e.target.value;
-                              updateSectionField("listing", "blogs", newBlogs);
+                              updateSectionField("listing", "featuredBlogs", newBlogs);
                             }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
                           </div>
                           <div>
                             <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Category</label>
                             <input type="text" value={blog.category} onChange={e => {
-                              const newBlogs = [...data.listing.blogs];
+                              const newBlogs = [...data.listing.featuredBlogs];
                               newBlogs[idx].category = e.target.value;
-                              updateSectionField("listing", "blogs", newBlogs);
+                              updateSectionField("listing", "featuredBlogs", newBlogs);
                             }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
                           </div>
                         </div>
@@ -356,26 +386,26 @@ export default function BlogHeroCMS() {
                           <div>
                             <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Date</label>
                             <input type="text" value={blog.date} onChange={e => {
-                              const newBlogs = [...data.listing.blogs];
+                              const newBlogs = [...data.listing.featuredBlogs];
                               newBlogs[idx].date = e.target.value;
-                              updateSectionField("listing", "blogs", newBlogs);
+                              updateSectionField("listing", "featuredBlogs", newBlogs);
                             }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
                           </div>
                           <div>
                             <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Button Text</label>
                             <input type="text" value={blog.buttonText} onChange={e => {
-                              const newBlogs = [...data.listing.blogs];
+                              const newBlogs = [...data.listing.featuredBlogs];
                               newBlogs[idx].buttonText = e.target.value;
-                              updateSectionField("listing", "blogs", newBlogs);
+                              updateSectionField("listing", "featuredBlogs", newBlogs);
                             }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
                           </div>
                         </div>
                         <div>
-                          <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Button URL</label>
-                          <input type="text" value={blog.buttonUrl} onChange={e => {
-                            const newBlogs = [...data.listing.blogs];
-                            newBlogs[idx].buttonUrl = e.target.value;
-                            updateSectionField("listing", "blogs", newBlogs);
+                          <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Button Link</label>
+                          <input type="text" value={blog.buttonLink} onChange={e => {
+                            const newBlogs = [...data.listing.featuredBlogs];
+                            newBlogs[idx].buttonLink = e.target.value;
+                            updateSectionField("listing", "featuredBlogs", newBlogs);
                           }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
                         </div>
                       </div>

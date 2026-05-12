@@ -16,45 +16,6 @@ const BlogListing = ({ data: initialData }) => {
     }
   }, [initialData]);
 
-  const fallbackBlogs = [
-    {
-      title: "Overcoming Physical Setbacks: How Physiotherapy Recovery.",
-      image: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
-      date: "May 10, 2025",
-      author: "Dr. Meera Joshi, Posture & Spine",
-      category: "Back & Spine",
-      buttonText: "Explore More",
-      buttonUrl: "/blog/overcoming-physical-setbacks"
-    },
-    {
-      title: "Revolutionizing Rehab: How Emerging Physiotherapy Technologies.",
-      image: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
-      date: "May 11, 2025",
-      author: "Dr. Rahul Kapoor, Neuro Expert",
-      category: "Sports Injury",
-      buttonText: "Explore More",
-      buttonUrl: "/blog/revolutionizing-rehab"
-    },
-    {
-      title: "Revolutionizing Rehab: How Emerging Physiotherapy Technologies.",
-      image: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
-      date: "May 11, 2025",
-      author: "Dr. Rahul Kapoor, Neuro Expert",
-      category: "Post-Surgical",
-      buttonText: "Explore More",
-      buttonUrl: "/blog/revolutionizing-rehab-2"
-    },
-    {
-      title: "Revolutionizing Rehab: How Emerging Physiotherapy Technologies.",
-      image: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
-      date: "May 11, 2025",
-      author: "Dr. Rahul Kapoor, Neuro Expert",
-      category: "Neurological",
-      buttonText: "Explore More",
-      buttonUrl: "/blog/revolutionizing-rehab-3"
-    }
-  ];
-
   const {
     sidebarSearchPlaceholder = "Enter Key Word",
     sidebarCategoriesTitle = "Blog Categories",
@@ -64,23 +25,23 @@ const BlogListing = ({ data: initialData }) => {
     promoButtonText = "Special Offer",
     categories = [],
     recentPosts = [],
-    blogs: cmsBlogs = []
+    featuredBlogs = []
   } = pageData;
 
-  const blogs = (cmsBlogs.length > 0 && cmsBlogs[0].title) ? cmsBlogs : fallbackBlogs;
-  const displayCategories = categories.length > 0 ? categories : [
-    { name: "Back & Spine Therapy", count: 4 },
-    { name: "Sports Injury Rehab", count: 3 },
-    { name: "Post-Surgical Recovery", count: 2 },
-    { name: "Joint & Muscle Mobilization", count: 3 },
-    { name: "Neurological Physiotherapy", count: 2 }
+  const blogs = featuredBlogs.length > 0 ? featuredBlogs : [
+    {
+      title: "Overcoming Physical Setbacks: How Physiotherapy Recovery.",
+      image: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
+      date: "May 10, 2025",
+      author: "Dr. Meera Joshi, Posture & Spine",
+      category: "Back & Spine",
+      buttonText: "Explore More",
+      buttonLink: "/blog/overcoming-physical-setbacks"
+    }
   ];
-  const displayRecentPosts = recentPosts.length > 0 ? recentPosts : [
-    { title: "How Physiotherapy Helps You Heal Faster", date: "Mar 06, 2025", image: "" },
-    { title: "Best Exercises For Shoulder Pain Relief", date: "Mar 08, 2025", image: "" },
-    { title: "Improve Posture With Simple Daily Stretches", date: "Mar 10, 2025", image: "" },
-    { title: "Best Exercises For Shoulder Pain Relief", date: "Mar 08, 2025", image: "" }
-  ];
+
+  const displayCategories = categories.length > 0 ? categories : [];
+  const displayRecentPosts = recentPosts.length > 0 ? recentPosts : [];
 
   // Real-time sync from Visual Builder
   useEffect(() => {
@@ -133,24 +94,24 @@ const BlogListing = ({ data: initialData }) => {
                     <div className="blog-card-meta">
                       <div className="meta-item">
                         <Calendar size={14} />
-                        <EditableText sectionId="blog-listing" fieldPath={`listing.blogs.${idx}.date`}>
+                        <EditableText sectionId="blog-listing" fieldPath={`listing.featuredBlogs.${idx}.date`}>
                           {blog.date}
                         </EditableText>
                       </div>
                       <div className="meta-item">
                         <User size={14} />
-                        <EditableText sectionId="blog-listing" fieldPath={`listing.blogs.${idx}.author`}>
+                        <EditableText sectionId="blog-listing" fieldPath={`listing.featuredBlogs.${idx}.author`}>
                           {blog.author}
                         </EditableText>
                       </div>
                     </div>
                     <h3 className="blog-card-title">
-                      <EditableText sectionId="blog-listing" fieldPath={`listing.blogs.${idx}.title`}>
+                      <EditableText sectionId="blog-listing" fieldPath={`listing.featuredBlogs.${idx}.title`}>
                         {blog.title}
                       </EditableText>
                     </h3>
-                    <a href={blog.buttonUrl || "#"} className="explore-link">
-                      <EditableText sectionId="blog-listing" fieldPath={`listing.blogs.${idx}.buttonText`}>
+                    <a href={blog.buttonLink || "#"} className="explore-link">
+                      <EditableText sectionId="blog-listing" fieldPath={`listing.featuredBlogs.${idx}.buttonText`}>
                         {blog.buttonText || "Explore More"}
                       </EditableText>
                     </a>

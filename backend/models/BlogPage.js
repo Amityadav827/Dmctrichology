@@ -60,7 +60,7 @@ const blogPageSchema = new mongoose.Schema(
           image: { type: String, default: "" }
         }
       ],
-      blogs: [
+      featuredBlogs: [
         {
           image: { type: String, default: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png" },
           date: { type: String, default: "May 10, 2025" },
@@ -68,7 +68,7 @@ const blogPageSchema = new mongoose.Schema(
           category: { type: String, default: "Back & Spine" },
           title: { type: String, default: "Overcoming Physical Setbacks: How Physiotherapy Recovery." },
           buttonText: { type: String, default: "Explore More" },
-          buttonUrl: { type: String, default: "/blog/overcoming-physical-setbacks" }
+          buttonLink: { type: String, default: "/blog/overcoming-physical-setbacks" }
         },
         {
           image: { type: String, default: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png" },
@@ -77,7 +77,7 @@ const blogPageSchema = new mongoose.Schema(
           category: { type: String, default: "Sports Injury" },
           title: { type: String, default: "Revolutionizing Rehab: How Emerging Physiotherapy Technologies." },
           buttonText: { type: String, default: "Explore More" },
-          buttonUrl: { type: String, default: "/blog/revolutionizing-rehab" }
+          buttonLink: { type: String, default: "/blog/revolutionizing-rehab" }
         },
         {
           image: { type: String, default: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png" },
@@ -86,7 +86,7 @@ const blogPageSchema = new mongoose.Schema(
           category: { type: String, default: "Post-Surgical" },
           title: { type: String, default: "Revolutionizing Rehab: How Emerging Physiotherapy Technologies." },
           buttonText: { type: String, default: "Explore More" },
-          buttonUrl: { type: String, default: "/blog/revolutionizing-rehab-2" }
+          buttonLink: { type: String, default: "/blog/revolutionizing-rehab-2" }
         },
         {
           image: { type: String, default: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png" },
@@ -95,7 +95,7 @@ const blogPageSchema = new mongoose.Schema(
           category: { type: String, default: "Neurological" },
           title: { type: String, default: "Revolutionizing Rehab: How Emerging Physiotherapy Technologies." },
           buttonText: { type: String, default: "Explore More" },
-          buttonUrl: { type: String, default: "/blog/revolutionizing-rehab-3" }
+          buttonLink: { type: String, default: "/blog/revolutionizing-rehab-3" }
         }
       ]
     }
