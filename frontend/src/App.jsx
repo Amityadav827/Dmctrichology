@@ -57,6 +57,7 @@ import FaqEnquiryCMS from "./pages/cms/FaqEnquiryCMS";
 import IdealFrequencyCMS from "./pages/cms/IdealFrequencyCMS";
 import ContactPageCMS from "./pages/cms/ContactPageCMS";
 import BlogHeroCMS from "./pages/cms/BlogHeroCMS";
+import Comments from "./pages/Comments";
 
 
 import RedirectList from "./pages/RedirectList";
@@ -299,6 +300,14 @@ function App() {
           element={
             <ProtectedRoute permission="blog">
               <Blogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="comments"
+          element={
+            <ProtectedRoute permission="blog">
+              <Comments />
             </ProtectedRoute>
           }
         />

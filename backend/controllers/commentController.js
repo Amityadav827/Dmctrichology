@@ -27,7 +27,7 @@ const createComment = async (req, res, next) => {
       .from('blog_comments')
       .insert([{
         blog_slug,
-        blog_id: blogData?.id || null, // Optional if column exists
+        blog_id: blogData?.id || null, 
         name,
         email,
         message,
@@ -67,7 +67,73 @@ const getCommentsBySlug = async (req, res, next) => {
   }
 };
 
+// Admin Methods
+const getAllCommentsAdmin = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from('blog_comments')
+      .select(`
+        *,
+        blogs:blog_slug (title)
+      `)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error("[getAllCommentsAdmin] Error:", error);
+      return res.status(500).json({ success: false, message: error.message });
+    }
+
+    return res.status(200).json({ success: true, data });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateCommentStatusAdmin = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!['approved', 'rejected', 'pending'].includes(status)) {
+      return res.status(400).json({ success: false, message: "Invalid status" });
+    }
+
+    const { data, error } = await supabase
+      .from('blog_comments')
+      .update({ status })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    return res.status(200).json({ success: true, message: `Comment ${status} successfully`, data });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteCommentAdmin = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const { error } = await supabase
+      .from('blog_comments')
+      .delete()
+      .eq('id', id);
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    return res.status(200).json({ success: true, message: "Comment deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createComment,
-  getCommentsBySlug
+  getCommentsBySlug,
+  getAllCommentsAdmin,
+  updateCommentStatusAdmin,
+  deleteCommentAdmin
 };
