@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { fetchBlogBySlug, fetchBlogPage, fetchBlogs } from '../../../services/api';
+import { fetchBlogBySlug, fetchBlogPage, fetchBlogs, fetchBlogCategories } from '../../../services/api';
 import BlogHero from '../../../components/BlogHero';
 import { Calendar, User, MessageCircle, Search, Send } from 'lucide-react';
 import { formatDate } from '../../../utils/dateFormatter';
@@ -83,7 +83,15 @@ export async function generateMetadata({ params }) {
 export default async function BlogDetailPage({ params }) {
   const { slug } = await params;
   
-  const { blog, pageSettings, recentBlogs, dynamicCategories } = await getData(slug);
+  let data;
+  try {
+    data = await getData(slug);
+  } catch (error) {
+    console.error("[BlogDetailPage] Error fetching data:", error);
+    data = { blog: null, pageSettings: {}, recentBlogs: [], dynamicCategories: [] };
+  }
+
+  const { blog, pageSettings, recentBlogs, dynamicCategories } = data;
 
   if (!blog) {
     notFound();
