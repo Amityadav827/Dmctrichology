@@ -391,8 +391,9 @@
   .comment-item.replied {
     margin-left: 40px;
   }
-  .blog-image-grid {
-      grid-template-columns: 1fr;
+  }
+}
+
 /* Skeleton Loading Styles */
 .skeleton {
   background: #f0f0f0;
