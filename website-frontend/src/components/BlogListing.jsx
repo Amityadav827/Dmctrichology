@@ -4,6 +4,7 @@ import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 import { useBuilder } from '../context/BuilderContext';
 import { Search, Calendar, User } from 'lucide-react';
+import { formatDate } from '../utils/dateFormatter';
 
 const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
   const { isEditMode, siteConfig } = useBuilder();
@@ -91,7 +92,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
                     <div className="blog-card-meta">
                       <div className="meta-item">
                         <Calendar size={14} />
-                        <span>{blog.blogDate || blog.date}</span>
+                        <span>{formatDate(blog.blogDate || blog.date)}</span>
                       </div>
                       <div className="meta-item">
                         <User size={14} />
@@ -165,7 +166,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
                       ></div>
                       <div className="post-content">
                         <span className="post-date">
-                          {post.blogDate || post.date}
+                          {formatDate(post.blogDate || post.date)}
                         </span>
                         <h5 className="post-title">
                           <a href={`/blog/${post.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>

@@ -6,8 +6,37 @@ import {
   Loader2, 
   Layout, 
   Image as ImageIcon,
-  Settings
+  Settings,
+  ExternalLink,
+  Calendar,
+  User as UserIcon
 } from "lucide-react";
+
+// Helper to format date consistently
+const formatDate = (dateString) => {
+  if (!dateString) return "";
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric'
+    }).format(date);
+  } catch (error) {
+    return dateString;
+  }
+};
+
+// Helper to get image URL
+const getImageUrl = (path) => {
+  if (!path) return "https://placehold.co/600x400?text=No+Image";
+  if (path.startsWith('http') || path.startsWith('blob:')) return path;
+  const apiUrl = import.meta.env.VITE_API_URL || 'https://dmctrichology-1.onrender.com/api';
+  const base = apiUrl.replace(/\/api$/, '');
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${normalizedPath}`;
+};
 
 export default function BlogHeroCMS() {
   const [data, setData] = useState({
@@ -44,19 +73,20 @@ export default function BlogHeroCMS() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState("hero");
+  const [liveBlogs, setLiveBlogs] = useState([]);
 
 
 
   useEffect(() => {
-    axios.get("/blog-page")
-      .then(res => {
-        if (res.data?.data) {
-          const fetchedData = res.data.data;
-          // Ensure listing exists
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Fetch page settings
+        const pageRes = await axios.get("/blog-page");
+        if (pageRes.data?.data) {
+          const fetchedData = pageRes.data.data;
           if (!fetchedData.listing) fetchedData.listing = {};
           
-          // Hydrate with defaults if fields are missing or empty
-
           if (!fetchedData.listing.categories || !Array.isArray(fetchedData.listing.categories) || fetchedData.listing.categories.length === 0) {
             fetchedData.listing.categories = [
               { name: "Back & Spine Therapy", count: 4 },
@@ -66,20 +96,23 @@ export default function BlogHeroCMS() {
               { name: "Neurological Physiotherapy", count: 2 }
             ];
           }
-          if (!fetchedData.listing.recentPosts || !Array.isArray(fetchedData.listing.recentPosts) || fetchedData.listing.recentPosts.length === 0) {
-            fetchedData.listing.recentPosts = [
-              { title: "How Physiotherapy Helps You Heal Faster", date: "Mar 06, 2025", image: "" },
-              { title: "Best Exercises For Shoulder Pain Relief", date: "Mar 08, 2025", image: "" },
-              { title: "Improve Posture With Simple Daily Stretches", date: "Mar 10, 2025", image: "" },
-              { title: "Best Exercises For Shoulder Pain Relief", date: "Mar 08, 2025", image: "" }
-            ];
-          }
-          
           setData(fetchedData);
         }
-      })
-      .catch(() => toast.error("Failed to load blog page data"))
-      .finally(() => setLoading(false));
+
+        // Fetch live blogs
+        const blogsRes = await axios.get("/blogs");
+        if (blogsRes.data?.data) {
+          setLiveBlogs(blogsRes.data.data.slice(0, 4)); // Show top 4 as preview
+        }
+      } catch (err) {
+        toast.error("Failed to load blog page data");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const updateSectionField = (section, field, val) => {
@@ -247,53 +280,52 @@ export default function BlogHeroCMS() {
                 </div>
               </div>
 
-              {/* Recent Posts Management */}
+              {/* Recent Posts Management (Synced with Live Blogs) */}
               <div className="md:col-span-2 border-t border-slate-100 pt-8 mt-4">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-slate-900">Manage Recent Posts</h3>
-                  <button type="button" onClick={() => {
-                    const newPosts = [...(data.listing.recentPosts || [])];
-                    newPosts.push({ title: "New Post", date: "Mar 10, 2025", image: "" });
-                    updateSectionField("listing", "recentPosts", newPosts);
-                  }} className="text-[10px] font-black text-blue-600 uppercase hover:underline">+ Add Post</button>
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-slate-900">Live Recent Posts Preview</h3>
+                  <div className="flex items-center gap-1.5 text-[10px] font-black text-blue-600 uppercase">
+                    <ExternalLink size={12} />
+                    <span>Live Synced</span>
+                  </div>
                 </div>
-                <div className="space-y-4">
-                  {(data.listing.recentPosts || []).map((post, idx) => (
-                    <div key={idx} className="bg-slate-50 p-6 rounded-2xl border border-slate-100 space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="md:col-span-2">
-                          <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Post Title</label>
-                          <input type="text" value={post.title} onChange={e => {
-                            const newPosts = [...data.listing.recentPosts];
-                            newPosts[idx].title = e.target.value;
-                            updateSectionField("listing", "recentPosts", newPosts);
-                          }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
+                <p className="text-[11px] text-slate-500 italic mb-6">
+                  Recent posts are automatically synced from <span className="font-bold text-slate-700">Content → Blogs</span>
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {liveBlogs.length > 0 ? (
+                    liveBlogs.map((post, idx) => (
+                      <div key={idx} className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex gap-4 items-center group">
+                        <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-200 flex-shrink-0 border border-slate-200">
+                          <img 
+                            src={getImageUrl(post.blogImage)} 
+                            alt={post.title} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                          />
                         </div>
-                        <div>
-                          <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Date</label>
-                          <input type="text" value={post.date} onChange={e => {
-                            const newPosts = [...data.listing.recentPosts];
-                            newPosts[idx].date = e.target.value;
-                            updateSectionField("listing", "recentPosts", newPosts);
-                          }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
-                        </div>
-                        <div>
-                          <label className="block text-[9px] font-black uppercase text-slate-400 mb-2 tracking-widest">Image URL</label>
-                          <input type="text" value={post.image} onChange={e => {
-                            const newPosts = [...data.listing.recentPosts];
-                            newPosts[idx].image = e.target.value;
-                            updateSectionField("listing", "recentPosts", newPosts);
-                          }} className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-xs font-bold outline-none" />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <Calendar size={10} className="text-slate-400" />
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                              {formatDate(post.blogDate || post.date)}
+                            </span>
+                          </div>
+                          <h4 className="text-sm font-black text-slate-800 leading-tight truncate mb-1">
+                            {post.title}
+                          </h4>
+                          <div className="flex items-center gap-1.5">
+                            <UserIcon size={10} className="text-slate-400" />
+                            <span className="text-[10px] font-bold text-slate-500">{post.author}</span>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex justify-end">
-                        <button type="button" onClick={() => {
-                          const newPosts = data.listing.recentPosts.filter((_, i) => i !== idx);
-                          updateSectionField("listing", "recentPosts", newPosts);
-                        }} className="text-[10px] font-black text-red-500 uppercase hover:underline">Remove Post</button>
-                      </div>
+                    ))
+                  ) : (
+                    <div className="col-span-2 py-10 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                      <p className="text-sm text-slate-400 font-medium italic">No published blogs found.</p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
 

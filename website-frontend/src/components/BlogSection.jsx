@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchHomeBlog } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
+import { formatDate } from '../utils/dateFormatter';
 
 export default function BlogSection() {
   const [data, setData] = useState(null);
@@ -103,7 +104,7 @@ export default function BlogSection() {
                     fontFamily: "'Marcellus', serif"
                   }}>
                     <EditableText sectionId="blogs-home-section" fieldPath={`blogs.${index}.date`} tag="span">
-                      {blog.date}
+                      {formatDate(blog.date)}
                     </EditableText>
                   </div>
                 </div>
