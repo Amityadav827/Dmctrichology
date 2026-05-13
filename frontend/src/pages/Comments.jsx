@@ -4,7 +4,15 @@ import { Trash2, Check, X, MessageSquare, ExternalLink } from "lucide-react";
 import Loader from "../components/Loader";
 import Table from "../components/Table";
 import api from "../api/client";
-import { formatDate } from "../utils/dateFormatter";
+
+const formatDate = (dateString) => {
+  if (!dateString) return "—";
+  return new Date(dateString).toLocaleDateString('en-US', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+};
 
 const Comments = () => {
   const [comments, setComments] = useState([]);
