@@ -114,7 +114,13 @@ const getBlogs = async (req, res, next) => {
       .range(skip, skip + limit - 1);
 
     if (data) {
-      console.log("[getBlogs] Sample record slug/status:", data.slice(0, 2).map(b => ({ slug: b.slug, status: b.status })));
+      const targetSlug = "revolutionizing-rehab-3";
+      const match = data.find(b => b.slug === targetSlug);
+      if (match) {
+        console.log("[getBlogs] DEBUG: Found exact match for slug:", targetSlug, "Status:", match.status);
+      } else {
+        console.log("[getBlogs] DEBUG: No exact match for slug:", targetSlug, "in current list. Available slugs:", data.map(b => b.slug));
+      }
     }
 
     if (error) return res.status(500).json({ success: false, message: error.message });
@@ -149,24 +155,30 @@ const getBlogById = async (req, res, next) => {
 const getBlogBySlug = async (req, res, next) => {
   try {
     const { slug } = req.params;
-    console.log("[getBlogBySlug] Incoming slug:", slug);
+    console.log("[getBlogBySlug] START: Requested slug:", slug);
 
+    // TEMPORARILY REMOVED status: 'Published' for debugging
     const { data, error } = await supabase
       .from('blogs')
       .select('*')
       .eq('slug', slug)
-      .eq('status', 'Published')
       .single();
 
     if (error || !data) {
-      console.log("[getBlogBySlug] Blog not found for slug:", slug, "Error:", error ? error.message : "No data");
+      console.log("[getBlogBySlug] NOT FOUND or ERROR:", { slug, error: error ? error.message : "No data" });
       return res.status(404).json({ success: false, message: error ? error.message : "Blog not found" });
     }
 
-    console.log("[getBlogBySlug] Found blog:", data.title);
+    console.log("[getBlogBySlug] SUCCESS: Found blog record:", {
+      id: data.id,
+      title: data.title,
+      slug: data.slug,
+      status: data.status
+    });
+    
     return res.status(200).json({ success: true, data: mapFromSupabase(data) });
   } catch (error) {
-    console.error("[getBlogBySlug ERROR]:", error);
+    console.error("[getBlogBySlug FATAL ERROR]:", error);
     next(error);
   }
 };
