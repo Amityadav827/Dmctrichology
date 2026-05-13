@@ -114,13 +114,13 @@ const getBlogs = async (req, res, next) => {
       .range(skip, skip + limit - 1);
 
     if (data) {
-      const targetSlug = "revolutionizing-rehab-3";
-      const match = data.find(b => b.slug === targetSlug);
-      if (match) {
-        console.log("[getBlogs] DEBUG: Found exact match for slug:", targetSlug, "Status:", match.status);
-      } else {
-        console.log("[getBlogs] DEBUG: No exact match for slug:", targetSlug, "in current list. Available slugs:", data.map(b => b.slug));
-      }
+      // EXHAUSTIVE LOGGING FOR DEBUGGING
+      console.log("[getBlogs] Full Slug Audit:", data.map(b => ({
+        title: b.title,
+        slug: b.slug,
+        status: b.status,
+        slugLength: b.slug?.length
+      })));
     }
 
     if (error) return res.status(500).json({ success: false, message: error.message });
@@ -154,31 +154,48 @@ const getBlogById = async (req, res, next) => {
 
 const getBlogBySlug = async (req, res, next) => {
   try {
-    const { slug } = req.params;
-    console.log("[getBlogBySlug] START: Requested slug:", slug);
+    const rawSlug = req.params.slug;
+    const normalizedSlug = String(rawSlug).trim().toLowerCase();
+    
+    console.log("[getBlogBySlug] Normalized search for:", normalizedSlug);
 
-    // TEMPORARILY REMOVED status: 'Published' for debugging
-    const { data, error } = await supabase
+    // Try finding by normalized slug first
+    let { data, error } = await supabase
       .from('blogs')
       .select('*')
-      .eq('slug', slug)
+      .ilike('slug', normalizedSlug)
       .single();
 
+    // FALLBACK: If not found, try to find a blog where the title matches the slug structure
     if (error || !data) {
-      console.log("[getBlogBySlug] NOT FOUND or ERROR:", { slug, error: error ? error.message : "No data" });
-      return res.status(404).json({ success: false, message: error ? error.message : "Blog not found" });
+      console.log("[getBlogBySlug] No direct slug match. Attempting title fallback...");
+      // Replace dashes with spaces and try ilike on title
+      const searchTitle = normalizedSlug.split('-').join('%');
+      const { data: fallbackData } = await supabase
+        .from('blogs')
+        .select('*')
+        .ilike('title', `%${searchTitle}%`)
+        .limit(1)
+        .single();
+      
+      data = fallbackData;
     }
 
-    console.log("[getBlogBySlug] SUCCESS: Found blog record:", {
-      id: data.id,
-      title: data.title,
-      slug: data.slug,
-      status: data.status
-    });
-    
+    if (!data) {
+      console.log("[getBlogBySlug] FINAL NOT FOUND for slug:", rawSlug);
+      return res.status(404).json({ success: false, message: "Blog not found" });
+    }
+
+    // Safety: Verify status is Published (case-insensitive)
+    if (data.status?.toLowerCase() !== 'published') {
+      console.log("[getBlogBySlug] Blog found but status is:", data.status);
+      return res.status(404).json({ success: false, message: "Blog not published" });
+    }
+
+    console.log("[getBlogBySlug] SUCCESS: Resolved to:", data.title);
     return res.status(200).json({ success: true, data: mapFromSupabase(data) });
   } catch (error) {
-    console.error("[getBlogBySlug FATAL ERROR]:", error);
+    console.error("[getBlogBySlug ERROR]:", error);
     next(error);
   }
 };
