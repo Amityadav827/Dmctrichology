@@ -298,28 +298,28 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
 
           /* Search Widget */
           .search-box {
-            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 10px;
+            padding-bottom: 12px;
           }
           .search-box input {
             background: transparent;
             border: none;
             color: #ffffff;
-            width: 100%;
-            padding-right: 30px;
+            flex: 1;
             font-family: 'Marcellus', serif;
             outline: none;
+            font-size: 20px;
+            padding-right: 15px;
           }
           .search-box input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.9);
           }
           .search-icon {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
             opacity: 0.8;
+            flex-shrink: 0;
           }
 
           /* Sidebar Titles */
