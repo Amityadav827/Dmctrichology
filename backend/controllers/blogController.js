@@ -92,34 +92,6 @@ const createBlog = async (req, res, next) => {
   }
 };
 
-const debugSlugs = async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from('blogs')
-      .select('id, title, slug, status, created_at, updated_at');
-    
-    if (error) return res.status(500).json({ success: false, error: error.message });
-    
-    const audit = data.map(b => ({
-      id: b.id,
-      title: b.title,
-      slug: b.slug,
-      slugLength: b.slug?.length,
-      status: b.status,
-      createdAt: b.created_at,
-      updatedAt: b.updated_at
-    }));
-    
-    return res.status(200).json({
-      success: true,
-      count: audit.length,
-      audit
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, error: error.message });
-  }
-};
-
 const getBlogs = async (req, res, next) => {
   try {
     const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
@@ -140,10 +112,6 @@ const getBlogs = async (req, res, next) => {
       .order('blog_date', { ascending: false })
       .order('created_at', { ascending: false })
       .range(skip, skip + limit - 1);
-
-    if (data) {
-      console.log("[getBlogs] AUDIT: ", data.map(b => ({ title: b.title, slug: b.slug, status: b.status })));
-    }
 
     if (error) return res.status(500).json({ success: false, message: error.message });
 
@@ -179,8 +147,6 @@ const getBlogBySlug = async (req, res, next) => {
     const rawSlug = req.params.slug;
     const normalizedSlug = String(rawSlug).trim().toLowerCase();
     
-    console.log("[getBlogBySlug] Searching for normalized slug:", normalizedSlug);
-
     // Try finding by normalized slug first
     let { data, error } = await supabase
       .from('blogs')
@@ -192,7 +158,6 @@ const getBlogBySlug = async (req, res, next) => {
 
     // FALLBACK: If not found, try to find a blog where the title matches the slug structure
     if (!blog) {
-      console.log("[getBlogBySlug] No exact slug match. Trying title fallback...");
       const searchTitle = normalizedSlug.split('-').join('%');
       const { data: fallbackData } = await supabase
         .from('blogs')
@@ -204,20 +169,16 @@ const getBlogBySlug = async (req, res, next) => {
     }
 
     if (!blog) {
-      console.log("[getBlogBySlug] Blog NOT FOUND for:", normalizedSlug);
       return res.status(404).json({ success: false, message: "Blog not found" });
     }
 
     // Safety: Verify status is Published (case-insensitive)
     if (blog.status?.toLowerCase() !== 'published') {
-      console.log("[getBlogBySlug] Blog found but status is:", blog.status);
       return res.status(404).json({ success: false, message: "Blog not published" });
     }
 
-    console.log("[getBlogBySlug] SUCCESS found:", blog.title);
     return res.status(200).json({ success: true, data: mapFromSupabase(blog) });
   } catch (error) {
-    console.error("[getBlogBySlug FATAL ERROR]:", error);
     next(error);
   }
 };

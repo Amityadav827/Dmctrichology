@@ -83,14 +83,6 @@ export default async function BlogDetailPage({ params }) {
   
   const { blog, pageSettings, recentBlogs } = await getData(slug);
 
-  // TEMPORARY DIAGNOSTIC LOGS
-  console.log("[BlogDetailPage] slug:", slug);
-  console.log("[BlogDetailPage] blog.title type:", typeof blog?.title);
-  console.log("[BlogDetailPage] blog.content type:", typeof blog?.content);
-  if (blog?.content && typeof blog.content === 'object') {
-     console.log("[BlogDetailPage] CRITICAL: blog.content is an OBJECT!", blog.content);
-  }
-
   if (!blog) {
     notFound();
   }
