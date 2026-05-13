@@ -354,7 +354,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
             margin-bottom: 20px;
             font-weight: 400;
           }
-          .explore-link {
+          a.explore-link {
             font-size: 14px;
             color: inherit;
             font-weight: 600;
