@@ -4,15 +4,21 @@ import { Send } from 'lucide-react';
 import { fetchComments, submitComment } from '../services/api';
 import { formatDate } from '../utils/dateFormatter';
 
-const BlogComments = ({ blogSlug }) => {
-  const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true);
+const BlogComments = ({ blogSlug, initialComments = [] }) => {
+  const [comments, setComments] = useState(initialComments);
+  const [loading, setLoading] = useState(initialComments.length === 0);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   console.log("[BlogComments] Initializing Comment System...");
   const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
+    // Only fetch if we don't have initial comments (or to refresh)
+    if (initialComments.length > 0) {
+      setLoading(false);
+      return;
+    }
+    
     const loadComments = async () => {
       try {
         const res = await fetchComments(blogSlug);

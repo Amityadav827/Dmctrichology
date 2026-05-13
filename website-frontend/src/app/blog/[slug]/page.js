@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { fetchBlogBySlug, fetchBlogPage, fetchBlogs, fetchBlogCategories } from '../../../services/api';
+import { fetchBlogBySlug, fetchBlogPage, fetchBlogs, fetchBlogCategories, fetchComments } from '../../../services/api';
 import BlogHero from '../../../components/BlogHero';
 import BlogComments from '../../../components/BlogComments';
 import { SidebarSearch, SidebarCategories } from '../../../components/SidebarWidgets';
@@ -47,11 +47,12 @@ export const dynamic = "force-dynamic";
 async function getData(slug) {
   try {
     console.log("[getData] Starting parallel fetch for:", slug);
-    const [blogRes, pageRes, blogsRes, categoriesRes] = await Promise.all([
+    const [blogRes, pageRes, blogsRes, categoriesRes, commentsRes] = await Promise.all([
       fetchBlogBySlug(slug),
       fetchBlogPage(),
       fetchBlogs({ status: 'Published' }),
-      fetchBlogCategories()
+      fetchBlogCategories(),
+      fetchComments(slug)
     ]);
 
     const blog = blogRes?.data || null;
@@ -64,7 +65,9 @@ async function getData(slug) {
       pageSettings: pageRes?.data || {},
       recentBlogs: allBlogs,
       dynamicCategories: categoriesRes?.data || [],
-      totalBlogCount: allBlogs.length
+      totalBlogCount: allBlogs.length,
+      initialComments: commentsRes?.data || [],
+      commentCount: (commentsRes?.data || []).length
     };
   } catch (error) {
     console.error("[getData] ERROR during fetch:", error);
@@ -131,6 +134,8 @@ export default async function BlogDetailPage({ params }) {
   const recentBlogs = Array.isArray(data?.recentBlogs) ? data.recentBlogs : [];
   const dynamicCategories = Array.isArray(data?.dynamicCategories) ? data.dynamicCategories : [];
   const totalBlogCount = Number(data?.totalBlogCount || 0);
+  const initialComments = Array.isArray(data?.initialComments) ? data.initialComments : [];
+  const commentCount = Number(data?.commentCount || 0);
 
   if (!blog) {
     console.warn("[BlogDetailPage] Blog not found for slug:", slug);
@@ -199,7 +204,7 @@ export default async function BlogDetailPage({ params }) {
               </div>
               <div className="meta-item">
                 <MessageCircle size={14} className="text-blue-600" />
-                <span>Comments (30)</span>
+                <span>Comments ({commentCount})</span>
               </div>
             </div>
 
@@ -240,7 +245,7 @@ export default async function BlogDetailPage({ params }) {
             </div>
 
             {/* Comments & Reply Form */}
-            <BlogComments blogSlug={slug} />
+            <BlogComments blogSlug={slug} initialComments={initialComments} />
           </article>
 
           {/* Right Side: Sidebar */}
