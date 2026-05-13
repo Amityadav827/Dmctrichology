@@ -24,6 +24,13 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
     if (initialData?.listing) {
       setPageData(initialData.listing);
     }
+    
+    // Check URL params for pre-filtering
+    const params = new URLSearchParams(window.location.search);
+    const search = params.get('search');
+    const cat = params.get('category');
+    if (search) setSearchQuery(search);
+    if (cat) setActiveCategory(cat);
   }, [initialData]);
 
   useEffect(() => {
@@ -53,6 +60,44 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
     categories = [],
     recentPosts = []
   } = pageData;
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [filteredBlogs, setFilteredBlogs] = useState(initialBlogs);
+
+  // Debounced search effect
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      let result = [...blogs];
+
+      // Filter by Search
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        result = result.filter(blog => 
+          blog.title?.toLowerCase().includes(q) ||
+          blog.category?.name?.toLowerCase().includes(q) ||
+          blog.author?.toLowerCase().includes(q) ||
+          blog.shortDescription?.toLowerCase().includes(q)
+        );
+      }
+
+      // Filter by Category
+      if (activeCategory !== "All") {
+        result = result.filter(blog => 
+          blog.category?.name?.toLowerCase() === activeCategory.toLowerCase()
+        );
+      }
+
+      setFilteredBlogs(result);
+    }, 300);
+
+    return () => clearTimeout(handler);
+  }, [searchQuery, activeCategory, blogs]);
+
+  // Handle category click
+  const handleCategoryClick = (catName) => {
+    setActiveCategory(catName);
+  };
 
   // Real-time sync from Visual Builder
   useEffect(() => {
@@ -96,31 +141,37 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
           {/* Left Side: Blog Grid */}
           <div className="blog-grid-content">
             <div className="blog-grid">
-              {blogs.map((blog, idx) => (
-                <div key={idx} className={`blog-card ${idx === 0 ? 'active-card' : ''}`}>
-                  <div className="blog-card-image">
-                    <img src={blog.blogImage || 'https://via.placeholder.com/600x400'} alt={blog.title} />
-                  </div>
-                  <div className="blog-card-info">
-                    <div className="blog-card-meta">
-                      <div className="meta-item">
-                        <Calendar size={14} />
-                        <span>{formatDate(blog.blogDate || blog.date)}</span>
-                      </div>
-                      <div className="meta-item">
-                        <User size={14} />
-                        <span>{blog.author}</span>
-                      </div>
+              {filteredBlogs.length > 0 ? (
+                filteredBlogs.map((blog, idx) => (
+                  <div key={idx} className={`blog-card ${idx === 0 ? 'active-card' : ''}`}>
+                    <div className="blog-card-image">
+                      <img src={blog.blogImage || 'https://via.placeholder.com/600x400'} alt={blog.title} />
                     </div>
-                    <h3 className="blog-card-title">
-                      {blog.title}
-                    </h3>
-                    <Link href={`/blog/${blog.slug}`} className="explore-link">
-                      Explore More
-                    </Link>
+                    <div className="blog-card-info">
+                      <div className="blog-card-meta">
+                        <div className="meta-item">
+                          <Calendar size={14} />
+                          <span>{formatDate(blog.blogDate || blog.date)}</span>
+                        </div>
+                        <div className="meta-item">
+                          <User size={14} />
+                          <span>{blog.author}</span>
+                        </div>
+                      </div>
+                      <h3 className="blog-card-title">
+                        {blog.title}
+                      </h3>
+                      <Link href={`/blog/${blog.slug}`} className="explore-link">
+                        Explore More
+                      </Link>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="no-blogs-found" style={{ gridColumn: '1/-1', padding: '100px 0', textAlign: 'center', fontFamily: 'Marcellus', fontSize: '24px', color: '#1a3760' }}>
+                  No matching blogs found
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
@@ -130,7 +181,12 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
               {/* Search Widget */}
               <div className="sidebar-widget search-widget">
                 <div className="search-box">
-                  <input type="text" placeholder={sidebarSearchPlaceholder} />
+                  <input 
+                    type="text" 
+                    placeholder={sidebarSearchPlaceholder} 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                   <Search size={20} className="search-icon" />
                 </div>
               </div>
@@ -143,8 +199,21 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
                    </EditableText>
                 </h4>
                 <ul className="category-list">
+                  <li 
+                    className={activeCategory === "All" ? "active" : ""} 
+                    onClick={() => setActiveCategory("All")}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <span className="category-name">All Categories</span>
+                    <span className="count">({blogs.length})</span>
+                  </li>
                   {dynamicCategories.map((cat, idx) => (
-                    <li key={idx}>
+                    <li 
+                      key={idx} 
+                      className={activeCategory === cat.name ? "active" : ""} 
+                      onClick={() => setActiveCategory(cat.name)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <span className="category-name">
                         {cat.name}
                       </span>

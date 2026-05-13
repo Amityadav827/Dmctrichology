@@ -58,7 +58,7 @@ const serviceListingCategoryRoutes = require("./routes/serviceCategoryListingRou
 const detailsPageRoutes = require("./routes/detailsPageRoutes");
 const contactPageRoutes = require("./routes/contactPageRoutes");
 const blogPageRoutes = require("./routes/blogPageRoutes");
-
+const blogCommentRoutes = require("./routes/commentRoutes");
 
 // Database Connection
 const connectDB = require("./config/db");
@@ -183,6 +183,7 @@ app.use("/api/service-listing-categories", serviceListingCategoryRoutes);
 app.use("/api/details-page", detailsPageRoutes);
 app.use("/api/contact-page", contactPageRoutes);
 app.use("/api/blog-page", blogPageRoutes);
+app.use("/api/blog-comments", blogCommentRoutes);
 
 
 // SEO

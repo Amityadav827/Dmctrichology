@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchBlogBySlug, fetchBlogPage, fetchBlogs, fetchBlogCategories } from '../../../services/api';
 import BlogHero from '../../../components/BlogHero';
-import { Calendar, User, MessageCircle, Search, Send } from 'lucide-react';
+import BlogComments from '../../../components/BlogComments';
+import { SidebarSearch, SidebarCategories } from '../../../components/SidebarWidgets';
+import { Calendar, User, MessageCircle, ArrowRight } from 'lucide-react';
 import { formatDate } from '../../../utils/dateFormatter';
 import '../../service.css';
 import '../../blog-detail.css';
@@ -50,11 +52,21 @@ async function getData(slug) {
     fetchBlogCategories()
   ]);
 
+  const blog = blogRes?.data || null;
+  const allBlogs = blogsRes?.data || [];
+  
+  // Logic for Related Posts (Same category, exclude current)
+  const relatedPosts = allBlogs
+    .filter(b => b.category_id === blog?.category_id && b.slug !== slug)
+    .slice(0, 3);
+
   return {
-    blog: blogRes?.data || null,
+    blog,
     pageSettings: pageRes?.data || {},
-    recentBlogs: blogsRes?.data || [],
-    dynamicCategories: categoriesRes?.data || []
+    recentBlogs: allBlogs,
+    dynamicCategories: categoriesRes?.data || [],
+    relatedPosts,
+    totalBlogCount: allBlogs.length
   };
 }
 
@@ -64,18 +76,31 @@ export async function generateMetadata({ params }) {
   const blog = blogRes?.data;
   
   const siteUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://dmctrichology-mkm4.vercel.app';
-  
+  const title = blog ? `${blog.title} | DMC Trichology` : 'Blog Detail | DMC Trichology';
+  const description = blog?.shortDescription || blog?.excerpt || 'Read the latest updates and advice from DMC Trichology experts.';
+  const image = blog?.blogImage || `${siteUrl}/default-blog.jpg`;
+
   return {
-    title: blog ? `${blog.title} | DMC Trichology` : 'Blog Detail | DMC Trichology',
-    description: blog?.shortDescription || blog?.excerpt || 'Read the latest updates and advice from DMC Trichology experts.',
+    title,
+    description,
     alternates: {
       canonical: `${siteUrl}/blog/${slug}`,
     },
     openGraph: {
-      title: blog?.title,
-      description: blog?.shortDescription,
-      images: blog?.blogImage ? [{ url: blog.blogImage }] : [],
+      title,
+      description,
+      url: `${siteUrl}/blog/${slug}`,
+      siteName: 'DMC Trichology',
+      images: [{ url: image }],
       type: 'article',
+      publishedTime: blog?.blogDate || blog?.created_at,
+      authors: [blog?.author || 'Admin'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
     }
   };
 }
@@ -110,8 +135,27 @@ export default async function BlogDetailPage({ params }) {
     ? blog.content 
     : (typeof blog.content === 'object' ? JSON.stringify(blog.content) : String(blog.content || ""));
 
+  // Article Schema
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": blog.title,
+    "image": [blog.blogImage || ""],
+    "datePublished": blog.blogDate || blog.created_at,
+    "dateModified": blog.updated_at || blog.blogDate || blog.created_at,
+    "author": [{
+        "@type": "Person",
+        "name": blog.author || "Admin",
+        "url": "#"
+    }]
+  };
+
   return (
     <div className="bg-white min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Blog Hero */}
       <BlogHero data={{
         ...(pageSettings?.hero || {}),
@@ -180,55 +224,36 @@ export default async function BlogDetailPage({ params }) {
                 </div>
             </div>
 
-            {/* Comments Section */}
-            <div className="comments-section">
-                <h3 className="section-title">Comments (30)</h3>
-                <div className="comments-list">
-                    {[1, 2, 3].map((i) => (
-                        <div key={i} className={`comment-item ${i === 3 ? 'replied' : ''}`}>
-                            <div className="comment-avatar"></div>
-                            <div className="comment-content">
-                                <div className="comment-header">
-                                    <h4 className="comment-author">Elisa Gabriella</h4>
-                                    <span className="comment-date">March 2020</span>
-                                </div>
-                                <p className="comment-text">
-                                    Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Ut Aliquet Erat Non Velit Consequat, Eu Pharetra Est Malesuada. Renting Power Tools Allows You To Access High-Performance Drills, Saws, And Sanders Without The Upfront Cost Id Vestibulum Nulla Consequat. Tackle Landscaping And Gardening Tasks
-                                </p>
-                                <button className="comment-reply">Reply</button>
-                            </div>
+            {/* Related Posts */}
+            {(Array.isArray(relatedPosts) ? relatedPosts : []).length > 0 && (
+              <div className="related-posts-section" style={{ marginTop: '50px', paddingTop: '50px', borderTop: '1px solid #eee' }}>
+                <h3 className="section-title" style={{ marginBottom: '30px', fontSize: '24px' }}>Related Posts</h3>
+                <div className="blog-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
+                  {relatedPosts.map((post, idx) => (
+                    <div key={idx} className="blog-card" style={{ boxShadow: 'none', border: '1px solid #eee' }}>
+                      <div className="blog-card-image" style={{ height: '200px' }}>
+                        <img src={String(post?.blogImage || post?.image || 'https://via.placeholder.com/600x400')} alt={String(post?.title || "Blog")} style={{ height: '100%', objectFit: 'cover' }} />
+                      </div>
+                      <div className="blog-card-info">
+                        <div className="blog-card-meta">
+                          <div className="meta-item">
+                            <Calendar size={14} className="text-blue-600" />
+                            <span>{formatDate(post?.blogDate || post?.date)}</span>
+                          </div>
                         </div>
-                    ))}
+                        <h4 className="blog-card-title" style={{ fontSize: '18px', margin: '15px 0', fontFamily: 'Marcellus' }}>{String(post?.title || "")}</h4>
+                        <Link href={`/blog/${String(post?.slug || "")}`} className="explore-link" style={{ display: 'flex', alignItems: 'center', color: '#c5a47e' }}>
+                          Explore More <ArrowRight size={14} className="ml-1" />
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-            </div>
+              </div>
+            )}
 
-            {/* Reply Form */}
-            <div className="reply-form-section">
-                <h3 className="section-title">Leave A Reply</h3>
-                <p className="form-subtitle">Your Email Address Will Not Be Published. Required Fields Are Marked *</p>
-                
-                <form className="reply-form">
-                    <div className="form-row">
-                        <div className="form-group">
-                            <input type="text" placeholder="Name*" required />
-                        </div>
-                        <div className="form-group">
-                            <input type="email" placeholder="Your Email Address*" required />
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <textarea placeholder="Your Message*" rows="6"></textarea>
-                    </div>
-                    <div className="form-checkbox">
-                        <input type="checkbox" id="save-info" />
-                        <label htmlFor="save-info">Save My Name, Email, And Website In This Browser For The Next Time I Comment.</label>
-                    </div>
-                    <button type="submit" className="submit-btn">
-                        Post Comment
-                        <Send size={14} className="ml-2" />
-                    </button>
-                </form>
-            </div>
+            {/* Comments & Reply Form */}
+            <BlogComments blogSlug={slug} />
           </article>
 
           {/* Right Side: Sidebar */}
@@ -236,24 +261,15 @@ export default async function BlogDetailPage({ params }) {
             <div className="sidebar-inner">
               {/* Search Widget */}
               <div className="sidebar-widget search-widget">
-                <div className="search-box">
-                  <input type="text" placeholder={sidebarSearchPlaceholder} />
-                  <Search size={20} className="search-icon" />
-                </div>
+                <SidebarSearch placeholder={sidebarSearchPlaceholder} />
               </div>
 
               {/* Categories Widget */}
-              <div className="sidebar-widget">
-                <h4 className="sidebar-title">{String(sidebarCategoriesTitle || "")}</h4>
-                <ul className="category-list">
-                  {(Array.isArray(dynamicCategories) ? dynamicCategories : []).map((cat, idx) => (
-                    <li key={idx}>
-                      <span>{String(cat?.name || "")}</span>
-                      <span className="count">({String(cat?.count || "0")})</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <SidebarCategories 
+                title={sidebarCategoriesTitle} 
+                categories={dynamicCategories} 
+                totalCount={totalBlogCount} 
+              />
 
               {/* Recent Posts Widget */}
               <div className="sidebar-widget">

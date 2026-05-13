@@ -247,6 +247,26 @@ export const fetchBlogPage = async () => {
 };
 
 
+export const fetchComments = async (slug) => {
+  try {
+    const res = await api.get(`/blog-comments/${slug}?t=${Date.now()}`);
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching comments', error);
+    return null;
+  }
+};
+
+export const submitComment = async (data) => {
+  try {
+    const res = await api.post('/blog-comments', data);
+    return res.data;
+  } catch (error) {
+    console.error('Error submitting comment', error);
+    return null;
+  }
+};
+
 export const submitLead = async (data) => {
   try {
     const res = await api.post('/lead', data);
