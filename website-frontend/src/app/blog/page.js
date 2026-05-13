@@ -11,16 +11,10 @@ export const metadata = {
 };
 
 async function getPageData() {
-  console.log("[BlogPage] Fetching data...");
   const [pageRes, blogsRes] = await Promise.all([
     fetchBlogPage(),
     fetchBlogs({ status: 'Published' })
   ]);
-  
-  console.log("[BlogPage] API Responses:", { 
-    pageSuccess: !!pageRes?.data, 
-    blogsCount: blogsRes?.data?.length || 0 
-  });
 
   return {
     pageSettings: pageRes?.data || {},
@@ -30,7 +24,6 @@ async function getPageData() {
 
 export default async function BlogPage() {
   const { pageSettings, blogs } = await getPageData();
-  console.log("[BlogPage] Rendering with blogs count:", blogs.length);
 
   return (
     <div className="bg-white min-h-screen">

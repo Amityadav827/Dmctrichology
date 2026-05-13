@@ -68,13 +68,10 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogDetailPage({ params }) {
   const { slug } = params;
-  console.log("[BlogDetailPage] Slug param:", slug);
 
   const { blog, pageSettings, recentBlogs } = await getData(slug);
-  console.log("[BlogDetailPage] Fetched blog:", blog ? blog.title : "NULL");
 
   if (!blog) {
-    console.log("[BlogDetailPage] Blog not found, triggering notFound()");
     notFound();
   }
 

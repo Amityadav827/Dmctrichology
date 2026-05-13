@@ -206,7 +206,9 @@ export const fetchFooter = async () => {
 
 export const fetchBlogs = async (params) => {
   try {
-    const res = await api.get('/blogs', { params });
+    const res = await api.get('/blogs', { 
+      params: { ...params, t: Date.now() } 
+    });
     return res.data;
   } catch (error) {
     console.error('Error fetching blogs', error);
@@ -226,7 +228,7 @@ export const fetchBlogBySlug = async (slug) => {
 
 export const fetchBlogCategories = async () => {
   try {
-    const res = await api.get('/blog-categories');
+    const res = await api.get(`/blog-categories?t=${Date.now()}`);
     return res.data;
   } catch (error) {
     console.error('Error fetching blog categories', error);
