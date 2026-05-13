@@ -211,7 +211,7 @@ export default async function BlogDetailPage({ params }) {
                         </div>
                     </div>
                     <div className="form-group">
-                        <textarea placeholder="Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Ut Aliquet Erat Non Velit Consequat, Eu Pharetra Est Malesuada. Renting Power Tools Allows You To Access High-Performance Drills, Saws, And Sanders Without The Upfront Cost Id Vestibulum Nulla Consequat. Tackle Landscaping And Gardening Tasks" rows="6"></textarea>
+                        <textarea placeholder="Your Message*" rows="6"></textarea>
                     </div>
                     <div className="form-checkbox">
                         <input type="checkbox" id="save-info" />

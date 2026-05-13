@@ -134,9 +134,9 @@
 }
 .section-title {
     font-family: 'Marcellus', serif;
-    font-size: 32px;
+    font-size: 20px;
     color: #111;
-    margin-bottom: 30px;
+    margin-bottom: 40px !important;
     font-weight: 400;
 }
 .comments-list {
@@ -245,6 +245,7 @@
     font-weight: 600;
     display: flex;
     align-items: center;
+    gap: 10px;
     border: none;
     cursor: pointer;
     transition: background 0.3s ease;
