@@ -9,6 +9,7 @@ const BlogComments = ({ blogSlug }) => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  console.log("[BlogComments] Initializing Comment System...");
   const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
