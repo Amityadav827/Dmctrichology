@@ -142,8 +142,11 @@ export default function BlogSection() {
                     fontSize: '14px', 
                     color: blog.featured ? '#fff' : '#000', 
                     fontFamily: "'Marcellus', serif", 
-                    textDecoration: 'underline',
-                    fontWeight: 'bold'
+                    textDecoration: 'none',
+                    borderBottom: '2px solid currentColor',
+                    paddingBottom: '2px',
+                    fontWeight: 'bold',
+                    display: 'inline-block'
                   }}
                 >
                   <EditableText sectionId="blogs-home-section" fieldPath={`blogs.${index}.buttonText`} tag="span">

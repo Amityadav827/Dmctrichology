@@ -113,6 +113,10 @@ const getBlogs = async (req, res, next) => {
       .order('created_at', { ascending: false })
       .range(skip, skip + limit - 1);
 
+    if (data) {
+      console.log("[getBlogs] Sample record slug/status:", data.slice(0, 2).map(b => ({ slug: b.slug, status: b.status })));
+    }
+
     if (error) return res.status(500).json({ success: false, message: error.message });
 
     const formattedBlogs = data.map(blog => mapFromSupabase(blog));
@@ -144,10 +148,25 @@ const getBlogById = async (req, res, next) => {
 
 const getBlogBySlug = async (req, res, next) => {
   try {
-    const { data, error } = await supabase.from('blogs').select('*').eq('slug', req.params.slug).single();
-    if (error || !data) return res.status(404).json({ success: false, message: error ? error.message : "Blog not found" });
+    const { slug } = req.params;
+    console.log("[getBlogBySlug] Incoming slug:", slug);
+
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('*')
+      .eq('slug', slug)
+      .eq('status', 'Published')
+      .single();
+
+    if (error || !data) {
+      console.log("[getBlogBySlug] Blog not found for slug:", slug, "Error:", error ? error.message : "No data");
+      return res.status(404).json({ success: false, message: error ? error.message : "Blog not found" });
+    }
+
+    console.log("[getBlogBySlug] Found blog:", data.title);
     return res.status(200).json({ success: true, data: mapFromSupabase(data) });
   } catch (error) {
+    console.error("[getBlogBySlug ERROR]:", error);
     next(error);
   }
 };

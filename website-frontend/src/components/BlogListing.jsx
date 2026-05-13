@@ -273,9 +273,17 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
           }
           .explore-link {
             font-size: 14px;
-            text-decoration: underline;
             color: inherit;
             font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            border-bottom: 2px solid currentColor;
+            padding-bottom: 2px;
+            transition: all 0.3s ease;
+          }
+          .explore-link:hover {
+            opacity: 0.8;
+            padding-bottom: 5px;
           }
 
           /* Sidebar */

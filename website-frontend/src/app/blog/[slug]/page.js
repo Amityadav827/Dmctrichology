@@ -1,4 +1,5 @@
 import React from 'react';
+import { notFound } from 'next/navigation';
 import { fetchBlogBySlug, fetchBlogPage, fetchBlogs } from '../../../services/api';
 import BlogHero from '../../../components/BlogHero';
 import { Calendar, User, MessageCircle, Search, Send } from 'lucide-react';
@@ -67,17 +68,14 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogDetailPage({ params }) {
   const { slug } = params;
+  console.log("[BlogDetailPage] Slug param:", slug);
+
   const { blog, pageSettings, recentBlogs } = await getData(slug);
+  console.log("[BlogDetailPage] Fetched blog:", blog ? blog.title : "NULL");
 
   if (!blog) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Blog Not Found</h1>
-          <a href="/blog" className="text-blue-600 hover:underline">Return to Blog Listing</a>
-        </div>
-      </div>
-    );
+    console.log("[BlogDetailPage] Blog not found, triggering notFound()");
+    notFound();
   }
 
   const {
