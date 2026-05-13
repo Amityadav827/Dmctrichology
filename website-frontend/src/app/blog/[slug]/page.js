@@ -112,6 +112,10 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogDetailPage({ params }) {
   const { slug } = await params;
+
+  if (slug === "contact-us") {
+    notFound();
+  }
   
   let data;
   try {
