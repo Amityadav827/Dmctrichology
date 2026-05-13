@@ -45,29 +45,37 @@ const LinkedinIcon = (props) => (
 export const dynamic = "force-dynamic";
 
 async function getData(slug) {
-  const [blogRes, pageRes, blogsRes, categoriesRes] = await Promise.all([
-    fetchBlogBySlug(slug),
-    fetchBlogPage(),
-    fetchBlogs({ status: 'Published' }),
-    fetchBlogCategories()
-  ]);
+  try {
+    console.log("[getData] Starting parallel fetch for:", slug);
+    const [blogRes, pageRes, blogsRes, categoriesRes] = await Promise.all([
+      fetchBlogBySlug(slug),
+      fetchBlogPage(),
+      fetchBlogs({ status: 'Published' }),
+      fetchBlogCategories()
+    ]);
 
-  const blog = blogRes?.data || null;
-  const allBlogs = blogsRes?.data || [];
-  
-  // Logic for Related Posts (Same category, exclude current)
-  const relatedPosts = allBlogs
-    .filter(b => b.category_id === blog?.category_id && b.slug !== slug)
-    .slice(0, 3);
+    const blog = blogRes?.data || null;
+    const allBlogs = blogsRes?.data || [];
+    
+    console.log("[getData] Success. Blog found:", !!blog, "All blogs count:", allBlogs.length);
 
-  return {
-    blog,
-    pageSettings: pageRes?.data || {},
-    recentBlogs: allBlogs,
-    dynamicCategories: categoriesRes?.data || [],
-    relatedPosts,
-    totalBlogCount: allBlogs.length
-  };
+    // Logic for Related Posts (Same category, exclude current)
+    const relatedPosts = allBlogs
+      .filter(b => b.category_id === blog?.category_id && b.slug !== slug)
+      .slice(0, 3);
+
+    return {
+      blog,
+      pageSettings: pageRes?.data || {},
+      recentBlogs: allBlogs,
+      dynamicCategories: categoriesRes?.data || [],
+      relatedPosts,
+      totalBlogCount: allBlogs.length
+    };
+  } catch (error) {
+    console.error("[getData] ERROR during fetch:", error);
+    throw error;
+  }
 }
 
 export async function generateMetadata({ params }) {
@@ -110,15 +118,30 @@ export default async function BlogDetailPage({ params }) {
   
   let data;
   try {
+    console.log("[BlogDetailPage] Fetching data for slug:", slug);
     data = await getData(slug);
   } catch (error) {
-    console.error("[BlogDetailPage] Error fetching data:", error);
-    data = { blog: null, pageSettings: {}, recentBlogs: [], dynamicCategories: [] };
+    console.error("[BlogDetailPage] CRITICAL DATA FETCH ERROR:", error);
+    data = { 
+      blog: null, 
+      pageSettings: {}, 
+      recentBlogs: [], 
+      dynamicCategories: [], 
+      relatedPosts: [], 
+      totalBlogCount: 0 
+    };
   }
 
-  const { blog, pageSettings, recentBlogs, dynamicCategories } = data;
+  // Ensure data exists with fallbacks
+  const blog = data?.blog || null;
+  const pageSettings = data?.pageSettings || {};
+  const recentBlogs = Array.isArray(data?.recentBlogs) ? data.recentBlogs : [];
+  const dynamicCategories = Array.isArray(data?.dynamicCategories) ? data.dynamicCategories : [];
+  const relatedPosts = Array.isArray(data?.relatedPosts) ? data.relatedPosts : [];
+  const totalBlogCount = Number(data?.totalBlogCount || 0);
 
   if (!blog) {
+    console.warn("[BlogDetailPage] Blog not found for slug:", slug);
     notFound();
   }
 
@@ -139,13 +162,13 @@ export default async function BlogDetailPage({ params }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": blog.title,
-    "image": [blog.blogImage || ""],
+    "headline": String(blog.title || ""),
+    "image": [String(blog.blogImage || blog.image || "")],
     "datePublished": blog.blogDate || blog.created_at,
     "dateModified": blog.updated_at || blog.blogDate || blog.created_at,
     "author": [{
         "@type": "Person",
-        "name": blog.author || "Admin",
+        "name": String(blog.author || "Admin"),
         "url": "#"
     }]
   };
@@ -225,7 +248,7 @@ export default async function BlogDetailPage({ params }) {
             </div>
 
             {/* Related Posts */}
-            {(Array.isArray(relatedPosts) ? relatedPosts : []).length > 0 && (
+            {relatedPosts.length > 0 && (
               <div className="related-posts-section" style={{ marginTop: '50px', paddingTop: '50px', borderTop: '1px solid #eee' }}>
                 <h3 className="section-title" style={{ marginBottom: '30px', fontSize: '24px' }}>Related Posts</h3>
                 <div className="blog-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
