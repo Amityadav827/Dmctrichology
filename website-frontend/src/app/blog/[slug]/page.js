@@ -43,16 +43,18 @@ const LinkedinIcon = (props) => (
 export const dynamic = "force-dynamic";
 
 async function getData(slug) {
-  const [blogRes, pageRes, blogsRes] = await Promise.all([
+  const [blogRes, pageRes, blogsRes, categoriesRes] = await Promise.all([
     fetchBlogBySlug(slug),
     fetchBlogPage(),
-    fetchBlogs({ status: 'Published' })
+    fetchBlogs({ status: 'Published' }),
+    fetchBlogCategories()
   ]);
 
   return {
     blog: blogRes?.data || null,
     pageSettings: pageRes?.data || {},
-    recentBlogs: blogsRes?.data || []
+    recentBlogs: blogsRes?.data || [],
+    dynamicCategories: categoriesRes?.data || []
   };
 }
 
@@ -81,7 +83,7 @@ export async function generateMetadata({ params }) {
 export default async function BlogDetailPage({ params }) {
   const { slug } = await params;
   
-  const { blog, pageSettings, recentBlogs } = await getData(slug);
+  const { blog, pageSettings, recentBlogs, dynamicCategories } = await getData(slug);
 
   if (!blog) {
     notFound();
@@ -93,7 +95,6 @@ export default async function BlogDetailPage({ params }) {
     sidebarSearchPlaceholder = "Enter Key Word",
     sidebarCategoriesTitle = "Blog Categories",
     sidebarRecentPostsTitle = "Recent Post",
-    categories = []
   } = listingSettings;
 
   // Ensure content is a string
@@ -142,8 +143,6 @@ export default async function BlogDetailPage({ params }) {
               dangerouslySetInnerHTML={{ __html: blogContent }} 
             />
 
-            {/* Blockquote Example (If content doesn't have one, we can show how it looks or just rely on CSS) */}
-            {/* The user design shows a quote block */}
             <div className="blog-quote">
                 <div className="quote-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path></svg>
@@ -153,7 +152,6 @@ export default async function BlogDetailPage({ params }) {
                 </p>
             </div>
 
-            {/* Placeholder for images from design */}
             <div className="blog-image-grid">
                 <div className="image-placeholder"></div>
                 <div className="image-placeholder"></div>
@@ -223,10 +221,9 @@ export default async function BlogDetailPage({ params }) {
                     </button>
                 </form>
             </div>
-
           </article>
 
-          {/* Right Column: Sidebar */}
+          {/* Right Side: Sidebar */}
           <aside className="blog-sidebar">
             <div className="sidebar-inner">
               {/* Search Widget */}
@@ -241,7 +238,7 @@ export default async function BlogDetailPage({ params }) {
               <div className="sidebar-widget">
                 <h4 className="sidebar-title">{String(sidebarCategoriesTitle || "")}</h4>
                 <ul className="category-list">
-                  {(Array.isArray(categories) ? categories : []).map((cat, idx) => (
+                  {(Array.isArray(dynamicCategories) ? dynamicCategories : []).map((cat, idx) => (
                     <li key={idx}>
                       <span>{String(cat?.name || "")}</span>
                       <span className="count">({String(cat?.count || "0")})</span>

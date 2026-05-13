@@ -2,6 +2,7 @@ import BlogHero from '../../components/BlogHero';
 import BlogListing from '../../components/BlogListing';
 import { fetchBlogPage, fetchBlogs } from '../../services/api';
 import '../service.css';
+import '../blog-detail.css';
 
 export const dynamic = "force-dynamic";
 

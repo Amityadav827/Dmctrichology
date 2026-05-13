@@ -132,6 +132,33 @@ const getBlogs = async (req, res, next) => {
   }
 };
 
+const getBlogCategories = async (req, res, next) => {
+  try {
+    const { data: blogs, error } = await supabase
+      .from('blogs')
+      .select('category_id, category:blog_categories(name)')
+      .eq('status', 'Published');
+
+    if (error) return res.status(500).json({ success: false, message: error.message });
+
+    const categoryCounts = {};
+    blogs.forEach(blog => {
+      const name = blog.category?.name || "Uncategorized";
+      const normalized = name.trim();
+      const key = normalized.toLowerCase();
+      if (!categoryCounts[key]) {
+        categoryCounts[key] = { name: normalized, count: 0 };
+      }
+      categoryCounts[key].count += 1;
+    });
+
+    const result = Object.values(categoryCounts).filter(c => c.count > 0 && c.name !== "Uncategorized");
+    return res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getBlogById = async (req, res, next) => {
   try {
     const { data, error } = await supabase.from('blogs').select('*').eq('id', req.params.id).single();
@@ -238,5 +265,5 @@ module.exports = {
   updateBlog,
   deleteBlog,
   getBlogBySlug,
-  debugSlugs,
+  getBlogCategories,
 };

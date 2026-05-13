@@ -6,11 +6,13 @@ import EditableText from './Editable/EditableText';
 import { useBuilder } from '../context/BuilderContext';
 import { Search, Calendar, User } from 'lucide-react';
 import { formatDate } from '../utils/dateFormatter';
+import { fetchBlogCategories } from '../services/api';
 
 const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
   const { isEditMode, siteConfig } = useBuilder();
   const [pageData, setPageData] = useState(initialData?.listing || {});
   const [blogs, setBlogs] = useState(initialBlogs);
+  const [dynamicCategories, setDynamicCategories] = useState([]);
 
   console.log("[BlogListing] Component initialized with:", { 
     initialBlogsCount: initialBlogs?.length || 0,
@@ -30,6 +32,16 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
       setBlogs(initialBlogs);
     }
   }, [initialBlogs]);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const res = await fetchBlogCategories();
+      if (res?.success) {
+        setDynamicCategories(res.data);
+      }
+    };
+    loadCategories();
+  }, []);
 
   const {
     sidebarSearchPlaceholder = "Enter Key Word",
@@ -131,15 +143,13 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
                    </EditableText>
                 </h4>
                 <ul className="category-list">
-                  {categories.map((cat, idx) => (
+                  {dynamicCategories.map((cat, idx) => (
                     <li key={idx}>
-                      <EditableText sectionId="blog-listing" fieldPath={`listing.categories.${idx}.name`}>
+                      <span className="category-name">
                         {cat.name}
-                      </EditableText>
+                      </span>
                       <span className="count">
-                        (<EditableText sectionId="blog-listing" fieldPath={`listing.categories.${idx}.count`} tag="span">
-                          {cat.count}
-                        </EditableText>)
+                        ({cat.count})
                       </span>
                     </li>
                   ))}
