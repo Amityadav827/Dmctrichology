@@ -92,6 +92,34 @@ const createBlog = async (req, res, next) => {
   }
 };
 
+const debugSlugs = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('id, title, slug, status, created_at, updated_at');
+    
+    if (error) return res.status(500).json({ success: false, error: error.message });
+    
+    const audit = data.map(b => ({
+      id: b.id,
+      title: b.title,
+      slug: b.slug,
+      slugLength: b.slug?.length,
+      status: b.status,
+      createdAt: b.created_at,
+      updatedAt: b.updated_at
+    }));
+    
+    return res.status(200).json({
+      success: true,
+      count: audit.length,
+      audit
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 const getBlogs = async (req, res, next) => {
   try {
     const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
@@ -249,4 +277,5 @@ module.exports = {
   updateBlog,
   deleteBlog,
   getBlogBySlug,
+  debugSlugs,
 };
