@@ -59,17 +59,11 @@ async function getData(slug) {
     
     console.log("[getData] Success. Blog found:", !!blog, "All blogs count:", allBlogs.length);
 
-    // Logic for Related Posts (Same category, exclude current)
-    const relatedPosts = allBlogs
-      .filter(b => b.category_id === blog?.category_id && b.slug !== slug)
-      .slice(0, 3);
-
     return {
       blog,
       pageSettings: pageRes?.data || {},
       recentBlogs: allBlogs,
       dynamicCategories: categoriesRes?.data || [],
-      relatedPosts,
       totalBlogCount: allBlogs.length
     };
   } catch (error) {
@@ -127,7 +121,6 @@ export default async function BlogDetailPage({ params }) {
       pageSettings: {}, 
       recentBlogs: [], 
       dynamicCategories: [], 
-      relatedPosts: [], 
       totalBlogCount: 0 
     };
   }
@@ -137,7 +130,6 @@ export default async function BlogDetailPage({ params }) {
   const pageSettings = data?.pageSettings || {};
   const recentBlogs = Array.isArray(data?.recentBlogs) ? data.recentBlogs : [];
   const dynamicCategories = Array.isArray(data?.dynamicCategories) ? data.dynamicCategories : [];
-  const relatedPosts = Array.isArray(data?.relatedPosts) ? data.relatedPosts : [];
   const totalBlogCount = Number(data?.totalBlogCount || 0);
 
   if (!blog) {
@@ -246,34 +238,6 @@ export default async function BlogDetailPage({ params }) {
                     <a href="#"><LinkedinIcon width={18} height={18} /></a>
                 </div>
             </div>
-
-            {/* Related Posts */}
-            {relatedPosts.length > 0 && (
-              <div className="related-posts-section" style={{ marginTop: '50px', paddingTop: '50px', borderTop: '1px solid #eee' }}>
-                <h3 className="section-title" style={{ marginBottom: '30px', fontSize: '24px' }}>Related Posts</h3>
-                <div className="blog-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
-                  {relatedPosts.map((post, idx) => (
-                    <div key={idx} className="blog-card" style={{ boxShadow: 'none', border: '1px solid #eee' }}>
-                      <div className="blog-card-image" style={{ height: '200px' }}>
-                        <img src={String(post?.blogImage || post?.image || 'https://via.placeholder.com/600x400')} alt={String(post?.title || "Blog")} style={{ height: '100%', objectFit: 'cover' }} />
-                      </div>
-                      <div className="blog-card-info">
-                        <div className="blog-card-meta">
-                          <div className="meta-item">
-                            <Calendar size={14} className="text-blue-600" />
-                            <span>{formatDate(post?.blogDate || post?.date)}</span>
-                          </div>
-                        </div>
-                        <h4 className="blog-card-title" style={{ fontSize: '18px', margin: '15px 0', fontFamily: 'Marcellus' }}>{String(post?.title || "")}</h4>
-                        <Link href={`/blog/${String(post?.slug || "")}`} className="explore-link" style={{ display: 'flex', alignItems: 'center', color: '#c5a47e' }}>
-                          Explore More <ArrowRight size={14} className="ml-1" />
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Comments & Reply Form */}
             <BlogComments blogSlug={slug} />
