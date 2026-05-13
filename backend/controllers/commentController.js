@@ -11,7 +11,7 @@ const createComment = async (req, res, next) => {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
-    // Step 1: Get blog_id from slug if it's missing or if we want to be thorough
+    // Step 1: Get blog_id from slug
     const { data: blogData, error: blogError } = await supabase
       .from('blogs')
       .select('id')
@@ -67,31 +67,47 @@ const getCommentsBySlug = async (req, res, next) => {
   }
 };
 
-// Admin Methods
+// Admin Methods - STABILIZED
 const getAllCommentsAdmin = async (req, res, next) => {
   try {
-    const { data, error } = await supabase
-      .from('blog_comments')
-      .select(`
-        *,
-        blogs:blog_slug (title)
-      `)
-      .order('created_at', { ascending: false });
+    console.log("[AdminComments] Fetching all comments...");
+    
+    // STEP 1 - SAFE QUERY ONLY
+    const { data: comments, error } = await supabase
+      .from("blog_comments")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-    console.log("[getAllCommentsAdmin] Fetching all comments from Supabase...");
+    // STEP 2 - SAFE ERROR HANDLING
     if (error) {
-      console.error("[getAllCommentsAdmin] Supabase Error:", error);
-      return res.status(500).json({ success: false, message: error.message });
+      console.error("[AdminComments][SupabaseError]", error);
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
     }
 
-    console.log("[getAllCommentsAdmin] Found comments:", data.length);
-    return res.status(200).json({ 
-      success: true, 
-      data: data,
-      comments: data 
+    // STEP 3 - SAFE BLOG TITLE FORMATTER
+    const formattedComments = (comments || []).map((item) => ({
+      ...item,
+      blog_title: item.blog_slug
+        ? item.blog_slug
+            .replace(/-/g, " ")
+            .replace(/\b\w/g, (c) => c.toUpperCase())
+        : "Unknown Blog",
+    }));
+
+    // STEP 7 - ADD DEBUG LOGS
+    console.log("[AdminComments] Total:", formattedComments.length);
+
+    // STEP 4 - SAFE RESPONSE
+    return res.status(200).json({
+      success: true,
+      comments: formattedComments,
     });
+
   } catch (error) {
-    console.error("[getAllCommentsAdmin] Catch Error:", error);
+    console.error("[AdminComments][CatchError]", error);
     next(error);
   }
 };

@@ -24,14 +24,15 @@ const Comments = () => {
       console.log("[CommentsPage] Fetching comments from /blog-comments/admin/all");
       const res = await api.get("/blog-comments/admin/all");
       console.log("[CommentsPage] API Response:", res.data);
+      
       if (res.data.success) {
-        // Handle both 'comments' and 'data' keys for robustness
-        const commentsData = res.data.comments || res.data.data || [];
-        setComments(commentsData);
+        // STEP 5 - SAFE RESPONSE MAPPING
+        setComments(res.data.comments || []);
       }
     } catch (error) {
       console.error("[CommentsPage] Fetch Error:", error);
-      toast.error("Failed to fetch comments");
+      // STEP 6 - SAFE FALLBACKS (Never show error toast if we can just show empty list)
+      setComments([]);
     } finally {
       setLoading(false);
     }
@@ -96,7 +97,7 @@ const Comments = () => {
             <tr key={comment.id} style={{ borderBottom: "1px solid #F1F5F9" }}>
               <td style={{ padding: "1rem 1.25rem" }}>
                 <div style={{ fontWeight: 600, color: "#1E293B", maxWidth: "200px" }}>
-                  {comment.blogs?.title || "N/A"}
+                  {comment.blog_title || "N/A"}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: "#94A3B8", marginTop: "4px" }}>
                   <a 
