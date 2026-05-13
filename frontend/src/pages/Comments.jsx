@@ -21,12 +21,16 @@ const Comments = () => {
   const fetchComments = async () => {
     try {
       setLoading(true);
+      console.log("[CommentsPage] Fetching comments from /blog-comments/admin/all");
       const res = await api.get("/blog-comments/admin/all");
+      console.log("[CommentsPage] API Response:", res.data);
       if (res.data.success) {
-        setComments(res.data.data);
+        // Handle both 'comments' and 'data' keys for robustness
+        const commentsData = res.data.comments || res.data.data || [];
+        setComments(commentsData);
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("[CommentsPage] Fetch Error:", error);
       toast.error("Failed to fetch comments");
     } finally {
       setLoading(false);

@@ -78,13 +78,20 @@ const getAllCommentsAdmin = async (req, res, next) => {
       `)
       .order('created_at', { ascending: false });
 
+    console.log("[getAllCommentsAdmin] Fetching all comments from Supabase...");
     if (error) {
-      console.error("[getAllCommentsAdmin] Error:", error);
+      console.error("[getAllCommentsAdmin] Supabase Error:", error);
       return res.status(500).json({ success: false, message: error.message });
     }
 
-    return res.status(200).json({ success: true, data });
+    console.log("[getAllCommentsAdmin] Found comments:", data.length);
+    return res.status(200).json({ 
+      success: true, 
+      data: data,
+      comments: data 
+    });
   } catch (error) {
+    console.error("[getAllCommentsAdmin] Catch Error:", error);
     next(error);
   }
 };

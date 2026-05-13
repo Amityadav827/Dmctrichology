@@ -9,13 +9,13 @@ const {
 
 const router = express.Router();
 
-// Public routes
-router.get("/:slug", getCommentsBySlug);
-router.post("/", createComment);
-
-// Admin routes
+// Admin routes (Must come BEFORE dynamic /:slug route)
 router.get("/admin/all", getAllCommentsAdmin);
 router.patch("/admin/:id", updateCommentStatusAdmin);
 router.delete("/admin/:id", deleteCommentAdmin);
+
+// Public routes
+router.get("/:slug", getCommentsBySlug);
+router.post("/", createComment);
 
 module.exports = router;
