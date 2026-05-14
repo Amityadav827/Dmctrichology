@@ -143,8 +143,6 @@ export default function BlogSection() {
                     color: blog.featured ? '#fff' : '#000', 
                     fontFamily: "'Marcellus', serif", 
                     textDecoration: 'none',
-                    borderBottom: '2px solid currentColor',
-                    paddingBottom: '2px',
                     fontWeight: 'bold',
                     display: 'inline-block'
                   }}
