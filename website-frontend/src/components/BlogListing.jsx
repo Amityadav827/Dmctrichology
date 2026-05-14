@@ -14,9 +14,9 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
   const [blogs, setBlogs] = useState(initialBlogs);
   const [dynamicCategories, setDynamicCategories] = useState([]);
 
-  console.log("[BlogListing] Component initialized with:", { 
+  console.log("[BlogListing] Component initialized with:", {
     initialBlogsCount: initialBlogs?.length || 0,
-    blogsStateCount: blogs?.length || 0 
+    blogsStateCount: blogs?.length || 0
   });
 
   // Sync state when initialData changes (SSR data)
@@ -24,7 +24,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
     if (initialData?.listing) {
       setPageData(initialData.listing);
     }
-    
+
     // Check URL params for pre-filtering
     const params = new URLSearchParams(window.location.search);
     const search = params.get('search');
@@ -73,7 +73,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
       // Filter by Search
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
-        result = result.filter(blog => 
+        result = result.filter(blog =>
           blog.title?.toLowerCase().includes(q) ||
           blog.category?.name?.toLowerCase().includes(q) ||
           blog.author?.toLowerCase().includes(q) ||
@@ -83,7 +83,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
 
       // Filter by Category
       if (activeCategory !== "All") {
-        result = result.filter(blog => 
+        result = result.filter(blog =>
           blog.category?.name?.toLowerCase() === activeCategory.toLowerCase()
         );
       }
@@ -109,14 +109,14 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
         if (key.startsWith('blog-listing.listing.')) {
           hasChanges = true;
           const path = key.replace('blog-listing.listing.', '');
-          
+
           if (path.includes('.')) {
             const parts = path.split('.');
             let current = updatedListing;
             for (let i = 0; i < parts.length - 1; i++) {
               const part = parts[i];
               if (!current[part]) {
-                current[part] = isNaN(parts[i+1]) ? {} : [];
+                current[part] = isNaN(parts[i + 1]) ? {} : [];
               }
               current = current[part];
             }
@@ -137,7 +137,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
     <EditableSection sectionId="blog-listing" label="Blog Listing Section">
       <section className="blog-listing-wrapper">
         <div className="blog-container">
-          
+
           {/* Left Side: Blog Grid */}
           <div className="blog-grid-content">
             <div className="blog-grid">
@@ -185,9 +185,9 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
               {/* Search Widget */}
               <div className="sidebar-widget search-widget">
                 <div className="search-box">
-                  <input 
-                    type="text" 
-                    placeholder={sidebarSearchPlaceholder} 
+                  <input
+                    type="text"
+                    placeholder={sidebarSearchPlaceholder}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -198,13 +198,13 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
               {/* Categories Widget */}
               <div className="sidebar-widget">
                 <h4 className="sidebar-title">
-                   <EditableText sectionId="blog-listing" fieldPath="listing.sidebarCategoriesTitle">
-                      {sidebarCategoriesTitle}
-                   </EditableText>
+                  <EditableText sectionId="blog-listing" fieldPath="listing.sidebarCategoriesTitle">
+                    {sidebarCategoriesTitle}
+                  </EditableText>
                 </h4>
                 <ul className="category-list">
-                  <li 
-                    className={activeCategory === "All" ? "active" : ""} 
+                  <li
+                    className={activeCategory === "All" ? "active" : ""}
                     onClick={() => setActiveCategory("All")}
                     style={{ cursor: 'pointer' }}
                   >
@@ -212,9 +212,9 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
                     <span className="count">({blogs.length})</span>
                   </li>
                   {dynamicCategories.map((cat, idx) => (
-                    <li 
-                      key={idx} 
-                      className={activeCategory === cat.name ? "active" : ""} 
+                    <li
+                      key={idx}
+                      className={activeCategory === cat.name ? "active" : ""}
                       onClick={() => setActiveCategory(cat.name)}
                       style={{ cursor: 'pointer' }}
                     >
@@ -232,14 +232,14 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
               {/* Recent Posts Widget */}
               <div className="sidebar-widget">
                 <h4 className="sidebar-title">
-                   <EditableText sectionId="blog-listing" fieldPath="listing.sidebarRecentPostsTitle">
-                      {sidebarRecentPostsTitle}
-                   </EditableText>
+                  <EditableText sectionId="blog-listing" fieldPath="listing.sidebarRecentPostsTitle">
+                    {sidebarRecentPostsTitle}
+                  </EditableText>
                 </h4>
                 <div className="recent-posts">
                   {(blogs.slice(0, 4)).map((post, idx) => (
                     <div key={idx} className="recent-post-item">
-                      <div 
+                      <div
                         className="post-thumb"
                         style={{
                           backgroundImage: `url(${post.blogImage || post.image || 'https://via.placeholder.com/80'})`,
@@ -265,7 +265,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
 
               {/* Promo Banner Widget */}
               <div className="sidebar-widget promo-widget">
-                <div 
+                <div
                   className="promo-banner"
                   style={{
                     backgroundImage: `url(${promoImage || 'https://via.placeholder.com/320x350/D9D9D9/888888?text=Promo+Banner'})`,
@@ -354,7 +354,7 @@ const BlogListing = ({ data: initialData, blogs: initialBlogs = [] }) => {
             margin-bottom: 20px;
             font-weight: 400;
           }
-          a.explore-link {
+          .explore-link {
             font-size: 14px;
             color: inherit;
             font-weight: 600;
