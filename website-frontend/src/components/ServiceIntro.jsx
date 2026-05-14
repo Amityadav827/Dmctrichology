@@ -241,7 +241,7 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
               {/* Intro Section Heading */}
               <h3 className="details-subtitle">
                 <EditableText sectionId="service-intro" fieldPath="intro.introHeading">
-                  {intro.introHeading || 'About the Treatment'}
+                  {intro.introHeading || intro.title || ""}
                 </EditableText>
               </h3>
 
