@@ -140,7 +140,8 @@ export default function ServiceDetailCMS() {
             process: { sectionTitle: "How it works?", processSteps: [] },
             idealFrequency: { frequencyTitle: "Treatment Frequency & Suitability", frequencyDescription: "", idealForPoints: [], notIdealForPoints: [], ctaTitle: "Not sure which treatment is right for YOU?", ctaDescription: "We can help with that!", ctaButtonText: "Book a free consultation", ctaButtonLink: "/contact", ctaImage: "" },
             beforeAfter: { beforeTitle: "Before Treatment Checklist", afterTitle: "Aftercare Instructions", beforePoints: [], afterPoints: [], sectionBackground: "#f9f7f2" },
-            faqEnquiry: { faqTitle: "Common Concerns Addressed", faqSubtitle: "", faqItems: [], serviceOptions: ["Laser Hair Removal", "Hair Transplant", "Hair Fall Treatment", "Skin Rejuvenation", "Other"], formTitle: "Enquire About This Treatment", buttonText: "Schedule Your Visit" },
+            faqEnquiry: { faqTitle: "Common Concerns Addressed", faqSubtitle: "", faqItems: [], serviceOptions: ["Laser Hair Removal", "Hair Transplant", "Hair Fall Treatment", "Skin Rejuvenation", "Other"], formTitle: "Enquire About This Treatment", buttonText: "Schedule Your Visit", namePlaceholder: "Name*", emailPlaceholder: "E-Mail Address*", servicePlaceholder: "Type Of Service Enquiry*", datePlaceholder: "Select Date & Time*" },
+            footerCta: { heading: "Stay Connected With Expert Care Support", description: "We're Here For You Monday To Friday With Tailored Treatments, Hands And A Commitment To Your Recovery Every Step Of The Way.", emailPlaceholder: "Your Email Adress", buttonText: "Submit" },
             seo: { metaTitle: "", metaDescription: "", canonicalUrl: "", ogImage: "", schemaScript: "" }
           });
           toast("Initialized new details for this service.", { icon: 'ℹ️' });
@@ -290,6 +291,7 @@ export default function ServiceDetailCMS() {
               { id: "idealFrequency", label: "Suitability & CTA", icon: CheckCircle },
               { id: "beforeAfter", label: "Before/After", icon: RefreshCw },
               { id: "faqEnquiry", label: "FAQs & Options", icon: HelpCircle },
+              { id: "footerCta", label: "Footer CTA", icon: Layout },
               { id: "seo", label: "SEO Settings", icon: Globe }
             ].map(tab => (
               <button 
@@ -381,6 +383,38 @@ export default function ServiceDetailCMS() {
                     </div>
                   </div>
 
+                  {/* Videos Array */}
+                  <div className="border-t border-slate-100 pt-8 mt-4">
+                    <div className="flex justify-between items-center mb-6">
+                      <label className="block text-[12px] font-black uppercase text-slate-900 tracking-widest">Intro Media / Videos</label>
+                      <button onClick={() => addArrayItem("intro", "videos", { title: "", videoUrl: "", thumbnail: "" })} className="flex items-center gap-1 text-blue-600 text-xs font-bold bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100">
+                        <Plus size={14}/> Add Video
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {(data.intro.videos || []).map((v, i) => (
+                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-100 relative">
+                          <button onClick={() => removeArrayItem("intro", "videos", i)} className="absolute top-4 right-4 text-slate-300 hover:text-red-500">
+                            <Trash2 size={18} />
+                          </button>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Slide Title</label>
+                              <input type="text" value={v.title || ""} onChange={e => updateArrayItem("intro", "videos", i, "title", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Video URL (YouTube Embed)</label>
+                              <input type="text" value={v.videoUrl || ""} onChange={e => updateArrayItem("intro", "videos", i, "videoUrl", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" placeholder="https://www.youtube.com/embed/..." />
+                            </div>
+                            <div className="md:col-span-2">
+                              <MediaUploader label="Video Thumbnail" value={v.thumbnail} onChange={val => updateArrayItem("intro", "videos", i, "thumbnail", val)} />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                 </div>
               </div>
               </>
@@ -443,6 +477,10 @@ export default function ServiceDetailCMS() {
                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Section Heading</label>
                      <input type="text" value={data.idealFrequency.frequencyTitle || ""} onChange={e => updateSectionField("idealFrequency", "frequencyTitle", e.target.value)} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
                   </div>
+                  <div className="md:col-span-2">
+                     <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Section Description</label>
+                     <textarea value={data.idealFrequency.frequencyDescription || ""} onChange={e => updateSectionField("idealFrequency", "frequencyDescription", e.target.value)} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold min-h-[80px]" />
+                  </div>
                   
                   {/* Ideal For */}
                   <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
@@ -504,6 +542,16 @@ export default function ServiceDetailCMS() {
             {activeTab === 'beforeAfter' && (
                <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-10">
+                      <div>
+                         <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Before Section Title</label>
+                         <input type="text" value={data.beforeAfter.beforeTitle || ""} onChange={e => updateSectionField("beforeAfter", "beforeTitle", e.target.value)} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
+                      </div>
+                      <div>
+                         <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">After Section Title</label>
+                         <input type="text" value={data.beforeAfter.afterTitle || ""} onChange={e => updateSectionField("beforeAfter", "afterTitle", e.target.value)} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
+                      </div>
+                    </div>
                     {/* Before Points */}
                     <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
                       <label className="block text-[10px] font-black uppercase text-slate-500 mb-4 tracking-widest">Before Treatment Points</label>
@@ -542,13 +590,24 @@ export default function ServiceDetailCMS() {
             {/* ================= FAQs ================= */}
             {activeTab === 'faqEnquiry' && (
               <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 border-b border-slate-100 pb-8">
+                   <div>
+                     <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">FAQ Title</label>
+                     <input type="text" value={data.faqEnquiry.faqTitle || ""} onChange={e => updateSectionField("faqEnquiry", "faqTitle", e.target.value)} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
+                   </div>
+                   <div>
+                     <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">FAQ Subtitle</label>
+                     <input type="text" value={data.faqEnquiry.faqSubtitle || ""} onChange={e => updateSectionField("faqEnquiry", "faqSubtitle", e.target.value)} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
+                   </div>
+                 </div>
+                 
                  <div className="flex justify-between items-center mb-6">
                     <label className="block text-[12px] font-black uppercase text-slate-900 tracking-widest">Frequently Asked Questions</label>
                     <button onClick={() => addArrayItem("faqEnquiry", "faqItems", { question: "", answer: "" })} className="flex items-center gap-1 text-blue-600 text-xs font-bold bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100">
                       <Plus size={14}/> Add FAQ
                     </button>
                  </div>
-                 <div className="space-y-4">
+                 <div className="space-y-4 mb-10 border-b border-slate-100 pb-10">
                     {(data.faqEnquiry.faqItems || []).map((faq, i) => (
                        <div key={i} className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex gap-4 items-start relative group">
                           <div className="flex flex-col gap-2 pt-1">
@@ -565,6 +624,63 @@ export default function ServiceDetailCMS() {
                        </div>
                     ))}
                  </div>
+
+                 {/* Enquiry Form Labels */}
+                 <h3 className="text-lg font-bold mb-6 text-slate-800">Enquiry Form Details</h3>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   <div>
+                     <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Form Heading</label>
+                     <input type="text" value={data.faqEnquiry.formTitle || ""} onChange={e => updateSectionField("faqEnquiry", "formTitle", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                   </div>
+                   <div>
+                     <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Button Text</label>
+                     <input type="text" value={data.faqEnquiry.buttonText || ""} onChange={e => updateSectionField("faqEnquiry", "buttonText", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                   </div>
+                   <div>
+                     <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Name Placeholder</label>
+                     <input type="text" value={data.faqEnquiry.namePlaceholder || ""} onChange={e => updateSectionField("faqEnquiry", "namePlaceholder", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                   </div>
+                   <div>
+                     <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Email Placeholder</label>
+                     <input type="text" value={data.faqEnquiry.emailPlaceholder || ""} onChange={e => updateSectionField("faqEnquiry", "emailPlaceholder", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                   </div>
+                   <div>
+                     <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Service Type Placeholder</label>
+                     <input type="text" value={data.faqEnquiry.servicePlaceholder || ""} onChange={e => updateSectionField("faqEnquiry", "servicePlaceholder", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                   </div>
+                   <div>
+                     <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Date & Time Placeholder</label>
+                     <input type="text" value={data.faqEnquiry.datePlaceholder || ""} onChange={e => updateSectionField("faqEnquiry", "datePlaceholder", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                   </div>
+                 </div>
+              </div>
+            )}
+
+            {/* ================= FOOTER CTA ================= */}
+            {activeTab === 'footerCta' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <h3 className="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2"><Layout size={18} className="text-blue-500"/> Footer CTA Section</h3>
+                <p className="text-sm text-slate-500 mb-8">Override the global footer CTA specifically for this service page. If left blank, it will use global defaults.</p>
+                <div className="grid grid-cols-1 gap-6">
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Heading</label>
+                    <input type="text" value={data.footerCta?.heading || ""} onChange={e => updateSectionField("footerCta", "heading", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Description</label>
+                    <textarea value={data.footerCta?.description || ""} onChange={e => updateSectionField("footerCta", "description", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl min-h-[80px]" />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Email Input Placeholder</label>
+                      <input type="text" value={data.footerCta?.emailPlaceholder || ""} onChange={e => updateSectionField("footerCta", "emailPlaceholder", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Button Text</label>
+                      <input type="text" value={data.footerCta?.buttonText || ""} onChange={e => updateSectionField("footerCta", "buttonText", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl" />
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 

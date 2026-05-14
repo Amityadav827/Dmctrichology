@@ -1,12 +1,18 @@
 const ServiceDetail = require('../models/ServiceDetail');
+const { servicesData } = require('../utils/servicesDataFallback');
 
 // Get service details by slug
 exports.getServiceDetailBySlug = async (req, res) => {
   try {
     const { slug } = req.params;
-    const serviceDetail = await ServiceDetail.findOne({ slug });
+    let serviceDetail = await ServiceDetail.findOne({ slug });
     
     if (!serviceDetail) {
+      // Fallback to static existing frontend structure
+      const fallbackData = servicesData.find(s => s.slug.toLowerCase() === slug.toLowerCase());
+      if (fallbackData) {
+        return res.status(200).json({ success: true, data: fallbackData, isFallback: true });
+      }
       return res.status(404).json({ success: false, message: 'Service details not found' });
     }
     
