@@ -1,13 +1,13 @@
 import { notFound } from 'next/navigation';
-import { servicesData } from '../../../../data/servicesData';
-import DetailsBanner from '../../../../components/DetailsBanner';
-import ServiceIntro from '../../../../components/ServiceIntro';
-import ProcessSlider from '../../../../components/ProcessSlider';
-import BeforeAfterTreatment from '../../../../components/BeforeAfterTreatment';
-import FaqEnquiry from '../../../../components/FaqEnquiry';
-import IdealFrequency from '../../../../components/IdealFrequency';
-import '../../../service.css';
-import '../../../details.css';
+import { servicesData } from '../../../data/servicesData';
+import DetailsBanner from '../../../components/DetailsBanner';
+import ServiceIntro from '../../../components/ServiceIntro';
+import ProcessSlider from '../../../components/ProcessSlider';
+import BeforeAfterTreatment from '../../../components/BeforeAfterTreatment';
+import FaqEnquiry from '../../../components/FaqEnquiry';
+import IdealFrequency from '../../../components/IdealFrequency';
+import '../../service.css';
+import '../../details.css';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
