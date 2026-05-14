@@ -241,13 +241,8 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
               {/* Subtitle / Service Name repeat */}
               <h3 className="details-subtitle">
                 <EditableText sectionId="service-intro" fieldPath="intro.introHeading">
-                  {intro.introHeading || bannerData.title || 'Follicular Unit Extraction (FUE)'}
+                  {intro.introHeading || 'About the Treatment'}
                 </EditableText>
-                <div className="details-sub-subtitle">
-                  <EditableText sectionId="details-banner" fieldPath="banner.tagline">
-                    {bannerData.tagline || bannerData.shortDescription || bannerData.subtitle || 'Safe, smart & skin-friendly'}
-                  </EditableText>
-                </div>
               </h3>
 
               {/* Main Description */}
