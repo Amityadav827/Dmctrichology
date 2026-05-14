@@ -12,7 +12,10 @@ const ServiceDetailSchema = new mongoose.Schema({
     duration: { type: String, default: "" },
     rating: { type: String, default: "4.9" },
     buttonText: { type: String, default: "Book Consultation" },
-    backgroundImage: { type: String, default: "" }
+    backgroundImage: { type: String, default: "" },
+    secondaryTitle: { type: String, default: "" },
+    tagline: { type: String, default: "" },
+    shortDescription: { type: String, default: "" }
   },
 
   intro: {

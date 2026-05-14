@@ -319,13 +319,29 @@ export default function ServiceDetailCMS() {
                       className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Title</label>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Banner Title</label>
                     <input type="text" value={data.banner.title || ""} onChange={e => updateSectionField("banner", "title", e.target.value)}
                       className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
                   </div>
+                  
+                  {/* New Fields: Secondary Title & Tagline */}
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Secondary Title (for Intro Section)</label>
+                    <input type="text" value={data.banner.secondaryTitle || ""} onChange={e => updateSectionField("banner", "secondaryTitle", e.target.value)}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Tagline</label>
+                    <input type="text" value={data.banner.tagline || ""} onChange={e => updateSectionField("banner", "tagline", e.target.value)}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
+                  </div>
+
                   <div className="md:col-span-2">
-                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Subtitle / Short Description</label>
-                    <textarea value={data.banner.subtitle || ""} onChange={e => updateSectionField("banner", "subtitle", e.target.value)}
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Short Description</label>
+                    <textarea value={data.banner.shortDescription || data.banner.subtitle || ""} onChange={e => {
+                      updateSectionField("banner", "shortDescription", e.target.value);
+                      updateSectionField("banner", "subtitle", e.target.value);
+                    }}
                       className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold min-h-[100px]" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">

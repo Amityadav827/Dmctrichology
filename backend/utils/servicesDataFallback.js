@@ -144,7 +144,10 @@ const generateServiceData = (title, slug, type) => {
       duration: c.duration,
       rating: "4.9",
       buttonText: "Book Consultation",
-      backgroundImage: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png"
+      backgroundImage: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png",
+      secondaryTitle: title,
+      tagline: c.shortDesc,
+      shortDescription: c.shortDesc
     },
     intro: {
       badgeText: "ABOUT THE TREATMENT",

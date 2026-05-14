@@ -74,7 +74,7 @@ export default async function DynamicDetailsPage({ params }) {
   return (
     <div className="bg-white min-h-screen">
       <DetailsBanner data={banner || {}} />
-      <ServiceIntro data={intro || {}} />
+      <ServiceIntro data={intro || {}} banner={banner || {}} />
       <ProcessSlider data={process || {}} />
       <IdealFrequency data={idealFrequency || {}} />
       <BeforeAfterTreatment data={beforeAfter || {}} />
