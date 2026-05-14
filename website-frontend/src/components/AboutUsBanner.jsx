@@ -1,23 +1,21 @@
 "use client";
+
 import React from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import EditableSection from './Editable/EditableSection';
-import EditableText from './Editable/EditableText';
+import Link from 'next/link';
+import EditableText from './EditableText';
+import EditableSection from './EditableSection';
 import './AboutUsBanner.css';
 
 const AboutUsBanner = ({ data = {} }) => {
   const {
     title = "About Us",
-    breadcrumbText = "Home / About Us",
+    breadcrumbText = "About Us",
     backgroundImage = "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
   } = data;
 
   const bannerStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    paddingTop: "0px",
-    paddingBottom: "0px",
-    textAlign: "center",
+    backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
   };
 
   return (
