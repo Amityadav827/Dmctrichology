@@ -72,6 +72,14 @@ const ServiceDetailSchema = new mongoose.Schema({
     serviceOptions: [{ type: String }],
     formTitle: { type: String, default: "Enquire About This Treatment" },
     buttonText: { type: String, default: "Schedule Your Visit" }
+  },
+
+  seo: {
+    metaTitle: { type: String, default: "" },
+    metaDescription: { type: String, default: "" },
+    canonicalUrl: { type: String, default: "" },
+    ogImage: { type: String, default: "" },
+    schemaScript: { type: String, default: "" }
   }
 }, { timestamps: true });
 

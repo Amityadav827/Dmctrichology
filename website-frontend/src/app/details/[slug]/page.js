@@ -45,9 +45,17 @@ export async function generateMetadata({ params }) {
     };
   }
 
+  const seo = service.seo || {};
+
   return {
-    title: `${service.banner?.title || service.title} | DMC Trichology`,
-    description: service.banner?.subtitle || '',
+    title: seo.metaTitle || `${service.banner?.title || service.title} | DMC Trichology`,
+    description: seo.metaDescription || service.banner?.subtitle || '',
+    alternates: {
+      canonical: seo.canonicalUrl || `/details/${slug}`
+    },
+    openGraph: {
+      images: seo.ogImage ? [{ url: seo.ogImage }] : []
+    }
   };
 }
 
