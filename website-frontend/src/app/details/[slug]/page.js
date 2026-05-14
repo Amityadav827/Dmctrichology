@@ -13,8 +13,12 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
-  const service = servicesData.find(s => s.slug === slug);
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
+  const rawSlug = slug || '';
+  const normalizedSlug = String(rawSlug).toLowerCase().trim();
+  
+  const service = servicesData.find(s => s.slug.toLowerCase() === normalizedSlug);
 
   if (!service) {
     return {
@@ -28,9 +32,22 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function DynamicDetailsPage({ params }) {
-  const { slug } = params;
-  const service = servicesData.find(s => s.slug === slug);
+export default async function DynamicDetailsPage({ params }) {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
+  
+  const rawSlug = slug || '';
+  // Normalize slug to handle case differences, trailing spaces, or extra query-like parts (though Next.js handles queries)
+  const normalizedSlug = String(rawSlug).toLowerCase().trim();
+  
+  const service = servicesData.find(s => s.slug.toLowerCase() === normalizedSlug);
+
+  // --- Temporary Debug Logs ---
+  console.log('--- DYNAMIC ROUTING DEBUG ---');
+  console.log('params.slug:', slug);
+  console.log('Normalized Slug:', normalizedSlug);
+  console.log('Matched Result:', service ? service.slug : 'Not Found');
+  console.log('-----------------------------');
 
   if (!service) {
     notFound();
