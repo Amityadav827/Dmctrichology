@@ -22,15 +22,20 @@ const mapToSupabase = (data) => {
     blog_date: data.blog_date || data.blogDate,
     status: data.status,
     category_id: data.category_id || data.categoryId || null,
-    faqs: (() => {
+  };
+
+  if (data.faqs !== undefined) {
+    result.faqs = (() => {
       try {
         return typeof data.faqs === 'string' ? JSON.parse(data.faqs) : (data.faqs || []);
       } catch (e) {
         console.error("[mapToSupabase] FAQ Parse Error:", e.message);
         return [];
       }
-    })(),
-  };
+    })();
+  }
+
+  return result;
 };
 
 const mapFromSupabase = (data) => {

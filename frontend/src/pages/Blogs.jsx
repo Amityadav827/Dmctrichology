@@ -649,58 +649,85 @@ function Blogs() {
               </div>
             </div>
 
-            {/* BLOG FAQS */}
-            <div className="card-glass" style={{ padding: "1.5rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: 0 }}>
-                  Blog FAQs
-                </label>
+            {/* BLOG FAQS - PREMIUM CMS UI */}
+            <div className="card-glass" style={{ padding: "2rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 700, color: "#1E293B", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
+                    Blog FAQs
+                  </label>
+                  <p style={{ fontSize: "0.75rem", color: "#64748B", marginTop: "0.25rem" }}>Add frequently asked questions to this blog for better SEO and engagement.</p>
+                </div>
                 <button 
                   type="button" 
                   onClick={handleAddFaq}
-                  style={{ padding: "0.4rem 1rem", fontSize: "0.75rem", borderRadius: "8px", background: "#EFF6FF", border: "1px solid #2563EB", color: "#2563EB", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}
+                  className="btn-primary"
+                  style={{ padding: "0.5rem 1.25rem", fontSize: "0.75rem", borderRadius: "10px", display: "flex", alignItems: "center", gap: "0.5rem" }}
                 >
-                  <Plus size={14} /> Add FAQ
+                  <Plus size={16} /> Add New FAQ
                 </button>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                 {formData.faqs.map((faq, idx) => (
-                  <div key={idx} style={{ padding: "1.25rem", background: "#F8FAFC", borderRadius: "16px", border: "1px solid #E2E8F0", position: "relative" }}>
+                  <div key={idx} style={{ padding: "1.5rem", background: "#FFFFFF", borderRadius: "20px", border: "1px solid #E2E8F0", position: "relative", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                    <div style={{ position: "absolute", top: "1.25rem", left: "1.5rem", width: "28px", height: "28px", borderRadius: "8px", background: "#F1F5F9", color: "#64748B", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700 }}>
+                      #{idx + 1}
+                    </div>
+                    
                     <button 
                       type="button" 
                       onClick={() => handleRemoveFaq(idx)}
-                      style={{ position: "absolute", top: "1rem", right: "1rem", color: "#EF4444", background: "#FEF2F2", border: "1px solid #FECACA", width: "28px", height: "28px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+                      style={{ position: "absolute", top: "1.25rem", right: "1.5rem", color: "#EF4444", background: "#FEF2F2", border: "1px solid #FECACA", width: "32px", height: "32px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.2s" }}
+                      onMouseEnter={(e) => e.target.style.background = "#FEE2E2"}
+                      onMouseLeave={(e) => e.target.style.background = "#FEF2F2"}
+                      title="Remove FAQ"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size={16} />
                     </button>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                      <div>
-                        <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#475569", marginBottom: "0.5rem" }}>Question {idx + 1}</label>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginTop: "1rem" }}>
+                      <div style={{ marginLeft: "3rem" }}>
+                        <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#475569", textTransform: "uppercase", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>Question</label>
                         <input 
                           type="text" 
                           value={faq.question} 
                           onChange={(e) => handleFaqChange(idx, 'question', e.target.value)} 
-                          placeholder="Enter question..."
+                          placeholder="e.g., How many sessions are required for PRP?"
                           className="form-input" 
+                          style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}
                         />
                       </div>
-                      <div>
-                        <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#475569", marginBottom: "0.5rem" }}>Answer {idx + 1}</label>
+                      <div style={{ marginLeft: "3rem" }}>
+                        <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#475569", textTransform: "uppercase", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>Answer</label>
                         <textarea 
                           value={faq.answer} 
                           onChange={(e) => handleFaqChange(idx, 'answer', e.target.value)} 
-                          placeholder="Enter answer..."
-                          rows="3"
+                          placeholder="Enter the detailed answer here..."
+                          rows="4"
                           className="form-input" 
+                          style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", resize: "vertical" }}
                         />
                       </div>
                     </div>
                   </div>
                 ))}
+                
                 {formData.faqs.length === 0 && (
-                  <div style={{ textAlign: "center", padding: "2rem", border: "2px dashed #E2E8F0", borderRadius: "16px", color: "#94A3B8" }}>
-                    <p style={{ fontSize: "0.875rem", margin: 0 }}>No FAQs added yet. Click "Add FAQ" to get started.</p>
+                  <div style={{ textAlign: "center", padding: "4rem 2rem", border: "2px dashed #E2E8F0", borderRadius: "24px", background: "#F8FAFC" }}>
+                    <div style={{ width: "50px", height: "50px", borderRadius: "50%", background: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1.5rem", boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
+                      <Plus size={24} color="#94A3B8" />
+                    </div>
+                    <h4 style={{ fontSize: "1rem", color: "#1E293B", marginBottom: "0.5rem" }}>No FAQs Created Yet</h4>
+                    <p style={{ fontSize: "0.875rem", color: "#64748B", maxWidth: "300px", margin: "0 auto 1.5rem" }}>Add FAQs to help your readers find answers quickly and improve your search ranking.</p>
+                    <button 
+                      type="button" 
+                      onClick={handleAddFaq}
+                      className="btn-primary"
+                      style={{ padding: "0.6rem 1.5rem", fontSize: "0.8rem", borderRadius: "10px" }}
+                    >
+                      Start Adding FAQs
+                    </button>
                   </div>
                 )}
               </div>
