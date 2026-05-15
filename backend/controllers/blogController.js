@@ -2,7 +2,7 @@ const supabase = require("../config/supabase");
 const uploadToSupabase = require("../utils/uploadToSupabase");
 
 const mapToSupabase = (data) => {
-  return {
+  const result = {
     title: data.title,
     author: data.author,
     show_type: data.show_type || data.showType,
