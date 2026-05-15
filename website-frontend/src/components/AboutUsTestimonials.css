@@ -6,7 +6,6 @@
 
 .about-testi-section {
   position: relative;
-  padding: 130px 0 140px;
   background-color: #fafaf8;
   overflow: hidden;
   isolation: isolate;
@@ -28,9 +27,9 @@
 .about-testi-container {
   position: relative;
   z-index: 1;
-  max-width: 1440px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 5%;
+  padding: 90px 5% 100px;
 }
 
 /* =========================================================

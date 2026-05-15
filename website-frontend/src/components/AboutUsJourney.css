@@ -1,13 +1,12 @@
 .about-journey-section {
-  padding: 150px 0;
   background-color: #fcfcfc;
   overflow: hidden;
 }
 
 .about-journey-container {
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 5%;
+  padding: 90px 5% 100px;
 }
 
 .about-journey-header {

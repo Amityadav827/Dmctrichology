@@ -9,7 +9,6 @@
 /* ---------- Section Wrapper ---------- */
 .about-hero-section {
   position: relative;
-  padding: 140px 0 120px;
   background: #fafaf8;
   overflow: hidden;
   isolation: isolate;
@@ -45,9 +44,9 @@
 .about-hero-container {
   position: relative;
   z-index: 1;
-  max-width: 1380px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 5%;
+  padding: 90px 5% 100px;
 }
 
 /* ---------- 2-Column Layout ---------- */

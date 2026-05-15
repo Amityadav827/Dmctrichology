@@ -1,5 +1,4 @@
 .about-story-section {
-  padding: 120px 0;
   background-color: #fcfcfc;
   overflow: hidden;
 }
@@ -7,7 +6,7 @@
 .about-story-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 5%;
+  padding: 90px 5% 100px;
 }
 
 .about-story-grid {
@@ -28,7 +27,6 @@
   position: relative;
   border-radius: 40px;
   overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.1);
   aspect-ratio: 1/1.2;
 }
 
@@ -45,7 +43,6 @@
   bottom: -10%;
   border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.15);
   border: 10px solid #ffffff;
   aspect-ratio: 1/1;
 }
