@@ -15,14 +15,9 @@ export default function BlogFaqAccordion({ faqs }) {
   return (
     <div className="faq-section-wrapper">
       <div className="faq-inner-container">
-        {/* Luxury Header */}
+        {/* Luxury Header - Left Aligned */}
         <div className="faq-heading-group">
-          <span className="faq-pre-title">Assistance & Support</span>
           <h2 className="faq-title-main">Frequently Asked Questions</h2>
-          <div className="faq-title-separator"></div>
-          <p className="faq-description-text">
-            Explore comprehensive answers to common queries regarding our specialized treatments and surgical procedures.
-          </p>
         </div>
 
         {/* Premium FAQ List */}
@@ -66,56 +61,29 @@ export default function BlogFaqAccordion({ faqs }) {
 
       <style jsx>{`
         .faq-section-wrapper {
-          padding: 100px 0;
-          background-color: #fafaf8;
+          padding: 40px 0;
+          background-color: transparent;
           border-top: 1px solid #0000000a;
-          margin-top: 80px;
+          margin-top: 40px;
         }
         
         .faq-inner-container {
           max-width: 1000px;
           margin: 0 auto;
-          padding: 0 5%;
+          padding: 0;
         }
 
         .faq-heading-group {
-          text-align: center;
-          margin-bottom: 70px;
-        }
-
-        .faq-pre-title {
-          font-family: 'Inter', sans-serif;
-          font-size: 13px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.25em;
-          color: #bfa37c; /* Gold accent */
-          display: block;
-          margin-bottom: 15px;
+          text-align: left;
+          margin-bottom: 30px;
         }
 
         .faq-title-main {
           font-family: 'Marcellus', serif;
-          font-size: clamp(32px, 5vw, 48px);
+          font-size: clamp(28px, 4vw, 36px);
           color: #1a1a1a;
           line-height: 1.2;
-          margin-bottom: 25px;
-        }
-
-        .faq-title-separator {
-          width: 60px;
-          height: 2px;
-          background-color: #bfa37c;
-          margin: 0 auto 30px;
-        }
-
-        .faq-description-text {
-          font-family: 'Inter', sans-serif;
-          font-size: 18px;
-          color: #666;
-          max-width: 700px;
-          margin: 0 auto;
-          line-height: 1.7;
+          margin-bottom: 0;
         }
 
         /* FAQ Card Styling */
@@ -147,7 +115,7 @@ export default function BlogFaqAccordion({ faqs }) {
         }
 
         .faq-card-trigger {
-          padding: 32px 40px;
+          padding: 16px 40px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -155,10 +123,10 @@ export default function BlogFaqAccordion({ faqs }) {
         }
 
         .faq-question-label {
-          font-family: 'Marcellus', serif;
-          font-size: 22px;
+          font-family: 'Inter', sans-serif;
+          font-size: 18px;
           color: #1a1a1a;
-          font-weight: 500;
+          font-weight: 600;
           transition: color 0.3s;
         }
 
