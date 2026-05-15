@@ -586,7 +586,13 @@ export default function AboutUsCMS() {
                               fd.append('image', file);
                               toast.loading("Uploading...", { id: "upload-" + idx });
                               try {
-                                const res = await axios.post('/service-details/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' }});
+                                const token = localStorage.getItem("dmc_admin_token");
+                                const res = await axios.post('/service-details/upload', fd, { 
+                                  headers: { 
+                                    'Content-Type': 'multipart/form-data',
+                                    'Authorization': `Bearer ${token}`
+                                  }
+                                });
                                 if (res.data?.success) {
                                   const newTesti = [...data.testimonials.reviews];
                                   newTesti[idx].image = res.data.url;
@@ -595,7 +601,10 @@ export default function AboutUsCMS() {
                                 } else {
                                   toast.error("Upload failed", { id: "upload-" + idx });
                                 }
-                              } catch(err) { toast.error("Error", { id: "upload-" + idx }); }
+                              } catch(err) { 
+                                toast.error("Error", { id: "upload-" + idx }); 
+                                console.error("Upload error:", err);
+                              }
                             }} />
                           </label>
                         </div>
