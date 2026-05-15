@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 
 export default function BlogFaqAccordion({ faqs }) {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -13,77 +13,95 @@ export default function BlogFaqAccordion({ faqs }) {
   };
 
   return (
-    <div className="blog-faq-container mt-16 mb-16">
-      <div className="faq-header mb-10 text-center">
-        <span className="faq-subtitle text-[#2563EB] font-bold tracking-[0.2em] text-[12px] uppercase block mb-3">
-          QUICK ANSWERS
-        </span>
-        <h3 className="faq-main-title text-4xl md:text-5xl font-marcellus text-[#0F172A] leading-tight">
-          Common Questions
-        </h3>
-      </div>
+    <div className="blog-faq-section py-20 px-4 md:px-0 border-t border-[#0000000a]">
+      <div className="faq-container max-w-[1000px] mx-auto">
+        
+        {/* Header Section */}
+        <div className="faq-header text-center mb-16">
+          <h2 className="faq-title font-marcellus text-[42px] md:text-[54px] text-black leading-[1.1] mb-6">
+            Frequently Asked <br className="hidden md:block" /> Questions
+          </h2>
+          <p className="faq-subtitle text-[17px] md:text-[19px] text-black opacity-60 max-w-[700px] mx-auto leading-relaxed">
+            Everything you need to know about our treatments, procedures, and post-care support to ensure a seamless recovery.
+          </p>
+        </div>
 
-      <div className="faq-list space-y-5 max-w-[900px] mx-auto">
-        {faqs.map((faq, index) => {
-          const isActive = activeIndex === index;
-          return (
-            <div 
-              key={index} 
-              className={`faq-item-wrapper transition-all duration-500 rounded-[24px] border ${
-                isActive ? 'border-transparent bg-[#F8FAFF]' : 'border-[#E2E8F0] bg-white'
-              }`}
-              style={{
-                boxShadow: isActive ? '0 20px 40px rgba(37, 99, 235, 0.06)' : 'none'
-              }}
-            >
-              <button
-                onClick={() => toggleAccordion(index)}
-                className="w-full flex items-center justify-between p-7 md:p-9 text-left focus:outline-none group"
+        {/* FAQ List */}
+        <div className="faq-list flex flex-col gap-6">
+          {faqs.map((faq, index) => {
+            const isActive = activeIndex === index;
+            return (
+              <div 
+                key={index}
+                className={`faq-card group transition-all duration-500 rounded-[40px] bg-white border border-[#0000000d] ${
+                  isActive ? 'is-active' : 'hover:border-[#0000001a]'
+                }`}
+                style={{
+                  boxShadow: isActive 
+                    ? '0 20px 60px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.02)' 
+                    : '0 4px 12px rgba(0, 0, 0, 0.02)'
+                }}
               >
-                <span className={`text-xl md:text-2xl font-marcellus transition-colors duration-300 ${
-                  isActive ? 'text-[#2563EB]' : 'text-[#1E293B]'
-                }`}>
-                  {faq.question}
-                </span>
-                
-                <div className={`faq-icon-box flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
-                  isActive ? 'bg-[#2563EB] text-white rotate-45' : 'bg-[#F1F5F9] text-[#64748B] group-hover:bg-[#E2E8F0]'
-                }`}>
-                  <Plus size={20} strokeWidth={2.5} />
-                </div>
-              </button>
+                <button
+                  onClick={() => toggleAccordion(index)}
+                  className="w-full flex items-center justify-between py-8 px-8 md:py-10 md:px-12 text-left focus:outline-none"
+                >
+                  <span className={`question-text text-xl md:text-[23px] font-semibold transition-all duration-300 ${
+                    isActive ? 'text-black' : 'text-black opacity-90 group-hover:opacity-100'
+                  }`} style={{ fontFamily: 'Inter, sans-serif' }}>
+                    {faq.question}
+                  </span>
+                  
+                  <div className={`faq-icon-wrapper flex-shrink-0 w-12 h-12 rounded-full border border-[#0000000d] flex items-center justify-center transition-all duration-500 ${
+                    isActive ? 'bg-black text-white border-black rotate-180' : 'bg-transparent text-black group-hover:bg-[#00000005]'
+                  }`}>
+                    {isActive ? <Minus size={20} strokeWidth={1.5} /> : <Plus size={20} strokeWidth={1.5} />}
+                  </div>
+                </button>
 
-              <AnimatePresence>
-                {isActive && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-7 pb-9 md:px-9 md:pb-11">
-                      <div className="faq-answer-content text-[#475569] text-lg leading-relaxed max-w-[800px] pt-4 border-t border-[#2563EB15]">
-                        {faq.answer}
+                <AnimatePresence>
+                  {isActive && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-8 pb-10 md:px-12 md:pb-14">
+                        <div className="faq-divider w-full h-[1px] bg-[#0000000a] mb-8"></div>
+                        <p className="answer-text text-[17px] md:text-[18px] text-black opacity-[0.65] leading-[1.8] max-w-[850px]">
+                          {faq.answer}
+                        </p>
                       </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <style jsx>{`
         .font-marcellus {
           font-family: 'Marcellus', serif;
         }
-        .faq-item-wrapper:hover {
-          ${!activeIndex ? 'transform: translateY(-4px); border-color: #2563EB40;' : ''}
+        .faq-card {
+          transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s, border-color 0.4s;
+          position: relative;
         }
-        .faq-item-wrapper {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .faq-card:hover {
+          transform: translateY(-6px);
+        }
+        .faq-card.is-active {
+          transform: translateY(-2px);
+        }
+        .question-text {
+          letter-spacing: -0.02em;
+        }
+        .answer-text {
+          font-family: 'Inter', sans-serif;
         }
       `}</style>
     </div>
