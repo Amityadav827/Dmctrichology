@@ -283,6 +283,15 @@ export const createGalleryItems = async (payload) => {
   return data;
 };
 
+export const uploadServiceMedia = async (payload) => {
+  const { data } = await api.post("/service-details/upload", payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};
+
 export const updateGalleryItem = async (id, payload) => {
   const { data } = await api.put(`/gallery/${id}`, payload, {
     headers: {

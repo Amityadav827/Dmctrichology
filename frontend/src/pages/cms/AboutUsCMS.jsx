@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../api/client";
+import { uploadServiceMedia } from "../../api/services";
 import toast from "react-hot-toast";
 import { 
   Save, 
@@ -586,28 +587,15 @@ export default function AboutUsCMS() {
                               fd.append('image', file);
                               toast.loading("Uploading...", { id: "upload-" + idx });
                               try {
-                                const token = localStorage.getItem("dmc_admin_token");
-                                const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-                                const baseURL = import.meta.env.VITE_API_URL || (isLocal ? "http://localhost:10000/api" : "https://dmctrichology-1.onrender.com/api");
+                                const res = await uploadServiceMedia(fd);
                                 
-                                const res = await fetch(`${baseURL}/service-details/upload`, {
-                                  method: 'POST',
-                                  headers: {
-                                    'Authorization': `Bearer ${token}`
-                                  },
-                                  body: fd
-                                });
-                                
-                                const data = await res.json();
-                                
-                                if (res.ok && data?.success) {
+                                if (res?.success) {
                                   const newTesti = [...data.testimonials.reviews];
-                                  newTesti[idx].image = data.url;
+                                  newTesti[idx].image = res.url;
                                   updateSectionField("testimonials", "reviews", newTesti);
                                   toast.success("Uploaded!", { id: "upload-" + idx });
                                 } else {
-                                  toast.error(data?.message || "Upload failed", { id: "upload-" + idx });
-                                  console.error("Upload failed with status:", res.status, data);
+                                  toast.error(res?.message || "Upload failed", { id: "upload-" + idx });
                                 }
                               } catch(err) { 
                                 toast.error("Error", { id: "upload-" + idx }); 
