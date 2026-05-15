@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { fetchBlogBySlug, fetchBlogPage, fetchBlogs, fetchBlogCategories, fetchComments } from '../../../services/api';
 import BlogHero from '../../../components/BlogHero';
 import BlogComments from '../../../components/BlogComments';
+import BlogFaqAccordion from '../../../components/BlogFaqAccordion';
 import { SidebarSearch, SidebarCategories } from '../../../components/SidebarWidgets';
 import { Calendar, User, MessageCircle, ArrowRight } from 'lucide-react';
 import { formatDate } from '../../../utils/dateFormatter';
@@ -171,8 +172,23 @@ export default async function BlogDetailPage({ params }) {
         "@type": "Person",
         "name": String(blog.author || "Admin"),
         "url": "#"
-    }]
+    }],
+    "description": String(blog.shortDescription || blog.excerpt || "")
   };
+
+  // FAQ Schema
+  const faqJsonLd = (blog.faqs && blog.faqs.length > 0) ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": blog.faqs.map(faq => ({
+      "@type": "Question",
+      "name": String(faq.question || ""),
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": String(faq.answer || "")
+      }
+    }))
+  } : null;
 
   return (
     <div className="bg-white min-h-screen">
@@ -180,6 +196,12 @@ export default async function BlogDetailPage({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       {/* Blog Hero */}
       <BlogHero data={{
         ...(pageSettings?.hero || {}),
@@ -218,6 +240,9 @@ export default async function BlogDetailPage({ params }) {
               className="blog-content-body" 
               dangerouslySetInnerHTML={{ __html: blogContent }} 
             />
+
+            {/* Dynamic Blog FAQs */}
+            <BlogFaqAccordion faqs={blog.faqs} />
 
             <div className="blog-share-section">
                 <span className="share-label">Follow Us On :</span>

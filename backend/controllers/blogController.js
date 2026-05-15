@@ -22,6 +22,7 @@ const mapToSupabase = (data) => {
     blog_date: data.blog_date || data.blogDate,
     status: data.status,
     category_id: data.category_id || data.categoryId || null,
+    faqs: typeof data.faqs === 'string' ? JSON.parse(data.faqs) : (data.faqs || []),
   };
 };
 
@@ -50,6 +51,7 @@ const mapFromSupabase = (data) => {
     status: data.status || "Published",
     categoryId: data.category_id,
     category: data.category,
+    faqs: data.faqs || [],
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };

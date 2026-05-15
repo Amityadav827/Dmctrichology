@@ -248,7 +248,8 @@ function Blogs() {
     canonicalUrl: "",
     slug: "",
     categoryId: "",
-    status: "Published"
+    status: "Published",
+    faqs: []
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -322,7 +323,8 @@ function Blogs() {
       canonicalUrl: item.canonicalUrl || "",
       slug: item.slug || "",
       categoryId: item.categoryId || "",
-      status: item.status || "Published"
+      status: item.status || "Published",
+      faqs: Array.isArray(item.faqs) ? item.faqs : []
     });
     
     setBlogImage(null);
@@ -368,6 +370,26 @@ function Blogs() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleAddFaq = () => {
+    setFormData(prev => ({
+      ...prev,
+      faqs: [...prev.faqs, { question: "", answer: "" }]
+    }));
+  };
+
+  const handleRemoveFaq = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      faqs: prev.faqs.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleFaqChange = (index, field, value) => {
+    const updatedFaqs = [...formData.faqs];
+    updatedFaqs[index][field] = value;
+    setFormData(prev => ({ ...prev, faqs: updatedFaqs }));
+  };
+
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
@@ -406,6 +428,8 @@ function Blogs() {
       Object.keys(formData).forEach((key) => {
         if (key === 'status' && saveAsDraft) {
           formPayload.append('status', 'Draft');
+        } else if (key === 'faqs') {
+          formPayload.append('faqs', JSON.stringify(formData[key]));
         } else {
           formPayload.append(key, formData[key]);
         }
@@ -622,6 +646,63 @@ function Blogs() {
               </label>
               <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
                 <ReactQuill theme="snow" modules={modules} value={formData.adminDescription} onChange={(val) => handleQuillChange('adminDescription', val)} style={{ minHeight: "160px" }} />
+              </div>
+            </div>
+
+            {/* BLOG FAQS */}
+            <div className="card-glass" style={{ padding: "1.5rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: 0 }}>
+                  Blog FAQs
+                </label>
+                <button 
+                  type="button" 
+                  onClick={handleAddFaq}
+                  style={{ padding: "0.4rem 1rem", fontSize: "0.75rem", borderRadius: "8px", background: "#EFF6FF", border: "1px solid #2563EB", color: "#2563EB", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}
+                >
+                  <Plus size={14} /> Add FAQ
+                </button>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                {formData.faqs.map((faq, idx) => (
+                  <div key={idx} style={{ padding: "1.25rem", background: "#F8FAFC", borderRadius: "16px", border: "1px solid #E2E8F0", position: "relative" }}>
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveFaq(idx)}
+                      style={{ position: "absolute", top: "1rem", right: "1rem", color: "#EF4444", background: "#FEF2F2", border: "1px solid #FECACA", width: "28px", height: "28px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                      <div>
+                        <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#475569", marginBottom: "0.5rem" }}>Question {idx + 1}</label>
+                        <input 
+                          type="text" 
+                          value={faq.question} 
+                          onChange={(e) => handleFaqChange(idx, 'question', e.target.value)} 
+                          placeholder="Enter question..."
+                          className="form-input" 
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#475569", marginBottom: "0.5rem" }}>Answer {idx + 1}</label>
+                        <textarea 
+                          value={faq.answer} 
+                          onChange={(e) => handleFaqChange(idx, 'answer', e.target.value)} 
+                          placeholder="Enter answer..."
+                          rows="3"
+                          className="form-input" 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {formData.faqs.length === 0 && (
+                  <div style={{ textAlign: "center", padding: "2rem", border: "2px dashed #E2E8F0", borderRadius: "16px", color: "#94A3B8" }}>
+                    <p style={{ fontSize: "0.875rem", margin: 0 }}>No FAQs added yet. Click "Add FAQ" to get started.</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
