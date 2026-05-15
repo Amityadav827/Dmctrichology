@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Minus } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export default function BlogFaqAccordion({ faqs }) {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -13,51 +13,34 @@ export default function BlogFaqAccordion({ faqs }) {
   };
 
   return (
-    <div className="blog-faq-section py-20 px-4 md:px-0 border-t border-[#0000000a]">
-      <div className="faq-container max-w-[1000px] mx-auto">
-        
-        {/* Header Section */}
-        <div className="faq-header text-center mb-16">
-          <h2 className="faq-title font-marcellus text-[42px] md:text-[54px] text-black leading-[1.1] mb-6">
-            Frequently Asked <br className="hidden md:block" /> Questions
-          </h2>
-          <p className="faq-subtitle text-[17px] md:text-[19px] text-black opacity-60 max-w-[700px] mx-auto leading-relaxed">
-            Everything you need to know about our treatments, procedures, and post-care support to ensure a seamless recovery.
+    <div className="faq-section-wrapper">
+      <div className="faq-inner-container">
+        {/* Luxury Header */}
+        <div className="faq-heading-group">
+          <span className="faq-pre-title">Assistance & Support</span>
+          <h2 className="faq-title-main">Frequently Asked Questions</h2>
+          <div className="faq-title-separator"></div>
+          <p className="faq-description-text">
+            Explore comprehensive answers to common queries regarding our specialized treatments and surgical procedures.
           </p>
         </div>
 
-        {/* FAQ List */}
-        <div className="faq-list flex flex-col gap-6">
+        {/* Premium FAQ List */}
+        <div className="faq-items-list">
           {faqs.map((faq, index) => {
             const isActive = activeIndex === index;
             return (
               <div 
                 key={index}
-                className={`faq-card group transition-all duration-500 rounded-[40px] bg-white border border-[#0000000d] ${
-                  isActive ? 'is-active' : 'hover:border-[#0000001a]'
-                }`}
-                style={{
-                  boxShadow: isActive 
-                    ? '0 20px 60px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.02)' 
-                    : '0 4px 12px rgba(0, 0, 0, 0.02)'
-                }}
+                className={`faq-card-item ${isActive ? 'faq-active' : ''}`}
+                onClick={() => toggleAccordion(index)}
               >
-                <button
-                  onClick={() => toggleAccordion(index)}
-                  className="w-full flex items-center justify-between py-8 px-8 md:py-10 md:px-12 text-left focus:outline-none"
-                >
-                  <span className={`question-text text-xl md:text-[23px] font-semibold transition-all duration-300 ${
-                    isActive ? 'text-black' : 'text-black opacity-90 group-hover:opacity-100'
-                  }`} style={{ fontFamily: 'Inter, sans-serif' }}>
-                    {faq.question}
-                  </span>
-                  
-                  <div className={`faq-icon-wrapper flex-shrink-0 w-12 h-12 rounded-full border border-[#0000000d] flex items-center justify-center transition-all duration-500 ${
-                    isActive ? 'bg-black text-white border-black rotate-180' : 'bg-transparent text-black group-hover:bg-[#00000005]'
-                  }`}>
-                    {isActive ? <Minus size={20} strokeWidth={1.5} /> : <Plus size={20} strokeWidth={1.5} />}
+                <div className="faq-card-trigger">
+                  <span className="faq-question-label">{faq.question}</span>
+                  <div className="faq-chevron-wrapper">
+                    <ChevronDown size={20} className={isActive ? 'rotate-180' : ''} />
                   </div>
-                </button>
+                </div>
 
                 <AnimatePresence>
                   {isActive && (
@@ -65,14 +48,12 @@ export default function BlogFaqAccordion({ faqs }) {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                      className="overflow-hidden"
+                      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+                      className="faq-answer-overflow"
                     >
-                      <div className="px-8 pb-10 md:px-12 md:pb-14">
-                        <div className="faq-divider w-full h-[1px] bg-[#0000000a] mb-8"></div>
-                        <p className="answer-text text-[17px] md:text-[18px] text-black opacity-[0.65] leading-[1.8] max-w-[850px]">
-                          {faq.answer}
-                        </p>
+                      <div className="faq-answer-content">
+                        <div className="faq-answer-divider"></div>
+                        <p className="faq-answer-text">{faq.answer}</p>
                       </div>
                     </motion.div>
                   )}
@@ -84,24 +65,167 @@ export default function BlogFaqAccordion({ faqs }) {
       </div>
 
       <style jsx>{`
-        .font-marcellus {
-          font-family: 'Marcellus', serif;
+        .faq-section-wrapper {
+          padding: 100px 0;
+          background-color: #fafaf8;
+          border-top: 1px solid #0000000a;
+          margin-top: 80px;
         }
-        .faq-card {
-          transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s, border-color 0.4s;
-          position: relative;
+        
+        .faq-inner-container {
+          max-width: 1000px;
+          margin: 0 auto;
+          padding: 0 5%;
         }
-        .faq-card:hover {
-          transform: translateY(-6px);
+
+        .faq-heading-group {
+          text-align: center;
+          margin-bottom: 70px;
         }
-        .faq-card.is-active {
-          transform: translateY(-2px);
-        }
-        .question-text {
-          letter-spacing: -0.02em;
-        }
-        .answer-text {
+
+        .faq-pre-title {
           font-family: 'Inter', sans-serif;
+          font-size: 13px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.25em;
+          color: #bfa37c; /* Gold accent */
+          display: block;
+          margin-bottom: 15px;
+        }
+
+        .faq-title-main {
+          font-family: 'Marcellus', serif;
+          font-size: clamp(32px, 5vw, 48px);
+          color: #1a1a1a;
+          line-height: 1.2;
+          margin-bottom: 25px;
+        }
+
+        .faq-title-separator {
+          width: 60px;
+          height: 2px;
+          background-color: #bfa37c;
+          margin: 0 auto 30px;
+        }
+
+        .faq-description-text {
+          font-family: 'Inter', sans-serif;
+          font-size: 18px;
+          color: #666;
+          max-width: 700px;
+          margin: 0 auto;
+          line-height: 1.7;
+        }
+
+        /* FAQ Card Styling */
+        .faq-items-list {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+
+        .faq-card-item {
+          background: #ffffff;
+          border: 1px solid #0000000d;
+          border-radius: 24px;
+          overflow: hidden;
+          cursor: pointer;
+          transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          box-shadow: 0 4px 12px #00000005;
+        }
+
+        .faq-card-item:hover {
+          transform: translateY(-5px);
+          border-color: #0000001a;
+          box-shadow: 0 20px 40px #00000008;
+        }
+
+        .faq-active {
+          border-color: #bfa37c40;
+          box-shadow: 0 30px 60px #0000000a;
+        }
+
+        .faq-card-trigger {
+          padding: 32px 40px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+        }
+
+        .faq-question-label {
+          font-family: 'Marcellus', serif;
+          font-size: 22px;
+          color: #1a1a1a;
+          font-weight: 500;
+          transition: color 0.3s;
+        }
+
+        .faq-active .faq-question-label {
+          color: #bfa37c;
+        }
+
+        .faq-chevron-wrapper {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: #f8f8f6;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #1a1a1a;
+          transition: all 0.4s;
+        }
+
+        .faq-active .faq-chevron-wrapper {
+          background-color: #1a1a1a;
+          color: #ffffff;
+        }
+
+        .rotate-180 {
+          transform: rotate(180deg);
+        }
+
+        .faq-answer-overflow {
+          overflow: hidden;
+        }
+
+        .faq-answer-content {
+          padding: 0 40px 40px;
+        }
+
+        .faq-answer-divider {
+          width: 100%;
+          height: 1px;
+          background-color: #0000000a;
+          margin-bottom: 25px;
+        }
+
+        .faq-answer-text {
+          font-family: 'Inter', sans-serif;
+          font-size: 17px;
+          color: #555;
+          line-height: 1.8;
+          max-width: 850px;
+        }
+
+        @media (max-width: 768px) {
+          .faq-section-wrapper {
+            padding: 60px 0;
+          }
+          .faq-card-trigger {
+            padding: 24px;
+          }
+          .faq-answer-content {
+            padding: 0 24px 24px;
+          }
+          .faq-question-label {
+            font-size: 18px;
+          }
+          .faq-answer-text {
+            font-size: 16px;
+          }
         }
       `}</style>
     </div>
