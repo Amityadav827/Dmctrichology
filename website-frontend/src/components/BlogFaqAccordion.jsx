@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
 export default function BlogFaqAccordion({ faqs }) {
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   if (!faqs || !Array.isArray(faqs) || faqs.length === 0) return null;
 
@@ -138,9 +138,14 @@ export default function BlogFaqAccordion({ faqs }) {
         }
 
         .faq-q-number {
-          color: #bfa37c;
+          color: #1a1a1a;
           font-weight: 700;
           flex-shrink: 0;
+          transition: color 0.3s;
+        }
+
+        .faq-active .faq-q-number {
+          color: #bfa37c;
         }
 
         .faq-ans-label {
