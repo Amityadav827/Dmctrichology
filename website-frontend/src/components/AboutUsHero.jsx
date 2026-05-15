@@ -177,11 +177,6 @@ const AboutUsHero = ({ data = {} }) => {
                   </div>
                 )}
 
-                {/* Glass floating label */}
-                <div className="cinematic-glass-label" aria-hidden="true">
-                  <span className="glass-label-dot" />
-                  <span className="glass-label-text">DMC Trichology</span>
-                </div>
 
                 {/* Reveal animation (image state only) */}
                 {!videoUrl && (
