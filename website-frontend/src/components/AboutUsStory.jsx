@@ -115,13 +115,13 @@ const AboutUsStory = ({ data = {} }) => {
                 transition={{ delay: 0.6 }}
                 className="about-story-cta"
               >
+                Discover Our Method
                 <img
                   src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png"
                   alt=""
                   className="about-story-cta-icon"
                   aria-hidden="true"
                 />
-                Discover Our Method
               </motion.button>
             </div>
           </div>
