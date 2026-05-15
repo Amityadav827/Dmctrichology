@@ -82,14 +82,14 @@ export default function AboutUsCMS() {
   const SectionTab = ({ id, label, icon: Icon }) => (
     <button
       onClick={() => setActiveSection(id)}
-      className={`flex items-center gap-3 px-6 py-4 text-sm font-bold transition-all border-b-2 ${
+      className={`flex items-center justify-center gap-2 px-3 py-4 text-[11px] font-black transition-all border-b-2 whitespace-nowrap flex-1 ${
         activeSection === id 
         ? "border-blue-600 text-blue-600 bg-blue-50/50" 
         : "border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50"
       }`}
     >
-      <Icon size={18} />
-      {label}
+      <Icon size={14} className="shrink-0" />
+      <span>{label}</span>
     </button>
   );
 
@@ -128,7 +128,7 @@ export default function AboutUsCMS() {
         </div>
 
         {/* Section Navigation */}
-        <div className="max-w-[1600px] mx-auto px-8 flex overflow-x-auto no-scrollbar border-t border-slate-100">
+        <div className="max-w-[1600px] mx-auto px-4 flex items-center justify-between overflow-hidden border-t border-slate-100 bg-white">
           <SectionTab id="banner" label="ABOUT BANNER" icon={ImageIcon} />
           <SectionTab id="hero" label="HERO SECTION" icon={ImageIcon} />
           <SectionTab id="story" label="OUR STORY" icon={Clock} />
