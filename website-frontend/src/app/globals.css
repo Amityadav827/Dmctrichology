@@ -133,6 +133,22 @@ a {
   transition: transform 0.25s ease;
 }
 
+.hero-submit-btn:hover {
+  transform: none;
+}
+
+.hero-submit-btn:active {
+  transform: none;
+}
+
+.hero-submit-arrow {
+  transition: transform 0.28s ease;
+}
+
+.hero-submit-btn:hover .hero-submit-arrow {
+  transform: rotate(45deg) translateX(2px);
+}
+
 .header-appointment-btn {
   background: #000000 !important;
   background-color: #000000 !important;
@@ -141,12 +157,20 @@ a {
 }
 
 .header-appointment-btn:hover {
-  transform: scale(1.05) !important;
+  transform: none !important;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25) !important;
 }
 
 .header-appointment-btn:active {
-  transform: scale(0.97) !important;
+  transform: none !important;
+}
+
+.header-appointment-btn .btn-arrow-icon {
+  transform: none !important;
+}
+
+.header-appointment-btn:hover .btn-arrow-icon {
+  transform: rotate(45deg) !important;
 }
 
 /* ===================== MARQUEE ===================== */
@@ -455,9 +479,9 @@ a {
 /* ===================== HEADER ===================== */
 .header {
   background-color: transparent;
-  padding: 30px 4%; /* Increased padding for more breathing room */
+  padding: 16px 4%;
   position: absolute;
-  top: 30px; /* Floating from the top */
+  top: 10px;
   left: 0;
   right: 0;
   z-index: 100;
@@ -642,7 +666,7 @@ a {
 
   .header {
     padding: 12px 4%;
-    top: 36px;
+    top: 24px;
   }
 
   .header-container {
@@ -791,7 +815,7 @@ a {
   }
 
   .header {
-    top: 52px;
+    top: 38px;
   }
 
   .logo img {

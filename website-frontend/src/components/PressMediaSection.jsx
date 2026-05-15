@@ -160,17 +160,17 @@ export default function PressMediaSection() {
                   <EditableText sectionId="press-media-section" fieldPath="button.text" tag="span">
                     {button.text}
                   </EditableText>
-                  <div className="arrow-container" style={{ 
-                    width: '45px', 
-                    height: '45px', 
-                    backgroundColor: '#fff', 
-                    borderRadius: '50%', 
-                    display: 'flex', 
-                    alignItems: 'center', 
+                  <div className="arrow-container" style={{
+                    width: '45px',
+                    height: '45px',
+                    backgroundColor: '#fff',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
                     justifyContent: 'center',
                     transition: 'transform 0.3s ease'
                   }}>
-                     <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" alt="arrow" style={{ width: '32px' }} />
+                     <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" className="btn-arrow-icon" style={{ width: '18px', filter: 'brightness(0)' }} />
                   </div>
                 </button>
 
@@ -214,11 +214,11 @@ export default function PressMediaSection() {
 
         <style jsx>{`
           .free-consult-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: none !important;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25) !important;
           }
           .free-consult-btn:hover .arrow-container {
-            transform: rotate(-10deg) scale(1.1);
+            transform: rotate(45deg) !important;
           }
           :global(.swiper-wrapper) {
             transition-timing-function: linear !important;

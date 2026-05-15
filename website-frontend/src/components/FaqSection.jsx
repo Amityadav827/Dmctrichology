@@ -100,6 +100,25 @@ export default function FaqSection() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '25px' }}>
             {(activeCategory?.faqs || []).map((faq, index) => {
               const catIndex = categories.indexOf(activeCategory);
+              const isFirstFaqCard = index === 0;
+              const isFirstRightFaqCard = index === 1;
+              const isSecondLeftFaqCard = index === 2;
+              const isSecondRightFaqCard = index === 3;
+              const isThirdLeftFaqCard = index === 4;
+              const isThirdRightFaqCard = index === 5;
+              const iconSrc = isFirstFaqCard
+                ? '/icons/faq-first-icon.svg'
+                : isFirstRightFaqCard
+                  ? '/icons/faq-first-right-icon.svg'
+                : isSecondLeftFaqCard
+                  ? '/icons/faq-second-left-icon.svg'
+                  : isSecondRightFaqCard
+                    ? '/icons/faq-second-right-icon.svg'
+                  : isThirdLeftFaqCard
+                    ? '/icons/faq-third-left-icon.svg'
+                  : isThirdRightFaqCard
+                    ? '/icons/faq-third-right-icon.svg'
+                  : faq.icon;
               return (
                 <div
                   key={index}
@@ -116,9 +135,10 @@ export default function FaqSection() {
                     minHeight: '120px'
                   }}
                 >
-                  <div style={{ flexShrink: 0 }}>
+                  <div className="faq-icon-circle" style={{ flexShrink: 0 }}>
                     <img 
-                      src={faq.icon} 
+                      className={`faq-icon-img ${isFirstFaqCard ? 'faq-first-icon-img' : ''} ${isFirstRightFaqCard ? 'faq-first-right-icon-img' : ''} ${isSecondLeftFaqCard ? 'faq-second-left-icon-img' : ''} ${isSecondRightFaqCard ? 'faq-second-right-icon-img' : ''} ${isThirdLeftFaqCard ? 'faq-third-left-icon-img' : ''} ${isThirdRightFaqCard ? 'faq-third-right-icon-img' : ''}`}
+                      src={iconSrc} 
                       alt="icon" 
                       style={{ width: '50px', height: '50px', objectFit: 'contain' }} 
                     />
@@ -146,13 +166,120 @@ export default function FaqSection() {
               <EditableText sectionId="faq-section" fieldPath="buttonText" tag="span">
                 {buttonText}
               </EditableText>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777698274/dmc-trichology/dh9kblxoinqmi5kvoona.png" className="btn-arrow" alt="arrow" style={{ width: '32px', height: '32px' }} />
+              <span className="faq-btn-arrow-wrap">
+                <img src="/icons/faq-view-all-icon.svg" className="faq-btn-arrow" alt="arrow" style={{ width: '12px', height: '9px' }} />
+              </span>
             </button>
           </div>
         </div>
 
         <style jsx>{`
-          .faq-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+          .faq-card:hover {
+            background-color: #000 !important;
+            color: #fff;
+            transform: none;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+          }
+
+          .faq-card:hover h3,
+          .faq-card:hover p {
+            color: #fff !important;
+          }
+
+          .faq-icon-circle {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+          }
+
+          .faq-icon-img {
+            transition: none;
+          }
+
+          .faq-card:hover .faq-icon-circle {
+            background-color: #fff;
+          }
+
+          .faq-card:hover .faq-first-icon-img,
+          .faq-card:hover .faq-first-right-icon-img,
+          .faq-card:hover .faq-second-left-icon-img,
+          .faq-card:hover .faq-second-right-icon-img,
+          .faq-card:hover .faq-third-left-icon-img,
+          .faq-card:hover .faq-third-right-icon-img {
+            filter: brightness(0);
+          }
+
+          .faq-first-icon-img {
+            width: 32px !important;
+            height: 29px !important;
+          }
+
+          .faq-second-left-icon-img {
+            width: 28px !important;
+            height: 33px !important;
+          }
+
+          .faq-third-left-icon-img {
+            width: 26px !important;
+            height: 35px !important;
+          }
+
+          .faq-first-right-icon-img {
+            width: 25px !important;
+            height: 36px !important;
+          }
+
+          .faq-second-right-icon-img {
+            width: 28px !important;
+            height: 35px !important;
+            filter: brightness(0) invert(1);
+          }
+
+          .faq-card:hover .faq-second-right-icon-img {
+            filter: brightness(0);
+          }
+
+          .faq-third-right-icon-img {
+            width: 28px !important;
+            height: 35px !important;
+          }
+
+          .view-all-faq-btn {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          .view-all-faq-btn:hover {
+            background-color: #000 !important;
+            color: #fff !important;
+            border-color: #000 !important;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+          }
+
+          .faq-btn-arrow-wrap {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #000;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+          }
+
+          .view-all-faq-btn:hover .faq-btn-arrow-wrap {
+            background-color: #fff;
+            transform: translateX(4px);
+          }
+
+          .view-all-faq-btn:hover .faq-btn-arrow {
+            filter: brightness(0);
+          }
+
           @media (max-width: 768px) {
             div[style*="gridTemplateColumns"] { grid-template-columns: 1fr !important; }
           }

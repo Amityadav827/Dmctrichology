@@ -78,7 +78,8 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
   const messagePlaceholder = data?.messagePlaceholder || 'Enter Your Message Here*';
   const serviceOptions = Array.isArray(data?.serviceOptions) ? data.serviceOptions : ['Hair Transplant', 'Laser Hair Removal', 'Skin Treatment', 'Others'];
   const buttonText = data ? (data.buttonText || '') : 'Schedule Your Visit';
-  const beforeImage = data ? (data.beforeImage || '') : 'https://res.cloudinary.com/dseixl6px/image/upload/v1777623481/dmc-trichology/sfqfld2ikbs00iqncyse.png';
+  const fallbackBeforeImage = 'https://res.cloudinary.com/dseixl6px/image/upload/v1777623481/dmc-trichology/sfqfld2ikbs00iqncyse.png';
+  const beforeImage = data?.beforeImage?.trim() || fallbackBeforeImage;
   const bgColor = data ? (data.backgroundColor || '#ffffff') : '#ffffff';
 
   const handleChange = (e) => {
@@ -264,7 +265,7 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
                 <div style={{ gridColumn: 'span 2' }}>
                   <button type="submit" className="premium-submit-btn" style={{ width: '100%', padding: '15px', borderRadius: '30px', backgroundColor: '#000', color: '#fff', border: 'none', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', fontFamily: "'Marcellus', serif", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', position: 'relative', overflow: 'hidden' }} disabled={loading}>
                     <EditableText sectionId={sectionId} fieldPath="buttonText" tag="span">{loading ? 'Processing...' : buttonText}</EditableText>
-                    <div style={{ transform: 'rotate(-45deg)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.4s ease' }} className="btn-arrow">
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="consultation-btn-arrow">
                       <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" style={{ width: '40px' }} alt="arrow" />
                     </div>
                   </button>
@@ -287,9 +288,10 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
           .premium-input:focus, .premium-select:focus, .premium-textarea:focus { background-color: #fff !important; box-shadow: 0 0 0 2px #E4B753; }
           .premium-input:hover, .premium-select:hover, .premium-textarea:hover { background-color: #ededed; }
           .calendar-trigger-btn:hover { transform: translateY(-50%) scale(1.1) !important; background-color: #333 !important; }
-          .premium-submit-btn:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); background-color: #1a1a1a; }
-          .premium-submit-btn:hover .btn-arrow { transform: rotate(-45deg) translate(5px, -5px); }
-          .premium-submit-btn:active { transform: translateY(-1px); }
+          .consultation-btn-arrow { transform: rotate(-45deg); transition: transform 0.4s ease; }
+          .premium-submit-btn:hover { transform: none; box-shadow: 0 15px 30px rgba(0,0,0,0.2); background-color: #1a1a1a; }
+          .premium-submit-btn:hover .consultation-btn-arrow { transform: rotate(0deg) translateX(5px); }
+          .premium-submit-btn:active { transform: none; }
           @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
           @media (max-width: 1024px) { .enquiry-section { padding: 60px 5% !important; } }
           @media (max-width: 640px) { form { grid-template-columns: 1fr !important; } form div { grid-column: span 1 !important; } }

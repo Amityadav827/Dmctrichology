@@ -136,10 +136,10 @@ export default function LeadForm() {
         </div>
 
         <div style={{ marginTop: '32px' }}>
-          <button type="submit" className="btn-primary" style={{ width: '100%', position: 'relative', height: '60px', borderRadius: '50px', padding: '0 24px' }} disabled={loading}>
+          <button type="submit" className="btn-primary hero-submit-btn" style={{ width: '100%', position: 'relative', height: '60px', borderRadius: '50px', padding: '0 24px' }} disabled={loading}>
             <span style={{ fontFamily: "'Marcellus', serif", fontSize: '1.2rem', color: '#000', margin: '0 auto' }}>{loading ? 'Submitting...' : 'Submit'}</span>
             <div className="icon-circle" style={{ position: 'absolute', right: '10px', backgroundColor: '#000', width: '40px', height: '40px' }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '16px', height: '16px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+              <img className="hero-submit-arrow" src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '16px', height: '16px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
             </div>
           </button>
         </div>

@@ -134,7 +134,6 @@ export default function TreatmentSection() {
         <style jsx>{`
           .treatment-btn:hover {
             background-color: #E4B753 !important;
-            transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
           }
           .treatment-btn:hover svg {

@@ -61,12 +61,11 @@ const SurgeonsSection = () => {
               {safeSurgeons.map((surgeon, index) => (
                 <div 
                   key={index}
+                  className={`surgeon-tab ${currentSurgeon?._id === surgeon._id ? 'active' : ''}`}
                   onClick={() => setActiveSurgeon(surgeon)}
                   style={{ 
                     padding: '25px 30px', 
                     borderRadius: '25px', 
-                    backgroundColor: currentSurgeon?._id === surgeon._id ? '#000' : '#FEF0D7',
-                    color: currentSurgeon?._id === surgeon._id ? '#fff' : '#000',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -79,10 +78,7 @@ const SurgeonsSection = () => {
                       {surgeon.name}
                     </EditableText>
                   </span>
-                  <div style={{ 
-                    transform: currentSurgeon?._id === surgeon._id ? 'rotate(-45deg)' : 'none',
-                    transition: 'transform 0.3s ease'
-                  }}>
+                  <div className="surgeon-tab-arrow">
                     <img 
                       src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" 
                       alt="arrow" 
@@ -165,11 +161,10 @@ const SurgeonsSection = () => {
                     ))}
                   </div>
 
-                  <a href={currentSurgeon.buttonLink || '#'} style={{ 
+                  <a href={currentSurgeon.buttonLink || '#'} className="surgeon-detail-btn" style={{ 
                     padding: '12px 25px', 
                     borderRadius: '30px', 
                     border: '1px solid #000', 
-                    backgroundColor: 'transparent',
                     fontFamily: "'Marcellus', serif",
                     fontSize: '14px',
                     display: 'flex',
@@ -183,11 +178,9 @@ const SurgeonsSection = () => {
                     <EditableText sectionId="surgeons-section" fieldPath={`surgeons.${realActiveIndex}.buttonText`} tag="span">
                       {currentSurgeon.buttonText || 'Get Details'}
                     </EditableText>
-                    <img 
-                      src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" 
-                      alt="arrow" 
-                      style={{ width: '24px', height: 'auto' }} 
-                    />
+                    <span className="surgeon-detail-arrow" aria-hidden="true">
+                      <MoveRight size={15} strokeWidth={2} />
+                    </span>
                   </a>
                 </div>
               </div>
@@ -196,6 +189,57 @@ const SurgeonsSection = () => {
         </div>
 
         <style jsx>{`
+          .surgeon-tab {
+            background-color: #FEF0D7;
+            color: #000;
+          }
+
+          .surgeon-tab.active,
+          .surgeon-tab:hover {
+            background-color: #000;
+            color: #fff;
+          }
+
+          .surgeon-tab-arrow {
+            transform: none;
+            transition: transform 0.3s ease;
+          }
+
+          .surgeon-tab.active .surgeon-tab-arrow,
+          .surgeon-tab:hover .surgeon-tab-arrow {
+            transform: rotate(-45deg);
+          }
+
+          .surgeon-detail-btn {
+            background-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          .surgeon-detail-btn:hover {
+            background-color: #000;
+            color: #fff !important;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+          }
+
+          .surgeon-detail-arrow {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: #000;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-45deg);
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+          }
+
+          .surgeon-detail-btn:hover .surgeon-detail-arrow {
+            background-color: #fff;
+            color: #000;
+            transform: rotate(0deg) translateX(3px);
+          }
+
           @media (max-width: 1024px) {
             .surgeons-section { padding: 60px 5% !important; }
           }

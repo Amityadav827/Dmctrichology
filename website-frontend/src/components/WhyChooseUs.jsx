@@ -28,9 +28,8 @@ const WhyChooseUs = () => {
   // Fallbacks only when data === null (not yet loaded from DB)
   const title = data ? (data.title || '') : 'Why DMC Trichology Is The Best Hair Transplant Clinic In Delhi';
   const subtitle = data ? (data.subtitle || '') : 'Best Hair Graft Clinic';
-  const centralImage = data
-    ? (data.centralImage || '')
-    : 'https://res.cloudinary.com/dseixl6px/image/upload/v1777550637/dmc-trichology/mprq5pm7g2utm2olrnj1.png';
+  const fallbackCentralImage = 'https://res.cloudinary.com/dseixl6px/image/upload/v1777550637/dmc-trichology/mprq5pm7g2utm2olrnj1.png';
+  const centralImage = data?.centralImage?.trim() || fallbackCentralImage;
 
   // Always safe — never crash on .map
   const safeFeatures = Array.isArray(data?.features) ? data.features : null;
@@ -123,7 +122,7 @@ const WhyChooseUs = () => {
           </EditableText>
         </h2>
 
-        <div style={{
+        <div className="why-choose-stage" style={{
           position: 'relative',
           maxWidth: '1300px',
           height: '650px',
@@ -133,7 +132,7 @@ const WhyChooseUs = () => {
           justifyContent: 'center'
         }}>
           {/* Central Image */}
-          <div style={{
+          <div className="why-choose-center" tabIndex={0} aria-label="Show hair transplant benefits" style={{
             width: '500px',
             height: '500px',
             display: 'flex',
@@ -149,7 +148,7 @@ const WhyChooseUs = () => {
           {leftCards.map((feat, i) => (
             <div
               key={`left-${i}`}
-              className={`pos-card-${i + 1}`}
+              className={`feature-callout feature-callout-left pos-card-${i + 1}`}
               style={{ position: 'absolute', left: 0, ...(leftPositions[i] || { top: `${150 + i * 300}px` }) }}
             >
               {renderCard(feat, i)}
@@ -160,7 +159,7 @@ const WhyChooseUs = () => {
           {rightCards.map((feat, i) => (
             <div
               key={`right-${i}`}
-              className={`pos-card-${i + 3}`}
+              className={`feature-callout feature-callout-right pos-card-${i + 3}`}
               style={{ position: 'absolute', right: 0, ...(rightPositions[i] || { top: `${40 + i * 300}px` }) }}
             >
               {renderCard(feat, i)}
@@ -170,9 +169,52 @@ const WhyChooseUs = () => {
       </section>
 
       <style dangerouslySetInnerHTML={{ __html: `
+        .why-choose-center {
+          cursor: pointer;
+          border-radius: 50%;
+          outline: none;
+        }
+
+        .feature-callout {
+          opacity: 0;
+          pointer-events: none;
+          transition:
+            opacity 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+            filter 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+          filter: blur(4px);
+          will-change: transform, opacity;
+        }
+
+        .feature-callout-left {
+          transform: translateX(120px) scale(0.94);
+        }
+
+        .feature-callout-right {
+          transform: translateX(-120px) scale(0.94);
+        }
+
+        .why-choose-stage:hover .feature-callout,
+        .why-choose-stage:focus-within .feature-callout {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateX(0) scale(1);
+          filter: blur(0);
+        }
+
+        .why-choose-stage:hover .pos-card-1,
+        .why-choose-stage:focus-within .pos-card-1 { transition-delay: 0.04s; }
+        .why-choose-stage:hover .pos-card-3,
+        .why-choose-stage:focus-within .pos-card-3 { transition-delay: 0.12s; }
+        .why-choose-stage:hover .pos-card-2,
+        .why-choose-stage:focus-within .pos-card-2 { transition-delay: 0.20s; }
+        .why-choose-stage:hover .pos-card-4,
+        .why-choose-stage:focus-within .pos-card-4 { transition-delay: 0.28s; }
+
         @media (max-width: 1200px) {
           .why-choose-us div[style*="height: 650px"] { height: auto !important; flex-direction: column !important; padding-bottom: 40px; }
           .pos-card-1, .pos-card-2, .pos-card-3, .pos-card-4 { position: relative !important; top: auto !important; left: auto !important; right: auto !important; margin-bottom: 20px; }
+          .feature-callout { opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto !important; }
           .card-item { width: 90% !important; max-width: 400px; margin: 0 auto; }
         }
       `}} />

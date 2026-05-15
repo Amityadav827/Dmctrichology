@@ -76,14 +76,15 @@ export default function BlogSection() {
             {blogs.map((blog, index) => (
               <div 
                 key={index} 
+                className="home-blog-card"
                 style={{
-                  backgroundColor: blog.featured ? '#000' : '#F9F7F2',
+                  backgroundColor: '#F9F7F2',
                   borderRadius: '40px',
                   padding: '25px',
                   display: 'flex',
                   flexDirection: 'column',
                   transition: 'all 0.3s ease',
-                  border: blog.featured ? 'none' : '1px solid rgba(0,0,0,0.05)'
+                  border: '1px solid rgba(0,0,0,0.05)'
                 }}
               >
                 {/* Image Container */}
@@ -93,12 +94,12 @@ export default function BlogSection() {
                     alt={blog.title} 
                     style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: '30px' }} 
                   />
-                  <div style={{ 
+                  <div className="home-blog-date-pill" style={{ 
                     position: 'absolute', 
                     top: '20px', 
                     left: '20px', 
-                    backgroundColor: blog.featured ? 'rgba(255,255,255,0.9)' : '#000', 
-                    color: blog.featured ? '#000' : '#fff', 
+                    backgroundColor: '#000', 
+                    color: '#fff', 
                     padding: '6px 20px', 
                     borderRadius: '30px',
                     fontSize: '13px',
@@ -111,20 +112,20 @@ export default function BlogSection() {
                 </div>
 
                 {/* Content */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+                <div className="home-blog-author-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
                   <div>
                      <img src={blog.authorIcon} alt="author" style={{ width: '32px' }} />
                   </div>
-                  <span style={{ fontSize: '16px', color: blog.featured ? 'rgba(255,255,255,0.7)' : '#666', fontFamily: "'Marcellus', serif" }}>
+                  <span className="home-blog-author" style={{ fontSize: '16px', color: '#666', fontFamily: "'Marcellus', serif" }}>
                     <EditableText sectionId="blogs-home-section" fieldPath={`blogs.${index}.author`} tag="span">
                       {blog.author}
                     </EditableText>
                   </span>
                 </div>
 
-                <h3 style={{ 
+                <h3 className="home-blog-title" style={{ 
                   fontSize: '24px', 
-                  color: blog.featured ? '#fff' : '#000', 
+                  color: '#000', 
                   fontFamily: "'Marcellus', serif", 
                   fontWeight: '400', 
                   marginBottom: '20px',
@@ -137,10 +138,11 @@ export default function BlogSection() {
                 </h3>
 
                 <Link 
+                  className="home-blog-link"
                   href={blog.buttonLink || '#'} 
                   style={{ 
                     fontSize: '14px', 
-                    color: blog.featured ? '#fff' : '#000', 
+                    color: '#000', 
                     fontFamily: "'Marcellus', serif", 
                     textDecoration: 'underline',
                     fontWeight: 'bold'
@@ -174,18 +176,68 @@ export default function BlogSection() {
               zIndex: 1
             }}>
               View All
-              <img 
-                src="https://res.cloudinary.com/dseixl6px/image/upload/v1777698274/dmc-trichology/dh9kblxoinqmi5kvoona.png" 
-                className="btn-arrow"
-                alt="arrow" 
-                style={{ width: '32px', height: '32px', transition: 'all 0.3s ease' }} 
-              />
+              <span className="blog-btn-arrow-wrap">
+                <img 
+                  src="/icons/faq-view-all-icon.svg"
+                  className="blog-btn-arrow"
+                  alt="arrow" 
+                  style={{ width: '12px', height: '9px' }} 
+                />
+              </span>
             </button>
           </div>
 
         </div>
 
-        <style jsx>{`
+        <style jsx global>{`
+          .home-blog-card:hover {
+            background-color: #000 !important;
+            border-color: transparent !important;
+          }
+
+          .home-blog-card:hover .home-blog-author,
+          .home-blog-card:hover .home-blog-title,
+          .home-blog-card:hover .home-blog-link {
+            color: #fff !important;
+          }
+
+          .home-blog-card:hover .home-blog-date-pill {
+            background-color: rgba(255,255,255,0.9) !important;
+            color: #000 !important;
+          }
+
+          .home-blog-card:hover .home-blog-link,
+          .home-blog-card:hover .home-blog-link span {
+            color: #fff !important;
+          }
+
+          .view-all-blogs-btn:hover {
+            background-color: #000 !important;
+            color: #fff !important;
+            border-color: #000 !important;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+          }
+
+          .blog-btn-arrow-wrap {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #000;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+          }
+
+          .view-all-blogs-btn:hover .blog-btn-arrow-wrap {
+            background-color: #fff;
+            transform: translateX(4px);
+          }
+
+          .view-all-blogs-btn:hover .blog-btn-arrow {
+            filter: brightness(0);
+          }
+
           @media (max-width: 768px) {
             section { padding: 60px 5% !important; }
           }
