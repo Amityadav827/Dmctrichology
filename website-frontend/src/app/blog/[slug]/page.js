@@ -155,9 +155,9 @@ export default async function BlogDetailPage({ params }) {
   } = listingSettings;
 
   // Ensure content is a string
-  const blogContent = typeof blog.content === 'string' 
-    ? blog.content 
-    : (typeof blog.content === 'object' ? JSON.stringify(blog.content) : String(blog.content || ""));
+  const blogContent = typeof blog.fullDescription === 'string' 
+    ? blog.fullDescription 
+    : (typeof blog.fullDescription === 'object' ? JSON.stringify(blog.fullDescription) : String(blog.fullDescription || ""));
 
   // Article Schema
   const jsonLd = {
@@ -218,24 +218,6 @@ export default async function BlogDetailPage({ params }) {
               className="blog-content-body" 
               dangerouslySetInnerHTML={{ __html: blogContent }} 
             />
-
-            <div className="blog-quote">
-                <div className="quote-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path></svg>
-                </div>
-                <p>
-                    Music Events Bring People Together, Creating Magical Moments Through Live Performances, Stunning Visuals, And Immersive Sound. From Intimate Acoustic Sets To Grand Stadium Concerts, Each Experience Leaves A Lasting Impact On Audiences.
-                </p>
-            </div>
-
-            <div className="blog-image-grid">
-                <div className="image-placeholder"></div>
-                <div className="image-placeholder"></div>
-            </div>
-
-            <p className="blog-post-footer-text">
-                From Intimate Acoustic Sets To Grand Stadium Concerts, Each Experience Leaves A Lasting Impact On Audiences. The Energy Of The Crowd, The Passion Of The Artists, And The Atmosphere All Combine To Make Every Event Unique. Whether It's A Music Festival, A Cultural Celebration, Or An Exclusive They Create. Discover How The Right Mix Of Music, Technology, And Creativity Turns An Event Into An Unforgettable Experience.
-            </p>
 
             <div className="blog-share-section">
                 <span className="share-label">Follow Us On :</span>
