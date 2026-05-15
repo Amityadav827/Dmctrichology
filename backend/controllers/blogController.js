@@ -63,7 +63,14 @@ const mapFromSupabase = (data) => {
     status: data.status || "Published",
     categoryId: data.category_id,
     category: data.category,
-    faqs: data.faqs || [],
+    faqs: (() => {
+      if (!data.faqs) return [];
+      try {
+        return typeof data.faqs === 'string' ? JSON.parse(data.faqs) : data.faqs;
+      } catch (e) {
+        return [];
+      }
+    })(),
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };
@@ -241,6 +248,14 @@ const updateBlog = async (req, res, next) => {
     const updates = mapToSupabase(body);
     // Remove undefined fields
     Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
+
+    // DEBUG LOGGING
+    const fs = require('fs');
+    const logData = `\n--- UPDATE BLOG ${new Date().toISOString()} ---\n` +
+                    `RAW BODY FAQS: ${body.faqs}\n` +
+                    `UPDATES FAQS: ${JSON.stringify(updates.faqs, null, 2)}\n` +
+                    `-------------------------------------------\n`;
+    fs.appendFileSync('debug_update.log', logData);
 
     console.log("[Update Blog] Updates to apply:", updates);
 

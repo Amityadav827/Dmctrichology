@@ -17,7 +17,7 @@ export default function BlogFaqAccordion({ faqs }) {
       <div className="faq-inner-container">
         {/* Luxury Header - Left Aligned */}
         <div className="faq-heading-group">
-          <h2 className="faq-title-main">Frequently Asked Questions</h2>
+          <h2 className="faq-title-main">Frequently Asked Questions ({faqs.length})</h2>
         </div>
 
         {/* Premium FAQ List */}
