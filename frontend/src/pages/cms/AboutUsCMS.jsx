@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../api/client";
-import { uploadServiceMedia } from "../../api/services";
+import { uploadAboutTestimonialImage } from "../../api/services";
 import toast from "react-hot-toast";
 import { 
   Save, 
@@ -587,7 +587,7 @@ export default function AboutUsCMS() {
                               fd.append('image', file);
                               toast.loading("Uploading...", { id: "upload-" + idx });
                               try {
-                                const res = await uploadServiceMedia(fd);
+                                const res = await uploadAboutTestimonialImage(fd);
                                 
                                 if (res?.success) {
                                   const newTesti = [...data.testimonials.reviews];

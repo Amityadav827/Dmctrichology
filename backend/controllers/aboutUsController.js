@@ -30,3 +30,18 @@ exports.updateAboutUs = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+const uploadToSupabase = require('../utils/uploadToSupabase');
+
+exports.uploadTestimonialImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No image provided" });
+    }
+    const publicUrl = await uploadToSupabase(req.file, 'about_us_testimonials');
+    res.status(200).json({ success: true, url: publicUrl });
+  } catch (error) {
+    console.error("Testimonial image upload error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

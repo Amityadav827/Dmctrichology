@@ -292,6 +292,11 @@ export const uploadServiceMedia = async (payload) => {
   return data;
 };
 
+export const uploadAboutTestimonialImage = async (payload) => {
+  const { data } = await api.post("/about-us/upload-testimonial-image", payload);
+  return data;
+};
+
 export const updateGalleryItem = async (id, payload) => {
   const { data } = await api.put(`/gallery/${id}`, payload, {
     headers: {
