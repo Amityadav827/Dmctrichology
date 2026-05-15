@@ -127,14 +127,14 @@ export default function BlogFaqAccordion({ faqs }) {
         }
 
         .faq-question-label {
-          font-family: 'Inter', sans-serif;
-          font-size: 18px;
+          font-family: 'Marcellus', serif;
+          font-size: 20px;
           color: #1a1a1a;
           font-weight: 600;
           transition: color 0.3s;
           display: flex;
           align-items: flex-start;
-          gap: 10px;
+          gap: 12px;
         }
 
         .faq-q-number {
@@ -195,8 +195,8 @@ export default function BlogFaqAccordion({ faqs }) {
         }
 
         .faq-answer-text {
-          font-family: 'Inter', sans-serif;
-          font-size: 17px;
+          font-family: 'Marcellus', serif;
+          font-size: 18px;
           color: #555;
           line-height: 1.8;
           max-width: 850px;
