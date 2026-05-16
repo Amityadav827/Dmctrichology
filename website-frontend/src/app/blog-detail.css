@@ -600,9 +600,16 @@
 
 .blog-content-body figure img {
   max-width: 100%;
-  height: auto;
-  border-radius: 16px;
+  max-height: 550px; /* Refined height for premium feel */
+  width: 100%;
+  object-fit: cover;
+  border-radius: 20px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease;
+}
+
+.blog-content-body figure img:hover {
+  transform: scale(1.01);
 }
 
 .blog-content-body figcaption {
@@ -611,4 +618,22 @@
   color: #64748B;
   font-style: italic;
   font-family: 'Marcellus', serif;
+}
+/* 1. Highlight Text Links on Frontend */
+.blog-content-body a {
+  color: #2D4A8A; /* Visible brand highlight color */
+  text-decoration: underline; /* Default underlined for visibility */
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.blog-content-body a:hover {
+  color: #c5a47e; /* Secondary brand color for hover */
+  text-decoration-thickness: 2px;
+}
+
+.blog-content-body a:visited {
+  color: #5b76b1; /* Proper visited state */
 }

@@ -293,7 +293,12 @@ function Blogs() {
   const [activeEditor, setActiveEditor] = useState(null);
   const [editingImageNode, setEditingImageNode] = useState(null);
   const [selectedGalleryItem, setSelectedGalleryItem] = useState(null);
-  const [galleryDetailForm, setGalleryDetailForm] = useState({ title: "", altText: "" });
+  const [galleryDetailForm, setGalleryDetailForm] = useState({ 
+    title: "", 
+    altText: "", 
+    linkUrl: "", 
+    openInNewTab: false 
+  });
 
   // Quill Editor Config - Optimized for multiple editors
   const createQuillModules = (editorName) => ({
@@ -517,7 +522,9 @@ function Blogs() {
     setSelectedGalleryItem(item);
     setGalleryDetailForm({
       title: item.title || "",
-      altText: item.altText || item.title || ""
+      altText: item.altText || item.title || "",
+      linkUrl: "",
+      openInNewTab: false
     });
   };
 
@@ -534,34 +541,70 @@ function Blogs() {
 
     const alt = galleryDetailForm.altText || item.altText || item.title || "";
     const title = galleryDetailForm.title || item.title || "";
+    const linkUrl = galleryDetailForm.linkUrl || "";
+    const openInNewTab = galleryDetailForm.openInNewTab;
     
+    // Determine if it's an external link
+    const isExternal = linkUrl.startsWith('http') && !linkUrl.includes(window.location.hostname);
+    const linkProps = isExternal 
+      ? `target="_blank" rel="nofollow noopener noreferrer"`
+      : (openInNewTab ? `target="_blank"` : "");
+
     // If we are editing an existing image, replace it
     if (editingImageNode) {
       editingImageNode.setAttribute('src', fullUrl);
       editingImageNode.setAttribute('alt', alt);
       editingImageNode.setAttribute('title', title);
+      
+      // Handle wrapping/unwrapping link
+      const parentLink = editingImageNode.closest('a');
+      if (linkUrl) {
+        if (parentLink) {
+          parentLink.setAttribute('href', linkUrl);
+          if (isExternal) {
+            parentLink.setAttribute('rel', 'nofollow noopener noreferrer');
+            parentLink.setAttribute('target', '_blank');
+          } else if (openInNewTab) {
+            parentLink.setAttribute('target', '_blank');
+            parentLink.removeAttribute('rel');
+          } else {
+            parentLink.removeAttribute('target');
+            parentLink.removeAttribute('rel');
+          }
+        } else {
+          // Wrap with new link
+          const link = document.createElement('a');
+          link.setAttribute('href', linkUrl);
+          if (linkProps) {
+            if (isExternal) link.setAttribute('rel', 'nofollow noopener noreferrer');
+            if (isExternal || openInNewTab) link.setAttribute('target', '_blank');
+          }
+          editingImageNode.parentNode.insertBefore(link, editingImageNode);
+          link.appendChild(editingImageNode);
+        }
+      } else if (parentLink) {
+        // Remove link but keep image
+        parentLink.parentNode.insertBefore(editingImageNode, parentLink);
+        parentLink.parentNode.removeChild(parentLink);
+      }
+      
       toast.success("Image replaced successfully");
     } else {
       // Professional Figure-based insertion for SEO
       const range = savedRange || { index: activeEditor.getLength(), length: 0 };
       
-      // We use insertEmbed for cleaner Quill integration, or pasteHTML for figure wrap
-      activeEditor.insertEmbed(range.index, 'image', fullUrl);
+      // Create the HTML string for insertion
+      let imgHtml = `<img src="${fullUrl}" alt="${alt}" title="${title}" style="width: 100%; border-radius: 12px; margin-top: 10px; margin-bottom: 10px; max-height: 500px; object-fit: cover;" />`;
       
-      // Apply attributes to the newly inserted image
-      setTimeout(() => {
-        const [img] = activeEditor.root.querySelectorAll(`img[src="${fullUrl}"]`);
-        if (img) {
-          img.setAttribute('alt', alt);
-          img.setAttribute('title', title);
-          img.style.width = '100%';
-          img.style.borderRadius = '12px';
-          img.style.marginTop = '10px';
-          img.style.marginBottom = '10px';
-        }
-      }, 0);
+      if (linkUrl) {
+        imgHtml = `<a href="${linkUrl}" ${linkProps}>${imgHtml}</a>`;
+      }
       
-      toast.success("Image inserted at cursor position");
+      // Wrap in figure for better structure
+      const figureHtml = `<figure class="ql-image-figure">${imgHtml}</figure><p></p>`;
+      
+      activeEditor.clipboard.dangerouslyPasteHTML(range.index, figureHtml);
+      toast.success("Image inserted with professional styling");
     }
     
     setShowGalleryPicker(false);
@@ -1195,6 +1238,28 @@ function Blogs() {
                           onChange={(e) => setGalleryDetailForm(p => ({ ...p, altText: e.target.value }))}
                           className="form-input" 
                         />
+                      </div>
+
+                      <div>
+                        <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#475569", textTransform: "uppercase", marginBottom: "0.5rem" }}>Link URL (Optional)</label>
+                        <input 
+                          type="text" 
+                          placeholder="https://example.com"
+                          value={galleryDetailForm.linkUrl} 
+                          onChange={(e) => setGalleryDetailForm(p => ({ ...p, linkUrl: e.target.value }))}
+                          className="form-input" 
+                        />
+                      </div>
+
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "0.5rem" }}>
+                        <input 
+                          type="checkbox" 
+                          id="openInNewTab"
+                          checked={galleryDetailForm.openInNewTab} 
+                          onChange={(e) => setGalleryDetailForm(p => ({ ...p, openInNewTab: e.target.checked }))}
+                          style={{ width: "16px", height: "16px", cursor: "pointer" }}
+                        />
+                        <label htmlFor="openInNewTab" style={{ fontSize: "0.875rem", color: "#475569", cursor: "pointer" }}>Open in new tab</label>
                       </div>
                       
                       <button 
