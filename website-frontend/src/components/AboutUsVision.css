@@ -205,9 +205,22 @@
 
 .about-vision-card.mission:hover {
   transform: translateY(-6px);
+  background: #ffffff;
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.2),
     0 60px 100px rgba(0, 0, 0, 0.28);
+}
+
+.about-vision-card.mission:hover .card-index {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.about-vision-card.mission:hover .about-vision-card-title {
+  color: #111111;
+}
+
+.about-vision-card.mission:hover .about-vision-card-text {
+  color: #555;
 }
 
 .about-vision-card.mission .card-index {
@@ -220,7 +233,8 @@
 }
 
 .about-vision-card.mission:hover .card-icon {
-  background: rgba(255, 255, 255, 0.14);
+  background: #f5f1eb;
+  color: #1a1a1a;
 }
 
 .about-vision-card.mission .about-vision-card-title {
