@@ -11,9 +11,11 @@ const { protect, adminOnly } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
+router.get("/", getBlogCategories);
+
 router.use(protect, adminOnly);
 
-router.route("/").post(createBlogCategory).get(getBlogCategories);
+router.post("/", createBlogCategory);
 router.route("/:id").get(getBlogCategoryById).put(updateBlogCategory).delete(deleteBlogCategory);
 router.patch("/status/:id", toggleBlogCategoryStatus);
 

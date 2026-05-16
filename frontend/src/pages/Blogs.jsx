@@ -13,10 +13,15 @@ const modules = {
   toolbar: [
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    ['link', 'image'],
+    [{ 'align': [] }],
+    ['link', 'image', 'video'],
+    ['table'],
+    ['blockquote', 'code-block'],
     ['clean']
   ],
+  table: true
 };
 
 // Derive the uploads base URL from the API base URL
@@ -216,6 +221,38 @@ const slugify = (text) => {
     .replace(/-+$/, '');
 };
 
+const processEditorialHtml = (html) => {
+  if (!html) return html;
+  
+  // Use DOMParser to process the HTML safely
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const links = doc.querySelectorAll('a');
+  
+  // Professional Link SEO: Auto nofollow for external links
+  const internalDomains = [
+    'dmctrichology.com',
+    'dmctrichology-mkm4.vercel.app',
+    'localhost'
+  ];
+
+  links.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('http')) {
+      const isInternal = internalDomains.some(domain => href.includes(domain));
+      if (!isInternal) {
+        link.setAttribute('rel', 'nofollow noopener noreferrer');
+        // Ensure external links open in new tab for better UX/Editorial
+        if (!link.hasAttribute('target')) {
+          link.setAttribute('target', '_blank');
+        }
+      }
+    }
+  });
+
+  return doc.body.innerHTML;
+};
+
 function Blogs() {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -258,6 +295,17 @@ function Blogs() {
   const [blogImagePreview, setBlogImagePreview] = useState(null);
   const [bannerImagePreview, setBannerImagePreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Media SEO Modal state
+  const [mediaModalOpen, setMediaModalOpen] = useState(false);
+  const [mediaData, setMediaData] = useState({
+    url: "",
+    alt: "",
+    title: "",
+    link: "",
+    newTab: true,
+    caption: ""
+  });
 
   useEffect(() => {
     fetchBlogs();
@@ -414,6 +462,36 @@ function Blogs() {
     }
   };
 
+  const handleInsertMedia = () => {
+    if (!mediaData.url) {
+      toast.error("Image URL is required");
+      return;
+    }
+
+    let html = `<figure class="wp-block-image"><img src="${mediaData.url}" alt="${mediaData.alt}" title="${mediaData.title}" />`;
+    
+    if (mediaData.caption) {
+      html += `<figcaption>${mediaData.caption}</figcaption>`;
+    }
+    
+    html += `</figure>`;
+
+    if (mediaData.link) {
+      const target = mediaData.newTab ? ' target="_blank"' : '';
+      const rel = mediaData.newTab ? ' rel="noopener noreferrer"' : '';
+      html = `<a href="${mediaData.link}"${target}${rel}>${html}</a>`;
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      fullDescription: prev.fullDescription + html
+    }));
+    
+    setMediaModalOpen(false);
+    setMediaData({ url: "", alt: "", title: "", link: "", newTab: true, caption: "" });
+    toast.success("Media inserted into editor");
+  };
+
   const handleSubmit = async (e, saveAsDraft = false) => {
     if (e) e.preventDefault();
     if (!formData.title || !formData.fullDescription || !formData.author) {
@@ -430,6 +508,9 @@ function Blogs() {
           formPayload.append('status', 'Draft');
         } else if (key === 'faqs') {
           formPayload.append('faqs', JSON.stringify(formData[key]));
+        } else if (key === 'fullDescription' || key === 'shortDescription' || key === 'adminDescription') {
+          // Process HTML for SEO (nofollow, etc)
+          formPayload.append(key, processEditorialHtml(formData[key]));
         } else {
           formPayload.append(key, formData[key]);
         }
@@ -639,11 +720,26 @@ function Blogs() {
 
             {/* Full Description */}
             <div className="card-glass" style={{ padding: "1.5rem" }}>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>
-                Blog Full Description <span style={{ color: "#EF4444" }}>*</span>
-              </label>
-              <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
-                <ReactQuill theme="snow" modules={modules} value={formData.fullDescription} onChange={(val) => handleQuillChange('fullDescription', val)} style={{ minHeight: "280px" }} />
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.625rem" }}>
+                <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: 0 }}>
+                  Full Description <span style={{ color: "#EF4444" }}>*</span>
+                </label>
+                <button 
+                  type="button"
+                  onClick={() => setMediaModalOpen(true)}
+                  style={{ padding: "0.3rem 0.75rem", borderRadius: "6px", background: "#2563EB", color: "#FFF", fontSize: "0.75rem", fontWeight: 600, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
+                >
+                  <ImageIcon size={14} /> SEO Media
+                </button>
+              </div>
+              <div style={{ background: "#FFFFFF", borderRadius: "12px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
+                <ReactQuill 
+                  theme="snow"
+                  value={formData.fullDescription}
+                  onChange={(val) => handleQuillChange("fullDescription", val)}
+                  modules={modules}
+                  style={{ height: "450px" }}
+                />
               </div>
             </div>
 
@@ -882,12 +978,56 @@ function Blogs() {
           </div>
         </form>
       </div>
+        {/* Media SEO Modal */}
+        {mediaModalOpen && (
+          <div style={{ position: "fixed", inset: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)", padding: "1rem" }}>
+            <div className="animate-in fade-in zoom-in duration-200" style={{ background: "#FFFFFF", width: "100%", maxWidth: "500px", borderRadius: "24px", overflow: "hidden", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}>
+              <div style={{ padding: "1.5rem", borderBottom: "1px solid #F1F5F9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Insert SEO Media</h3>
+                <button onClick={() => setMediaModalOpen(false)} style={{ background: "none", border: "none", color: "#64748B", cursor: "pointer" }}><X size={20} /></button>
+              </div>
+              <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Image URL (External or Uploaded)</label>
+                  <input type="text" value={mediaData.url} onChange={(e) => setMediaData({...mediaData, url: e.target.value})} className="form-input" placeholder="https://example.com/image.jpg" />
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Alt Text (SEO)</label>
+                    <input type="text" value={mediaData.alt} onChange={(e) => setMediaData({...mediaData, alt: e.target.value})} className="form-input" placeholder="Hair treatment result" />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Image Title</label>
+                    <input type="text" value={mediaData.title} onChange={(e) => setMediaData({...mediaData, title: e.target.value})} className="form-input" placeholder="PRP Session 1" />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Hyperlink (Optional)</label>
+                  <input type="text" value={mediaData.link} onChange={(e) => setMediaData({...mediaData, link: e.target.value})} className="form-input" placeholder="https://dmctrichology.com/service" />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <input type="checkbox" id="newTab" checked={mediaData.newTab} onChange={(e) => setMediaData({...mediaData, newTab: e.target.checked})} style={{ width: "16px", height: "16px", cursor: "pointer" }} />
+                  <label htmlFor="newTab" style={{ fontSize: "0.875rem", color: "#475569", cursor: "pointer" }}>Open in new tab</label>
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Caption (Optional)</label>
+                  <input type="text" value={mediaData.caption} onChange={(e) => setMediaData({...mediaData, caption: e.target.value})} className="form-input" placeholder="Patient after 3 months of treatment" />
+                </div>
+              </div>
+              <div style={{ padding: "1.25rem 1.5rem", background: "#F8FAFC", borderTop: "1px solid #F1F5F9", display: "flex", gap: "1rem" }}>
+                <button onClick={() => setMediaModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>Cancel</button>
+                <button onClick={handleInsertMedia} className="btn-primary" style={{ flex: 1 }}>Insert into Editor</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-      {/* Page header */}
+    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {/* Search and Filters */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
         <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Blogs</h2>
         <button onClick={handleAddNew} className="btn-primary">

@@ -212,7 +212,7 @@ export default async function BlogDetailPage({ params }) {
         ...(pageSettings?.hero || {}),
         title: "Blog Detail",
         breadcrumbText: "Blog Detail",
-        titleTag: "div"
+        titleTag: "h2"
       }} />
 
       {/* Main Content */}

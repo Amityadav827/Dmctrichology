@@ -31,9 +31,9 @@ export default function BlogFaqAccordion({ faqs }) {
                 onClick={() => toggleAccordion(index)}
               >
                 <div className="faq-card-trigger">
-                  <span className="faq-question-label">
+                  <h3 className="faq-question-label">
                     <span className="faq-q-number">Q{index + 1}.</span> {faq.question}
-                  </span>
+                  </h3>
                   <div className="faq-chevron-wrapper">
                     <ChevronDown size={20} className={isActive ? 'rotate-180' : ''} />
                   </div>
