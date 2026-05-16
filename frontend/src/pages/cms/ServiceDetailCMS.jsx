@@ -399,7 +399,7 @@ export default function ServiceDetailCMS() {
 
               <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10 mt-8">
                 <h3 className="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2"><Type size={18} className="text-blue-500"/> Service Intro Description</h3>
-                <div className="grid grid-cols-1 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                    <div>
                     <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Intro Heading (Above Description)</label>
                     <input type="text" value={data.intro.introHeading || ""} onChange={e => updateSectionField("intro", "introHeading", e.target.value)}
@@ -414,7 +414,7 @@ export default function ServiceDetailCMS() {
                       className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold min-h-[80px]" />
                   </div>
 
-                  <div>
+                  <div className="md:col-span-2">
                     <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Long Description</label>
                     <textarea value={data.intro.longDescription || ""} onChange={e => updateSectionField("intro", "longDescription", e.target.value)}
                       className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold min-h-[150px]" />
