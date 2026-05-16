@@ -19,10 +19,10 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
 
   const DUMMY_VIDEOS = [
     {
-      title: "FUE Process Explained",
+      title: "Clinic Interior",
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
       thumbnail: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png",
-      isYoutubeStyleButtonEnabled: true
+      isYoutubeStyleButtonEnabled: false
     },
     {
       title: "Patient Success Story",
