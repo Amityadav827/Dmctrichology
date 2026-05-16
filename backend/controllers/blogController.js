@@ -155,25 +155,36 @@ const getBlogs = async (req, res, next) => {
 
 const getBlogCategories = async (req, res, next) => {
   try {
-    const { data: blogs, error } = await supabase
+    // 1. Fetch all active categories from master table
+    const { data: allCategories, error: catError } = await supabase
+      .from('blog_categories')
+      .select('id, name, slug')
+      .eq('status', 'active')
+      .order('order', { ascending: true });
+
+    if (catError) return res.status(500).json({ success: false, message: catError.message });
+
+    // 2. Fetch counts of published blogs per category
+    const { data: blogStats, error: blogError } = await supabase
       .from('blogs')
-      .select('category_id, category:blog_categories(name)')
+      .select('category_id')
       .eq('status', 'Published');
 
-    if (error) return res.status(500).json({ success: false, message: error.message });
+    if (blogError) return res.status(500).json({ success: false, message: blogError.message });
 
-    const categoryCounts = {};
-    blogs.forEach(blog => {
-      const name = blog.category?.name || "Uncategorized";
-      const normalized = name.trim();
-      const key = normalized.toLowerCase();
-      if (!categoryCounts[key]) {
-        categoryCounts[key] = { name: normalized, count: 0 };
+    // 3. Map counts to categories
+    const counts = {};
+    blogStats.forEach(b => {
+      if (b.category_id) {
+        counts[b.category_id] = (counts[b.category_id] || 0) + 1;
       }
-      categoryCounts[key].count += 1;
     });
 
-    const result = Object.values(categoryCounts).filter(c => c.count > 0 && c.name !== "Uncategorized");
+    const result = allCategories.map(cat => ({
+      ...cat,
+      count: counts[cat.id] || 0
+    })).filter(c => c.count > 0);
+
     return res.status(200).json({ success: true, data: result });
   } catch (error) {
     next(error);

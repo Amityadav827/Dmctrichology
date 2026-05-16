@@ -23,6 +23,7 @@ import MenuOperation from "./pages/MenuOperation";
 import Callback from "./pages/Callback";
 import Contact from "./pages/Contact";
 import Blogs from "./pages/Blogs";
+import BlogCategory from "./pages/BlogCategory";
 import AppointmentList from "./pages/AppointmentList";
 import Pages from "./pages/Pages";
 import WebsiteSettings from "./pages/WebsiteSettings";
@@ -310,6 +311,14 @@ function App() {
           element={
             <ProtectedRoute permission="blog">
               <Blogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="blogs/categories"
+          element={
+            <ProtectedRoute permission="blog">
+              <BlogCategory />
             </ProtectedRoute>
           }
         />

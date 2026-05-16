@@ -112,6 +112,9 @@ function Sidebar() {
                 <NavLink to="/blogs" className={getNavClass}>
                   <FileText size={16} /> Blogs
                 </NavLink>
+                <NavLink to="/blogs/categories" className={getNavClass}>
+                  <List size={16} /> Blog Categories
+                </NavLink>
                 <NavLink to="/comments" className={getNavClass}>
                   <Star size={16} /> Comments
                 </NavLink>

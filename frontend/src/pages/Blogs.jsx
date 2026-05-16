@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
-import { Plus, Edit2, Trash2, ArrowLeft, Image as ImageIcon, Search, Eye, Filter, ChevronDown, Check, Globe } from "lucide-react";
+import { Plus, Edit2, Trash2, ArrowLeft, Image as ImageIcon, Search, Eye, Filter, ChevronDown, Check, Globe, X, CheckCircle, ExternalLink, Maximize, Layout } from "lucide-react";
 import Loader from "../components/Loader";
 import Table from "../components/Table";
 import api from "../api/client";
-import { getBlogCategories } from "../api/services";
+import { getBlogCategories, getGalleryItems } from "../api/services";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { FRONTEND_URL } from "../utils/config";
@@ -13,8 +13,11 @@ const modules = {
   toolbar: [
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    ['link', 'image'],
+    [{ 'align': [] }],
+    ['link', 'image', 'video'],
+    ['blockquote', 'code-block'],
     ['clean']
   ],
 };
@@ -216,6 +219,38 @@ const slugify = (text) => {
     .replace(/-+$/, '');
 };
 
+const processEditorialHtml = (html) => {
+  if (!html) return html;
+  
+  // Use DOMParser to process the HTML safely
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const links = doc.querySelectorAll('a');
+  
+  // Professional Link SEO: Auto nofollow for external links
+  const internalDomains = [
+    'dmctrichology.com',
+    'dmctrichology-mkm4.vercel.app',
+    'localhost'
+  ];
+
+  links.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('http')) {
+      const isInternal = internalDomains.some(domain => href.includes(domain));
+      if (!isInternal) {
+        link.setAttribute('rel', 'nofollow noopener noreferrer');
+        // Ensure external links open in new tab for better UX/Editorial
+        if (!link.hasAttribute('target')) {
+          link.setAttribute('target', '_blank');
+        }
+      }
+    }
+  });
+
+  return doc.body.innerHTML;
+};
+
 function Blogs() {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -258,6 +293,31 @@ function Blogs() {
   const [blogImagePreview, setBlogImagePreview] = useState(null);
   const [bannerImagePreview, setBannerImagePreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Media SEO Modal state
+  const [mediaModalOpen, setMediaModalOpen] = useState(false);
+  const [galleryModalOpen, setGalleryModalOpen] = useState(false);
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [galleryLoading, setGalleryLoading] = useState(false);
+  const [gallerySearch, setGallerySearch] = useState("");
+
+  const [mediaData, setMediaData] = useState({
+    url: "",
+    alt: "",
+    title: "",
+    link: "",
+    newTab: true,
+    caption: "",
+    width: "100%"
+  });
+
+  // Table Modal state
+  const [tableModalOpen, setTableModalOpen] = useState(false);
+  const [tableData, setTableData] = useState({
+    rows: 3,
+    cols: 3,
+    hasHeader: true
+  });
 
   useEffect(() => {
     fetchBlogs();
@@ -414,6 +474,104 @@ function Blogs() {
     }
   };
 
+  const fetchGallery = async () => {
+    setGalleryLoading(true);
+    try {
+      const res = await getGalleryItems({ page: 1, limit: 100 });
+      setGalleryItems(res.data || []);
+    } catch (e) {
+      toast.error("Failed to fetch gallery");
+    } finally {
+      setGalleryLoading(false);
+    }
+  };
+
+  const handleOpenMediaModal = () => {
+    fetchGallery();
+    setMediaModalOpen(true);
+  };
+
+  const selectGalleryImage = (item) => {
+    // Correct URL construction similar to Gallery.jsx
+    const base = (import.meta.env.VITE_API_URL || "https://dmctrichology-1.onrender.com/api").replace(/\/api$/, "");
+    const normalizedPath = item.image.startsWith("/") ? item.image : `/${item.image}`;
+    const fullUrl = item.image.startsWith("http") ? item.image : `${base}${normalizedPath}`;
+
+    setMediaData({
+      ...mediaData,
+      url: fullUrl,
+      alt: item.altText || item.title || "",
+      title: item.title || "",
+      caption: item.description || ""
+    });
+    setGalleryModalOpen(false);
+    toast.success("Image selected from gallery");
+  };
+
+  const handleInsertMedia = () => {
+    if (!mediaData.url) {
+      toast.error("Image URL is required");
+      return;
+    }
+
+    // Construct professional semantic HTML
+    let imgHtml = `<img src="${mediaData.url}" alt="${mediaData.alt}" title="${mediaData.title}" style="width: ${mediaData.width}; border-radius: 12px;" />`;
+    
+    let contentHtml = imgHtml;
+    if (mediaData.link) {
+      const isExternal = !mediaData.link.includes('dmctrichology.com') && mediaData.link.startsWith('http');
+      const target = mediaData.newTab ? ' target="_blank"' : '';
+      const rel = isExternal ? ' rel="nofollow noopener noreferrer"' : (mediaData.newTab ? ' rel="noopener noreferrer"' : '');
+      contentHtml = `<a href="${mediaData.link}"${target}${rel}>${imgHtml}</a>`;
+    }
+
+    let figureHtml = `<figure class="wp-block-image size-full">${contentHtml}`;
+    if (mediaData.caption) {
+      figureHtml += `<figcaption style="text-align: center; font-size: 0.875rem; color: #64748B; margin-top: 0.5rem;">${mediaData.caption}</figcaption>`;
+    }
+    figureHtml += `</figure><p></p>`;
+
+    setFormData(prev => ({
+      ...prev,
+      fullDescription: prev.fullDescription + figureHtml
+    }));
+    
+    setMediaModalOpen(false);
+    setMediaData({ url: "", alt: "", title: "", link: "", newTab: true, caption: "", width: "100%" });
+    toast.success("Media inserted successfully");
+  };
+
+  const handleInsertTable = () => {
+    const { rows, cols, hasHeader } = tableData;
+    let html = '<div class="table-responsive"><table>';
+    
+    if (hasHeader) {
+      html += '<thead><tr>';
+      for (let j = 0; j < cols; j++) {
+        html += `<th>Header ${j + 1}</th>`;
+      }
+      html += '</tr></thead>';
+    }
+    
+    html += '<tbody>';
+    for (let i = 0; i < rows; i++) {
+      html += '<tr>';
+      for (let j = 0; j < cols; j++) {
+        html += `<td>Data Cell</td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</tbody></table></div><p></p>';
+
+    setFormData(prev => ({
+      ...prev,
+      fullDescription: prev.fullDescription + html
+    }));
+    
+    setTableModalOpen(false);
+    toast.success("Table structure inserted");
+  };
+
   const handleSubmit = async (e, saveAsDraft = false) => {
     if (e) e.preventDefault();
     if (!formData.title || !formData.fullDescription || !formData.author) {
@@ -430,6 +588,9 @@ function Blogs() {
           formPayload.append('status', 'Draft');
         } else if (key === 'faqs') {
           formPayload.append('faqs', JSON.stringify(formData[key]));
+        } else if (key === 'fullDescription' || key === 'shortDescription' || key === 'adminDescription') {
+          // Process HTML for SEO (nofollow, etc)
+          formPayload.append(key, processEditorialHtml(formData[key]));
         } else {
           formPayload.append(key, formData[key]);
         }
@@ -486,7 +647,8 @@ function Blogs() {
 
   if (view === "form") {
     return (
-      <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "1.5rem", paddingBottom: "3rem" }}>
+      <>
+        <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "1.5rem", paddingBottom: "3rem" }}>
         {/* Preview Modal */}
         {showPreviewModal && (
           <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.5)", padding: "1rem" }}>
@@ -639,11 +801,35 @@ function Blogs() {
 
             {/* Full Description */}
             <div className="card-glass" style={{ padding: "1.5rem" }}>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>
-                Blog Full Description <span style={{ color: "#EF4444" }}>*</span>
-              </label>
-              <div style={{ background: "#FFFFFF", borderRadius: "10px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
-                <ReactQuill theme="snow" modules={modules} value={formData.fullDescription} onChange={(val) => handleQuillChange('fullDescription', val)} style={{ minHeight: "280px" }} />
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.625rem" }}>
+                <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", margin: 0 }}>
+                  Full Description <span style={{ color: "#EF4444" }}>*</span>
+                </label>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button 
+                    type="button"
+                    onClick={() => setTableModalOpen(true)}
+                    style={{ padding: "0.3rem 0.75rem", borderRadius: "6px", background: "#10B981", color: "#FFF", fontSize: "0.75rem", fontWeight: 600, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
+                  >
+                    <Globe size={14} /> Insert Table
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={handleOpenMediaModal}
+                    style={{ padding: "0.3rem 0.75rem", borderRadius: "6px", background: "#2563EB", color: "#FFF", fontSize: "0.75rem", fontWeight: 600, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
+                  >
+                    <ImageIcon size={14} /> SEO Media
+                  </button>
+                </div>
+              </div>
+              <div style={{ background: "#FFFFFF", borderRadius: "12px", overflow: "hidden", border: "1px solid #E2E8F0" }}>
+                <ReactQuill 
+                  theme="snow"
+                  value={formData.fullDescription}
+                  onChange={(val) => handleQuillChange("fullDescription", val)}
+                  modules={modules}
+                  style={{ height: "450px" }}
+                />
               </div>
             </div>
 
@@ -882,12 +1068,215 @@ function Blogs() {
           </div>
         </form>
       </div>
+        {/* Table Generator Modal */}
+        {tableModalOpen && (
+          <div style={{ position: "fixed", inset: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)", padding: "1rem" }}>
+            <div className="animate-in fade-in zoom-in duration-200" style={{ background: "#FFFFFF", width: "100%", maxWidth: "400px", borderRadius: "24px", overflow: "hidden", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}>
+              <div style={{ padding: "1.5rem", borderBottom: "1px solid #F1F5F9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Table Generator</h3>
+                <button onClick={() => setTableModalOpen(false)} style={{ background: "none", border: "none", color: "#64748B", cursor: "pointer" }}><X size={20} /></button>
+              </div>
+              <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Rows</label>
+                    <input type="number" value={tableData.rows} onChange={(e) => setTableData({...tableData, rows: parseInt(e.target.value)})} className="form-input" min="1" max="20" />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Columns</label>
+                    <input type="number" value={tableData.cols} onChange={(e) => setTableData({...tableData, cols: parseInt(e.target.value)})} className="form-input" min="1" max="10" />
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <input type="checkbox" id="hasHeader" checked={tableData.hasHeader} onChange={(e) => setTableData({...tableData, hasHeader: e.target.checked})} style={{ width: "16px", height: "16px", cursor: "pointer" }} />
+                  <label htmlFor="hasHeader" style={{ fontSize: "0.875rem", color: "#475569", cursor: "pointer" }}>Include Header Row</label>
+                </div>
+              </div>
+              <div style={{ padding: "1.25rem 1.5rem", background: "#F8FAFC", borderTop: "1px solid #F1F5F9", display: "flex", gap: "1rem" }}>
+                <button onClick={() => setTableModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>Cancel</button>
+                <button onClick={handleInsertTable} className="btn-primary" style={{ flex: 1 }}>Insert Table</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Table Generator Modal */}
+        {tableModalOpen && (
+          <div style={{ position: "fixed", inset: 0, zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(8px)", padding: "1.5rem" }}>
+            <div className="animate-in fade-in zoom-in duration-200" style={{ background: "#FFFFFF", width: "100%", maxWidth: "420px", borderRadius: "24px", overflow: "hidden", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.3)" }}>
+              <div style={{ padding: "1.5rem", borderBottom: "1px solid #F1F5F9", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#F8FAFC" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#D1FAE5", display: "flex", alignItems: "center", justifyContent: "center", color: "#059669" }}>
+                    <Layout size={20} />
+                  </div>
+                  <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Table Generator</h3>
+                </div>
+                <button onClick={() => setTableModalOpen(false)} style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#FFF", border: "1px solid #E2E8F0", color: "#64748B", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><X size={18} /></button>
+              </div>
+              <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.625rem", textTransform: "uppercase" }}>Rows</label>
+                    <input type="number" value={tableData.rows} onChange={(e) => setTableData({...tableData, rows: parseInt(e.target.value)})} className="form-input" min="1" max="50" />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.625rem", textTransform: "uppercase" }}>Columns</label>
+                    <input type="number" value={tableData.cols} onChange={(e) => setTableData({...tableData, cols: parseInt(e.target.value)})} className="form-input" min="1" max="15" />
+                  </div>
+                </div>
+                <div onClick={() => setTableData({...tableData, hasHeader: !tableData.hasHeader})} style={{ display: "flex", alignItems: "center", gap: "0.875rem", cursor: "pointer", padding: "1rem", background: "#F8FAFC", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
+                  <div style={{ width: "22px", height: "22px", borderRadius: "6px", background: tableData.hasHeader ? "#10B981" : "#FFF", border: "2px solid #10B981", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
+                    {tableData.hasHeader && <Check size={14} color="#FFF" />}
+                  </div>
+                  <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "#1E293B" }}>Include Sticky Header Row</span>
+                </div>
+              </div>
+              <div style={{ padding: "1.25rem 1.75rem", background: "#F8FAFC", borderTop: "1px solid #F1F5F9", display: "flex", gap: "1rem" }}>
+                <button onClick={() => setTableModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>Cancel</button>
+                <button onClick={handleInsertTable} className="btn-primary" style={{ flex: 1, background: "#10B981" }}>Generate Table</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Media SEO Modal */}
+        {mediaModalOpen && (
+          <div style={{ position: "fixed", inset: 0, zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(8px)", padding: "1.5rem" }}>
+            <div className="animate-in fade-in zoom-in duration-200" style={{ background: "#FFFFFF", width: "100%", maxWidth: "560px", borderRadius: "28px", overflow: "hidden", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.3)" }}>
+              <div style={{ padding: "1.5rem", borderBottom: "1px solid #F1F5F9", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#F8FAFC" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#DBEAFE", display: "flex", alignItems: "center", justifyContent: "center", color: "#2563EB" }}>
+                    <ImageIcon size={20} />
+                  </div>
+                  <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>SEO Media Control</h3>
+                </div>
+                <button onClick={() => setMediaModalOpen(false)} style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#FFF", border: "1px solid #E2E8F0", color: "#64748B", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><X size={18} /></button>
+              </div>
+              
+              <div style={{ padding: "1.5rem", maxHeight: "70vh", overflowY: "auto", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                
+                {/* Gallery Quick Select */}
+                <button 
+                  type="button" 
+                  onClick={() => setGalleryModalOpen(true)}
+                  style={{ width: "100%", padding: "1rem", borderRadius: "16px", background: "#EFF6FF", border: "2px dashed #2563EB", color: "#2563EB", fontWeight: 700, fontSize: "0.875rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", cursor: "pointer" }}
+                >
+                  <Maximize size={18} /> Select from Media Gallery
+                </button>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 120px", gap: "1rem" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Image URL</label>
+                    <input type="text" value={mediaData.url} onChange={(e) => setMediaData({...mediaData, url: e.target.value})} className="form-input" placeholder="Paste URL or select from gallery" />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Width</label>
+                    <select value={mediaData.width} onChange={(e) => setMediaData({...mediaData, width: e.target.value})} className="form-input">
+                      <option value="100%">Full Width</option>
+                      <option value="75%">Large (75%)</option>
+                      <option value="50%">Medium (50%)</option>
+                      <option value="33%">Small (33%)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Alt Text (SEO)</label>
+                    <input type="text" value={mediaData.alt} onChange={(e) => setMediaData({...mediaData, alt: e.target.value})} className="form-input" placeholder="Keyword-rich description" />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Image Title</label>
+                    <input type="text" value={mediaData.title} onChange={(e) => setMediaData({...mediaData, title: e.target.value})} className="form-input" placeholder="Internal title" />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Caption (Visible under image)</label>
+                  <input type="text" value={mediaData.caption} onChange={(e) => setMediaData({...mediaData, caption: e.target.value})} className="form-input" placeholder="Add a descriptive caption..." />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Hyperlink (Optional)</label>
+                  <div style={{ position: "relative" }}>
+                    <ExternalLink size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
+                    <input type="text" value={mediaData.link} onChange={(e) => setMediaData({...mediaData, link: e.target.value})} className="form-input" style={{ paddingLeft: "2.5rem" }} placeholder="https://example.com/target-page" />
+                  </div>
+                </div>
+
+                <div onClick={() => setMediaData({...mediaData, newTab: !mediaData.newTab})} style={{ display: "flex", alignItems: "center", gap: "0.875rem", cursor: "pointer" }}>
+                  <div style={{ width: "20px", height: "20px", borderRadius: "5px", background: mediaData.newTab ? "#2563EB" : "#FFF", border: "2px solid #2563EB", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
+                    {mediaData.newTab && <Check size={14} color="#FFF" />}
+                  </div>
+                  <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "#475569" }}>Open Link in New Tab (Auto-Nofollow)</span>
+                </div>
+              </div>
+
+              <div style={{ padding: "1.25rem 1.5rem", background: "#F8FAFC", borderTop: "1px solid #F1F5F9", display: "flex", gap: "1rem" }}>
+                <button onClick={() => setMediaModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>Discard</button>
+                <button onClick={handleInsertMedia} className="btn-primary" style={{ flex: 1 }}>Insert Media</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Gallery Selector Modal (Nested) */}
+        {galleryModalOpen && (
+          <div style={{ position: "fixed", inset: 0, zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.7)", backdropFilter: "blur(4px)", padding: "1.5rem" }}>
+            <div className="animate-in slide-in-from-bottom duration-300" style={{ background: "#FFFFFF", width: "100%", maxWidth: "900px", height: "85vh", borderRadius: "24px", overflow: "hidden", display: "flex", flexDirection: "column", boxShadow: "0 25px 60px rgba(0,0,0,0.4)" }}>
+              <div style={{ padding: "1.25rem 1.5rem", borderBottom: "1px solid #F1F5F9", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#F8FAFC" }}>
+                <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Select Image from Gallery</h3>
+                <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+                   <div style={{ position: "relative", width: "240px" }}>
+                      <Search size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
+                      <input 
+                        type="text" 
+                        placeholder="Search gallery..." 
+                        value={gallerySearch} 
+                        onChange={(e) => setGallerySearch(e.target.value)}
+                        className="form-input" 
+                        style={{ paddingLeft: "2.5rem", height: "38px" }}
+                      />
+                   </div>
+                   <button onClick={() => setGalleryModalOpen(false)} style={{ background: "#FFF", border: "1px solid #E2E8F0", padding: "0.5rem", borderRadius: "50%", cursor: "pointer", color: "#64748B" }}><X size={18} /></button>
+                </div>
+              </div>
+              
+              <div style={{ flex: 1, padding: "1.5rem", overflowY: "auto", background: "#F1F5F9" }}>
+                {galleryLoading ? (
+                  <div style={{ display: "flex", justifyContent: "center", padding: "4rem" }}><Loader /></div>
+                ) : (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "1rem" }}>
+                    {galleryItems.filter(item => (item.title || "").toLowerCase().includes(gallerySearch.toLowerCase())).map(item => (
+                      <div 
+                        key={item._id} 
+                        onClick={() => selectGalleryImage(item)}
+                        style={{ borderRadius: "16px", background: "#FFF", padding: "8px", border: "1px solid #E2E8F0", cursor: "pointer", transition: "all 0.2s" }}
+                        onMouseEnter={e => e.currentTarget.style.transform = "scale(1.02)"}
+                        onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                      >
+                        <div style={{ height: "120px", borderRadius: "12px", overflow: "hidden", marginBottom: "8px" }}>
+                          <img src={item.image.startsWith('http') ? item.image : `${(import.meta.env.VITE_API_URL || "https://dmctrichology-1.onrender.com/api").replace(/\/api$/, "")}${item.image.startsWith('/') ? '' : '/'}${item.image}`} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        </div>
+                        <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#1E293B", margin: "0 0 4px 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.title || "Untitled"}</p>
+                        <p style={{ fontSize: "0.65rem", color: "#64748B", margin: 0 }}>SEO: {item.altText ? "✅" : "❌"}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Media SEO Modal */}
+      </>
     );
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-      {/* Page header */}
+    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {/* Search and Filters */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
         <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Blogs</h2>
         <button onClick={handleAddNew} className="btn-primary">
