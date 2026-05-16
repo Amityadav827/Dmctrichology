@@ -1,0 +1,744 @@
+/* =========================================================
+   ABOUT DR. NANDANI DADU PAGE — Premium Doctor Profile
+   Palette: #1a1a1a · #111 · #fafaf8 · #f5f1eb · #e7ded2
+   ========================================================= */
+
+.about-dr-nandani-page {
+  background: #ffffff;
+}
+
+.dr-nandani-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+/* =========================================================
+   HERO SECTION
+   ========================================================= */
+.dr-nandani-hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #111111 100%);
+  color: #ffffff;
+  padding: 100px 5% 80px;
+  overflow: hidden;
+  position: relative;
+}
+
+.dr-nandani-hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dr-nandani-hero-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.dr-nandani-hero-content {
+  padding-right: 40px;
+}
+
+.dr-nandani-subtitle {
+  display: inline-block;
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.dr-nandani-hero-title {
+  font-family: 'Marcellus', serif;
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  letter-spacing: -1.5px;
+}
+
+.dr-nandani-qualification {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.dr-nandani-hero-desc {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0;
+}
+
+.dr-nandani-hero-form {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 48px 40px;
+  border-radius: 40px;
+  backdrop-filter: blur(10px);
+}
+
+.dr-nandani-hero-form h3 {
+  font-family: 'Marcellus', serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 28px;
+}
+
+.dr-nandani-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dr-nandani-form input,
+.dr-nandani-form select,
+.dr-nandani-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.dr-nandani-form input::placeholder,
+.dr-nandani-form select option {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dr-nandani-form input:focus,
+.dr-nandani-form select:focus,
+.dr-nandani-form textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.dr-nandani-cta-btn {
+  padding: 14px 32px;
+  font-family: 'Marcellus', serif;
+  font-size: 16px;
+  font-weight: 500;
+  background: #ffffff;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  margin-top: 8px;
+}
+
+.dr-nandani-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================================
+   SPECIALIST SECTION
+   ========================================================= */
+.dr-nandani-specialist {
+  padding: 100px 5%;
+  background: #fafaf8;
+}
+
+.dr-nandani-section-title {
+  font-family: 'Marcellus', serif;
+  font-size: 52px;
+  font-weight: 400;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 48px;
+  line-height: 1.2;
+}
+
+.dr-nandani-specialist-desc {
+  font-family: 'Lato', sans-serif;
+  font-size: 17px;
+  line-height: 1.85;
+  color: #555;
+  margin-bottom: 24px;
+  text-align: center;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dr-nandani-treatments {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.dr-nandani-treatments h4 {
+  font-family: 'Marcellus', serif;
+  font-size: 24px;
+  color: #1a1a1a;
+  margin-bottom: 32px;
+  font-weight: 400;
+}
+
+.dr-nandani-treatment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.dr-nandani-treatment-item {
+  padding: 24px 28px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 24px;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dr-nandani-treatment-item:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================================
+   CREDENTIALS SECTION
+   ========================================================= */
+.dr-nandani-credentials {
+  padding: 100px 5%;
+  background: #ffffff;
+}
+
+.dr-nandani-credentials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 48px;
+  margin-top: 60px;
+}
+
+.dr-nandani-credential-card {
+  padding: 48px 44px;
+  background: #fafaf8;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 40px;
+  transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dr-nandani-credential-card:hover {
+  background: #1a1a1a;
+  border-color: transparent;
+  transform: translateY(-6px);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+}
+
+.dr-nandani-credential-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f1eb;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  transition: all 0.3s ease;
+}
+
+.dr-nandani-credential-card:hover .dr-nandani-credential-icon {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.dr-nandani-credential-card h4 {
+  font-family: 'Marcellus', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  transition: color 0.4s ease;
+}
+
+.dr-nandani-credential-card:hover h4 {
+  color: #ffffff;
+}
+
+.dr-nandani-credential-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dr-nandani-credential-card li {
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #666;
+  margin-bottom: 14px;
+  transition: color 0.4s ease;
+}
+
+.dr-nandani-credential-card:hover li {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.dr-nandani-credential-card li:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   TRUST SECTION
+   ========================================================= */
+.dr-nandani-trust {
+  padding: 100px 5%;
+  background: #FFFAF1;
+}
+
+.dr-nandani-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  margin-top: 60px;
+}
+
+.dr-nandani-trust-card {
+  padding: 44px 40px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 32px;
+  text-align: center;
+  transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dr-nandani-trust-card:hover {
+  background: #1a1a1a;
+  border-color: transparent;
+  transform: translateY(-8px);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+}
+
+.dr-nandani-trust-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f1eb;
+  border-radius: 18px;
+  margin: 0 auto 20px;
+  color: #1a1a1a;
+  transition: all 0.35s ease;
+}
+
+.dr-nandani-trust-card:hover .dr-nandani-trust-icon {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.dr-nandani-trust-card h4 {
+  font-family: 'Marcellus', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  transition: color 0.4s ease;
+}
+
+.dr-nandani-trust-card:hover h4 {
+  color: #ffffff;
+}
+
+.dr-nandani-trust-card p {
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  color: #666;
+  line-height: 1.75;
+  transition: color 0.4s ease;
+  margin: 0;
+}
+
+.dr-nandani-trust-card:hover p {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* =========================================================
+   TESTIMONIALS SECTION
+   ========================================================= */
+.dr-nandani-testimonials {
+  padding: 100px 5%;
+  background: #ffffff;
+}
+
+.dr-nandani-testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 32px;
+  margin-top: 60px;
+}
+
+.dr-nandani-testimonial-card {
+  padding: 40px;
+  background: #fafaf8;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 32px;
+  transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dr-nandani-testimonial-card:hover {
+  background: #1a1a1a;
+  border-color: transparent;
+  transform: translateY(-8px);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+}
+
+.dr-nandani-stars {
+  font-size: 18px;
+  color: #ffc107;
+  margin-bottom: 16px;
+}
+
+.dr-nandani-testimonial-text {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  color: #555;
+  margin-bottom: 20px;
+  transition: color 0.4s ease;
+}
+
+.dr-nandani-testimonial-card:hover .dr-nandani-testimonial-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dr-nandani-testimonial-name {
+  font-family: 'Marcellus', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  transition: color 0.4s ease;
+}
+
+.dr-nandani-testimonial-card:hover .dr-nandani-testimonial-name {
+  color: #ffffff;
+}
+
+.dr-nandani-testimonial-note {
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  color: #999;
+  transition: color 0.4s ease;
+}
+
+.dr-nandani-testimonial-card:hover .dr-nandani-testimonial-note {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* =========================================================
+   FAQs SECTION
+   ========================================================= */
+.dr-nandani-faqs {
+  padding: 100px 5%;
+  background: #FFFAF1;
+}
+
+.dr-nandani-faq-list {
+  margin-top: 60px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dr-nandani-faq-item {
+  margin-bottom: 16px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.dr-nandani-faq-question {
+  width: 100%;
+  padding: 28px 36px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  font-family: 'Marcellus', serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: #1a1a1a;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dr-nandani-faq-question:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.dr-nandani-faq-question svg {
+  transition: transform 0.4s ease;
+  color: currentColor;
+}
+
+.dr-nandani-faq-question svg.active {
+  transform: rotate(180deg);
+}
+
+.dr-nandani-faq-answer {
+  padding: 28px 36px;
+  background: #f5f1eb;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  color: #555;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* =========================================================
+   CONSULTATION SECTION
+   ========================================================= */
+.dr-nandani-consultation {
+  padding: 100px 5%;
+  background: #ffffff;
+}
+
+.dr-nandani-consultation-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-top: 60px;
+  align-items: start;
+}
+
+.dr-nandani-clinic-info {
+  padding: 48px 44px;
+  background: #fafaf8;
+  border-radius: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.dr-nandani-clinic-info h4 {
+  font-family: 'Marcellus', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+}
+
+.dr-nandani-clinic-info p {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.dr-nandani-clinic-info p:last-child {
+  margin-bottom: 0;
+}
+
+.dr-nandani-consultation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dr-nandani-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.dr-nandani-form-row:last-of-type {
+  grid-template-columns: 1fr 1fr;
+}
+
+.dr-nandani-consultation-form input,
+.dr-nandani-consultation-form select,
+.dr-nandani-consultation-form textarea {
+  padding: 14px 16px;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  background: #fafaf8;
+  color: #1a1a1a;
+  transition: all 0.3s ease;
+}
+
+.dr-nandani-consultation-form input::placeholder,
+.dr-nandani-consultation-form select option {
+  color: #999;
+}
+
+.dr-nandani-consultation-form input:focus,
+.dr-nandani-consultation-form select:focus,
+.dr-nandani-consultation-form textarea:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #1a1a1a;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.05);
+}
+
+.dr-nandani-consultation-form textarea {
+  grid-column: 1 / -1;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.dr-nandani-consultation-form .dr-nandani-cta-btn {
+  grid-column: 1 / -1;
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.dr-nandani-consultation-form .dr-nandani-cta-btn:hover {
+  background: #111111;
+  box-shadow: 0 12px 32px rgba(26, 26, 26, 0.3);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 1200px) {
+  .dr-nandani-hero-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .dr-nandani-hero-content {
+    padding-right: 0;
+  }
+
+  .dr-nandani-hero-title {
+    font-size: 56px;
+  }
+
+  .dr-nandani-section-title {
+    font-size: 42px;
+  }
+
+  .dr-nandani-consultation-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dr-nandani-hero {
+    padding: 60px 5% 50px;
+  }
+
+  .dr-nandani-hero-title {
+    font-size: 40px;
+  }
+
+  .dr-nandani-section-title {
+    font-size: 32px;
+  }
+
+  .dr-nandani-specialist {
+    padding: 60px 5%;
+  }
+
+  .dr-nandani-credentials {
+    padding: 60px 5%;
+  }
+
+  .dr-nandani-credentials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dr-nandani-trust {
+    padding: 60px 5%;
+  }
+
+  .dr-nandani-trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dr-nandani-testimonials {
+    padding: 60px 5%;
+  }
+
+  .dr-nandani-testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dr-nandani-faqs {
+    padding: 60px 5%;
+  }
+
+  .dr-nandani-consultation {
+    padding: 60px 5%;
+  }
+
+  .dr-nandani-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dr-nandani-hero-form {
+    padding: 36px 28px;
+  }
+
+  .dr-nandani-credential-card,
+  .dr-nandani-trust-card,
+  .dr-nandani-testimonial-card {
+    padding: 32px 28px;
+  }
+
+  .dr-nandani-clinic-info {
+    padding: 36px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dr-nandani-hero {
+    padding: 40px 5% 30px;
+  }
+
+  .dr-nandani-hero-title {
+    font-size: 32px;
+  }
+
+  .dr-nandani-hero-desc {
+    font-size: 15px;
+  }
+
+  .dr-nandani-section-title {
+    font-size: 26px;
+  }
+
+  .dr-nandani-treatment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dr-nandani-specialist-desc {
+    font-size: 15px;
+  }
+}
