@@ -135,7 +135,7 @@
 }
 
 .about-vision-card:hover .card-icon {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 
@@ -163,10 +163,6 @@
   margin-bottom: 24px;
   color: #1a1a1a;
   transition: background 0.3s ease;
-}
-
-.about-vision-card:hover .card-icon {
-  background: #e7ded2;
 }
 
 /* Card title */
