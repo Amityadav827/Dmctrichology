@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import toast from "react-hot-toast";
 import { Plus, Edit2, Trash2, ArrowLeft, Image as ImageIcon, Search, Eye, Filter, ChevronDown, Check, Globe, X, CheckCircle, ExternalLink, Maximize, Layout } from "lucide-react";
 import Loader from "../components/Loader";
@@ -283,7 +283,7 @@ function Blogs() {
   const [bannerImagePreview, setBannerImagePreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [savedRange, setSavedRange] = useState(null);
-  const [quillRef, setQuillRef] = useState(null);
+  const quillRef = useRef(null);
 
   // Gallery Picker state
   const [galleryItems, setGalleryItems] = useState([]);
@@ -305,8 +305,8 @@ function Blogs() {
       ],
       handlers: {
         image: function() {
-          if (quillRef) {
-            const range = quillRef.getSelection();
+          if (quillRef.current) {
+            const range = quillRef.current.getSelection();
             setSavedRange(range);
             // Switch to Gallery Picker view
             fetchGallery();
@@ -315,7 +315,7 @@ function Blogs() {
         }
       }
     }
-  }), [quillRef]);
+  }), []);
 
   useEffect(() => {
     fetchBlogs();
@@ -485,7 +485,7 @@ function Blogs() {
   };
 
   const selectGalleryImage = (item) => {
-    if (!quillRef) return;
+    if (!quillRef.current) return;
 
     const base = (import.meta.env.VITE_API_URL || "https://dmctrichology-1.onrender.com/api").replace(/\/api$/, "");
     const normalizedPath = item.image.startsWith("/") ? item.image : `/${item.image}`;
@@ -504,8 +504,8 @@ function Blogs() {
     `;
 
     // Insert at saved cursor position
-    const range = savedRange || { index: quillRef.getLength(), length: 0 };
-    quillRef.clipboard.dangerouslyPasteHTML(range.index, figureHtml);
+    const range = savedRange || { index: quillRef.current.getLength(), length: 0 };
+    quillRef.current.clipboard.dangerouslyPasteHTML(range.index, figureHtml);
     
     setView("form");
     setSavedRange(null);
@@ -517,8 +517,8 @@ function Blogs() {
     if (e.target.tagName === 'IMG') {
       // Save current image context and switch to gallery for replacement
       // In WordPress style, double click usually opens the media library to replace
-      const range = quillRef.getSelection() || { index: quillRef.getLength(), length: 0 };
-      setSavedRange(range);
+      const range = quillRef.current ? quillRef.current.getSelection() : null;
+      setSavedRange(range || { index: 0, length: 0 });
       fetchGallery();
       setView("gallery-picker");
       toast("Select a new image to replace", { icon: '🔄' });
@@ -761,7 +761,7 @@ function Blogs() {
               </div>
               <div style={{ background: "#FFFFFF", borderRadius: "12px", overflow: "hidden", border: "1px solid #E2E8F0" }} onDoubleClick={handleEditorDoubleClick}>
                 <ReactQuill 
-                  ref={(el) => setQuillRef(el?.getEditor())}
+                  ref={(el) => { if (el) quillRef.current = el.getEditor(); }}
                   theme="snow"
                   value={formData.fullDescription}
                   onChange={(val) => handleQuillChange("fullDescription", val)}
