@@ -1,9 +1,13 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { Star, Clock, Play } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Star, Clock, Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
 import EditableText from './Editable/EditableText';
 import EditableSection from './Editable/EditableSection';
 import { useBuilder } from '../context/BuilderContext';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 const ServiceIntro = ({ data = {}, banner = {} }) => {
   const { isEditMode, siteConfig } = useBuilder();
@@ -11,6 +15,7 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
   const [bannerData, setBannerData] = useState(banner);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [activeVideo, setActiveVideo] = useState(false);
+  const thumbnailSwiperRef = useRef(null);
 
   const DUMMY_VIDEOS = [
     {
@@ -132,30 +137,59 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
                   )}
                 </div>
 
-                {/* Gallery Thumbnails Below (Shopify Style) */}
-                <div className="service-gallery-thumbnails">
-                  {videos.map((video, index) => (
-                    <button
-                      key={index}
-                      className={`service-thumbnail ${selectedIndex === index ? 'active' : ''}`}
-                      onClick={() => {
-                        setSelectedIndex(index);
-                        setActiveVideo(false);
-                      }}
-                      title={video.title}
-                    >
-                      <img
-                        src={video.thumbnail}
-                        alt={`${video.title} thumbnail`}
-                        className="thumbnail-img"
-                      />
-                      {video.isYoutubeStyleButtonEnabled && (
-                        <div className="thumbnail-play-indicator">
-                          <Play fill="white" size={16} />
-                        </div>
-                      )}
-                    </button>
-                  ))}
+                {/* Gallery Thumbnails Slider (Horizontal) */}
+                <div className="service-gallery-thumbnails-wrapper">
+                  <Swiper
+                    modules={[Navigation]}
+                    onSwiper={(swiper) => (thumbnailSwiperRef.current = swiper)}
+                    spaceBetween={12}
+                    slidesPerView="auto"
+                    className="service-gallery-thumbnails"
+                  >
+                    {videos.map((video, index) => (
+                      <SwiperSlide key={index} className="service-thumbnail-slide">
+                        <button
+                          className={`service-thumbnail ${selectedIndex === index ? 'active' : ''}`}
+                          onClick={() => {
+                            setSelectedIndex(index);
+                            setActiveVideo(false);
+                          }}
+                          title={video.title}
+                        >
+                          <img
+                            src={video.thumbnail}
+                            alt={`${video.title} thumbnail`}
+                            className="thumbnail-img"
+                          />
+                          {video.isYoutubeStyleButtonEnabled && (
+                            <div className="thumbnail-play-indicator">
+                              <Play fill="white" size={16} />
+                            </div>
+                          )}
+                        </button>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+
+                  {/* Navigation Arrows */}
+                  {videos.length > 4 && (
+                    <>
+                      <button
+                        onClick={() => thumbnailSwiperRef.current?.slidePrev()}
+                        className="thumbnail-nav-btn thumbnail-prev"
+                        aria-label="Previous thumbnail"
+                      >
+                        <ChevronLeft size={20} />
+                      </button>
+                      <button
+                        onClick={() => thumbnailSwiperRef.current?.slideNext()}
+                        className="thumbnail-nav-btn thumbnail-next"
+                        aria-label="Next thumbnail"
+                      >
+                        <ChevronRight size={20} />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
