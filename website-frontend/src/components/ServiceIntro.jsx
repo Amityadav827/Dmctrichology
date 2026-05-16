@@ -130,9 +130,11 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
                         className="service-main-image"
                       />
                       <div className="service-image-gradient"></div>
-                      <div className="service-play-overlay" onClick={() => setActiveVideo(true)}>
-                        <Play fill="white" className="service-play-icon" size={48} />
-                      </div>
+                      {currentVideo.isYoutubeStyleButtonEnabled && (
+                        <div className="service-play-overlay" onClick={() => setActiveVideo(true)}>
+                          <Play fill="white" className="service-play-icon" size={48} />
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
