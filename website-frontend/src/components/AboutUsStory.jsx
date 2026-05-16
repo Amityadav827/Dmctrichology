@@ -108,7 +108,7 @@ const AboutUsStory = ({ data = {} }) => {
                 ))}
               </div>
 
-              <motion.button 
+              <motion.button
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -116,12 +116,15 @@ const AboutUsStory = ({ data = {} }) => {
                 className="about-story-cta"
               >
                 Discover Our Method
-                <img
-                  src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png"
-                  alt=""
-                  className="about-story-cta-icon"
-                  aria-hidden="true"
-                />
+                <div className="about-story-arrow-circle">
+                  <img
+                    src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png"
+                    alt=""
+                    className="about-story-cta-icon"
+                    aria-hidden="true"
+                    style={{ width: '18px', filter: 'brightness(0)' }}
+                  />
+                </div>
               </motion.button>
             </div>
           </div>

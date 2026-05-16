@@ -144,32 +144,45 @@
 .about-story-cta {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 36px;
-  background: #1a1a1a;
+  gap: 15px;
+  padding: 10px 10px 10px 30px;
+  background: #000;
   color: white;
   border: none;
   border-radius: 100px;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  font-family: "'Marcellus', serif";
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-story-arrow-circle {
+  width: 45px;
+  height: 45px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
 .about-story-cta-icon {
-  width: 40px;
-  height: 40px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
   flex-shrink: 0;
 }
 
 .about-story-cta:hover {
-  background: #333333;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transform: none !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.about-story-cta:hover .about-story-arrow-circle {
+  transform: rotate(45deg);
 }
 
 @media (max-width: 1200px) {
