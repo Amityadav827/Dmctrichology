@@ -28,6 +28,14 @@ const ServiceDetailSchema = new mongoose.Schema({
     longDescription: { type: String, default: "" },
     benefits: [{ text: { type: String } }],
     closingText: { type: String, default: "" },
+    // Unified Cinematic Media System
+    introMedia: [{
+      type: { type: String, enum: ['image', 'video'], default: 'image' },
+      url: { type: String },
+      alt: { type: String },
+      title: { type: String }
+    }],
+    // Legacy videos field (kept for safe migration/fallback if needed)
     videos: [{
       title: { type: String },
       videoUrl: { type: String },
