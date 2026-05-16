@@ -955,6 +955,164 @@
   position: relative;
 }
 
+/* ─── MAIN IMAGE/VIDEO DISPLAY ─────────────────────────────────────── */
+.service-main-media {
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  background: #f1f5f9;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 24px;
+}
+
+.service-main-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.service-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.service-main-image-wrapper:hover .service-main-image {
+  transform: scale(1.05);
+}
+
+.service-image-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.service-main-image-wrapper:hover .service-image-gradient {
+  opacity: 1;
+}
+
+.service-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.service-main-image-wrapper:hover .service-play-overlay {
+  background: rgba(0,0,0,0.2);
+}
+
+.service-play-icon {
+  color: white;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  transition: transform 0.3s ease;
+}
+
+.service-main-image-wrapper:hover .service-play-icon {
+  transform: scale(1.1);
+}
+
+/* ─── GALLERY THUMBNAILS (SHOPIFY STYLE) ─────────────────────────── */
+.service-gallery-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.service-thumbnail {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: #f1f5f9;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.service-thumbnail.active {
+  border-color: #1a1a1a;
+  box-shadow: 0 4px 16px rgba(26, 26, 26, 0.15);
+}
+
+.service-thumbnail:hover {
+  border-color: #1a1a1a;
+  opacity: 0.8;
+}
+
+.thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-play-indicator {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  background: rgba(26, 26, 26, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* ─── VIDEO DISPLAY ─────────────────────────────────────────────────────── */
+.service-video-active {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 20;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.service-video-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.service-video-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 30;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.service-video-close:hover {
+  background: rgba(255,255,255,0.4);
+}
+
 .video-slider-main {
   position: relative;
   border-radius: 32px;
@@ -1323,6 +1481,9 @@
 @media (max-width: 1200px) {
   .intro-main-heading { font-size: 40px; }
   .intro-flex-row { gap: 40px; }
+  .service-gallery-thumbnails {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 992px) {
@@ -1344,6 +1505,10 @@
   .benefits-checklist-grid {
     grid-template-columns: 1fr;
   }
+  .service-gallery-thumbnails {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -1360,5 +1525,12 @@
     border-left: none;
   }
   .intro-short-desc { font-size: 17px; }
+  .service-gallery-thumbnails {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .service-main-media {
+    margin-bottom: 16px;
+  }
 }
 
