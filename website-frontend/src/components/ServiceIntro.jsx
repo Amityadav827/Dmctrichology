@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
-import { Star, Clock, ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { Star, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Navigation, FreeMode } from 'swiper/modules';
 import EditableText from './Editable/EditableText';
 import EditableSection from './Editable/EditableSection';
 import { useBuilder } from '../context/BuilderContext';
@@ -10,20 +10,18 @@ import { useBuilder } from '../context/BuilderContext';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import 'swiper/css/free-mode';
 
-const DUMMY_MEDIA = [
+const DUMMY_IMAGES = [
   {
-    type: "video",
-    url: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png", // Placeholder video if available, else use image as poster
-    title: "Cinematic Experience",
-    alt: "Premium Service Video"
-  },
-  {
-    type: "image",
-    url: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png",
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png",
     title: "Expert Care",
     alt: "Expert Care Team"
+  },
+  {
+    image: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
+    title: "Advanced Technology",
+    alt: "Advanced Technology"
   }
 ];
 
@@ -31,6 +29,7 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
   const { isEditMode, siteConfig } = useBuilder();
   const [introData, setIntroData] = useState(data);
   const [bannerData, setBannerData] = useState(banner);
+  const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
 
   // Sync from props
@@ -48,7 +47,6 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
       const nextBannerData = { ...bannerData };
       
       Object.keys(siteConfig).forEach(key => {
-        // Handle Intro Updates
         if (key.startsWith('service-intro.intro.')) {
           const fieldPath = key.replace('service-intro.intro.', '');
           if (fieldPath.includes('.')) {
@@ -65,7 +63,6 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
           hasIntroUpdates = true;
         }
 
-        // Handle Banner Updates (for shared Hero/Intro fields)
         if (key.startsWith('details-banner.banner.')) {
           const fieldPath = key.replace('details-banner.banner.', '');
           nextBannerData[fieldPath] = siteConfig[key];
@@ -78,10 +75,10 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
     }
   }, [isEditMode, siteConfig]);
 
-  const intro = introData.intro || introData; // Handle both cases where intro is nested or top-level
-  const mediaItems = intro.introMedia?.length > 0 ? intro.introMedia : DUMMY_MEDIA;
+  const intro = introData.intro || introData;
+  const images = (intro.introImages?.length > 0 ? intro.introImages : DUMMY_IMAGES);
   const benefits = intro.benefits || [];
-  const sliderSettings = intro.sliderSettings || { autoplay: true, autoplaySpeed: 5000, showDots: true, loopVideos: true };
+  const activeImage = images[activeIndex] || images[0] || DUMMY_IMAGES[0];
 
   return (
     <EditableSection sectionId="service-intro" label="Service Intro">
@@ -89,113 +86,111 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
         <div className="intro-container-premium">
           <div className="intro-flex-row">
             
-            {/* ─── LEFT SIDE: Cinematic Media Slider ─────────── */}
+            {/* ─── LEFT SIDE: Premium Image Gallery ─────────── */}
             <div className="intro-media-column">
               <div className="media-card-wrapper">
-                {/* Main Slider Container */}
-                <div className="video-slider-main">
-                  <Swiper
-                    modules={[Navigation, Pagination, Autoplay]}
-                    onSwiper={(swiper) => (swiperRef.current = swiper)}
-                    spaceBetween={0}
-                    slidesPerView={1}
-                    loop={sliderSettings.loopVideos}
-                    autoplay={sliderSettings.autoplay ? { delay: sliderSettings.autoplaySpeed, disableOnInteraction: false } : false}
-                    pagination={sliderSettings.showDots ? { clickable: true, el: '.custom-swiper-pagination' } : false}
-                    className="full-height-swiper"
-                  >
-                    {mediaItems.map((media, index) => (
-                      <SwiperSlide key={index}>
-                        <div className="slide-video-container">
-                          <div className="video-poster-wrapper">
-                            {media.type === 'video' ? (
-                              <video
-                                src={media.url}
-                                className="video-poster-img object-cover w-full h-full"
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                                poster={media.thumbnail || ""}
-                              />
-                            ) : (
-                              <img 
-                                src={media.url || 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png'} 
-                                alt={media.alt || media.title || "Service Media"} 
-                                className="video-poster-img"
-                              />
-                            )}
-                            
-                            <div className="video-poster-gradient"></div>
-                            
-                            {/* Slide Title */}
-                            {media.title && (
-                              <div className="slide-info-overlay">
-                                <p className="slide-count">Feature {index + 1}</p>
-                                <h4 className="slide-main-title">{media.title}</h4>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-
-                  {/* Navigation Arrows */}
-                  <button 
-                    onClick={() => swiperRef.current?.slidePrev()}
-                    className="swiper-nav-btn swiper-prev"
-                  >
-                    <ChevronLeft size={24} />
-                  </button>
-                  <button 
-                    onClick={() => swiperRef.current?.slideNext()}
-                    className="swiper-nav-btn swiper-next"
-                  >
-                    <ChevronRight size={24} />
-                  </button>
+                
+                {/* Main Large Image */}
+                <div className="service-main-media">
+                  <div className="service-main-image-wrapper">
+                    <img 
+                      src={activeImage.image || 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png'} 
+                      alt={activeImage.alt || activeImage.title || "Service Media"} 
+                      className="service-main-image"
+                    />
+                    <div className="service-image-gradient"></div>
+                    
+                    {/* Image Title Overlay */}
+                    {activeImage.title && (
+                      <div className="slide-info-overlay">
+                        <p className="slide-count">Image {activeIndex + 1}</p>
+                        <h4 className="slide-main-title">{activeImage.title}</h4>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                {/* Pagination Dots (Bottom Center) */}
-                {sliderSettings.showDots && (
-                  <div className="pagination-dots-container">
-                    <div className="custom-swiper-pagination"></div>
+                {/* Thumbnail Slider Below */}
+                {images.length > 1 && (
+                  <div className="service-gallery-thumbnails-wrapper">
+                    <Swiper
+                      modules={[Navigation, FreeMode]}
+                      onSwiper={(swiper) => (swiperRef.current = swiper)}
+                      spaceBetween={12}
+                      slidesPerView="auto"
+                      freeMode={true}
+                      watchSlidesProgress={true}
+                      className="service-gallery-thumbnails"
+                    >
+                      {images.map((img, index) => (
+                        <SwiperSlide key={index} className="service-thumbnail-slide">
+                          <button 
+                            onClick={() => setActiveIndex(index)}
+                            className={`service-thumbnail ${activeIndex === index ? 'active' : ''}`}
+                          >
+                            <img 
+                              src={img.image || 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png'} 
+                              alt={img.alt || `Thumbnail ${index + 1}`} 
+                              className="thumbnail-img"
+                            />
+                          </button>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+
+                    {/* Thumbnail Nav Arrows */}
+                    <button 
+                      onClick={() => swiperRef.current?.slidePrev()}
+                      className="thumbnail-nav-btn thumbnail-prev"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    <button 
+                      onClick={() => swiperRef.current?.slideNext()}
+                      className="thumbnail-nav-btn thumbnail-next"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* ─── RIGHT SIDE: Content (Restored to Reference) ─── */}
-            <div className="details-content-col">
+            {/* ─── RIGHT SIDE: Content ─── */}
+            <div className="intro-content-column">
               {/* Badge */}
-              <span className="details-badge">
-                <EditableText sectionId="details-banner" fieldPath="banner.badgeText">
-                  {bannerData.badgeText || 'FOR UNWANTED HAIR'}
-                </EditableText>
-              </span>
+              <div className="content-badge-box">
+                <span className="content-badge-premium">
+                  <EditableText sectionId="details-banner" fieldPath="banner.badgeText">
+                    {bannerData.badgeText || 'FOR UNWANTED HAIR'}
+                  </EditableText>
+                </span>
+              </div>
 
               {/* Title */}
-              <h1 className="details-title">
+              <h1 className="intro-main-heading">
                 <EditableText sectionId="details-banner" fieldPath="banner.title">
                   {bannerData.title || 'Follicular Unit Extraction (FUE)'}
                 </EditableText>
               </h1>
 
               {/* Meta Row */}
-              <div className="details-meta-row">
-                <span className="details-rating-num">
-                  <EditableText sectionId="details-banner" fieldPath="banner.rating">
-                    {bannerData.rating || '4.85'}
-                  </EditableText>
-                </span>
-                <div className="details-stars">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={12} fill="#fbbf24" color="#fbbf24" />
-                  ))}
+              <div className="intro-meta-stats">
+                <div className="meta-stat-item">
+                  <span className="rating-value">
+                    <EditableText sectionId="details-banner" fieldPath="banner.rating">
+                      {bannerData.rating || '4.85'}
+                    </EditableText>
+                  </span>
+                  <div className="star-rating-row">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star key={s} size={12} fill="#fbbf24" color="#fbbf24" />
+                    ))}
+                  </div>
                 </div>
-                <div className="details-duration">
-                  <Clock size={14} />
-                  <span>
+                <div className="meta-stat-item divider-left">
+                  <Clock size={16} className="clock-icon" />
+                  <span className="duration-text">
                     <EditableText sectionId="details-banner" fieldPath="banner.duration">
                       {bannerData.duration || '180 mins'}
                     </EditableText>
@@ -203,73 +198,75 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
                 </div>
               </div>
 
-              {/* Intro Section Heading */}
-              <h3 className="details-subtitle">
-                <EditableText sectionId="service-intro" fieldPath="intro.introHeading">
-                  {intro.introHeading || intro.title || ""}
-                </EditableText>
-              </h3>
-
-              {/* Short Description / Tagline */}
-              {intro.shortDescription && (
-                <div className="details-intro-short-desc">
-                  <EditableText sectionId="service-intro" fieldPath="intro.shortDescription">
-                    {intro.shortDescription}
+              {/* Descriptions */}
+              <div className="intro-description-box">
+                {intro.shortDescription && (
+                  <h3 className="intro-short-desc">
+                    <EditableText sectionId="service-intro" fieldPath="intro.shortDescription">
+                      {intro.shortDescription}
+                    </EditableText>
+                  </h3>
+                )}
+                <p className="intro-long-desc">
+                  <EditableText sectionId="service-intro" fieldPath="intro.longDescription">
+                    {intro.longDescription || 'FUE is one of the most popular and limited modern procedure techniques for hair repair.'}
                   </EditableText>
+                </p>
+              </div>
+
+              {/* Benefits Checklist */}
+              {benefits.length > 0 && (
+                <div className="benefits-checklist-grid">
+                  {benefits.map((benefit, i) => (
+                    <div className="benefit-check-item" key={i}>
+                      <div className="check-dot-wrapper">
+                        <div className="check-dot-inner"></div>
+                      </div>
+                      <span className="benefit-label">
+                        <EditableText sectionId="service-intro" fieldPath={`benefits.${i}.text`}>
+                          {benefit.text}
+                        </EditableText>
+                      </span>
+                    </div>
+                  ))}
                 </div>
               )}
-
-              {/* Main Description */}
-              <p className="details-description">
-                <EditableText sectionId="service-intro" fieldPath="intro.longDescription">
-                  {intro.longDescription || 'FUE is one of the most popular and limited modern procedure techniques for hair repair.'}
-                </EditableText>
-              </p>
-
-              {/* Bullet Points */}
-              {benefits.length > 0 && (
-                <ul className="details-bullets">
-                  {benefits.map((benefit, i) => (
-                    <li key={i}>
-                      <EditableText sectionId="service-intro" fieldPath={`benefits.${i}.text`}>
-                        {benefit.text}
-                      </EditableText>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* Closing Text */}
-              <p className="details-closing">
-                <EditableText sectionId="service-intro" fieldPath="intro.closingText">
-                  {intro.closingText || 'Our FUE procedure is performed by skilled hair transplant surgeons with years of experience, making us the best hair transplant centre in Delhi.'}
-                </EditableText>
-              </p>
             </div>
 
           </div>
         </div>
       </section>
 
-      <style jsx global>{`
-        .custom-swiper-pagination .swiper-pagination-bullet {
-          width: 8px;
-          height: 8px;
-          background: #cbd5e1;
-          opacity: 1;
-          transition: all 0.3s ease;
-          border-radius: 4px;
+      <style jsx>{`
+        .service-intro-premium {
+          padding: 80px 5%;
+          background: #ffffff;
         }
-        .custom-swiper-pagination .swiper-pagination-bullet-active {
-          width: 24px;
-          background: #1e293b;
+        .intro-container-premium {
+          max-width: 1400px;
+          margin: 0 auto;
         }
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
+        .intro-flex-row {
+          display: flex;
+          gap: 80px;
+          align-items: center;
         }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s infinite ease-in-out;
+        .intro-media-column {
+          flex: 1;
+          min-width: 0;
+          max-width: 50%;
+        }
+        .intro-content-column {
+          flex: 1;
+        }
+        @media (max-width: 992px) {
+          .intro-flex-row {
+            flex-direction: column;
+            gap: 40px;
+          }
+          .intro-media-column {
+            max-width: 100%;
+          }
         }
       `}</style>
     </EditableSection>

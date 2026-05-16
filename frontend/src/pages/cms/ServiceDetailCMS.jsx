@@ -158,7 +158,7 @@ export default function ServiceDetailCMS() {
             title: serviceInfo.title || "",
             category: serviceInfo.category || "",
             banner: { badgeText: "PREMIUM TREATMENT", title: serviceInfo.title || "", subtitle: "", duration: "45 mins", rating: "4.9", buttonText: "Book Consultation", backgroundImage: "" },
-            intro: { badgeText: "ABOUT THE TREATMENT", title: serviceInfo.title || "", rating: "4.9", duration: "45 mins", shortDescription: "", longDescription: "", benefits: [], closingText: "", introMedia: [] },
+            intro: { badgeText: "ABOUT THE TREATMENT", title: serviceInfo.title || "", rating: "4.9", duration: "45 mins", shortDescription: "", longDescription: "", benefits: [], closingText: "", introImages: [] },
             process: { sectionTitle: "How it works?", processSteps: [] },
             idealFrequency: { frequencyTitle: "Treatment Frequency & Suitability", frequencyDescription: "", idealForPoints: [], notIdealForPoints: [], ctaTitle: "Not sure which treatment is right for YOU?", ctaDescription: "We can help with that!", ctaButtonText: "Book a free consultation", ctaButtonLink: "/contact", ctaImage: "" },
             beforeAfter: { beforeTitle: "Before Treatment Checklist", afterTitle: "Aftercare Instructions", beforePoints: [], afterPoints: [], sectionBackground: "#f9f7f2" },
@@ -214,8 +214,8 @@ export default function ServiceDetailCMS() {
     try {
       // Ensure we don't send legacy videos if we have introMedia
       const payload = { ...data };
-      if (payload.intro && payload.intro.introMedia && payload.intro.introMedia.length > 0) {
-        // delete payload.intro.videos; // Optional: keep for safety or remove
+      if (payload.intro && payload.intro.introImages && payload.intro.introImages.length > 0) {
+        // cleaned
       }
       
       await axios.put(`/service-details/${selectedSlug}`, payload);
@@ -251,11 +251,6 @@ export default function ServiceDetailCMS() {
     
     if (arrayField) {
       updateArrayItem(section, arrayField, idx, field, url);
-      // Auto-detect type if it's an introMedia item
-      if (arrayField === 'introMedia') {
-        const isVideo = url.match(/\.(mp4|webm|mov|ogg)$/i);
-        updateArrayItem(section, arrayField, idx, 'type', isVideo ? 'video' : 'image');
-      }
     } else {
       updateSectionField(section, field, url);
     }
@@ -455,61 +450,48 @@ export default function ServiceDetailCMS() {
                     </div>
                   </div>
 
-                  {/* Intro Media System */}
+                  {/* Intro Images Gallery */}
                   <div className="border-t border-slate-100 pt-8 mt-4">
                     <div className="flex justify-between items-center mb-6">
                       <div>
-                        <label className="block text-[12px] font-black uppercase text-slate-900 tracking-widest">Intro Media</label>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Images or Cinematic Videos (MP4/WebM)</p>
+                        <label className="block text-[12px] font-black uppercase text-slate-900 tracking-widest">Gallery Images</label>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Manage multiple images for the premium gallery</p>
                       </div>
-                      <button onClick={() => addArrayItem("intro", "introMedia", { type: "image", url: "", title: "", alt: "" })} className="flex items-center gap-1 text-blue-600 text-xs font-bold bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100">
-                        <Plus size={14}/> Add Media
+                      <button onClick={() => addArrayItem("intro", "introImages", { image: "", title: "", alt: "" })} className="flex items-center gap-1 text-blue-600 text-xs font-bold bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100">
+                        <Plus size={14}/> Add Image
                       </button>
                     </div>
                     <div className="space-y-4">
-                      {(data.intro.introMedia || []).map((m, i) => (
+                      {(data.intro.introImages || []).map((m, i) => (
                         <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-100 relative">
-                          <button onClick={() => removeArrayItem("intro", "introMedia", i)} className="absolute top-4 right-4 text-slate-300 hover:text-red-500">
+                          <button onClick={() => removeArrayItem("intro", "introImages", i)} className="absolute top-4 right-4 text-slate-300 hover:text-red-500">
                             <Trash2 size={18} />
                           </button>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Media Type</label>
-                              <select 
-                                value={m.type || "image"} 
-                                onChange={e => updateArrayItem("intro", "introMedia", i, "type", e.target.value)}
-                                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white text-sm font-bold outline-none focus:border-blue-500"
-                              >
-                                <option value="image">Image</option>
-                                <option value="video">Cinematic Video (Autoplay)</option>
-                              </select>
-                            </div>
-                            <div>
                                <MediaUploader 
-                                 label="Media Asset (Gallery or Upload)" 
-                                 value={m.url} 
+                                 label="Image Asset (Gallery or Upload)" 
+                                 value={m.image} 
                                  onChange={val => {
-                                   updateArrayItem("intro", "introMedia", i, "url", val);
-                                   const isVideo = val.match(/\.(mp4|webm|mov|ogg)$/i);
-                                   updateArrayItem("intro", "introMedia", i, "type", isVideo ? "video" : "image");
+                                   updateArrayItem("intro", "introImages", i, "image", val);
                                  }} 
-                                 onGalleryClick={() => openGalleryPicker({ section: "intro", arrayField: "introMedia", idx: i, field: "url" })}
+                                 onGalleryClick={() => openGalleryPicker({ section: "intro", arrayField: "introImages", idx: i, field: "image" })}
                                />
                             </div>
                             <div>
-                              <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Optional Title</label>
-                              <input type="text" value={m.title || ""} onChange={e => updateArrayItem("intro", "introMedia", i, "title", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm" />
+                              <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Image Title</label>
+                              <input type="text" value={m.title || ""} onChange={e => updateArrayItem("intro", "introImages", i, "title", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm" />
                             </div>
-                            <div>
+                            <div className="md:col-span-2">
                               <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Alt Text (SEO)</label>
-                              <input type="text" value={m.alt || ""} onChange={e => updateArrayItem("intro", "introMedia", i, "alt", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm" />
+                              <input type="text" value={m.alt || ""} onChange={e => updateArrayItem("intro", "introImages", i, "alt", e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm" />
                             </div>
                           </div>
                         </div>
                       ))}
-                      {(!data.intro.introMedia || data.intro.introMedia.length === 0) && (
+                      {(!data.intro.introImages || data.intro.introImages.length === 0) && (
                         <div className="py-10 text-center border-2 border-dashed border-slate-100 rounded-3xl text-slate-300 text-sm font-bold uppercase tracking-widest">
-                          No intro media added yet
+                          No images added yet
                         </div>
                       )}
                     </div>
