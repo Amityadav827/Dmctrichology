@@ -9,18 +9,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { FRONTEND_URL } from "../utils/config";
 
-const modules = {
-  toolbar: [
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ 'color': [] }, { 'background': [] }],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'align': [] }],
-    ['link', 'image', 'video'],
-    ['blockquote', 'code-block'],
-    ['clean']
-  ],
-};
+// Modules moved inside component for proper handler binding
 
 // Derive the uploads base URL from the API base URL
 const getImageUrl = (path) => {
@@ -311,13 +300,27 @@ function Blogs() {
     width: "100%"
   });
 
-  // Table Modal state
-  const [tableModalOpen, setTableModalOpen] = useState(false);
-  const [tableData, setTableData] = useState({
-    rows: 3,
-    cols: 3,
-    hasHeader: true
-  });
+  // Quill Editor Config
+  const modules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'align': [] }],
+        ['link', 'image', 'video'],
+        ['blockquote', 'code-block'],
+        ['clean']
+      ],
+      handlers: {
+        image: function() {
+          // Open custom gallery modal instead of local file input
+          handleOpenMediaModal();
+        }
+      }
+    }
+  }), []);
 
   useEffect(() => {
     fetchBlogs();
@@ -541,35 +544,31 @@ function Blogs() {
     toast.success("Media inserted successfully");
   };
 
-  const handleInsertTable = () => {
-    const { rows, cols, hasHeader } = tableData;
-    let html = '<div class="table-responsive"><table>';
-    
-    if (hasHeader) {
-      html += '<thead><tr>';
-      for (let j = 0; j < cols; j++) {
-        html += `<th>Header ${j + 1}</th>`;
-      }
-      html += '</tr></thead>';
-    }
-    
-    html += '<tbody>';
-    for (let i = 0; i < rows; i++) {
-      html += '<tr>';
-      for (let j = 0; j < cols; j++) {
-        html += `<td>Data Cell</td>`;
-      }
-      html += '</tr>';
-    }
-    html += '</tbody></table></div><p></p>';
+  // Click to Edit Image Logic
+  const handleEditorClick = (e) => {
+    if (e.target.tagName === 'IMG') {
+      const img = e.target;
+      const figure = img.closest('figure');
+      const link = img.closest('a');
+      const figcaption = figure ? figure.querySelector('figcaption') : null;
 
-    setFormData(prev => ({
-      ...prev,
-      fullDescription: prev.fullDescription + html
-    }));
-    
-    setTableModalOpen(false);
-    toast.success("Table structure inserted");
+      setMediaData({
+        url: img.src,
+        alt: img.alt || "",
+        title: img.title || "",
+        link: link ? link.href : "",
+        newTab: link ? link.target === '_blank' : true,
+        caption: figcaption ? figcaption.innerText : "",
+        width: img.style.width || "100%"
+      });
+      
+      // To replace correctly, we'd need Quill selection manipulation, 
+      // but for simplicity and stability, we just open the modal.
+      // Instructions for user: "Updating will insert a new version, please delete old one if needed."
+      // Actually, let's just use it as a 'Quick SEO View'
+      setMediaModalOpen(true);
+      toast("Media settings loaded for review", { icon: '📝' });
+    }
   };
 
   const handleSubmit = async (e, saveAsDraft = false) => {
@@ -808,17 +807,10 @@ function Blogs() {
                 <div style={{ display: "flex", gap: "10px" }}>
                   <button 
                     type="button"
-                    onClick={() => setTableModalOpen(true)}
-                    style={{ padding: "0.3rem 0.75rem", borderRadius: "6px", background: "#10B981", color: "#FFF", fontSize: "0.75rem", fontWeight: 600, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
-                  >
-                    <Globe size={14} /> Insert Table
-                  </button>
-                  <button 
-                    type="button"
                     onClick={handleOpenMediaModal}
                     style={{ padding: "0.3rem 0.75rem", borderRadius: "6px", background: "#2563EB", color: "#FFF", fontSize: "0.75rem", fontWeight: 600, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
                   >
-                    <ImageIcon size={14} /> SEO Media
+                    <ImageIcon size={14} /> Gallery Media
                   </button>
                 </div>
               </div>
@@ -1068,77 +1060,6 @@ function Blogs() {
           </div>
         </form>
       </div>
-        {/* Table Generator Modal */}
-        {tableModalOpen && (
-          <div style={{ position: "fixed", inset: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)", padding: "1rem" }}>
-            <div className="animate-in fade-in zoom-in duration-200" style={{ background: "#FFFFFF", width: "100%", maxWidth: "400px", borderRadius: "24px", overflow: "hidden", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}>
-              <div style={{ padding: "1.5rem", borderBottom: "1px solid #F1F5F9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Table Generator</h3>
-                <button onClick={() => setTableModalOpen(false)} style={{ background: "none", border: "none", color: "#64748B", cursor: "pointer" }}><X size={20} /></button>
-              </div>
-              <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Rows</label>
-                    <input type="number" value={tableData.rows} onChange={(e) => setTableData({...tableData, rows: parseInt(e.target.value)})} className="form-input" min="1" max="20" />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.5rem", textTransform: "uppercase" }}>Columns</label>
-                    <input type="number" value={tableData.cols} onChange={(e) => setTableData({...tableData, cols: parseInt(e.target.value)})} className="form-input" min="1" max="10" />
-                  </div>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <input type="checkbox" id="hasHeader" checked={tableData.hasHeader} onChange={(e) => setTableData({...tableData, hasHeader: e.target.checked})} style={{ width: "16px", height: "16px", cursor: "pointer" }} />
-                  <label htmlFor="hasHeader" style={{ fontSize: "0.875rem", color: "#475569", cursor: "pointer" }}>Include Header Row</label>
-                </div>
-              </div>
-              <div style={{ padding: "1.25rem 1.5rem", background: "#F8FAFC", borderTop: "1px solid #F1F5F9", display: "flex", gap: "1rem" }}>
-                <button onClick={() => setTableModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>Cancel</button>
-                <button onClick={handleInsertTable} className="btn-primary" style={{ flex: 1 }}>Insert Table</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Table Generator Modal */}
-        {tableModalOpen && (
-          <div style={{ position: "fixed", inset: 0, zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(8px)", padding: "1.5rem" }}>
-            <div className="animate-in fade-in zoom-in duration-200" style={{ background: "#FFFFFF", width: "100%", maxWidth: "420px", borderRadius: "24px", overflow: "hidden", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.3)" }}>
-              <div style={{ padding: "1.5rem", borderBottom: "1px solid #F1F5F9", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#F8FAFC" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "#D1FAE5", display: "flex", alignItems: "center", justifyContent: "center", color: "#059669" }}>
-                    <Layout size={20} />
-                  </div>
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#0F172A", margin: 0 }}>Table Generator</h3>
-                </div>
-                <button onClick={() => setTableModalOpen(false)} style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#FFF", border: "1px solid #E2E8F0", color: "#64748B", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><X size={18} /></button>
-              </div>
-              <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.625rem", textTransform: "uppercase" }}>Rows</label>
-                    <input type="number" value={tableData.rows} onChange={(e) => setTableData({...tableData, rows: parseInt(e.target.value)})} className="form-input" min="1" max="50" />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "#64748B", marginBottom: "0.625rem", textTransform: "uppercase" }}>Columns</label>
-                    <input type="number" value={tableData.cols} onChange={(e) => setTableData({...tableData, cols: parseInt(e.target.value)})} className="form-input" min="1" max="15" />
-                  </div>
-                </div>
-                <div onClick={() => setTableData({...tableData, hasHeader: !tableData.hasHeader})} style={{ display: "flex", alignItems: "center", gap: "0.875rem", cursor: "pointer", padding: "1rem", background: "#F8FAFC", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
-                  <div style={{ width: "22px", height: "22px", borderRadius: "6px", background: tableData.hasHeader ? "#10B981" : "#FFF", border: "2px solid #10B981", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
-                    {tableData.hasHeader && <Check size={14} color="#FFF" />}
-                  </div>
-                  <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "#1E293B" }}>Include Sticky Header Row</span>
-                </div>
-              </div>
-              <div style={{ padding: "1.25rem 1.75rem", background: "#F8FAFC", borderTop: "1px solid #F1F5F9", display: "flex", gap: "1rem" }}>
-                <button onClick={() => setTableModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>Cancel</button>
-                <button onClick={handleInsertTable} className="btn-primary" style={{ flex: 1, background: "#10B981" }}>Generate Table</button>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Media SEO Modal */}
         {mediaModalOpen && (
           <div style={{ position: "fixed", inset: 0, zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15, 23, 42, 0.6)", backdropFilter: "blur(8px)", padding: "1.5rem" }}>
