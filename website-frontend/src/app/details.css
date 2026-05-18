@@ -1659,8 +1659,6 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 20px;
-  border-bottom: 1px solid #eaeaea;
-  padding-bottom: 12px;
   line-height: 1.3;
 }
 
@@ -1680,7 +1678,6 @@
   .service-content-block-heading {
     font-size: 20px;
     margin-bottom: 16px;
-    padding-bottom: 8px;
   }
   
   .service-content-block-description {
