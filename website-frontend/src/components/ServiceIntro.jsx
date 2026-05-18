@@ -325,7 +325,7 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
 
             {/* Long Description */}
             {intro.longDescription && (
-              <p className="details-description">
+              <p className="details-description" style={{ whiteSpace: "pre-line" }}>
                 <EditableText sectionId="service-intro" fieldPath="intro.longDescription">
                   {intro.longDescription}
                 </EditableText>
