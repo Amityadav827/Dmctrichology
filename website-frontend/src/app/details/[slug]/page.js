@@ -9,6 +9,12 @@ import IdealFrequency from '../../../components/IdealFrequency';
 import ServiceContentBlock from '../../../components/ServiceContentBlock';
 import ServiceBenefits from '../../../components/ServiceBenefits';
 import ServiceIdealCandidates from '../../../components/ServiceIdealCandidates';
+import ServiceNotCandidates from '../../../components/ServiceNotCandidates';
+import ServiceTechniques from '../../../components/ServiceTechniques';
+import ServiceInfoBlocks from '../../../components/ServiceInfoBlocks';
+import ServiceAftercare from '../../../components/ServiceAftercare';
+import ServiceWhyChooseUs from '../../../components/ServiceWhyChooseUs';
+import ServiceEditorialFaq from '../../../components/ServiceEditorialFaq';
 import '../../service.css';
 import '../../details.css';
 
@@ -81,9 +87,15 @@ export default async function DynamicDetailsPage({ params }) {
       <ServiceContentBlock data={service.contentBlocks || []} />
       <ServiceBenefits data={service.benefitsSection || null} />
       <ServiceIdealCandidates data={service.idealCandidates || null} />
+      <ServiceNotCandidates data={service.notCandidatesSection || null} />
+      <ServiceTechniques data={service.techniquesSection || null} />
+      <ServiceInfoBlocks data={service.infoBlocksSection || null} />
       <ProcessSlider data={process || {}} />
+      <ServiceAftercare data={service.aftercareSection || null} />
+      <ServiceWhyChooseUs data={service.whyChooseUsSection || null} />
       <IdealFrequency data={idealFrequency || {}} />
       <BeforeAfterTreatment data={beforeAfter || {}} />
+      <ServiceEditorialFaq data={service.editorialFaqSection || null} />
       <FaqEnquiry data={faqEnquiry || {}} />
     </div>
   );

@@ -638,6 +638,306 @@ export default function ServiceDetailCMS() {
     });
   };
 
+  const addNotCandidateBullet = () => {
+    setData(prev => ({
+      ...prev,
+      notCandidatesSection: {
+        ...prev.notCandidatesSection,
+        bullets: [
+          ...(prev.notCandidatesSection?.bullets || []),
+          { bulletText: "", sortOrder: (prev.notCandidatesSection?.bullets?.length || 0) + 1, isVisible: true }
+        ]
+      }
+    }));
+  };
+
+  const updateNotCandidateBullet = (idx, field, val) => {
+    setData(prev => {
+      const bts = [...(prev.notCandidatesSection?.bullets || [])];
+      bts[idx] = { ...bts[idx], [field]: val };
+      return {
+        ...prev,
+        notCandidatesSection: {
+          ...prev.notCandidatesSection,
+          bullets: bts
+        }
+      };
+    });
+  };
+
+  const removeNotCandidateBullet = (idx) => {
+    setData(prev => ({
+      ...prev,
+      notCandidatesSection: {
+        ...prev.notCandidatesSection,
+        bullets: (prev.notCandidatesSection?.bullets || []).filter((_, i) => i !== idx)
+      }
+    }));
+  };
+
+  const reorderNotCandidateBullet = (idx, direction) => {
+    setData(prev => {
+      const newBts = moveArrayItem(prev.notCandidatesSection?.bullets || [], idx, direction);
+      return {
+        ...prev,
+        notCandidatesSection: {
+          ...prev.notCandidatesSection,
+          bullets: newBts
+        }
+      };
+    });
+  };
+
+  const addTechniqueItem = () => {
+    setData(prev => ({
+      ...prev,
+      techniquesSection: {
+        ...prev.techniquesSection,
+        techniques: [
+          ...(prev.techniquesSection?.techniques || []),
+          { title: "", description: "", sortOrder: (prev.techniquesSection?.techniques?.length || 0) + 1, isVisible: true }
+        ]
+      }
+    }));
+  };
+
+  const updateTechniqueItem = (idx, field, val) => {
+    setData(prev => {
+      const techs = [...(prev.techniquesSection?.techniques || [])];
+      techs[idx] = { ...techs[idx], [field]: val };
+      return {
+        ...prev,
+        techniquesSection: {
+          ...prev.techniquesSection,
+          techniques: techs
+        }
+      };
+    });
+  };
+
+  const removeTechniqueItem = (idx) => {
+    setData(prev => ({
+      ...prev,
+      techniquesSection: {
+        ...prev.techniquesSection,
+        techniques: (prev.techniquesSection?.techniques || []).filter((_, i) => i !== idx)
+      }
+    }));
+  };
+
+  const reorderTechniqueItem = (idx, direction) => {
+    setData(prev => {
+      const newTechs = moveArrayItem(prev.techniquesSection?.techniques || [], idx, direction);
+      return {
+        ...prev,
+        techniquesSection: {
+          ...prev.techniquesSection,
+          techniques: newTechs
+        }
+      };
+    });
+  };
+
+  const addInfoBlockItem = () => {
+    setData(prev => ({
+      ...prev,
+      infoBlocksSection: {
+        ...prev.infoBlocksSection,
+        blocks: [
+          ...(prev.infoBlocksSection?.blocks || []),
+          { heading: "", description: "", backgroundVariant: "white", sortOrder: (prev.infoBlocksSection?.blocks?.length || 0) + 1, isVisible: true }
+        ]
+      }
+    }));
+  };
+
+  const updateInfoBlockItem = (idx, field, val) => {
+    setData(prev => {
+      const blks = [...(prev.infoBlocksSection?.blocks || [])];
+      blks[idx] = { ...blks[idx], [field]: val };
+      return {
+        ...prev,
+        infoBlocksSection: {
+          ...prev.infoBlocksSection,
+          blocks: blks
+        }
+      };
+    });
+  };
+
+  const removeInfoBlockItem = (idx) => {
+    setData(prev => ({
+      ...prev,
+      infoBlocksSection: {
+        ...prev.infoBlocksSection,
+        blocks: (prev.infoBlocksSection?.blocks || []).filter((_, i) => i !== idx)
+      }
+    }));
+  };
+
+  const reorderInfoBlockItem = (idx, direction) => {
+    setData(prev => {
+      const newBlks = moveArrayItem(prev.infoBlocksSection?.blocks || [], idx, direction);
+      return {
+        ...prev,
+        infoBlocksSection: {
+          ...prev.infoBlocksSection,
+          blocks: newBlks
+        }
+      };
+    });
+  };
+
+  const addAftercareBullet = () => {
+    setData(prev => ({
+      ...prev,
+      aftercareSection: {
+        ...prev.aftercareSection,
+        bullets: [
+          ...(prev.aftercareSection?.bullets || []),
+          { bulletText: "", sortOrder: (prev.aftercareSection?.bullets?.length || 0) + 1, isVisible: true }
+        ]
+      }
+    }));
+  };
+
+  const updateAftercareBullet = (idx, field, val) => {
+    setData(prev => {
+      const bts = [...(prev.aftercareSection?.bullets || [])];
+      bts[idx] = { ...bts[idx], [field]: val };
+      return {
+        ...prev,
+        aftercareSection: {
+          ...prev.aftercareSection,
+          bullets: bts
+        }
+      };
+    });
+  };
+
+  const removeAftercareBullet = (idx) => {
+    setData(prev => ({
+      ...prev,
+      aftercareSection: {
+        ...prev.aftercareSection,
+        bullets: (prev.aftercareSection?.bullets || []).filter((_, i) => i !== idx)
+      }
+    }));
+  };
+
+  const reorderAftercareBullet = (idx, direction) => {
+    setData(prev => {
+      const newBts = moveArrayItem(prev.aftercareSection?.bullets || [], idx, direction);
+      return {
+        ...prev,
+        aftercareSection: {
+          ...prev.aftercareSection,
+          bullets: newBts
+        }
+      };
+    });
+  };
+
+  const addWhyChooseFeature = () => {
+    setData(prev => ({
+      ...prev,
+      whyChooseUsSection: {
+        ...prev.whyChooseUsSection,
+        features: [
+          ...(prev.whyChooseUsSection?.features || []),
+          { featureText: "", sortOrder: (prev.whyChooseUsSection?.features?.length || 0) + 1, isVisible: true }
+        ]
+      }
+    }));
+  };
+
+  const updateWhyChooseFeature = (idx, field, val) => {
+    setData(prev => {
+      const fts = [...(prev.whyChooseUsSection?.features || [])];
+      fts[idx] = { ...fts[idx], [field]: val };
+      return {
+        ...prev,
+        whyChooseUsSection: {
+          ...prev.whyChooseUsSection,
+          features: fts
+        }
+      };
+    });
+  };
+
+  const removeWhyChooseFeature = (idx) => {
+    setData(prev => ({
+      ...prev,
+      whyChooseUsSection: {
+        ...prev.whyChooseUsSection,
+        features: (prev.whyChooseUsSection?.features || []).filter((_, i) => i !== idx)
+      }
+    }));
+  };
+
+  const reorderWhyChooseFeature = (idx, direction) => {
+    setData(prev => {
+      const newFts = moveArrayItem(prev.whyChooseUsSection?.features || [], idx, direction);
+      return {
+        ...prev,
+        whyChooseUsSection: {
+          ...prev.whyChooseUsSection,
+          features: newFts
+        }
+      };
+    });
+  };
+
+  const addEditorialFaqItem = () => {
+    setData(prev => ({
+      ...prev,
+      editorialFaqSection: {
+        ...prev.editorialFaqSection,
+        faqs: [
+          ...(prev.editorialFaqSection?.faqs || []),
+          { question: "", answer: "", sortOrder: (prev.editorialFaqSection?.faqs?.length || 0) + 1, isVisible: true }
+        ]
+      }
+    }));
+  };
+
+  const updateEditorialFaqItem = (idx, field, val) => {
+    setData(prev => {
+      const newFqs = [...(prev.editorialFaqSection?.faqs || [])];
+      newFqs[idx] = { ...newFqs[idx], [field]: val };
+      return {
+        ...prev,
+        editorialFaqSection: {
+          ...prev.editorialFaqSection,
+          faqs: newFqs
+        }
+      };
+    });
+  };
+
+  const removeEditorialFaqItem = (idx) => {
+    setData(prev => ({
+      ...prev,
+      editorialFaqSection: {
+        ...prev.editorialFaqSection,
+        faqs: (prev.editorialFaqSection?.faqs || []).filter((_, i) => i !== idx)
+      }
+    }));
+  };
+
+  const reorderEditorialFaqItem = (idx, direction) => {
+    setData(prev => {
+      const newFqs = moveArrayItem(prev.editorialFaqSection?.faqs || [], idx, direction);
+      return {
+        ...prev,
+        editorialFaqSection: {
+          ...prev.editorialFaqSection,
+          faqs: newFqs
+        }
+      };
+    });
+  };
+
   const handleSave = async () => {
     if (!data) return;
     setSaving(true);
@@ -724,6 +1024,12 @@ export default function ServiceDetailCMS() {
               { id: "contentBlocks", label: "Content Blocks", icon: Type },
               { id: "benefitsSection", label: "Benefits Section", icon: CheckCircle },
               { id: "idealCandidates", label: "Ideal Candidates", icon: Star },
+              { id: "notCandidates", label: "Not Candidates", icon: HelpCircle },
+              { id: "techniques", label: "Techniques", icon: List },
+              { id: "infoBlocks", label: "Info Blocks", icon: Type },
+              { id: "aftercare", label: "Aftercare", icon: CheckCircle },
+              { id: "whyChooseUs", label: "Why Choose Us", icon: Star },
+              { id: "editorialFaq", label: "Editorial FAQ", icon: HelpCircle },
               { id: "process", label: "Process Steps", icon: List },
               { id: "idealFrequency", label: "Suitability & CTA", icon: CheckCircle },
               { id: "beforeAfter", label: "Before/After", icon: RefreshCw },
@@ -1274,7 +1580,722 @@ export default function ServiceDetailCMS() {
               </div>
             )}
 
-            {/* Other tabs remain as in stable version */}
+            {activeTab === 'notCandidates' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><HelpCircle size={18} className="text-blue-500"/> Not Candidates Section</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage who is NOT a candidate for this treatment (exclusion criteria list)</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 space-y-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Section Heading Title</label>
+                      <input 
+                        type="text" 
+                        value={data.notCandidatesSection?.sectionHeading || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          notCandidatesSection: { ...prev.notCandidatesSection, sectionHeading: e.target.value }
+                        }))}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                        placeholder="e.g. Who is not a candidate for Hair Transplant Surgery?" 
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="block text-[10px] font-black uppercase text-slate-500 tracking-widest">Contraindications & Exclusions Bullets</label>
+                        <button 
+                          onClick={addNotCandidateBullet}
+                          className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm"
+                        >
+                          <Plus size={12}/> Add Bullet
+                        </button>
+                      </div>
+                      
+                      {(data.notCandidatesSection?.bullets || []).map((pt, i) => (
+                        <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 flex flex-col gap-3 shadow-sm">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Bullet Point {i + 1}</span>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => reorderNotCandidateBullet(i, 'up')} 
+                                disabled={i === 0}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowUp size={12} />
+                              </button>
+                              <button 
+                                onClick={() => reorderNotCandidateBullet(i, 'down')} 
+                                disabled={i === (data.notCandidatesSection?.bullets?.length || 0) - 1}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowDown size={12} />
+                              </button>
+                              <button 
+                                onClick={() => removeNotCandidateBullet(i)} 
+                                className="p-1 bg-red-50 text-red-500 rounded hover:bg-red-100 border border-red-100"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                            <div className="md:col-span-3">
+                              <input 
+                                type="text" 
+                                value={pt.bulletText || ""} 
+                                onChange={e => updateNotCandidateBullet(i, "bulletText", e.target.value)}
+                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500"
+                                placeholder="e.g. Those with active scalp psoriasis or infection"
+                              />
+                            </div>
+                            <div className="flex justify-between items-center gap-2">
+                              <label className="flex items-center gap-1 cursor-pointer">
+                                <input 
+                                  type="checkbox" 
+                                  checked={pt.isVisible !== false} 
+                                  onChange={e => updateNotCandidateBullet(i, "isVisible", e.target.checked)}
+                                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5" 
+                                />
+                                <span className="text-[10px] font-black uppercase text-slate-500">Visible</span>
+                              </label>
+                              <input 
+                                type="number" 
+                                value={pt.sortOrder ?? (i + 1)} 
+                                onChange={e => updateNotCandidateBullet(i, "sortOrder", parseInt(e.target.value, 10) || 0)}
+                                className="w-12 px-1 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold text-center" 
+                                min="0"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {(data.notCandidatesSection?.bullets || []).length === 0 && (
+                        <div className="text-center py-8 bg-white rounded-2xl border border-slate-200">
+                          <HelpCircle size={24} className="text-slate-300 mx-auto mb-2" />
+                          <p className="text-xs text-slate-400 font-bold">No bullets added yet</p>
+                          <p className="text-[10px] text-slate-300 mt-0.5">Click "Add Bullet" to build the exclusions list.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'techniques' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><List size={18} className="text-blue-500"/> Treatment Techniques</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage premium numbered techniques, procedures, and methods</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 space-y-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Section Heading Title</label>
+                      <input 
+                        type="text" 
+                        value={data.techniquesSection?.sectionHeading || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          techniquesSection: { ...prev.techniquesSection, sectionHeading: e.target.value }
+                        }))}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                        placeholder="e.g. Hair Transplant Technique" 
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="block text-[10px] font-black uppercase text-slate-500 tracking-widest">Techniques List</label>
+                        <button 
+                          onClick={addTechniqueItem}
+                          className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm"
+                        >
+                          <Plus size={12}/> Add Technique
+                        </button>
+                      </div>
+                      
+                      {(data.techniquesSection?.techniques || []).map((pt, i) => (
+                        <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 flex flex-col gap-4 shadow-sm">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Technique Item {i + 1}</span>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => reorderTechniqueItem(i, 'up')} 
+                                disabled={i === 0}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowUp size={12} />
+                              </button>
+                              <button 
+                                onClick={() => reorderTechniqueItem(i, 'down')} 
+                                disabled={i === (data.techniquesSection?.techniques?.length || 0) - 1}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowDown size={12} />
+                              </button>
+                              <button 
+                                onClick={() => removeTechniqueItem(i)} 
+                                className="p-1 bg-red-50 text-red-500 rounded hover:bg-red-100 border border-red-100"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                              <div className="md:col-span-3">
+                                <label className="block text-[8px] font-black uppercase text-slate-400 mb-1 tracking-widest">Technique Title</label>
+                                <input 
+                                  type="text" 
+                                  value={pt.title || ""} 
+                                  onChange={e => updateTechniqueItem(i, "title", e.target.value)}
+                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500"
+                                  placeholder="e.g. 1. FUT HAIR TRANSPLANT"
+                                />
+                              </div>
+                              <div className="flex justify-between items-center gap-2 pt-4">
+                                <label className="flex items-center gap-1 cursor-pointer">
+                                  <input 
+                                    type="checkbox" 
+                                    checked={pt.isVisible !== false} 
+                                    onChange={e => updateTechniqueItem(i, "isVisible", e.target.checked)}
+                                    className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5" 
+                                  />
+                                  <span className="text-[10px] font-black uppercase text-slate-500">Visible</span>
+                                </label>
+                                <input 
+                                  type="number" 
+                                  value={pt.sortOrder ?? (i + 1)} 
+                                  onChange={e => updateTechniqueItem(i, "sortOrder", parseInt(e.target.value, 10) || 0)}
+                                  className="w-12 px-1 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold text-center" 
+                                  min="0"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="block text-[8px] font-black uppercase text-slate-400 mb-1 tracking-widest">Description</label>
+                              <textarea 
+                                value={pt.description || ""} 
+                                onChange={e => updateTechniqueItem(i, "description", e.target.value)}
+                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500 min-h-[100px]"
+                                placeholder="Describe the procedural method in detail..."
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {(data.techniquesSection?.techniques || []).length === 0 && (
+                        <div className="text-center py-8 bg-white rounded-2xl border border-slate-200">
+                          <List size={24} className="text-slate-300 mx-auto mb-2" />
+                          <p className="text-xs text-slate-400 font-bold">No techniques added yet</p>
+                          <p className="text-[10px] text-slate-300 mt-0.5">Click "Add Technique" to display procedures list.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'infoBlocks' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><Type size={18} className="text-blue-500"/> Editorial Info Blocks</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage highly reusable editorial sections with alternating cream/white backgrounds</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="block text-[10px] font-black uppercase text-slate-500 tracking-widest">Editorial Blocks</label>
+                        <button 
+                          onClick={addInfoBlockItem}
+                          className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm"
+                        >
+                          <Plus size={12}/> Add Block
+                        </button>
+                      </div>
+                      
+                      {(data.infoBlocksSection?.blocks || []).map((pt, i) => (
+                        <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 flex flex-col gap-4 shadow-sm">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Info Block {i + 1}</span>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => reorderInfoBlockItem(i, 'up')} 
+                                disabled={i === 0}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowUp size={12} />
+                              </button>
+                              <button 
+                                onClick={() => reorderInfoBlockItem(i, 'down')} 
+                                disabled={i === (data.infoBlocksSection?.blocks?.length || 0) - 1}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowDown size={12} />
+                              </button>
+                              <button 
+                                onClick={() => removeInfoBlockItem(i)} 
+                                className="p-1 bg-red-50 text-red-500 rounded hover:bg-red-100 border border-red-100"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                              <div className="md:col-span-2">
+                                <label className="block text-[8px] font-black uppercase text-slate-400 mb-1 tracking-widest">Block Heading</label>
+                                <input 
+                                  type="text" 
+                                  value={pt.heading || ""} 
+                                  onChange={e => updateInfoBlockItem(i, "heading", e.target.value)}
+                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500"
+                                  placeholder="e.g. WHAT HAPPENS DURING HAIR TRANSPLANT PROCEDURE?"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[8px] font-black uppercase text-slate-400 mb-1 tracking-widest">Background Variant</label>
+                                <select 
+                                  value={pt.backgroundVariant || "white"} 
+                                  onChange={e => updateInfoBlockItem(i, "backgroundVariant", e.target.value)}
+                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500"
+                                >
+                                  <option value="white">Editorial White</option>
+                                  <option value="cream">Luxury Cream / Ivory</option>
+                                </select>
+                              </div>
+                              <div className="flex justify-between items-center gap-2 pt-4">
+                                <label className="flex items-center gap-1 cursor-pointer">
+                                  <input 
+                                    type="checkbox" 
+                                    checked={pt.isVisible !== false} 
+                                    onChange={e => updateInfoBlockItem(i, "isVisible", e.target.checked)}
+                                    className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5" 
+                                  />
+                                  <span className="text-[10px] font-black uppercase text-slate-500">Visible</span>
+                                </label>
+                                <input 
+                                  type="number" 
+                                  value={pt.sortOrder ?? (i + 1)} 
+                                  onChange={e => updateInfoBlockItem(i, "sortOrder", parseInt(e.target.value, 10) || 0)}
+                                  className="w-12 px-1 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold text-center" 
+                                  min="0"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="block text-[8px] font-black uppercase text-slate-400 mb-1 tracking-widest">Description</label>
+                              <textarea 
+                                value={pt.description || ""} 
+                                onChange={e => updateInfoBlockItem(i, "description", e.target.value)}
+                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500 min-h-[120px]"
+                                placeholder="Write the editorial description content..."
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {(data.infoBlocksSection?.blocks || []).length === 0 && (
+                        <div className="text-center py-8 bg-white rounded-2xl border border-slate-200">
+                          <Type size={24} className="text-slate-300 mx-auto mb-2" />
+                          <p className="text-xs text-slate-400 font-bold">No info blocks added yet</p>
+                          <p className="text-[10px] text-slate-300 mt-0.5">Click "Add Block" to insert premium sections.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'aftercare' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><CheckCircle size={18} className="text-blue-500"/> Aftercare Instructions</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage guidelines, tips, and recovery protocols post-treatment</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 space-y-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Section Heading Title</label>
+                      <input 
+                        type="text" 
+                        value={data.aftercareSection?.sectionHeading || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          aftercareSection: { ...prev.aftercareSection, sectionHeading: e.target.value }
+                        }))}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                        placeholder="e.g. How to take care of scalp after Hair Transplant?" 
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Introductory Text</label>
+                      <textarea 
+                        value={data.aftercareSection?.introText || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          aftercareSection: { ...prev.aftercareSection, introText: e.target.value }
+                        }))}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500 transition-all min-h-[80px]" 
+                        placeholder="Post-hair transplant, you must follow these aftercare steps..." 
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="block text-[10px] font-black uppercase text-slate-500 tracking-widest">Aftercare Guidelines Repeater</label>
+                        <button 
+                          onClick={addAftercareBullet}
+                          className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm"
+                        >
+                          <Plus size={12}/> Add Guideline
+                        </button>
+                      </div>
+                      
+                      {(data.aftercareSection?.bullets || []).map((pt, i) => (
+                        <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 flex flex-col gap-3 shadow-sm">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Guideline {i + 1}</span>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => reorderAftercareBullet(i, 'up')} 
+                                disabled={i === 0}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowUp size={12} />
+                              </button>
+                              <button 
+                                onClick={() => reorderAftercareBullet(i, 'down')} 
+                                disabled={i === (data.aftercareSection?.bullets?.length || 0) - 1}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowDown size={12} />
+                              </button>
+                              <button 
+                                onClick={() => removeAftercareBullet(i)} 
+                                className="p-1 bg-red-50 text-red-500 rounded hover:bg-red-100 border border-red-100"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                            <div className="md:col-span-3">
+                              <input 
+                                type="text" 
+                                value={pt.bulletText || ""} 
+                                onChange={e => updateAftercareBullet(i, "bulletText", e.target.value)}
+                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500"
+                                placeholder="e.g. Spray the scalp with saline for 1 to 4 days"
+                              />
+                            </div>
+                            <div className="flex justify-between items-center gap-2">
+                              <label className="flex items-center gap-1 cursor-pointer">
+                                <input 
+                                  type="checkbox" 
+                                  checked={pt.isVisible !== false} 
+                                  onChange={e => updateAftercareBullet(i, "isVisible", e.target.checked)}
+                                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5" 
+                                  id={`aftercare-vis-${i}`}
+                                />
+                                <span className="text-[10px] font-black uppercase text-slate-500">Visible</span>
+                              </label>
+                              <input 
+                                type="number" 
+                                value={pt.sortOrder ?? (i + 1)} 
+                                onChange={e => updateAftercareBullet(i, "sortOrder", parseInt(e.target.value, 10) || 0)}
+                                className="w-12 px-1 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold text-center" 
+                                min="0"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {(data.aftercareSection?.bullets || []).length === 0 && (
+                        <div className="text-center py-8 bg-white rounded-2xl border border-slate-200">
+                          <CheckCircle size={24} className="text-slate-300 mx-auto mb-2" />
+                          <p className="text-xs text-slate-400 font-bold">No guidelines added yet</p>
+                          <p className="text-[10px] text-slate-300 mt-0.5">Click "Add Guideline" to build the checklist.</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Concluding Text</label>
+                      <textarea 
+                        value={data.aftercareSection?.conclusionText || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          aftercareSection: { ...prev.aftercareSection, conclusionText: e.target.value }
+                        }))}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500 transition-all min-h-[80px]" 
+                        placeholder="Schedule check-up appointments after 3 months..." 
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'whyChooseUs' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><Star size={18} className="text-blue-500"/> Why Choose Us</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage unique credentials, values, and USPs grid</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 space-y-6">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Section Heading Title</label>
+                      <input 
+                        type="text" 
+                        value={data.whyChooseUsSection?.sectionHeading || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          whyChooseUsSection: { ...prev.whyChooseUsSection, sectionHeading: e.target.value }
+                        }))}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                        placeholder="e.g. Why Choose DMC Trichology?" 
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Introductory Text</label>
+                      <textarea 
+                        value={data.whyChooseUsSection?.introText || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          whyChooseUsSection: { ...prev.whyChooseUsSection, introText: e.target.value }
+                        }))}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500 transition-all min-h-[80px]" 
+                        placeholder="At DMC Trichology, we deliver medical-grade luxury reconstructions..." 
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="block text-[10px] font-black uppercase text-slate-500 tracking-widest">Features Grid Items</label>
+                        <button 
+                          onClick={addWhyChooseFeature}
+                          className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm"
+                        >
+                          <Plus size={12}/> Add Feature
+                        </button>
+                      </div>
+                      
+                      {(data.whyChooseUsSection?.features || []).map((pt, i) => (
+                        <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 flex flex-col gap-3 shadow-sm">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Feature Point {i + 1}</span>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => reorderWhyChooseFeature(i, 'up')} 
+                                disabled={i === 0}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowUp size={12} />
+                              </button>
+                              <button 
+                                onClick={() => reorderWhyChooseFeature(i, 'down')} 
+                                disabled={i === (data.whyChooseUsSection?.features || 0) - 1}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowDown size={12} />
+                              </button>
+                              <button 
+                                onClick={() => removeWhyChooseFeature(i)} 
+                                className="p-1 bg-red-50 text-red-500 rounded hover:bg-red-100 border border-red-100"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                            <div className="md:col-span-3">
+                              <input 
+                                type="text" 
+                                value={pt.featureText || ""} 
+                                onChange={e => updateWhyChooseFeature(i, "featureText", e.target.value)}
+                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500"
+                                placeholder="e.g. 100% graft survival rate and permanent results"
+                              />
+                            </div>
+                            <div className="flex justify-between items-center gap-2">
+                              <label className="flex items-center gap-1 cursor-pointer">
+                                <input 
+                                  type="checkbox" 
+                                  checked={pt.isVisible !== false} 
+                                  onChange={e => updateWhyChooseFeature(i, "isVisible", e.target.checked)}
+                                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5" 
+                                  id={`why-choose-vis-${i}`}
+                                />
+                                <span className="text-[10px] font-black uppercase text-slate-500">Visible</span>
+                              </label>
+                              <input 
+                                type="number" 
+                                value={pt.sortOrder ?? (i + 1)} 
+                                onChange={e => updateWhyChooseFeature(i, "sortOrder", parseInt(e.target.value, 10) || 0)}
+                                className="w-12 px-1 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold text-center" 
+                                min="0"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {(data.whyChooseUsSection?.features || []).length === 0 && (
+                        <div className="text-center py-8 bg-white rounded-2xl border border-slate-200">
+                          <Star size={24} className="text-slate-300 mx-auto mb-2" />
+                          <p className="text-xs text-slate-400 font-bold">No features added yet</p>
+                          <p className="text-[10px] text-slate-300 mt-0.5">Click "Add Feature" to build the grid.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'editorialFaq' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><HelpCircle size={18} className="text-blue-500"/> Editorial FAQ Section</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage luxury editorial faq accordions with full spacing-retention and multi-paragraph layout</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="block text-[10px] font-black uppercase text-slate-500 tracking-widest">FAQ Accordion List</label>
+                        <button 
+                          onClick={addEditorialFaqItem}
+                          className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm"
+                        >
+                          <Plus size={12}/> Add FAQ Accordion
+                        </button>
+                      </div>
+                      
+                      {(data.editorialFaqSection?.faqs || []).map((pt, i) => (
+                        <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 flex flex-col gap-4 shadow-sm">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">FAQ Accordion Item {i + 1}</span>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => reorderEditorialFaqItem(i, 'up')} 
+                                disabled={i === 0}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowUp size={12} />
+                              </button>
+                              <button 
+                                onClick={() => reorderEditorialFaqItem(i, 'down')} 
+                                disabled={i === (data.editorialFaqSection?.faqs?.length || 0) - 1}
+                                className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                              >
+                                <ArrowDown size={12} />
+                              </button>
+                              <button 
+                                onClick={() => removeEditorialFaqItem(i)} 
+                                className="p-1 bg-red-50 text-red-500 rounded hover:bg-red-100 border border-red-100"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                              <div className="md:col-span-3">
+                                <label className="block text-[8px] font-black uppercase text-slate-400 mb-1 tracking-widest">Question Text</label>
+                                <input 
+                                  type="text" 
+                                  value={pt.question || ""} 
+                                  onChange={e => updateEditorialFaqItem(i, "question", e.target.value)}
+                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500"
+                                  placeholder="e.g. Does the hair transplant look completely natural?"
+                                />
+                              </div>
+                              <div className="flex justify-between items-center gap-2 pt-4">
+                                <label className="flex items-center gap-1 cursor-pointer">
+                                  <input 
+                                    type="checkbox" 
+                                    checked={pt.isVisible !== false} 
+                                    onChange={e => updateEditorialFaqItem(i, "isVisible", e.target.checked)}
+                                    className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5" 
+                                  />
+                                  <span className="text-[10px] font-black uppercase text-slate-500">Visible</span>
+                                </label>
+                                <input 
+                                  type="number" 
+                                  value={pt.sortOrder ?? (i + 1)} 
+                                  onChange={e => updateEditorialFaqItem(i, "sortOrder", parseInt(e.target.value, 10) || 0)}
+                                  className="w-12 px-1 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold text-center" 
+                                  min="0"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="block text-[8px] font-black uppercase text-slate-400 mb-1 tracking-widest">Answer Text (Multi-line Support)</label>
+                              <textarea 
+                                value={pt.answer || ""} 
+                                onChange={e => updateEditorialFaqItem(i, "answer", e.target.value)}
+                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500 min-h-[120px]"
+                                placeholder="Provide the long-form answer here..."
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {(data.editorialFaqSection?.faqs || []).length === 0 && (
+                        <div className="text-center py-8 bg-white rounded-2xl border border-slate-200">
+                          <HelpCircle size={24} className="text-slate-300 mx-auto mb-2" />
+                          <p className="text-xs text-slate-400 font-bold">No FAQ accordions added yet</p>
+                          <p className="text-[10px] text-slate-300 mt-0.5">Click "Add FAQ Accordion" to build the panel list.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             {activeTab === 'process' && (
               <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
                  <div className="mb-8">

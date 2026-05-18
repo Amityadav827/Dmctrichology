@@ -113,6 +113,65 @@ const ServiceDetailSchema = new mongoose.Schema({
     }]
   },
 
+  notCandidatesSection: {
+    sectionHeading: { type: String, default: "" },
+    bullets: [{
+      bulletText: { type: String, default: "" },
+      sortOrder: { type: Number, default: 0 },
+      isVisible: { type: Boolean, default: true }
+    }]
+  },
+
+  techniquesSection: {
+    sectionHeading: { type: String, default: "" },
+    techniques: [{
+      title: { type: String, default: "" },
+      description: { type: String, default: "" },
+      sortOrder: { type: Number, default: 0 },
+      isVisible: { type: Boolean, default: true }
+    }]
+  },
+
+  infoBlocksSection: {
+    blocks: [{
+      heading: { type: String, default: "" },
+      description: { type: String, default: "" },
+      backgroundVariant: { type: String, default: "white", enum: ["white", "cream"] },
+      sortOrder: { type: Number, default: 0 },
+      isVisible: { type: Boolean, default: true }
+    }]
+  },
+
+  aftercareSection: {
+    sectionHeading: { type: String, default: "" },
+    introText: { type: String, default: "" },
+    bullets: [{
+      bulletText: { type: String, default: "" },
+      sortOrder: { type: Number, default: 0 },
+      isVisible: { type: Boolean, default: true }
+    }],
+    conclusionText: { type: String, default: "" }
+  },
+
+  whyChooseUsSection: {
+    sectionHeading: { type: String, default: "" },
+    introText: { type: String, default: "" },
+    features: [{
+      featureText: { type: String, default: "" },
+      sortOrder: { type: Number, default: 0 },
+      isVisible: { type: Boolean, default: true }
+    }]
+  },
+
+  editorialFaqSection: {
+    faqs: [{
+      question: { type: String, default: "" },
+      answer: { type: String, default: "" },
+      sortOrder: { type: Number, default: 0 },
+      isVisible: { type: Boolean, default: true }
+    }]
+  },
+
   seo: {
     metaTitle: { type: String, default: "" },
     metaDescription: { type: String, default: "" },
