@@ -171,12 +171,6 @@ const ServiceListing = ({ services: initialServices = [], categories: initialCat
                         <div className="listing-stars-box">
                           {renderListingStars(service.rating || 4.8)}
                         </div>
-                        
-                        <span className="review-count-premium">
-                          (<EditableText sectionId="service-listing" fieldPath={`${index}.reviewCount`}>
-                            {String(service.reviewCount || "1250")}
-                          </EditableText> Reviews)
-                        </span>
 
                         <span className="meta-separator-premium">•</span>
                         
