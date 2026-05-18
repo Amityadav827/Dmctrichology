@@ -262,6 +262,33 @@
   gap: 2px;
 }
 
+.si-stars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.si-star {
+  width: 16px;
+  height: 16px;
+}
+
+.si-star.filled {
+  color: #F5B301;
+  fill: #F5B301;
+}
+
+.si-star.empty {
+  color: #D1D5DB;
+}
+
+.si-review-count {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  color: #6B7280;
+}
+
+
 .details-duration {
   display: flex;
   align-items: center;

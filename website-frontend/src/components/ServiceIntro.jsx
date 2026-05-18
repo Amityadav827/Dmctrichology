@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Star, Clock, ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { Star, StarHalf, Clock, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import EditableText from './Editable/EditableText';
 import EditableSection from './Editable/EditableSection';
 import { useBuilder } from '../context/BuilderContext';
@@ -50,6 +50,23 @@ function normalizeMedia(intro = {}) {
   }
   return DUMMY_MEDIA;
 }
+
+const renderStars = (rating) => {
+  const stars = [];
+  const numericRating = parseFloat(rating) || 0;
+
+  for (let i = 1; i <= 5; i++) {
+    if (numericRating >= i) {
+      stars.push(<Star key={i} className="si-star filled" />);
+    } else if (numericRating >= i - 0.5) {
+      stars.push(<StarHalf key={i} className="si-star filled" />);
+    } else {
+      stars.push(<Star key={i} className="si-star empty" />);
+    }
+  }
+
+  return stars;
+};
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const ServiceIntro = ({ data = {}, banner = {} }) => {
@@ -264,14 +281,17 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
               <div className="details-rating">
                 <span className="details-rating-num">
                   <EditableText sectionId="details-banner" fieldPath="banner.rating">
-                    {bannerData.rating || '4.9'}
+                    {String(bannerData.rating || '4.9')}
                   </EditableText>
                 </span>
-                <div className="details-stars">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={12} fill="#fbbf24" color="#fbbf24" />
-                  ))}
+                <div className="si-stars">
+                  {renderStars(bannerData.rating || 4.9)}
                 </div>
+                <span className="si-review-count">
+                  (<EditableText sectionId="details-banner" fieldPath="banner.reviewCount">
+                    {String(bannerData.reviewCount || '1250')}
+                  </EditableText> Reviews)
+                </span>
               </div>
               {(bannerData.duration || intro.duration) && (
                 <div className="details-duration">

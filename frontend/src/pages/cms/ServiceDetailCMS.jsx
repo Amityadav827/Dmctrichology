@@ -577,6 +577,27 @@ export default function ServiceDetailCMS() {
                     <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Banner Title</label>
                     <input type="text" value={data.banner.title || ""} onChange={e => updateSectionField("banner", "title", e.target.value)} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" />
                   </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Rating</label>
+                    <input 
+                      type="number" 
+                      step="0.1" 
+                      min="0"
+                      max="5"
+                      value={data.banner.rating ?? 4.9} 
+                      onChange={e => updateSectionField("banner", "rating", parseFloat(e.target.value) || 0)} 
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Review Count</label>
+                    <input 
+                      type="number" 
+                      value={data.banner.reviewCount ?? 1250} 
+                      onChange={e => updateSectionField("banner", "reviewCount", parseInt(e.target.value, 10) || 0)} 
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                    />
+                  </div>
                 </div>
               </div>
 
