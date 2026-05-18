@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 // ─── Unified Media Item Editor (supports Image + Video) ───────────────────────
-function MediaItemEditor({ item, index, onUpdate, onRemove }) {
+function MediaItemEditor({ item, index, onUpdate, onRemove, onPickFromLibrary }) {
   const [uploading, setUploading] = useState(false);
   const [thumbUploading, setThumbUploading] = useState(false);
 
@@ -61,7 +61,10 @@ function MediaItemEditor({ item, index, onUpdate, onRemove }) {
         <div className="flex gap-2">
           <button
             type="button"
-            onClick={() => onUpdate('type', 'image')}
+            onClick={() => {
+              onUpdate('type', 'image');
+              onUpdate('thumbnail', '');
+            }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wide transition-all ${
               !isVideo 
                 ? 'bg-blue-600 text-white shadow-md shadow-blue-200' 
@@ -99,48 +102,59 @@ function MediaItemEditor({ item, index, onUpdate, onRemove }) {
       {/* Main Media URL + Upload */}
       <div className="mb-4">
         <label className="block text-[10px] font-black uppercase text-slate-400 mb-1.5 tracking-widest">
-          {isVideo ? 'Video File URL or Embed URL' : 'Image URL'}
+          {isVideo ? 'Video File' : 'Image File'}
         </label>
         <div className="flex gap-3 items-center">
           {/* Preview Thumbnail */}
           <div className="relative w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
             {previewUrl ? (
-              <img src={previewUrl} alt="" className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                {isVideo ? <Film size={20} className="text-slate-300" /> : <ImageIcon size={20} className="text-slate-300" />}
-              </div>
-            )}
-            {isVideo && previewUrl && (
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                <div className="w-6 h-6 bg-white/90 rounded-full flex items-center justify-center">
-                  <Film size={12} className="text-violet-600" />
+              isVideo ? (
+                <div className="w-full h-full position-relative">
+                  <img src={previewUrl} alt="" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <div className="w-6 h-6 bg-white/90 rounded-full flex items-center justify-center">
+                      <Film size={12} className="text-violet-600" />
+                    </div>
+                  </div>
                 </div>
+              ) : (
+                <img src={previewUrl} alt="" className="w-full h-full object-cover" />
+              )
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-slate-50">
+                {isVideo ? <Film size={20} className="text-slate-300" /> : <ImageIcon size={20} className="text-slate-300" />}
               </div>
             )}
           </div>
 
           {/* URL Input */}
-          <div className="flex-1 relative">
+          <div className="flex-1 space-y-2">
             <input 
               type="text" 
               value={item.url || ''} 
               onChange={e => onUpdate('url', e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all pr-24"
-              placeholder={isVideo ? 'https://... (mp4/webm/embed)' : 'https://...'}
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              placeholder={isVideo ? 'Video file URL...' : 'Image URL...'}
             />
-            {!isVideo && (
-              <label className="absolute right-2 top-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase cursor-pointer transition-all flex items-center gap-1">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => onPickFromLibrary('url')}
+                className="flex-1 flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all"
+              >
+                <ImageIcon size={12} /> Gallery
+              </button>
+              <label className="flex-1 flex items-center justify-center gap-1 bg-blue-50 text-blue-600 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase cursor-pointer transition-all">
                 {uploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
                 Upload
                 <input 
                   type="file" 
-                  accept="image/*" 
+                  accept={isVideo ? "video/*" : "image/*"} 
                   className="hidden" 
                   onChange={e => e.target.files[0] && uploadFile(e.target.files[0], 'url', setUploading)} 
                 />
               </label>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -148,35 +162,44 @@ function MediaItemEditor({ item, index, onUpdate, onRemove }) {
       {/* Video Thumbnail (only for video type) */}
       {isVideo && (
         <div className="mb-4">
-          <label className="block text-[10px] font-black uppercase text-slate-400 mb-1.5 tracking-widest">Video Thumbnail Image</label>
+          <label className="block text-[10px] font-black uppercase text-slate-400 mb-1.5 tracking-widest">Video Cover Image (Thumbnail)</label>
           <div className="flex gap-3 items-center">
             <div className="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
               {item.thumbnail ? (
                 <img src={item.thumbnail} alt="" className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="w-full h-full flex items-center justify-center bg-slate-50">
                   <ImageIcon size={20} className="text-slate-300" />
                 </div>
               )}
             </div>
-            <div className="flex-1 relative">
+            <div className="flex-1 space-y-2">
               <input 
                 type="text" 
                 value={item.thumbnail || ''} 
                 onChange={e => onUpdate('thumbnail', e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-violet-500 transition-all pr-24"
-                placeholder="Thumbnail URL..."
+                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-violet-500 transition-all"
+                placeholder="Thumbnail image URL..."
               />
-              <label className="absolute right-2 top-1.5 bg-violet-50 text-violet-600 hover:bg-violet-100 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase cursor-pointer transition-all flex items-center gap-1">
-                {thumbUploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
-                Upload
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  className="hidden" 
-                  onChange={e => e.target.files[0] && uploadFile(e.target.files[0], 'thumbnail', setThumbUploading)} 
-                />
-              </label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => onPickFromLibrary('thumbnail')}
+                  className="flex-1 flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all"
+                >
+                  <ImageIcon size={12} /> Gallery
+                </button>
+                <label className="flex-1 flex items-center justify-center gap-1 bg-violet-50 text-violet-600 hover:bg-violet-100 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase cursor-pointer transition-all">
+                  {thumbUploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                  Upload
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={e => e.target.files[0] && uploadFile(e.target.files[0], 'thumbnail', setThumbUploading)} 
+                  />
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -279,6 +302,52 @@ export default function ServiceDetailCMS() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [newService, setNewService] = useState({ title: "", category: "Laser" });
   const [creating, setCreating] = useState(false);
+
+  // Gallery Picker States
+  const [showGalleryPicker, setShowGalleryPicker] = useState(false);
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [galleryLoading, setGalleryLoading] = useState(false);
+  const [gallerySearch, setGallerySearch] = useState("");
+  const [activePickerTarget, setActivePickerTarget] = useState(null); // { index: number, field: 'url' | 'thumbnail' }
+
+  const fetchGallery = async () => {
+    setGalleryLoading(true);
+    try {
+      const res = await axios.get("/gallery?page=1&limit=200");
+      if (res.data?.data) {
+        setGalleryItems(res.data.data);
+      }
+    } catch {
+      toast.error("Failed to load gallery items");
+    } finally {
+      setGalleryLoading(false);
+    }
+  };
+
+  const handleOpenGalleryPicker = (index, field) => {
+    setActivePickerTarget({ index, field });
+    fetchGallery();
+    setShowGalleryPicker(true);
+  };
+
+  const handleSelectGalleryItem = (item) => {
+    if (!activePickerTarget) return;
+    const { index, field } = activePickerTarget;
+    // Set the selected URL
+    const url = item.imageUrl || item.image || item.url || "";
+    updateArrayItem("intro", "introMedia", index, field, url);
+    
+    // Auto-fill type and default thumbnail if it's the main URL
+    if (field === 'url') {
+      const isVid = item.mediaType === 'video';
+      updateArrayItem("intro", "introMedia", index, 'type', isVid ? 'video' : 'image');
+    }
+
+    setShowGalleryPicker(false);
+    setActivePickerTarget(null);
+    toast.success("Media selected from gallery!");
+  };
+
 
   const fetchServices = async () => {
     try {
@@ -569,6 +638,7 @@ export default function ServiceDetailCMS() {
                              index={i}
                              onUpdate={(field, val) => updateArrayItem("intro", "introMedia", i, field, val)}
                              onRemove={() => removeArrayItem("intro", "introMedia", i)}
+                              onPickFromLibrary={(field) => handleOpenGalleryPicker(i, field)}
                            />
                          ))}
                          {(data.intro.introMedia || []).length === 0 && (
@@ -688,6 +758,118 @@ export default function ServiceDetailCMS() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Unified Gallery Picker Modal */}
+      {showGalleryPicker && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-[32px] max-w-4xl w-full h-[85vh] shadow-2xl flex flex-col overflow-hidden border border-slate-100">
+            {/* Header */}
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-black text-slate-900 uppercase tracking-wide">Choose Media from Gallery</h3>
+                <p className="text-xs text-slate-400 font-medium">Select an uploaded image or video to inject into this slide</p>
+              </div>
+              <button 
+                onClick={() => { setShowGalleryPicker(false); setActivePickerTarget(null); }} 
+                className="p-2.5 bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-700 rounded-2xl transition-all"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Search and Filters */}
+            <div className="p-6 bg-slate-50/50 border-b border-slate-100 flex gap-4">
+              <div className="flex-1 relative">
+                <Search size={16} className="absolute left-4 top-3.5 text-slate-400" />
+                <input 
+                  type="text"
+                  placeholder="Search gallery by title or alt text..."
+                  value={gallerySearch}
+                  onChange={e => setGallerySearch(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all font-semibold"
+                />
+              </div>
+            </div>
+
+            {/* Media Grid Container */}
+            <div className="flex-1 overflow-y-auto p-6 bg-slate-50/30">
+              {galleryLoading ? (
+                <div className="h-full flex flex-col items-center justify-center py-20 text-slate-400 font-bold">
+                  <Loader2 size={36} className="animate-spin text-blue-600 mb-3" />
+                  Loading gallery...
+                </div>
+              ) : (
+                (() => {
+                  const filteredGallery = galleryItems.filter(item => {
+                    const term = gallerySearch.toLowerCase();
+                    const titleMatch = (item.title || "").toLowerCase().includes(term);
+                    const altMatch = (item.altText || "").toLowerCase().includes(term);
+                    return titleMatch || altMatch;
+                  });
+
+                  if (filteredGallery.length === 0) {
+                    return (
+                      <div className="h-full flex flex-col items-center justify-center py-20 text-center">
+                        <ImageIcon size={48} className="text-slate-300 mb-4" />
+                        <p className="text-slate-500 font-bold text-sm">No media items found</p>
+                        <p className="text-xs text-slate-400 mt-1">Try a different search term or upload media in the gallery page.</p>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {filteredGallery.map(item => {
+                        const isVid = item.mediaType === 'video';
+                        const url = item.imageUrl || item.image || item.url || "";
+                        return (
+                          <div 
+                            key={item._id}
+                            onClick={() => handleSelectGalleryItem(item)}
+                            className="group relative bg-white border border-slate-100 hover:border-blue-400 rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all flex flex-col"
+                          >
+                            <div className="aspect-[4/3] bg-slate-900 relative overflow-hidden flex items-center justify-center">
+                              {isVid ? (
+                                <div className="w-full h-full relative">
+                                  <video src={url} className="w-full h-full object-cover opacity-80" muted playsInline />
+                                  <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
+                                    <div className="w-9 h-9 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                                      <span style={{ borderStyle: "solid", borderWidth: "5px 0 5px 8px", borderColor: "transparent transparent transparent #000", marginLeft: 2 }} />
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : (
+                                <img src={url} alt={item.altText} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                              )}
+                              <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-black uppercase bg-black/60 text-white tracking-wider">
+                                {isVid ? 'Video' : 'Image'}
+                              </span>
+                            </div>
+                            <div className="p-3 border-t border-slate-50 flex-1 flex flex-col justify-between">
+                              <p className="text-xs font-bold text-slate-800 line-clamp-1 truncate">{item.title || "Untitled"}</p>
+                              <p className="text-[10px] text-slate-400 italic line-clamp-1 truncate mt-0.5">{item.altText || "No SEO alt text"}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })()
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t border-slate-100 bg-slate-50/50 flex justify-end">
+              <button 
+                onClick={() => { setShowGalleryPicker(false); setActivePickerTarget(null); }} 
+                className="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-2xl font-black text-xs uppercase tracking-widest transition-all"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

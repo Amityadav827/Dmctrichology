@@ -152,33 +152,16 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
     if (!currentItem) return null;
 
     if (isVideo && currentItem.url) {
-      // Check if it's a native video file (mp4, webm, ogg)
-      const isNativeVideo = /\.(mp4|webm|ogg)(\?|$)/i.test(currentItem.url);
-
-      if (isNativeVideo) {
-        return (
-          <video
-            ref={videoRef}
-            key={`video-${selectedIndex}`}
-            className={`si-main-media-el ${isTransitioning ? 'si-media-fade-out' : 'si-media-fade-in'}`}
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src={currentItem.url} type="video/mp4" />
-            <source src={currentItem.url} type="video/webm" />
-          </video>
-        );
-      }
-
-      // Embed URL (YouTube, Vimeo, etc.) — show thumbnail + play overlay
       return (
-        <img
-          key={`embed-${selectedIndex}`}
-          src={currentItem.thumbnail || currentItem.url}
-          alt={currentItem.alt || currentItem.title}
+        <video
+          ref={videoRef}
+          key={`video-${selectedIndex}`}
           className={`si-main-media-el ${isTransitioning ? 'si-media-fade-out' : 'si-media-fade-in'}`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          src={currentItem.url}
         />
       );
     }
@@ -205,15 +188,6 @@ const ServiceIntro = ({ data = {}, banner = {} }) => {
               {/* Main Media Viewer */}
               <div className="si-main-viewer">
                 {renderMainMedia()}
-
-                {/* Video Play Indicator Overlay (embed / non-native) */}
-                {isVideo && !/\.(mp4|webm|ogg)(\?|$)/i.test(currentItem?.url || '') && (
-                  <div className="si-video-overlay">
-                    <div className="si-play-btn">
-                      <Play size={28} fill="white" color="white" />
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Floating Navigation Arrows */}
