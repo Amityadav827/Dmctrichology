@@ -62,7 +62,8 @@ const WhyChooseUs = () => {
         color: '#fff',
         textAlign: 'left',
         zIndex: 2,
-        boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+        boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+        transition: 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
       }}>
         <div style={{
           backgroundColor: '#FEF0D7',
@@ -176,45 +177,27 @@ const WhyChooseUs = () => {
         }
 
         .feature-callout {
-          opacity: 0;
-          pointer-events: none;
-          transition:
-            opacity 0.58s cubic-bezier(0.22, 1, 0.36, 1),
-            transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
-            filter 0.58s cubic-bezier(0.22, 1, 0.36, 1);
-          filter: blur(4px);
-          will-change: transform, opacity;
+          opacity: 1;
+          pointer-events: auto;
         }
 
         .feature-callout-left {
-          transform: translateX(120px) scale(0.94);
+          transform: translateX(0);
         }
 
         .feature-callout-right {
-          transform: translateX(-120px) scale(0.94);
+          transform: translateX(0);
         }
 
-        .why-choose-stage:hover .feature-callout,
-        .why-choose-stage:focus-within .feature-callout {
-          opacity: 1;
-          pointer-events: auto;
-          transform: translateX(0) scale(1);
-          filter: blur(0);
+        .feature-callout:hover .card-item {
+          transform: scale(1.05) translateY(-5px);
+          box-shadow: 0 30px 60px rgba(0,0,0,0.3) !important;
         }
-
-        .why-choose-stage:hover .pos-card-1,
-        .why-choose-stage:focus-within .pos-card-1 { transition-delay: 0.04s; }
-        .why-choose-stage:hover .pos-card-3,
-        .why-choose-stage:focus-within .pos-card-3 { transition-delay: 0.12s; }
-        .why-choose-stage:hover .pos-card-2,
-        .why-choose-stage:focus-within .pos-card-2 { transition-delay: 0.20s; }
-        .why-choose-stage:hover .pos-card-4,
-        .why-choose-stage:focus-within .pos-card-4 { transition-delay: 0.28s; }
 
         @media (max-width: 1200px) {
           .why-choose-us div[style*="height: 650px"] { height: auto !important; flex-direction: column !important; padding-bottom: 40px; }
           .pos-card-1, .pos-card-2, .pos-card-3, .pos-card-4 { position: relative !important; top: auto !important; left: auto !important; right: auto !important; margin-bottom: 20px; }
-          .feature-callout { opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto !important; }
+          .feature-callout { opacity: 1 !important; pointer-events: auto !important; }
           .card-item { width: 90% !important; max-width: 400px; margin: 0 auto; }
         }
       `}} />
