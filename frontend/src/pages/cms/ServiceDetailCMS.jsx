@@ -412,6 +412,11 @@ export default function ServiceDetailCMS() {
           } else if (!fetchedData.benefitsSection.points) {
             fetchedData.benefitsSection.points = [];
           }
+          if (!fetchedData.idealCandidates) {
+            fetchedData.idealCandidates = { sectionHeading: "Ideal Candidates", introText: "", bottomConclusionText: "", sectionImage: "", altText: "", bullets: [] };
+          } else if (!fetchedData.idealCandidates.bullets) {
+            fetchedData.idealCandidates.bullets = [];
+          }
           setData(fetchedData);
         }
       })
@@ -446,6 +451,18 @@ export default function ServiceDetailCMS() {
                 { benefitText: "Painless and non-invasive restorative technique", sortOrder: 1, isVisible: true },
                 { benefitText: "Maximizes hair density with permanent natural-looking results", sortOrder: 2, isVisible: true },
                 { benefitText: "Minimal post-treatment recovery and zero scarring", sortOrder: 3, isVisible: true }
+              ]
+            },
+            idealCandidates: {
+              sectionHeading: "Ideal Candidates",
+              introText: "This treatment is highly effective and suitable for individuals experiencing initial to moderate stages of hair thinning. Here is a breakdown of who will benefit the most:",
+              bottomConclusionText: "If you want a customized evaluation, our doctors are ready to help you analyze your hair health.",
+              sectionImage: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png",
+              altText: "Ideal candidates breakdown",
+              bullets: [
+                { bulletText: "Individuals experiencing male or female pattern baldness", sortOrder: 1, isVisible: true },
+                { bulletText: "People who have stable and healthy donor areas on their scalp", sortOrder: 2, isVisible: true },
+                { bulletText: "Those looking for permanent, natural-looking high density restoration", sortOrder: 3, isVisible: true }
               ]
             }
           });
@@ -571,6 +588,56 @@ export default function ServiceDetailCMS() {
     });
   };
 
+  const addCandidateBullet = () => {
+    setData(prev => ({
+      ...prev,
+      idealCandidates: {
+        ...prev.idealCandidates,
+        bullets: [
+          ...(prev.idealCandidates?.bullets || []),
+          { bulletText: "", sortOrder: (prev.idealCandidates?.bullets?.length || 0) + 1, isVisible: true }
+        ]
+      }
+    }));
+  };
+
+  const updateCandidateBullet = (idx, field, val) => {
+    setData(prev => {
+      const bts = [...(prev.idealCandidates?.bullets || [])];
+      bts[idx] = { ...bts[idx], [field]: val };
+      return {
+        ...prev,
+        idealCandidates: {
+          ...prev.idealCandidates,
+          bullets: bts
+        }
+      };
+    });
+  };
+
+  const removeCandidateBullet = (idx) => {
+    setData(prev => ({
+      ...prev,
+      idealCandidates: {
+        ...prev.idealCandidates,
+        bullets: (prev.idealCandidates?.bullets || []).filter((_, i) => i !== idx)
+      }
+    }));
+  };
+
+  const reorderCandidateBullet = (idx, direction) => {
+    setData(prev => {
+      const newBts = moveArrayItem(prev.idealCandidates?.bullets || [], idx, direction);
+      return {
+        ...prev,
+        idealCandidates: {
+          ...prev.idealCandidates,
+          bullets: newBts
+        }
+      };
+    });
+  };
+
   const handleSave = async () => {
     if (!data) return;
     setSaving(true);
@@ -656,6 +723,7 @@ export default function ServiceDetailCMS() {
               { id: "banner", label: "Hero & Intro", icon: Layout },
               { id: "contentBlocks", label: "Content Blocks", icon: Type },
               { id: "benefitsSection", label: "Benefits Section", icon: CheckCircle },
+              { id: "idealCandidates", label: "Ideal Candidates", icon: Star },
               { id: "process", label: "Process Steps", icon: List },
               { id: "idealFrequency", label: "Suitability & CTA", icon: CheckCircle },
               { id: "beforeAfter", label: "Before/After", icon: RefreshCw },
@@ -1031,6 +1099,174 @@ export default function ServiceDetailCMS() {
                             <p className="text-[10px] text-slate-300 mt-0.5">Click "Add Benefit" to build a clean checklist.</p>
                           </div>
                         )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'idealCandidates' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><Star size={18} className="text-blue-500"/> Ideal Candidates Section</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage the premium ideal candidates breakdown, lists, and right-side graphics</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {/* Left & Center: Text Fields & Repeater List */}
+                  <div className="md:col-span-2 space-y-6">
+                    <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 space-y-6">
+                      <div>
+                        <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Section Heading Title</label>
+                        <input 
+                          type="text" 
+                          value={data.idealCandidates?.sectionHeading || ""} 
+                          onChange={e => setData(prev => ({
+                            ...prev,
+                            idealCandidates: { ...prev.idealCandidates, sectionHeading: e.target.value }
+                          }))}
+                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                          placeholder="e.g. Ideal Candidates" 
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Introductory Paragraph Text</label>
+                        <textarea 
+                          value={data.idealCandidates?.introText || ""} 
+                          onChange={e => setData(prev => ({
+                            ...prev,
+                            idealCandidates: { ...prev.idealCandidates, introText: e.target.value }
+                          }))}
+                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500 transition-all min-h-[100px]" 
+                          placeholder="Introduce the ideal candidate criteria..." 
+                        />
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                          <label className="block text-[10px] font-black uppercase text-slate-500 tracking-widest">Bullet Checklist</label>
+                          <button 
+                            onClick={addCandidateBullet}
+                            className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm"
+                          >
+                            <Plus size={12}/> Add Bullet
+                          </button>
+                        </div>
+                        
+                        {(data.idealCandidates?.bullets || []).map((pt, i) => (
+                          <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 flex flex-col gap-3 shadow-sm">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                              <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Bullet Point {i + 1}</span>
+                              <div className="flex items-center gap-2">
+                                <button 
+                                  onClick={() => reorderCandidateBullet(i, 'up')} 
+                                  disabled={i === 0}
+                                  className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                                >
+                                  <ArrowUp size={12} />
+                                </button>
+                                <button 
+                                  onClick={() => reorderCandidateBullet(i, 'down')} 
+                                  disabled={i === (data.idealCandidates?.bullets?.length || 0) - 1}
+                                  className="p-1 bg-slate-50 text-slate-500 rounded hover:bg-slate-200 disabled:opacity-30 border border-slate-200"
+                                >
+                                  <ArrowDown size={12} />
+                                </button>
+                                <button 
+                                  onClick={() => removeCandidateBullet(i)} 
+                                  className="p-1 bg-red-50 text-red-500 rounded hover:bg-red-100 border border-red-100"
+                                >
+                                  <Trash2 size={12} />
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                              <div className="md:col-span-3">
+                                <input 
+                                  type="text" 
+                                  value={pt.bulletText || ""} 
+                                  onChange={e => updateCandidateBullet(i, "bulletText", e.target.value)}
+                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-1 focus:ring-blue-500"
+                                  placeholder="e.g. Male or female pattern thinning"
+                                />
+                              </div>
+                              <div className="flex justify-between items-center gap-2">
+                                <label className="flex items-center gap-1 cursor-pointer">
+                                  <input 
+                                    type="checkbox" 
+                                    checked={pt.isVisible !== false} 
+                                    onChange={e => updateCandidateBullet(i, "isVisible", e.target.checked)}
+                                    className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5" 
+                                  />
+                                  <span className="text-[10px] font-black uppercase text-slate-500">Visible</span>
+                                </label>
+                                <input 
+                                  type="number" 
+                                  value={pt.sortOrder ?? (i + 1)} 
+                                  onChange={e => updateCandidateBullet(i, "sortOrder", parseInt(e.target.value, 10) || 0)}
+                                  className="w-12 px-1 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold text-center" 
+                                  min="0"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+
+                        {(data.idealCandidates?.bullets || []).length === 0 && (
+                          <div className="text-center py-8 bg-white rounded-2xl border border-slate-200">
+                            <Star size={24} className="text-slate-300 mx-auto mb-2" />
+                            <p className="text-xs text-slate-400 font-bold">No bullets added yet</p>
+                            <p className="text-[10px] text-slate-300 mt-0.5">Click "Add Bullet" to build a candidate criteria checklist.</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Bottom Conclusion Text</label>
+                        <textarea 
+                          value={data.idealCandidates?.bottomConclusionText || ""} 
+                          onChange={e => setData(prev => ({
+                            ...prev,
+                            idealCandidates: { ...prev.idealCandidates, bottomConclusionText: e.target.value }
+                          }))}
+                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500 transition-all min-h-[100px]" 
+                          placeholder="Summarize or add a CTA conclusion..." 
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Graphic Image and Alt Text */}
+                  <div className="space-y-6">
+                    <h4 className="text-xs font-black uppercase tracking-widest text-slate-400">Section Graphic & SEO</h4>
+                    
+                    <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 space-y-6">
+                      <MediaUploader 
+                        label="Candidates Infographic Image" 
+                        value={data.idealCandidates?.sectionImage || ""} 
+                        onChange={val => setData(prev => ({
+                          ...prev,
+                          idealCandidates: { ...prev.idealCandidates, sectionImage: val }
+                        }))} 
+                      />
+                      
+                      <div>
+                        <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Image Alt Text (SEO)</label>
+                        <input 
+                          type="text" 
+                          value={data.idealCandidates?.altText || ""} 
+                          onChange={e => setData(prev => ({
+                            ...prev,
+                            idealCandidates: { ...prev.idealCandidates, altText: e.target.value }
+                          }))}
+                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                          placeholder="e.g. Ideal candidates checklist infographic" 
+                        />
                       </div>
                     </div>
                   </div>

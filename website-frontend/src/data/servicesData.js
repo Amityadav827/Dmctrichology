@@ -220,6 +220,18 @@ const generateServiceData = (title, slug, type) => {
         sortOrder: index + 1,
         isVisible: true
       }))
+    },
+    idealCandidates: {
+      sectionHeading: "Ideal Candidates",
+      introText: `This treatment is highly effective and suitable for individuals looking for ${title} solutions. Here is a breakdown of who will benefit the most:`,
+      bottomConclusionText: "If you want a customized evaluation, our doctors are ready to help you analyze your hair health.",
+      sectionImage: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png",
+      altText: "Ideal candidates breakdown",
+      bullets: (c.idealFor || []).map((idealText, index) => ({
+        bulletText: idealText,
+        sortOrder: index + 1,
+        isVisible: true
+      }))
     }
   };
 };

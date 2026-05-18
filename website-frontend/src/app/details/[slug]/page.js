@@ -8,6 +8,7 @@ import FaqEnquiry from '../../../components/FaqEnquiry';
 import IdealFrequency from '../../../components/IdealFrequency';
 import ServiceContentBlock from '../../../components/ServiceContentBlock';
 import ServiceBenefits from '../../../components/ServiceBenefits';
+import ServiceIdealCandidates from '../../../components/ServiceIdealCandidates';
 import '../../service.css';
 import '../../details.css';
 
@@ -79,6 +80,7 @@ export default async function DynamicDetailsPage({ params }) {
       <ServiceIntro data={intro || {}} banner={banner || {}} />
       <ServiceContentBlock data={service.contentBlocks || []} />
       <ServiceBenefits data={service.benefitsSection || null} />
+      <ServiceIdealCandidates data={service.idealCandidates || null} />
       <ProcessSlider data={process || {}} />
       <IdealFrequency data={idealFrequency || {}} />
       <BeforeAfterTreatment data={beforeAfter || {}} />

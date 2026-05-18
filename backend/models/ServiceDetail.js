@@ -100,6 +100,19 @@ const ServiceDetailSchema = new mongoose.Schema({
     }]
   },
 
+  idealCandidates: {
+    sectionHeading: { type: String, default: "Ideal Candidates" },
+    introText: { type: String, default: "" },
+    bottomConclusionText: { type: String, default: "" },
+    sectionImage: { type: String, default: "" },
+    altText: { type: String, default: "" },
+    bullets: [{
+      bulletText: { type: String, default: "" },
+      sortOrder: { type: Number, default: 0 },
+      isVisible: { type: Boolean, default: true }
+    }]
+  },
+
   seo: {
     metaTitle: { type: String, default: "" },
     metaDescription: { type: String, default: "" },
