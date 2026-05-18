@@ -210,7 +210,17 @@ const generateServiceData = (title, slug, type) => {
         sortOrder: 1,
         isVisible: true
       }
-    ] : []
+    ] : [],
+    benefitsSection: {
+      heading: "Key Benefits of the Treatment",
+      image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png",
+      altText: `${title} illustration`,
+      points: (c.benefits || []).map((b, index) => ({
+        benefitText: b.text || "",
+        sortOrder: index + 1,
+        isVisible: true
+      }))
+    }
   };
 };
 

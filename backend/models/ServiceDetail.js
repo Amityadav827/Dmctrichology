@@ -89,6 +89,17 @@ const ServiceDetailSchema = new mongoose.Schema({
     isVisible: { type: Boolean, default: true }
   }],
 
+  benefitsSection: {
+    heading: { type: String, default: "Key Benefits of the Treatment" },
+    image: { type: String, default: "" },
+    altText: { type: String, default: "" },
+    points: [{
+      benefitText: { type: String, default: "" },
+      sortOrder: { type: Number, default: 0 },
+      isVisible: { type: Boolean, default: true }
+    }]
+  },
+
   seo: {
     metaTitle: { type: String, default: "" },
     metaDescription: { type: String, default: "" },
