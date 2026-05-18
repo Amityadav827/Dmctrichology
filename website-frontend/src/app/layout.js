@@ -1,7 +1,8 @@
 import './globals.css';
 import { BuilderProvider } from '../context/BuilderContext';
-import { fetchSiteSettings } from '../services/api';
+import { fetchSiteSettings, fetchHeader, fetchTopBar } from '../services/api';
 import GlobalLayoutWrapper from '../components/GlobalLayoutWrapper';
+import GlobalLoader from '../components/GlobalLoader';
 import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
@@ -13,8 +14,15 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const settings = await fetchSiteSettings();
-  
+  const [settings, headerRes, topbarRes] = await Promise.all([
+    fetchSiteSettings(),
+    fetchHeader(),
+    fetchTopBar()
+  ]).catch(err => {
+    console.error("Error in parallel layout pre-fetch:", err);
+    return [null, null, null];
+  });
+
   const primaryColor = settings?.primaryColor || "#C19A5B";
   const secondaryColor = settings?.secondaryColor || "#000000";
 
@@ -33,8 +41,11 @@ export default async function RootLayout({ children }) {
       </head>
       <body>
         <BuilderProvider>
-          <Suspense fallback={<div>Loading Layout...</div>}>
-            <GlobalLayoutWrapper>
+          <Suspense fallback={<GlobalLoader />}>
+            <GlobalLayoutWrapper 
+              initialHeader={headerRes?.data} 
+              initialTopBar={topbarRes?.data}
+            >
               {children}
             </GlobalLayoutWrapper>
           </Suspense>
