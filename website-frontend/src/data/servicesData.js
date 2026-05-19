@@ -203,6 +203,77 @@ const generateServiceData = (title, slug, type) => {
       formTitle: "Enquire About This Treatment",
       buttonText: "Schedule Your Visit"
     },
+    googleReviewCta: {
+      title: "Google Review",
+      buttonText: "VIEW MORE",
+      buttonLink: "https://dmctrichology-mkm4.vercel.app/service",
+      backgroundColor: "",
+      isVisible: true
+    },
+    resultsSection: {
+      subtitle: "BEFORE AND AFTER",
+      title: "RESULTS THAT SPEAK FOR THEMSELVES",
+      cards: [
+        {
+          title: "Korean Facial Illumination",
+          beforeImg: "https://res.cloudinary.com/dseixl6px/image/upload/v1777612758/dmc-trichology/dvy3knew0pzq1gg8fr8q.png",
+          afterImg: "https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/uttbdof06l4xbpvexlv9.png",
+          sessions: "After 6 sessions"
+        },
+        {
+          title: "Acne Arrestor Facial With Salicylic Peel",
+          beforeImg: "https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/g7fs5kfpckmmcjwg5sk0.png",
+          afterImg: "https://res.cloudinary.com/dseixl6px/image/upload/v1777612758/dmc-trichology/zxyvkmr0uf8pf5qxgfvf.png",
+          sessions: "After 4 sessions"
+        },
+        {
+          title: "Elastin Boost Facial",
+          beforeImg: "https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/meeed3zg8w5j3xhkcfxc.png",
+          afterImg: "https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/w6qder12vvhxrbhzskgw.png",
+          sessions: "After 5 sessions"
+        },
+        {
+          title: "Derma Revive Facial",
+          beforeImg: "https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/dh6webh6x4l7qfrlzxtl.png",
+          afterImg: "https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/bif89jyygbycclg8qa92.png",
+          sessions: "After 4 sessions"
+        }
+      ],
+      buttonText: "VIEW ALL",
+      buttonLink: "https://dmctrichology-mkm4.vercel.app/service",
+      isVisible: true
+    },
+    videosSection: {
+      title: "VIDEOS",
+      videos: [
+        {
+          title: "P-R-P Vs Hair Transplant ? | Best Treatment for Hairloss | Dr. Nandini Dadu",
+          thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+          videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+        },
+        {
+          title: "Female Hair Transplant | Good or Bad ? | Dadu Medical Centre",
+          thumbnail: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png",
+          videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+        },
+        {
+          title: "First 14 Days After Hair Transplant | Dos and Don'ts | Dr. Nandini Dadu",
+          thumbnail: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
+          videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+        }
+      ],
+      buttonText: "VIEW MORE",
+      buttonLink: "https://dmctrichology-mkm4.vercel.app/service",
+      isVisible: true
+    },
+    enquirySection: {
+      title: "Enquire About This Treatment",
+      description: "Schedule your visit for this specialized treatment.",
+      serviceOptions: ["Laser Hair Removal", "Hair Transplant", "Hair Fall Treatment", "Skin Rejuvenation", "Other"],
+      submitButtonText: "Schedule Your Visit",
+      backgroundColor: "",
+      isVisible: true
+    },
     contentBlocks: (type === 'transplant' || slug.includes('hair-transplant')) ? [
       {
         heading: "WHAT IS A HAIR TRANSPLANT?",

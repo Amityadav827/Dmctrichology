@@ -172,6 +172,49 @@ const ServiceDetailSchema = new mongoose.Schema({
     }]
   },
 
+  googleReviewCta: {
+    title: { type: String, default: "Google Review" },
+    buttonText: { type: String, default: "VIEW MORE" },
+    buttonLink: { type: String, default: "" },
+    backgroundColor: { type: String, default: "" },
+    isVisible: { type: Boolean, default: true }
+  },
+
+  resultsSection: {
+    subtitle: { type: String, default: "BEFORE AND AFTER" },
+    title: { type: String, default: "RESULTS THAT SPEAK FOR THEMSELVES" },
+    cards: [{
+      title: { type: String, default: "" },
+      beforeImg: { type: String, default: "" },
+      afterImg: { type: String, default: "" },
+      sessions: { type: String, default: "" }
+    }],
+    buttonText: { type: String, default: "VIEW ALL" },
+    buttonLink: { type: String, default: "" },
+    isVisible: { type: Boolean, default: true }
+  },
+
+  videosSection: {
+    title: { type: String, default: "VIDEOS" },
+    videos: [{
+      thumbnail: { type: String, default: "" },
+      videoUrl: { type: String, default: "" },
+      title: { type: String, default: "" }
+    }],
+    buttonText: { type: String, default: "VIEW MORE" },
+    buttonLink: { type: String, default: "" },
+    isVisible: { type: Boolean, default: true }
+  },
+
+  enquirySection: {
+    title: { type: String, default: "Enquire About This Treatment" },
+    description: { type: String, default: "" },
+    serviceOptions: [{ type: String }],
+    submitButtonText: { type: String, default: "Schedule Your Visit" },
+    backgroundColor: { type: String, default: "" },
+    isVisible: { type: Boolean, default: true }
+  },
+
   seo: {
     metaTitle: { type: String, default: "" },
     metaDescription: { type: String, default: "" },

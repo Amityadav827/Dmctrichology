@@ -418,6 +418,24 @@ export default function ServiceDetailCMS() {
           } else if (!fetchedData.idealCandidates.bullets) {
             fetchedData.idealCandidates.bullets = [];
           }
+          if (!fetchedData.googleReviewCta) {
+            fetchedData.googleReviewCta = { title: "Google Review", buttonText: "VIEW MORE", buttonLink: "https://dmctrichology-mkm4.vercel.app/service", backgroundColor: "", isVisible: true };
+          }
+          if (!fetchedData.resultsSection) {
+            fetchedData.resultsSection = { subtitle: "BEFORE AND AFTER", title: "RESULTS THAT SPEAK FOR THEMSELVES", cards: [], buttonText: "VIEW ALL", buttonLink: "https://dmctrichology-mkm4.vercel.app/service", isVisible: true };
+          } else if (!fetchedData.resultsSection.cards) {
+            fetchedData.resultsSection.cards = [];
+          }
+          if (!fetchedData.videosSection) {
+            fetchedData.videosSection = { title: "VIDEOS", videos: [], buttonText: "VIEW MORE", buttonLink: "https://dmctrichology-mkm4.vercel.app/service", isVisible: true };
+          } else if (!fetchedData.videosSection.videos) {
+            fetchedData.videosSection.videos = [];
+          }
+          if (!fetchedData.enquirySection) {
+            fetchedData.enquirySection = { title: "Enquire About This Treatment", description: "Schedule your visit for this specialized treatment.", serviceOptions: ["Laser Hair Removal", "Hair Transplant", "Hair Fall Treatment", "Skin Rejuvenation", "Other"], submitButtonText: "Schedule Your Visit", backgroundColor: "", isVisible: true };
+          } else if (!fetchedData.enquirySection.serviceOptions) {
+            fetchedData.enquirySection.serviceOptions = [];
+          }
           setData(fetchedData);
         }
       })
@@ -434,6 +452,10 @@ export default function ServiceDetailCMS() {
             idealFrequency: { frequencyTitle: "Treatment Frequency & Suitability", frequencyDescription: "", idealForPoints: [], notIdealForPoints: [], ctaTitle: "", ctaDescription: "", ctaButtonText: "", ctaButtonLink: "", ctaImage: "" },
             beforeAfter: { beforeTitle: "Before Treatment Checklist", afterTitle: "Aftercare Instructions", beforePoints: [], afterPoints: [], sectionBackground: "#f9f7f2" },
             faqEnquiry: { faqTitle: "Common Concerns Addressed", faqSubtitle: "", faqItems: [], serviceOptions: [], formTitle: "Enquire About This Treatment", buttonText: "Schedule Your Visit", namePlaceholder: "Name*", emailPlaceholder: "E-Mail Address*", servicePlaceholder: "Type Of Service Enquiry*", datePlaceholder: "Select Date & Time*" },
+            googleReviewCta: { title: "Google Review", buttonText: "VIEW MORE", buttonLink: "https://dmctrichology-mkm4.vercel.app/service", backgroundColor: "", isVisible: true },
+            resultsSection: { subtitle: "BEFORE AND AFTER", title: "RESULTS THAT SPEAK FOR THEMSELVES", cards: [], buttonText: "VIEW ALL", buttonLink: "https://dmctrichology-mkm4.vercel.app/service", isVisible: true },
+            videosSection: { title: "VIDEOS", videos: [], buttonText: "VIEW MORE", buttonLink: "https://dmctrichology-mkm4.vercel.app/service", isVisible: true },
+            enquirySection: { title: "Enquire About This Treatment", description: "Schedule your visit for this specialized treatment.", serviceOptions: ["Laser Hair Removal", "Hair Transplant", "Hair Fall Treatment", "Skin Rejuvenation", "Other"], submitButtonText: "Schedule Your Visit", backgroundColor: "", isVisible: true },
             footerCta: { heading: "", description: "", emailPlaceholder: "", buttonText: "" },
             seo: { metaTitle: "", metaDescription: "", canonicalUrl: "", ogImage: "", schemaScript: "" },
             contentBlocks: [
@@ -478,6 +500,80 @@ export default function ServiceDetailCMS() {
     setData(prev => ({
       ...prev,
       [section]: { ...prev[section], [field]: val }
+    }));
+  };
+
+  const addResultCard = () => {
+    setData(prev => ({
+      ...prev,
+      resultsSection: {
+        ...prev.resultsSection,
+        cards: [
+          ...(prev.resultsSection?.cards || []),
+          { title: "", beforeImg: "", afterImg: "", sessions: "" }
+        ]
+      }
+    }));
+  };
+
+  const updateResultCard = (idx, field, val) => {
+    setData(prev => {
+      const cards = [...(prev.resultsSection?.cards || [])];
+      cards[idx] = { ...cards[idx], [field]: val };
+      return {
+        ...prev,
+        resultsSection: {
+          ...prev.resultsSection,
+          cards
+        }
+      };
+    });
+  };
+
+  const removeResultCard = (idx) => {
+    setData(prev => ({
+      ...prev,
+      resultsSection: {
+        ...prev.resultsSection,
+        cards: (prev.resultsSection?.cards || []).filter((_, i) => i !== idx)
+      }
+    }));
+  };
+
+  const addVideoItem = () => {
+    setData(prev => ({
+      ...prev,
+      videosSection: {
+        ...prev.videosSection,
+        videos: [
+          ...(prev.videosSection?.videos || []),
+          { thumbnail: "", videoUrl: "", title: "" }
+        ]
+      }
+    }));
+  };
+
+  const updateVideoItem = (idx, field, val) => {
+    setData(prev => {
+      const vids = [...(prev.videosSection?.videos || [])];
+      vids[idx] = { ...vids[idx], [field]: val };
+      return {
+        ...prev,
+        videosSection: {
+          ...prev.videosSection,
+          videos: vids
+        }
+      };
+    });
+  };
+
+  const removeVideoItem = (idx) => {
+    setData(prev => ({
+      ...prev,
+      videosSection: {
+        ...prev.videosSection,
+        videos: (prev.videosSection?.videos || []).filter((_, i) => i !== idx)
+      }
     }));
   };
 
@@ -1029,6 +1125,10 @@ export default function ServiceDetailCMS() {
               { id: "aftercare", label: "Aftercare", icon: CheckCircle },
               { id: "whyChooseUs", label: "Why Choose Us", icon: Star },
               { id: "editorialFaq", label: "Editorial FAQ", icon: HelpCircle },
+              { id: "googleReviewCta", label: "Google Review CTA", icon: Star },
+              { id: "resultsSection", label: "Before & After Results", icon: RefreshCw },
+              { id: "videosSection", label: "Videos Section", icon: Video },
+              { id: "enquirySection", label: "Enquiry Form", icon: Layout },
               { id: "process", label: "Process Steps", icon: List },
               { id: "idealFrequency", label: "Suitability & CTA", icon: CheckCircle },
               { id: "beforeAfter", label: "Before/After", icon: RefreshCw },
@@ -2290,6 +2390,457 @@ export default function ServiceDetailCMS() {
                           <p className="text-[10px] text-slate-300 mt-0.5">Click "Add FAQ Accordion" to build the panel list.</p>
                         </div>
                       )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'googleReviewCta' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><Star size={18} className="text-blue-500"/> Google Review CTA Section</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage the Google Review CTA banner with background and text customizers</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 bg-slate-50 p-6 rounded-[24px] border border-slate-200">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={data.googleReviewCta?.isVisible !== false} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          googleReviewCta: { ...prev.googleReviewCta, isVisible: e.target.checked }
+                        }))}
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4" 
+                      />
+                      <span className="text-sm font-bold text-slate-600">Section Visible</span>
+                    </label>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">CTA Title</label>
+                      <input 
+                        type="text" 
+                        value={data.googleReviewCta?.title || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          googleReviewCta: { ...prev.googleReviewCta, title: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Button Text</label>
+                      <input 
+                        type="text" 
+                        value={data.googleReviewCta?.buttonText || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          googleReviewCta: { ...prev.googleReviewCta, buttonText: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Button Link</label>
+                      <input 
+                        type="text" 
+                        value={data.googleReviewCta?.buttonLink || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          googleReviewCta: { ...prev.googleReviewCta, buttonLink: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                        placeholder="e.g. https://dmctrichology-mkm4.vercel.app/service"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Background Color / Custom Class (Optional)</label>
+                      <input 
+                        type="text" 
+                        value={data.googleReviewCta?.backgroundColor || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          googleReviewCta: { ...prev.googleReviewCta, backgroundColor: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                        placeholder="e.g. bg-slate-900 or empty for default luxury background"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'resultsSection' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><RefreshCw size={18} className="text-blue-500"/> Before & After Results</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage Before & After result cards, subtitle, title, and cta buttons</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between bg-slate-50 p-6 rounded-[24px] border border-slate-200">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={data.resultsSection?.isVisible !== false} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          resultsSection: { ...prev.resultsSection, isVisible: e.target.checked }
+                        }))}
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4" 
+                      />
+                      <span className="text-sm font-bold text-slate-600">Section Visible</span>
+                    </label>
+                    <button 
+                      onClick={addResultCard}
+                      className="flex items-center gap-1.5 bg-blue-600 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-md shadow-blue-200"
+                    >
+                      <Plus size={13}/> Add Result Card
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Section Subtitle</label>
+                      <input 
+                        type="text" 
+                        value={data.resultsSection?.subtitle || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          resultsSection: { ...prev.resultsSection, subtitle: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Section Title Heading</label>
+                      <input 
+                        type="text" 
+                        value={data.resultsSection?.title || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          resultsSection: { ...prev.resultsSection, title: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">CTA Button Text</label>
+                      <input 
+                        type="text" 
+                        value={data.resultsSection?.buttonText || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          resultsSection: { ...prev.resultsSection, buttonText: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">CTA Button Link</label>
+                      <input 
+                        type="text" 
+                        value={data.resultsSection?.buttonLink || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          resultsSection: { ...prev.resultsSection, buttonLink: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                        placeholder="e.g. https://dmctrichology-mkm4.vercel.app/service"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-6 pt-6 border-t border-slate-100">
+                    <h4 className="text-xs font-black uppercase tracking-widest text-slate-500">Result Card Repeater</h4>
+                    {(data.resultsSection?.cards || []).map((card, i) => (
+                      <div key={i} className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 relative group flex flex-col gap-6 shadow-sm">
+                        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Card Item {i + 1}</span>
+                          <button 
+                            onClick={() => removeResultCard(i)} 
+                            className="p-1.5 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 border border-red-100"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Card Title</label>
+                            <input 
+                              type="text" 
+                              value={card.title || ""} 
+                              onChange={e => updateResultCard(i, "title", e.target.value)} 
+                              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500" 
+                              placeholder="e.g. Korean Facial Illumination"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Sessions / Result Info</label>
+                            <input 
+                              type="text" 
+                              value={card.sessions || ""} 
+                              onChange={e => updateResultCard(i, "sessions", e.target.value)} 
+                              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500" 
+                              placeholder="e.g. After 6 sessions"
+                            />
+                          </div>
+                          <div>
+                            <MediaUploader 
+                              label="Before Image" 
+                              value={card.beforeImg || ""} 
+                              onChange={val => updateResultCard(i, "beforeImg", val)} 
+                            />
+                          </div>
+                          <div>
+                            <MediaUploader 
+                              label="After Image" 
+                              value={card.afterImg || ""} 
+                              onChange={val => updateResultCard(i, "afterImg", val)} 
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {(data.resultsSection?.cards || []).length === 0 && (
+                      <div className="text-center py-10 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                        <ImageIcon size={28} className="text-slate-300 mx-auto mb-3" />
+                        <p className="text-xs text-slate-400 font-semibold">No result cards yet</p>
+                        <p className="text-[10px] text-slate-300 mt-1">Click "Add Result Card" to add before/after showcase items.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'videosSection' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><Video size={18} className="text-blue-500"/> Videos Section</h3>
+                    <p className="text-xs text-slate-400 mt-1">Manage YouTube videos showcase repeater, section title, and cta buttons</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between bg-slate-50 p-6 rounded-[24px] border border-slate-200">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={data.videosSection?.isVisible !== false} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          videosSection: { ...prev.videosSection, isVisible: e.target.checked }
+                        }))}
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4" 
+                      />
+                      <span className="text-sm font-bold text-slate-600">Section Visible</span>
+                    </label>
+                    <button 
+                      onClick={addVideoItem}
+                      className="flex items-center gap-1.5 bg-blue-600 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-md shadow-blue-200"
+                    >
+                      <Plus size={13}/> Add Video Item
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Section Title Heading</label>
+                      <input 
+                        type="text" 
+                        value={data.videosSection?.title || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          videosSection: { ...prev.videosSection, title: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">CTA Button Text</label>
+                      <input 
+                        type="text" 
+                        value={data.videosSection?.buttonText || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          videosSection: { ...prev.videosSection, buttonText: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">CTA Button Link</label>
+                      <input 
+                        type="text" 
+                        value={data.videosSection?.buttonLink || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          videosSection: { ...prev.videosSection, buttonLink: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                        placeholder="e.g. https://dmctrichology-mkm4.vercel.app/blog"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-6 pt-6 border-t border-slate-100">
+                    <h4 className="text-xs font-black uppercase tracking-widest text-slate-500">Video Repeater Cards</h4>
+                    {(data.videosSection?.videos || []).map((vid, i) => (
+                      <div key={i} className="bg-slate-50 p-6 rounded-[24px] border border-slate-200 relative group flex flex-col gap-6 shadow-sm">
+                        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Video Item {i + 1}</span>
+                          <button 
+                            onClick={() => removeVideoItem(i)} 
+                            className="p-1.5 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 border border-red-100"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="md:col-span-2">
+                            <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Video Title</label>
+                            <input 
+                              type="text" 
+                              value={vid.title || ""} 
+                              onChange={e => updateVideoItem(i, "title", e.target.value)} 
+                              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500" 
+                              placeholder="e.g. Female Hair Transplant | Good or Bad ?"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-black uppercase text-slate-500 mb-2 tracking-widest">Video embed URL / File URL</label>
+                            <input 
+                              type="text" 
+                              value={vid.videoUrl || ""} 
+                              onChange={e => updateVideoItem(i, "videoUrl", e.target.value)} 
+                              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500" 
+                              placeholder="e.g. https://www.youtube.com/embed/..."
+                            />
+                          </div>
+                          <div>
+                            <MediaUploader 
+                              label="Thumbnail/Cover Image" 
+                              value={vid.thumbnail || ""} 
+                              onChange={val => updateVideoItem(i, "thumbnail", val)} 
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {(data.videosSection?.videos || []).length === 0 && (
+                      <div className="text-center py-10 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                        <Video size={28} className="text-slate-300 mx-auto mb-3" />
+                        <p className="text-xs text-slate-400 font-semibold">No video items yet</p>
+                        <p className="text-[10px] text-slate-300 mt-1">Click "Add Video Item" to embed educational or result videos.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'enquirySection' && (
+              <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2"><Layout size={18} className="text-blue-500"/> Enquire About This Treatment Form</h3>
+                    <p className="text-xs text-slate-400 mt-1">Customize the enquiry form title, description, drop-down options, and style settings</p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 bg-slate-50 p-6 rounded-[24px] border border-slate-200">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={data.enquirySection?.isVisible !== false} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          enquirySection: { ...prev.enquirySection, isVisible: e.target.checked }
+                        }))}
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4" 
+                      />
+                      <span className="text-sm font-bold text-slate-600">Section Visible</span>
+                    </label>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Form Title</label>
+                      <input 
+                        type="text" 
+                        value={data.enquirySection?.title || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          enquirySection: { ...prev.enquirySection, title: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Submit Button Text</label>
+                      <input 
+                        type="text" 
+                        value={data.enquirySection?.submitButtonText || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          enquirySection: { ...prev.enquirySection, submitButtonText: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Form Short Description</label>
+                      <textarea 
+                        value={data.enquirySection?.description || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          enquirySection: { ...prev.enquirySection, description: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold min-h-[80px]" 
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Service Dropdown Options (Comma separated list)</label>
+                      <input 
+                        type="text" 
+                        value={Array.isArray(data.enquirySection?.serviceOptions) ? data.enquirySection.serviceOptions.join(", ") : ""} 
+                        onChange={e => {
+                          const options = e.target.value.split(",").map(s => s.trim()).filter(Boolean);
+                          setData(prev => ({
+                            ...prev,
+                            enquirySection: { ...prev.enquirySection, serviceOptions: options }
+                          }));
+                        }} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                        placeholder="e.g. Laser Hair Removal, Hair Transplant, Skin Rejuvenation"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-[10px] font-black uppercase text-slate-500 mb-3 tracking-widest">Background Color / Custom Style Class (Optional)</label>
+                      <input 
+                        type="text" 
+                        value={data.enquirySection?.backgroundColor || ""} 
+                        onChange={e => setData(prev => ({
+                          ...prev,
+                          enquirySection: { ...prev.enquirySection, backgroundColor: e.target.value }
+                        }))} 
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold" 
+                        placeholder="e.g. bg-[#f9f7f2] or empty for luxury white layout"
+                      />
                     </div>
                   </div>
                 </div>

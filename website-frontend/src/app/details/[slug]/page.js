@@ -105,10 +105,10 @@ export default async function DynamicDetailsPage({ params }) {
       )}
       {slug !== 'best-hair-transplant' && <IdealFrequency data={idealFrequency || {}} />}
       {slug !== 'best-hair-transplant' && <BeforeAfterTreatment data={beforeAfter || {}} />}
-      <ServiceEditorialFaq data={service.editorialFaqSection || null} pageSlug={slug} />
-      {slug === 'best-hair-transplant' && <HairTransplantResultsSection />}
-      {slug === 'best-hair-transplant' && <HairTransplantVideosSection />}
-      <FaqEnquiry data={faqEnquiry || {}} />
+      <ServiceEditorialFaq data={service.editorialFaqSection || null} pageSlug={slug} googleReviewCta={service.googleReviewCta} />
+      <HairTransplantResultsSection data={service.resultsSection} />
+      <HairTransplantVideosSection data={service.videosSection} />
+      <FaqEnquiry data={faqEnquiry || {}} enquirySection={service.enquirySection} />
     </div>
   );
 }

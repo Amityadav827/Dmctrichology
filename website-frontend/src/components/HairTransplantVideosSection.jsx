@@ -3,38 +3,27 @@
 import React, { useState } from "react";
 import { Play, X } from "lucide-react";
 
-const videos = [
-  {
-    title: "P-R-P Vs Hair Transplant ? | Best Treatment for Hairloss | Dr. Nandini Dadu",
-    thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  },
-  {
-    title: "Female Hair Transplant | Good or Bad ? | Dadu Medical Centre",
-    thumbnail: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ulx0crddeqpeygupa13q.png",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  },
-  {
-    title: "First 14 Days After Hair Transplant | Dos and Don'ts | Dr. Nandini Dadu",
-    thumbnail: "https://fxzkbhhinbjbeegkjnae.supabase.co/storage/v1/object/public/images/gallery/1778236591942-282403808.png",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  },
-];
-
-export default function HairTransplantVideosSection() {
+export default function HairTransplantVideosSection({ data }) {
   const [activeVideo, setActiveVideo] = useState(null);
+
+  if (!data || data.isVisible === false) return null;
+
+  const videos = data.videos || [];
+  if (videos.length === 0) return null;
 
   return (
     <section className="hair-transplant-videos-section">
       <div className="hair-transplant-videos-container">
-        <h2 className="hair-transplant-videos-heading">VIDEOS</h2>
+        <h2 className="hair-transplant-videos-heading">
+          {data.title || "VIDEOS"}
+        </h2>
 
         <div className="hair-transplant-videos-grid">
-          {videos.map((video) => (
+          {videos.map((video, idx) => (
             <button
               type="button"
               className="hair-transplant-video-card"
-              key={video.title}
+              key={idx}
               onClick={() => setActiveVideo(video)}
             >
               <div className="hair-transplant-video-thumb">
@@ -48,16 +37,26 @@ export default function HairTransplantVideosSection() {
           ))}
         </div>
 
-        <button className="hair-transplant-videos-view-more" type="button">
-          <span>VIEW MORE</span>
-          <span className="hair-transplant-videos-view-more-arrow" aria-hidden="true">
-            <img
-              src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png"
-              alt=""
-              className="hair-transplant-videos-view-more-arrow-icon"
-            />
-          </span>
-        </button>
+        {(data.buttonText || data.buttonLink) && (
+          <button 
+            onClick={() => {
+              if (data.buttonLink) {
+                window.location.href = data.buttonLink;
+              }
+            }} 
+            className="hair-transplant-videos-view-more" 
+            type="button"
+          >
+            <span>{data.buttonText || "VIEW MORE"}</span>
+            <span className="hair-transplant-videos-view-more-arrow" aria-hidden="true">
+              <img
+                src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png"
+                alt=""
+                className="hair-transplant-videos-view-more-arrow-icon"
+              />
+            </span>
+          </button>
+        )}
       </div>
 
       {activeVideo && (
