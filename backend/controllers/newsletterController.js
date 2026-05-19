@@ -1,4 +1,4 @@
-const NewsletterSubscriber = require("../models/NewsletterSubscriber");
+const supabase = require("../config/supabase");
 
 // Public subscription handler
 exports.subscribeNewsletter = async (req, res) => {
@@ -14,8 +14,21 @@ exports.subscribeNewsletter = async (req, res) => {
 
     const trimmedEmail = email.trim().toLowerCase();
 
-    // Check duplicate
-    const existing = await NewsletterSubscriber.findOne({ email: trimmedEmail });
+    // Check duplicate in Supabase
+    const { data: existing, error: checkError } = await supabase
+      .from("newsletter_subscribers")
+      .select("id")
+      .eq("email", trimmedEmail)
+      .maybeSingle();
+
+    if (checkError) {
+      console.error("[subscribeNewsletter] Check Error:", checkError.message);
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong. Please try again.",
+      });
+    }
+
     if (existing) {
       return res.status(400).json({
         success: false,
@@ -23,19 +36,40 @@ exports.subscribeNewsletter = async (req, res) => {
       });
     }
 
-    // Save subscriber
-    const newSubscriber = new NewsletterSubscriber({
-      email: trimmedEmail,
-      subscribedToUpdates: !!subscribedToUpdates,
-      source: "footer-newsletter",
-    });
+    // Save subscriber in Supabase
+    const { data: newSubscriber, error: insertError } = await supabase
+      .from("newsletter_subscribers")
+      .insert([
+        {
+          email: trimmedEmail,
+          subscribed_to_updates: !!subscribedToUpdates,
+          source: "footer-newsletter",
+        }
+      ])
+      .select()
+      .single();
 
-    await newSubscriber.save();
+    if (insertError) {
+      console.error("[subscribeNewsletter] Insert Error:", insertError.message);
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong. Please try again.",
+      });
+    }
+
+    // Map response keys back to frontend format (camelCase and _id)
+    const mappedSubscriber = {
+      _id: newSubscriber.id,
+      email: newSubscriber.email,
+      subscribedToUpdates: newSubscriber.subscribed_to_updates,
+      source: newSubscriber.source,
+      createdAt: newSubscriber.created_at,
+    };
 
     return res.status(201).json({
       success: true,
       message: "Thank you for subscribing!",
-      data: newSubscriber,
+      data: mappedSubscriber,
     });
   } catch (error) {
     console.error("[subscribeNewsletter] Error:", error);
@@ -50,40 +84,59 @@ exports.subscribeNewsletter = async (req, res) => {
 exports.getSubscribers = async (req, res) => {
   try {
     const { search = "", startDate, endDate, page = 1, limit = 10 } = req.query;
-    const query = {};
+
+    let query = supabase
+      .from("newsletter_subscribers")
+      .select("*", { count: "exact" });
 
     // Search filter
     if (search.trim()) {
-      query.email = { $regex: search.trim(), $options: "i" };
+      query = query.ilike("email", `%${search.trim()}%`);
     }
 
     // Date range filter
-    if (startDate || endDate) {
-      query.createdAt = {};
-      if (startDate) {
-        query.createdAt.$gte = new Date(startDate);
-      }
-      if (endDate) {
-        const end = new Date(endDate);
-        end.setHours(23, 59, 59, 999);
-        query.createdAt.$lte = end;
-      }
+    if (startDate) {
+      query = query.gte("created_at", new Date(startDate).toISOString());
+    }
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      query = query.lte("created_at", end.toISOString());
     }
 
-    const skipIndex = (parseInt(page) - 1) * parseInt(limit);
+    const limitVal = parseInt(limit) || 10;
+    const pageVal = parseInt(page) || 1;
+    const skipIndex = (pageVal - 1) * limitVal;
 
-    const total = await NewsletterSubscriber.countDocuments(query);
-    const data = await NewsletterSubscriber.find(query)
-      .sort({ createdAt: -1 })
-      .skip(skipIndex)
-      .limit(parseInt(limit));
+    query = query
+      .order("created_at", { ascending: false })
+      .range(skipIndex, skipIndex + limitVal - 1);
+
+    const { data, count, error } = await query;
+
+    if (error) {
+      console.error("[getSubscribers] Query Error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to fetch newsletter subscribers.",
+      });
+    }
+
+    // Map fields back to frontend camelCase and _id format
+    const mappedData = (data || []).map((sub) => ({
+      _id: sub.id,
+      email: sub.email,
+      subscribedToUpdates: sub.subscribed_to_updates,
+      source: sub.source,
+      createdAt: sub.created_at,
+    }));
 
     return res.status(200).json({
       success: true,
-      total,
-      data,
-      pages: Math.ceil(total / parseInt(limit)),
-      currentPage: parseInt(page),
+      total: count || 0,
+      data: mappedData,
+      pages: Math.ceil((count || 0) / limitVal),
+      currentPage: pageVal,
     });
   } catch (error) {
     console.error("[getSubscribers] Error:", error);
@@ -98,9 +151,23 @@ exports.getSubscribers = async (req, res) => {
 exports.deleteSubscriber = async (req, res) => {
   try {
     const { id } = req.params;
-    const subscriber = await NewsletterSubscriber.findByIdAndDelete(id);
 
-    if (!subscriber) {
+    const { data, error } = await supabase
+      .from("newsletter_subscribers")
+      .delete()
+      .eq("id", id)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error("[deleteSubscriber] Delete Error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to delete subscriber.",
+      });
+    }
+
+    if (!data) {
       return res.status(404).json({
         success: false,
         message: "Subscriber not found.",
@@ -132,7 +199,18 @@ exports.bulkDeleteSubscribers = async (req, res) => {
       });
     }
 
-    await NewsletterSubscriber.deleteMany({ _id: { $in: ids } });
+    const { error } = await supabase
+      .from("newsletter_subscribers")
+      .delete()
+      .in("id", ids);
+
+    if (error) {
+      console.error("[bulkDeleteSubscribers] Bulk Delete Error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to bulk delete subscribers.",
+      });
+    }
 
     return res.status(200).json({
       success: true,
@@ -151,25 +229,37 @@ exports.bulkDeleteSubscribers = async (req, res) => {
 exports.exportSubscribersCsv = async (req, res) => {
   try {
     const { search = "", startDate, endDate } = req.query;
-    const query = {};
 
+    let query = supabase
+      .from("newsletter_subscribers")
+      .select("*");
+
+    // Search filter
     if (search.trim()) {
-      query.email = { $regex: search.trim(), $options: "i" };
+      query = query.ilike("email", `%${search.trim()}%`);
     }
 
-    if (startDate || endDate) {
-      query.createdAt = {};
-      if (startDate) {
-        query.createdAt.$gte = new Date(startDate);
-      }
-      if (endDate) {
-        const end = new Date(endDate);
-        end.setHours(23, 59, 59, 999);
-        query.createdAt.$lte = end;
-      }
+    // Date range filter
+    if (startDate) {
+      query = query.gte("created_at", new Date(startDate).toISOString());
+    }
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      query = query.lte("created_at", end.toISOString());
     }
 
-    const subscribers = await NewsletterSubscriber.find(query).sort({ createdAt: -1 });
+    query = query.order("created_at", { ascending: false });
+
+    const { data: subscribers, error } = await query;
+
+    if (error) {
+      console.error("[exportSubscribersCsv] Export Error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to export CSV.",
+      });
+    }
 
     res.setHeader("Content-Type", "text/csv");
     res.setHeader("Content-Disposition", 'attachment; filename="newsletter_subscribers.csv"');
@@ -177,11 +267,11 @@ exports.exportSubscribersCsv = async (req, res) => {
     // Headers
     res.write("Email,Subscribed To Updates,Source,Subscribed At\n");
 
-    subscribers.forEach((sub) => {
+    (subscribers || []).forEach((sub) => {
       const email = `"${sub.email.replace(/"/g, '""')}"`;
-      const updates = sub.subscribedToUpdates ? "Yes" : "No";
+      const updates = sub.subscribed_to_updates ? "Yes" : "No";
       const source = `"${sub.source.replace(/"/g, '""')}"`;
-      const date = `"${new Date(sub.createdAt).toLocaleString("en-IN")}"`;
+      const date = `"${new Date(sub.created_at).toLocaleString("en-IN")}"`;
       
       res.write(`${email},${updates},${source},${date}\n`);
     });
@@ -195,3 +285,4 @@ exports.exportSubscribersCsv = async (req, res) => {
     });
   }
 };
+
