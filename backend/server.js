@@ -21,6 +21,7 @@ const galleryRoutes = require("./routes/galleryRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const callbackRoutes = require("./routes/callbackRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
+const newsletterRoutes = require("./routes/newsletterRoutes");
 const { seoRouter, serveRobotsTxt } = require("./routes/seoRoutes");
 const serviceCategoryRoutes = require("./routes/serviceCategoryRoutes");
 const secondCategoryRoutes = require("./routes/secondCategoryRoutes");
@@ -152,6 +153,7 @@ app.use("/api/callback", callbackRoutes);
 app.use("/api/lead", callbackRoutes);
 app.use("/api/appointment", appointmentRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/newsletter", newsletterRoutes);
 
 app.use("/api/seo", seoRouter);
 

@@ -154,6 +154,9 @@ function Sidebar() {
                 <NavLink to="/leads/appointment" className={getNavClass}>
                   <CalendarCheck size={16} /> Consultation Requests
                 </NavLink>
+                <NavLink to="/leads/newsletter" className={getNavClass}>
+                  <Users size={16} /> Newsletter Subscribers
+                </NavLink>
                 <NavLink to="/leads/contact" className={getNavClass}>
                   <Mail size={16} /> Contact Leads
                 </NavLink>

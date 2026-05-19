@@ -413,6 +413,26 @@ export const exportAppointmentsCsv = async (params) => {
   return downloadCsv(`/appointment/export${queryStr ? `?${queryStr}` : ""}`, "appointment-leads.csv");
 };
 
+export const getNewsletterSubscribers = async (params) => {
+  const { data } = await api.get("/newsletter", { params });
+  return data;
+};
+
+export const deleteNewsletterSubscriber = async (id) => {
+  const { data } = await api.delete(`/newsletter/${id}`);
+  return data;
+};
+
+export const bulkDeleteNewsletterSubscribers = async (payload) => {
+  const { data } = await api.post("/newsletter/bulk-delete", payload);
+  return data;
+};
+
+export const exportNewsletterSubscribersCsv = async (params) => {
+  const queryStr = params ? new URLSearchParams(params).toString() : "";
+  return downloadCsv(`/newsletter/export/csv${queryStr ? `?${queryStr}` : ""}`, "newsletter-subscribers.csv");
+};
+
 export const getServicesMaster = async () => {
   const { data } = await api.get("/services");
   return data;

@@ -6,6 +6,63 @@ import EditableText from "./Editable/EditableText";
 
 export default function Footer() {
   const [data, setData] = useState(null);
+  
+  // Newsletter form state
+  const [email, setEmail] = useState('');
+  const [subscribeToUpdates, setSubscribeToUpdates] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  // Success/Error toast auto-hide timer after 4 seconds
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
+  const handleSubmitNewsletter = async (e) => {
+    e.preventDefault();
+    if (loading) return;
+
+    setToast(null);
+
+    // Validation
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setToast({ message: "Please enter a valid email address.", type: "error" });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || (isLocal ? "http://localhost:10000/api" : 'https://dmctrichology-1.onrender.com/api');
+
+      const response = await fetch(`${API_BASE}/newsletter/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          subscribedToUpdates: subscribeToUpdates
+        })
+      });
+
+      const resData = await response.json();
+      if (response.ok && resData.success) {
+        setToast({ message: "Thank you for subscribing!", type: "success" });
+        setEmail('');
+        setSubscribeToUpdates(false);
+      } else {
+        setToast({ message: resData.message || "Something went wrong. Please try again.", type: "error" });
+      }
+    } catch (err) {
+      setToast({ message: "Something went wrong. Please try again.", type: "error" });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -18,7 +75,8 @@ export default function Footer() {
           if (typeof window !== 'undefined' && window.location.pathname.startsWith('/details/')) {
             const slug = window.location.pathname.split('/').filter(Boolean).pop();
             if (slug) {
-              const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dmctrichology-1.onrender.com/api';
+              const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+              const API_BASE = process.env.NEXT_PUBLIC_API_URL || (isLocal ? "http://localhost:10000/api" : 'https://dmctrichology-1.onrender.com/api');
               const overrideRes = await fetch(`${API_BASE}/service-details/${slug}`);
               if (overrideRes.ok) {
                 const sJson = await overrideRes.json();
@@ -187,13 +245,19 @@ export default function Footer() {
                   <EditableText sectionId="footer-section" fieldPath="contact.address2" tag="span">{contact.address2}</EditableText>
                 </p>
                 <p style={{ marginBottom: '8px' }}>
-                  <EditableText sectionId="footer-section" fieldPath="contact.phone1" tag="span">{contact.phone1}</EditableText>,
+                  <a href={`tel:${contact.phone1.replace(/[^+\d]/g, '')}`} className="premium-footer-link" style={{ color: '#444', textDecoration: 'none', cursor: 'pointer', transition: 'color 0.2s ease-in-out' }}>
+                    <EditableText sectionId="footer-section" fieldPath="contact.phone1" tag="span">{contact.phone1}</EditableText>
+                  </a>,
                 </p>
                 <p style={{ marginBottom: '15px' }}>
-                  <EditableText sectionId="footer-section" fieldPath="contact.phone2" tag="span">{contact.phone2}</EditableText>
+                  <a href={`tel:${contact.phone2.replace(/[^+\d]/g, '')}`} className="premium-footer-link" style={{ color: '#444', textDecoration: 'none', cursor: 'pointer', transition: 'color 0.2s ease-in-out' }}>
+                    <EditableText sectionId="footer-section" fieldPath="contact.phone2" tag="span">{contact.phone2}</EditableText>
+                  </a>
                 </p>
                 <p>
-                  <EditableText sectionId="footer-section" fieldPath="contact.email" tag="span">{contact.email}</EditableText>
+                  <a href={`mailto:${contact.email.toLowerCase()}`} className="premium-footer-link" style={{ color: '#444', textDecoration: 'none', cursor: 'pointer', transition: 'color 0.2s ease-in-out' }}>
+                    <EditableText sectionId="footer-section" fieldPath="contact.email" tag="span">{contact.email}</EditableText>
+                  </a>
                 </p>
               </div>
             </div>
@@ -251,63 +315,99 @@ export default function Footer() {
                 </p>
 
                 {/* Newsletter Input */}
-                <div style={{
-                  display: 'flex',
-                  backgroundColor: '#000',
-                  borderRadius: '50px',
-                  padding: '0',
-                  marginBottom: '20px',
-                  alignItems: 'center'
-                }}>
-                  <input
-                    type="email"
-                    placeholder={newsletter.placeholder}
-                    style={{
-                      flex: 1,
-                      background: 'transparent',
-                      border: 'none',
-                      padding: '12px 25px',
-                      color: '#fff',
-                      fontSize: '14px',
-                      outline: 'none'
-                    }}
-                  />
-                  <button style={{ 
-                    backgroundColor: '#fff', 
-                    color: '#000', 
-                    border: 'revert', 
-                    borderRadius: '50px', 
-                    padding: '12px 12px 12px 24px', 
-                    fontWeight: '600', 
-                    fontSize: '14px',
+                <form onSubmit={handleSubmitNewsletter}>
+                  <div style={{
                     display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    cursor: 'pointer'
+                    backgroundColor: '#000',
+                    borderRadius: '50px',
+                    padding: '0',
+                    marginBottom: '20px',
+                    alignItems: 'center'
                   }}>
-                    <EditableText sectionId="footer-section" fieldPath="newsletter.buttonText" tag="span">{newsletter.buttonText}</EditableText>
-                    <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" alt="email" style={{ width: '24px' }} />
-                  </button>
-                </div>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={newsletter.placeholder}
+                      disabled={loading}
+                      style={{
+                        flex: 1,
+                        background: 'transparent',
+                        border: 'none',
+                        padding: '12px 25px',
+                        color: '#fff',
+                        fontSize: '14px',
+                        outline: 'none'
+                      }}
+                      required
+                    />
+                    <button 
+                      type="submit"
+                      disabled={loading}
+                      style={{ 
+                        backgroundColor: '#fff', 
+                        color: '#000', 
+                        border: 'revert', 
+                        borderRadius: '50px', 
+                        padding: '12px 12px 12px 24px', 
+                        fontWeight: '600', 
+                        fontSize: '14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        cursor: loading ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      <EditableText sectionId="footer-section" fieldPath="newsletter.buttonText" tag="span">{loading ? "Submitting..." : newsletter.buttonText}</EditableText>
+                      <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" alt="email" style={{ width: '24px' }} />
+                    </button>
+                  </div>
 
-                {/* Subscription Checkbox */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '35px' }}>
-                  <input type="checkbox" id="subscribe" style={{ cursor: 'pointer' }} />
-                  <label htmlFor="subscribe" style={{ fontSize: '13px', color: '#444', cursor: 'pointer' }}>
-                    <EditableText sectionId="footer-section" fieldPath="newsletter.checkboxLabel" tag="span">{newsletter.checkboxLabel}</EditableText>
-                  </label>
-                </div>
+                  {/* Subscription Checkbox */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '15px' }}>
+                    <input 
+                      type="checkbox" 
+                      id="subscribe" 
+                      checked={subscribeToUpdates}
+                      onChange={(e) => setSubscribeToUpdates(e.target.checked)}
+                      style={{ cursor: 'pointer' }} 
+                      disabled={loading}
+                    />
+                    <label htmlFor="subscribe" style={{ fontSize: '13px', color: '#444', cursor: 'pointer' }}>
+                      <EditableText sectionId="footer-section" fieldPath="newsletter.checkboxLabel" tag="span">{newsletter.checkboxLabel}</EditableText>
+                    </label>
+                  </div>
+                </form>
+
+                {/* Status message */}
+                {toast && (
+                  <div style={{
+                    marginTop: '0px',
+                    marginBottom: '20px',
+                    padding: '10px 20px',
+                    borderRadius: '25px',
+                    fontSize: '13px',
+                    color: toast.type === 'success' ? '#1c5235' : '#742a2a',
+                    backgroundColor: toast.type === 'success' ? '#eefdf5' : '#fff5f5',
+                    border: toast.type === 'success' ? '1px solid #c6f6d5' : '1px solid #fed7d7',
+                    fontFamily: 'Lato, sans-serif',
+                    display: 'inline-block',
+                    animation: 'fadeInUp 0.3s ease'
+                  }}>
+                    {toast.message}
+                  </div>
+                )}
 
                 {/* Contact Info Pills */}
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', marginBottom: '20px', flexWrap: 'wrap' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <a href={`tel:${contact.phone1.replace(/[^+\d]/g, '')}`} className="premium-footer-pill" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', cursor: 'pointer', transition: 'transform 0.2s ease-in-out' }}>
                     <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png" alt="phone" style={{ width: '32px' }} />
                     <span style={{ fontSize: '16px', fontWeight: '600', color: '#1C1C1C' }}>{contact.phone1}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  </a>
+                  <a href={`mailto:${contact.email.toLowerCase()}`} className="premium-footer-pill" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', cursor: 'pointer', transition: 'transform 0.2s ease-in-out' }}>
                     <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777703175/dmc-trichology/vj4qbxtxftqzqslowwgd.png" alt="arrow" style={{ width: '32px' }} />
                     <span style={{ fontSize: '14px', fontWeight: '600', color: '#1C1C1C' }}>{contact.email.toUpperCase()}</span>
-                  </div>
+                  </a>
                 </div>
 
                 {/* Disclaimer Area - Moved Inside Card Footer to prevent overlap */}
@@ -339,6 +439,19 @@ export default function Footer() {
           .social-icon-link:hover img {
             transform: translateY(-5px) scale(1.15);
             filter: brightness(1.2);
+          }
+          .premium-footer-link {
+            transition: color 0.2s ease-in-out;
+          }
+          .premium-footer-link:hover {
+            color: #C8A45D !important;
+          }
+          .premium-footer-pill:hover {
+            transform: scale(1.04);
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
           }
           @media (max-width: 992px) {
             footer > div { padding: 40px 5% !important; }

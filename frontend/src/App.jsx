@@ -25,6 +25,7 @@ import Contact from "./pages/Contact";
 import Blogs from "./pages/Blogs";
 import BlogCategory from "./pages/BlogCategory";
 import AppointmentList from "./pages/AppointmentList";
+import NewsletterList from "./pages/NewsletterList";
 import Pages from "./pages/Pages";
 import WebsiteSettings from "./pages/WebsiteSettings";
 import TopBarCMS from "./pages/cms/TopBarCMS";
@@ -576,6 +577,14 @@ function App() {
           element={
             <ProtectedRoute permission="users">
               <AppointmentList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="leads/newsletter"
+          element={
+            <ProtectedRoute permission="users">
+              <NewsletterList />
             </ProtectedRoute>
           }
         />
