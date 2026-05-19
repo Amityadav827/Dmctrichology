@@ -226,18 +226,26 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
     setLoading(true);
     try {
       const isContactPage = typeof window !== "undefined" && window.location.pathname.includes("contact-us");
+      const endpoint = isContactPage ? "contact" : "appointment";
+
+      let finalMessage = formData.message.trim();
+      if (isContactPage && selectedDateTime) {
+        const formattedDate = new Date(selectedDateTime).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        finalMessage = `${finalMessage ? finalMessage + '\n\n' : ''}[Preferred Appointment: ${formattedDate}]`;
+      }
+
       const payload = {
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         mobile: trimmedMobile,
         service: formData.service,
         appointmentDate: selectedDateTime,
-        message: formData.message.trim(),
+        message: finalMessage,
         source: isContactPage ? "contact-us-page" : "consultation-form"
       };
       const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
       const API_URL = process.env.NEXT_PUBLIC_API_URL || (isLocal ? "http://localhost:10000/api" : 'https://dmctrichology-1.onrender.com/api');
-      const response = await fetch(`${API_URL}/appointment`, {
+      const response = await fetch(`${API_URL}/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

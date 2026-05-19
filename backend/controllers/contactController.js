@@ -2,18 +2,40 @@ const supabase = require("../config/supabase");
 
 const createContact = async (req, res, next) => {
   try {
-    const { name, email, mobile, message } = req.body;
+    const { name, email, mobile, message, service, source } = req.body;
 
-    if (!name || !email || !mobile || !message) {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide all required fields",
-      });
+    // Validation
+    if (!name || !name.trim()) {
+      return res.status(400).json({ success: false, message: "Please enter your name." });
     }
+    if (!email || !email.trim()) {
+      return res.status(400).json({ success: false, message: "Please enter your email address." });
+    }
+    // Basic email format check
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      return res.status(400).json({ success: false, message: "Please enter a valid email address." });
+    }
+    if (!mobile || !mobile.trim()) {
+      return res.status(400).json({ success: false, message: "Please enter your mobile number." });
+    }
+    if (!/^\d{10}$/.test(mobile.trim().replace(/\s+/g, ''))) {
+      return res.status(400).json({ success: false, message: "Please enter a valid 10-digit mobile number." });
+    }
+
+    const trimmedMobile = mobile.trim().replace(/\s+/g, '');
 
     const { data, error } = await supabase
       .from('contacts')
-      .insert([{ name, email, mobile, message, status: 'new' }])
+      .insert([{ 
+        name: name.trim(), 
+        email: email.trim().toLowerCase(), 
+        mobile: trimmedMobile, 
+        message: message ? message.trim() : "No message provided.", 
+        status: 'new',
+        service: service ? service.trim() : null,
+        enquiry_type: service ? service.trim() : null,
+        source: source ? source.trim() : 'contact-us-page'
+      }])
       .select()
       .single();
 
@@ -130,9 +152,19 @@ const exportContactsCsv = async (req, res, next) => {
     if (error) return res.status(500).json({ success: false, message: error.message });
 
     // Simplified CSV generation for API parity
-    let csv = "ID,Name,Email,Mobile,Message,Status,CreatedAt\n";
-    data.forEach(row => {
-      csv += `${row.id},${row.name},${row.email},${row.mobile},"${row.message.replace(/"/g, '""')}",${row.status},${row.created_at}\n`;
+    let csv = "ID,Name,Email,Mobile,Service,Message,Status,Source,CreatedAt\n";
+    (data || []).forEach(row => {
+      const idStr = row.id;
+      const nameStr = row.name ? row.name.replace(/"/g, '""') : '';
+      const emailStr = row.email ? row.email.replace(/"/g, '""') : '';
+      const mobileStr = row.mobile || '';
+      const serviceStr = (row.service || row.enquiry_type || "").replace(/"/g, '""');
+      const msgStr = row.message ? row.message.replace(/"/g, '""') : '';
+      const statusStr = row.status || 'new';
+      const sourceStr = row.source || 'contact-us-page';
+      const createdStr = row.created_at || '';
+      
+      csv += `"${idStr}","${nameStr}","${emailStr}","${mobileStr}","${serviceStr}","${msgStr}","${statusStr}","${sourceStr}","${createdStr}"\n`;
     });
 
     res.setHeader("Content-Type", "text/csv");

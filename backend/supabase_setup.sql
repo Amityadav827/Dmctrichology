@@ -37,9 +37,12 @@ CREATE TABLE IF NOT EXISTS public.contacts (
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Schema Patch for Contacts (Ensures mobile and status columns are present)
+-- Schema Patch for Contacts (Ensures mobile, status, enquiry_type, service, and source columns are present)
 ALTER TABLE public.contacts ADD COLUMN IF NOT EXISTS mobile TEXT;
 ALTER TABLE public.contacts ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'new';
+ALTER TABLE public.contacts ADD COLUMN IF NOT EXISTS enquiry_type TEXT;
+ALTER TABLE public.contacts ADD COLUMN IF NOT EXISTS service TEXT;
+ALTER TABLE public.contacts ADD COLUMN IF NOT EXISTS source TEXT DEFAULT 'contact-us-page';
 
 -- =========================================================================
 -- 4. APPOINTMENTS TABLE

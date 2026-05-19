@@ -11,7 +11,7 @@ export default function Header({ initialHeader }) {
 
   useEffect(() => {
     fetchHeader().then(data => {
-      if(data && data.data) setHeaderData(data.data);
+      if (data && data.data) setHeaderData(data.data);
     });
   }, []);
 
@@ -28,10 +28,10 @@ export default function Header({ initialHeader }) {
               <img src={logoUrl} alt="DMC Trichology Logo" />
             </Link>
           </div>
-          
+
           <Navbar cmsMenu={headerData?.menuItems} />
 
-          <div className="header-right" style={{display: 'flex', gap: '16px', alignItems: 'center'}}>
+          <div className="header-right" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <a
               href={buttonLink}
               className="btn-primary header-appointment-btn"
