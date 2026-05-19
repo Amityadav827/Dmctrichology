@@ -269,7 +269,7 @@ export const submitComment = async (data) => {
 
 export const submitLead = async (data) => {
   try {
-    const res = await api.post('/lead', data);
+    const res = await api.post('/callback', data);
     return res.data;
   } catch (error) {
     console.error('Error submitting lead', error);

@@ -17,6 +17,9 @@ export default function WebsiteSettings() {
     appointmentButtonText: "",
     socialLinks: { facebook: "", instagram: "", youtube: "", linkedin: "" },
     footerCopyright: "",
+    patientCount: "",
+    ratingStars: 5,
+    ratingText: "",
   });
 
   const [files, setFiles] = useState({ logo: null, favicon: null });
@@ -252,6 +255,48 @@ export default function WebsiteSettings() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Footer Copyright Text</label>
             <input type="text" name="footerCopyright" value={settings.footerCopyright} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+        </div>
+
+        {/* Homepage Hero Callback Form Stats */}
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">6. Homepage Hero Callback Form Stats</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Patient Count Text</label>
+              <input
+                type="text"
+                name="patientCount"
+                value={settings.patientCount}
+                onChange={handleChange}
+                placeholder="e.g. 225+ Patients"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Rating Stars Number</label>
+              <input
+                type="number"
+                name="ratingStars"
+                min="1"
+                max="10"
+                value={settings.ratingStars}
+                onChange={handleChange}
+                placeholder="e.g. 5"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Rating Text (Alternative)</label>
+              <input
+                type="text"
+                name="ratingText"
+                value={settings.ratingText}
+                onChange={handleChange}
+                placeholder="e.g. ★★★★★"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
           </div>
         </div>
 

@@ -149,6 +149,7 @@ app.use("/api/contacts", contactRoutes);
 
 app.use("/api/callbacks", callbackRoutes);
 app.use("/api/callback", callbackRoutes);
+app.use("/api/lead", callbackRoutes);
 
 app.use("/api/appointment", appointmentRoutes);
 

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { submitLead } from '../services/api';
+import { submitLead, fetchSiteSettings } from '../services/api';
 
 export default function LeadForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +12,7 @@ export default function LeadForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [settings, setSettings] = useState(null);
 
   // Function to generate random 4-digit number
   const generateCaptcha = () => {
@@ -20,33 +21,71 @@ export default function LeadForm() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
     generateCaptcha();
+    
+    // Fetch CMS settings for dynamic stats
+    const loadSettings = async () => {
+      try {
+        const res = await fetchSiteSettings();
+        if (res && res.data) {
+          setSettings(res.data);
+        }
+      } catch (err) {
+        console.error("Error loading site settings in LeadForm:", err);
+      }
+    };
+    loadSettings();
   }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Reset success/error states on typing
+    if (success) setSuccess(false);
+    if (error) setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess(false);
 
-    // 1. Validate Captcha
-    if (formData.code !== captcha) {
+    // 1. Validation
+    if (!formData.name.trim()) {
+      setError('Please enter your name.');
+      return;
+    }
+
+    const trimmedMobile = formData.mobile.replace(/\s+/g, '');
+    if (!trimmedMobile) {
+      setError('Please enter your mobile number.');
+      return;
+    }
+    if (!/^\d{10}$/.test(trimmedMobile)) {
+      setError('Please enter a valid 10-digit mobile number (numbers only).');
+      return;
+    }
+
+    if (!formData.code.trim()) {
+      setError('Please enter the verification code.');
+      return;
+    }
+
+    if (formData.code.trim() !== captcha) {
       setError('Invalid captcha. Please enter the correct code.');
       return;
     }
 
     setLoading(true);
     try {
-      await submitLead(formData);
+      await submitLead({
+        name: formData.name.trim(),
+        mobile: trimmedMobile
+      });
       setSuccess(true);
       setFormData({ name: '', mobile: '', code: '' });
-      // 2. Regenerate captcha after success
       generateCaptcha();
     } catch (err) {
-      setError('Something went wrong. Please try again.');
+      setError(err.response?.data?.message || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -78,16 +117,60 @@ export default function LeadForm() {
             ))}
           </div>
           <div style={{ textAlign: 'left', minWidth: '110px' }}>
-            <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#333333', whiteSpace: 'nowrap', fontFamily: "'Marcellus', serif" }}>225+ Patients</div>
+            <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#333333', whiteSpace: 'nowrap', fontFamily: "'Marcellus', serif" }}>
+              {settings?.patientCount || '225+ Patients'}
+            </div>
             <div style={{ display: 'flex', gap: '2px', marginTop: '2px', height: '10px' }}>
-              {[1,2,3,4,5].map(star => <img key={star} src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" alt="star" style={{ width: '10px', height: '10px' }} />)}
+              {settings?.ratingText ? (
+                <span style={{ fontSize: '10px', color: '#FFA500', lineHeight: 1, letterSpacing: '1px' }}>{settings.ratingText}</span>
+              ) : (
+                Array.from({ length: Number(settings?.ratingStars || 5) }).map((_, idx) => (
+                  <img key={idx} src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ujqfjbjqbnxpcngqssi3.png" alt="star" style={{ width: '10px', height: '10px' }} />
+                ))
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {success && <div style={{ color: 'green', marginBottom: '16px', fontSize: '14px' }}>Request sent successfully!</div>}
-      {error && <div style={{ color: 'red', marginBottom: '16px', fontSize: '14px' }}>{error}</div>}
+      {success && (
+        <div style={{
+          background: 'rgba(46, 125, 50, 0.08)',
+          border: '1px solid rgba(46, 125, 50, 0.25)',
+          borderRadius: '12px',
+          color: '#2e7d32',
+          padding: '12px 16px',
+          marginBottom: '20px',
+          fontSize: '13px',
+          fontFamily: 'Lato, sans-serif',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          boxShadow: '0 4px 12px rgba(46, 125, 50, 0.05)'
+        }}>
+          <span style={{ fontSize: '16px', fontWeight: 'bold' }}>✓</span>
+          <strong>Thank you! Our team will contact you shortly.</strong>
+        </div>
+      )}
+      {error && (
+        <div style={{
+          background: 'rgba(198, 40, 40, 0.08)',
+          border: '1px solid rgba(198, 40, 40, 0.25)',
+          borderRadius: '12px',
+          color: '#c62828',
+          padding: '12px 16px',
+          marginBottom: '20px',
+          fontSize: '13px',
+          fontFamily: 'Lato, sans-serif',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          boxShadow: '0 4px 12px rgba(198, 40, 40, 0.05)'
+        }}>
+          <span style={{ fontSize: '16px' }}>⚠️</span>
+          <strong>{error}</strong>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
         <div className="form-row">
@@ -100,6 +183,7 @@ export default function LeadForm() {
               value={formData.name} 
               onChange={handleChange} 
               style={{ backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '12px' }}
+              disabled={loading}
               required 
             />
           </div>
@@ -112,13 +196,14 @@ export default function LeadForm() {
               value={formData.mobile} 
               onChange={handleChange} 
               style={{ backgroundColor: 'transparent', border: '1px solid #ddd', borderRadius: '12px' }}
+              disabled={loading}
               required 
             />
           </div>
         </div>
 
         <div className="form-row" style={{ alignItems: 'stretch', border: '1px solid #ddd', borderRadius: '12px', overflow: 'hidden' }}>
-          <div style={{ flex: '0 0 100px', backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50px', borderRight: '1px solid #ddd' }}>
+          <div style={{ flex: '0 0 100px', backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50px', borderRight: '1px solid #ddd', userSelect: 'none' }}>
             <span style={{ color: '#888', letterSpacing: '4px', fontWeight: 'bold' }}>{captcha}</span>
           </div>
           <div style={{ flex: 1 }}>
@@ -130,13 +215,14 @@ export default function LeadForm() {
               value={formData.code} 
               onChange={handleChange} 
               style={{ backgroundColor: 'transparent', border: 'none', height: '50px', borderRadius: 0, width: '100%' }}
+              disabled={loading}
               required 
             />
           </div>
         </div>
 
         <div style={{ marginTop: '32px' }}>
-          <button type="submit" className="btn-primary hero-submit-btn" style={{ width: '100%', position: 'relative', height: '60px', borderRadius: '50px', padding: '0 24px' }} disabled={loading}>
+          <button type="submit" className="btn-primary hero-submit-btn" style={{ width: '100%', position: 'relative', height: '60px', borderRadius: '50px', padding: '0 24px', cursor: loading ? 'not-allowed' : 'pointer' }} disabled={loading}>
             <span style={{ fontFamily: "'Marcellus', serif", fontSize: '1.2rem', color: '#000', margin: '0 auto' }}>{loading ? 'Submitting...' : 'Submit'}</span>
             <div className="icon-circle" style={{ position: 'absolute', right: '10px', backgroundColor: '#000', width: '40px', height: '40px' }}>
               <img className="hero-submit-arrow" src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '16px', height: '16px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />

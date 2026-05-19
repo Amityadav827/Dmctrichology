@@ -22,7 +22,10 @@ const seedDefaultSettings = async () => {
           youtube: "",
           linkedin: ""
         },
-        footerCopyright: ""
+        footerCopyright: "",
+        patientCount: "225+ Patients",
+        ratingStars: 5,
+        ratingText: "★★★★★"
       });
       console.log("✅ Site settings default data seeded.");
     }

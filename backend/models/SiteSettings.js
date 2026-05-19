@@ -17,7 +17,10 @@ const siteSettingsSchema = new mongoose.Schema({
     youtube: { type: String, default: "" },
     linkedin: { type: String, default: "" }
   },
-  footerCopyright: { type: String, default: "" }
+  footerCopyright: { type: String, default: "" },
+  patientCount: { type: String, default: "225+ Patients" },
+  ratingStars: { type: Number, default: 5 },
+  ratingText: { type: String, default: "★★★★★" }
 }, { timestamps: true });
 
 module.exports = mongoose.model('SiteSettings', siteSettingsSchema);
