@@ -1757,23 +1757,23 @@
   gap: 16px;
 }
 
-.service-benefits-check-icon-wrapper {
-  flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  background: #fdfaf4;
-  border: 1px solid #d4af37; /* premium gold check ring */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2px;
+.service-benefits-check-icon {
+    color: #3d5a99;
+    width: 11px;
+    height: 11px;
 }
 
-.service-benefits-check-icon {
-  width: 11px;
-  height: 11px;
-  color: #d4af37;
+.service-benefits-check-icon-wrapper {
+    background: #ffffff;
+    border: 1px solid #3d5a99;
+    border-radius: 50%;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    display: flex;
 }
 
 .service-benefits-text {
