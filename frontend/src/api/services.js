@@ -403,8 +403,15 @@ export const deleteAppointment = async (id) => {
   return data;
 };
 
-export const exportAppointmentsCsv = async () =>
-  downloadCsv("/appointment/export", "appointment-leads.csv");
+export const bulkDeleteAppointments = async (payload) => {
+  const { data } = await api.post("/appointment/bulk-delete", payload);
+  return data;
+};
+
+export const exportAppointmentsCsv = async (params) => {
+  const queryStr = params ? new URLSearchParams(params).toString() : "";
+  return downloadCsv(`/appointment/export${queryStr ? `?${queryStr}` : ""}`, "appointment-leads.csv");
+};
 
 export const getServicesMaster = async () => {
   const { data } = await api.get("/services");
