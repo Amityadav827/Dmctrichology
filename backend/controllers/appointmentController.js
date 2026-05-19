@@ -60,11 +60,12 @@ const createAppointment = async (req, res, next) => {
           name: name.trim(),
           email: email.trim().toLowerCase(),
           mobile: trimmedMobile,
-          service: service.trim(),
+          enquiry_type: service.trim(),
           appointment_date: new Date(appointmentDate).toISOString(),
           message: message ? message.trim() : "",
           status: "new",
-          notes: ""
+          notes: "",
+          source: "consultation-form"
         }
       ])
       .select()
@@ -80,6 +81,7 @@ const createAppointment = async (req, res, next) => {
       data: {
         ...appointment,
         _id: appointment.id,
+        service: appointment.enquiry_type,
         appointmentDate: appointment.appointment_date,
         createdAt: appointment.created_at,
         updatedAt: appointment.updated_at
@@ -104,7 +106,7 @@ const getAppointments = async (req, res, next) => {
     // 1. Live search filter
     if (req.query.search) {
       const searchVal = `%${req.query.search.trim()}%`;
-      query = query.or(`name.ilike.${searchVal},email.ilike.${searchVal},mobile.ilike.${searchVal}`);
+      query = query.or(`name.ilike.${searchVal},email.ilike.${searchVal},mobile.ilike.${searchVal},enquiry_type.ilike.${searchVal}`);
     }
 
     // 2. Status filter
@@ -141,6 +143,7 @@ const getAppointments = async (req, res, next) => {
     const formattedData = (appointments || []).map(item => ({
       ...item,
       _id: item.id,
+      service: item.enquiry_type,
       appointmentDate: item.appointment_date,
       createdAt: item.created_at,
       updatedAt: item.updated_at
@@ -180,6 +183,7 @@ const getAppointmentById = async (req, res, next) => {
       data: {
         ...appointment,
         _id: appointment.id,
+        service: appointment.enquiry_type,
         appointmentDate: appointment.appointment_date,
         createdAt: appointment.created_at,
         updatedAt: appointment.updated_at
@@ -193,10 +197,11 @@ const getAppointmentById = async (req, res, next) => {
 
 const updateAppointment = async (req, res, next) => {
   try {
-    const { status, notes } = req.body;
+    const { status, notes, service } = req.body;
     const updates = {};
     if (status) updates.status = status;
     if (notes !== undefined) updates.notes = notes;
+    if (service) updates.enquiry_type = service;
     updates.updated_at = new Date().toISOString();
 
     const { data: appointment, error } = await supabase
@@ -215,6 +220,7 @@ const updateAppointment = async (req, res, next) => {
       data: {
         ...appointment,
         _id: appointment.id,
+        service: appointment.enquiry_type,
         appointmentDate: appointment.appointment_date,
         createdAt: appointment.created_at,
         updatedAt: appointment.updated_at
@@ -288,7 +294,7 @@ const exportAppointmentsCsv = async (req, res, next) => {
     // Apply exact same search / status / date range filters on export
     if (req.query.search) {
       const searchVal = `%${req.query.search.trim()}%`;
-      query = query.or(`name.ilike.${searchVal},email.ilike.${searchVal},mobile.ilike.${searchVal}`);
+      query = query.or(`name.ilike.${searchVal},email.ilike.${searchVal},mobile.ilike.${searchVal},enquiry_type.ilike.${searchVal}`);
     }
     if (req.query.status) {
       query = query.eq("status", req.query.status.trim());
@@ -315,7 +321,7 @@ const exportAppointmentsCsv = async (req, res, next) => {
       const idStr = row.id;
       const nameStr = row.name.replace(/"/g, '""');
       const emailStr = row.email.replace(/"/g, '""');
-      const serviceStr = row.service.replace(/"/g, '""');
+      const serviceStr = (row.enquiry_type || "").replace(/"/g, '""');
       const notesStr = (row.notes || "").replace(/"/g, '""');
       
       const apptDateStr = row.appointment_date ? new Date(row.appointment_date).toISOString().replace(/T/, ' ').replace(/\..+/, '') : '';

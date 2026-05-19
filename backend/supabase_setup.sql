@@ -49,16 +49,18 @@ CREATE TABLE IF NOT EXISTS public.appointments (
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     mobile TEXT NOT NULL,
-    service TEXT NOT NULL,
+    enquiry_type TEXT NOT NULL,
     appointment_date TIMESTAMPTZ NOT NULL,
     created_at TIMESTAMPTZ DEFAULT now(),
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Schema Patch for Appointments (Ensures message, status, and notes columns are present)
+-- Schema Patch for Appointments (Ensures enquiry_type, message, status, notes, and source columns are present)
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS enquiry_type TEXT;
 ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS message TEXT DEFAULT '';
 ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'new';
 ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS notes TEXT DEFAULT '';
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS source TEXT DEFAULT 'consultation-form';
 
 -- =========================================================================
 -- 5. PERFORMANCE INDEXES (Optimized query paths for search and dashboard ranges)
