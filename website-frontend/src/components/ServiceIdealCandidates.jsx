@@ -38,9 +38,9 @@ export default function ServiceIdealCandidates({ data }) {
           <ul className="service-candidates-list">
             {activeBullets.map((bullet, idx) => (
               <li key={bullet._id || idx} className="service-candidates-list-item">
-                <span className="service-candidates-bullet-circle">
+                <span className="service-ideal-check-icon-wrapper">
                   <svg 
-                    className="service-candidates-bullet-svg" 
+                    className="service-ideal-check-icon" 
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24" 
