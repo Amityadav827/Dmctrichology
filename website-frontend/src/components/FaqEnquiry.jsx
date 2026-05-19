@@ -1,11 +1,12 @@
 "use client";
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import EditableText from './Editable/EditableText';
 import EditableSection from './Editable/EditableSection';
 import { useBuilder } from '../context/BuilderContext';
 
-const FaqEnquiry = ({ data = {}, enquirySection }) => {
+const FaqEnquiry = ({ data = {}, enquirySection, pageSlug = '' }) => {
   const { isEditMode, siteConfig } = useBuilder();
   const [sectionData, setSectionData] = useState(data);
   const [openFaqIndex, setOpenFaqIndex] = useState(0); // First open by default
@@ -16,9 +17,12 @@ const FaqEnquiry = ({ data = {}, enquirySection }) => {
     service: '',
     date: ''
   });
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  const selectRef = useRef(null);
 
   useEffect(() => {
     if (data) setSectionData(data);
@@ -40,6 +44,17 @@ const FaqEnquiry = ({ data = {}, enquirySection }) => {
       }
     }
   }, [isEditMode, siteConfig]);
+
+  // Click outside to close custom select dropdown
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (selectRef.current && !selectRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
 
   const faqs = sectionData?.faqItems || [];
   
@@ -90,16 +105,17 @@ const FaqEnquiry = ({ data = {}, enquirySection }) => {
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         mobile: '0000000000', // Default mobile fallback for details enquiry form
-        service: formData.service,
-        appointmentDate: `${formData.date}T10:00:00`,
-        message: 'Details Page Treatment Enquiry',
-        source: 'consultation-form'
+        enquiry_type: formData.service,
+        preferred_date: formData.date,
+        service_slug: pageSlug || 'unknown',
+        source: 'service-details-enquiry',
+        message: `Treatment Enquiry for: ${formData.service}\nPreferred Date: ${formData.date}\nService Slug: ${pageSlug || 'unknown'}`
       };
 
       const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
       const API_URL = process.env.NEXT_PUBLIC_API_URL || (isLocal ? "http://localhost:10000/api" : 'https://dmctrichology-1.onrender.com/api');
 
-      const response = await fetch(`${API_URL}/appointment`, {
+      const response = await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -123,6 +139,34 @@ const FaqEnquiry = ({ data = {}, enquirySection }) => {
   return (
     <EditableSection sectionId="faq-enquiry-section" label="FAQ & Enquiry">
       <section className="details-faq-enquiry-section" data-section-id="faq-enquiry-section">
+        
+        {/* Custom Premium Dropdown Styles & Scrollbar */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          .luxury-select-item:hover {
+            background-color: rgba(61, 90, 153, 0.08) !important;
+            color: #3d5a99 !important;
+          }
+          .luxury-select-item.selected:hover {
+            background-color: #3d5a99 !important;
+            color: #ffffff !important;
+          }
+          .luxury-select-menu::-webkit-scrollbar {
+            width: 4px;
+          }
+          .luxury-select-menu::-webkit-scrollbar-track {
+            background: #f8fafc;
+            border-radius: 4px;
+          }
+          .luxury-select-menu::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+          }
+          @keyframes fadeInMenu {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}} />
+
         <div className="details-fe-container">
           
           {/* LEFT: FAQ */}
@@ -139,33 +183,37 @@ const FaqEnquiry = ({ data = {}, enquirySection }) => {
             </p>
 
             <div className="details-faq-accordion">
-              {faqs.map((faq, index) => (
-                <div 
-                  key={index} 
-                  className={`details-faq-item ${openFaqIndex === index ? 'open' : ''}`}
-                >
-                  <button 
-                    className="details-faq-question" 
-                    onClick={() => toggleFaq(index)}
-                  >
-                    <span>{faq?.question || ''}</span>
-                    <div className="details-faq-icon">
-                      {openFaqIndex === index ? <Minus size={18} /> : <Plus size={18} />}
-                    </div>
-                  </button>
+              {faqs.map((faq, index) => {
+                if (!faq) return null;
+                return (
                   <div 
-                    className="details-faq-answer"
-                    style={{ 
-                      maxHeight: openFaqIndex === index ? '500px' : '0',
-                      opacity: openFaqIndex === index ? 1 : 0 
-                    }}
+                    key={index} 
+                    className={`details-faq-item ${openFaqIndex === index ? 'open' : ''}`}
                   >
-                    <div className="details-faq-answer-inner">
-                      {faq?.answer || ''}
+                    <button 
+                      className="details-faq-question" 
+                      onClick={() => toggleFaq(index)}
+                      type="button"
+                    >
+                      <span>{faq?.question || ''}</span>
+                      <div className="details-faq-icon">
+                        {openFaqIndex === index ? <Minus size={18} /> : <Plus size={18} />}
+                      </div>
+                    </button>
+                    <div 
+                      className="details-faq-answer"
+                      style={{ 
+                        maxHeight: openFaqIndex === index ? '500px' : '0',
+                        opacity: openFaqIndex === index ? 1 : 0 
+                      }}
+                    >
+                      <div className="details-faq-answer-inner">
+                        {faq?.answer || ''}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -197,6 +245,7 @@ const FaqEnquiry = ({ data = {}, enquirySection }) => {
                       placeholder={sectionData?.namePlaceholder || "Name*"} 
                       className="details-form-input" 
                       required 
+                      disabled={loading}
                     />
                   </div>
                   <div className="details-form-group">
@@ -208,22 +257,101 @@ const FaqEnquiry = ({ data = {}, enquirySection }) => {
                       placeholder={sectionData?.emailPlaceholder || "E-Mail Address*"} 
                       className="details-form-input" 
                       required 
+                      disabled={loading}
                     />
                   </div>
-                  <div className="details-form-group select-wrapper">
-                    <select 
-                      name="service"
-                      value={formData.service}
-                      onChange={handleInputChange}
-                      className="details-form-input details-form-select" 
-                      required
+
+                  {/* Luxury Custom Select Dropdown */}
+                  <div className="details-form-group luxury-select-wrapper" ref={selectRef} style={{ position: 'relative', zIndex: 99 }}>
+                    <div 
+                      onClick={() => !loading && setDropdownOpen(!dropdownOpen)}
+                      className="details-form-input details-form-select-trigger" 
+                      style={{ 
+                        cursor: loading ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        userSelect: 'none',
+                        color: formData.service ? '#333333' : '#999999',
+                        padding: '16px 20px',
+                        backgroundColor: '#ffffff',
+                        borderRadius: '100px',
+                        fontFamily: "'Lato', sans-serif",
+                        fontSize: '14px',
+                        outline: 'none',
+                        transition: 'all 0.3s ease',
+                        border: 'none',
+                        boxShadow: 'none'
+                      }}
                     >
-                      <option value="" disabled>{sectionData?.servicePlaceholder || "Type Of Service Enquiry*"}</option>
-                      {serviceOptions.map((opt, i) => (
-                        <option key={i} value={opt}>{opt}</option>
-                      ))}
-                    </select>
+                      <span>{formData.service || sectionData?.servicePlaceholder || "Type Of Service Enquiry*"}</span>
+                      <span style={{ 
+                        fontSize: '10px',
+                        transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.25s ease',
+                        color: '#999999',
+                        display: 'inline-block'
+                      }}>▼</span>
+                    </div>
+
+                    {dropdownOpen && (
+                      <div 
+                        className="luxury-select-menu"
+                        style={{
+                          position: 'absolute',
+                          top: '115%',
+                          left: '0',
+                          width: '100%',
+                          backgroundColor: '#ffffff',
+                          borderRadius: '20px',
+                          border: '1px solid rgba(0, 0, 0, 0.04)',
+                          boxShadow: '0 15px 35px rgba(61, 90, 153, 0.15)',
+                          padding: '6px',
+                          zIndex: 9999,
+                          maxHeight: '200px',
+                          overflowY: 'auto',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '2px',
+                          animation: 'fadeInMenu 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                        }}
+                      >
+                        {serviceOptions.map((opt, i) => {
+                          const isSelected = formData.service === opt;
+                          return (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => {
+                                setFormData(prev => ({ ...prev, service: opt }));
+                                setDropdownOpen(false);
+                                if (success) setSuccess(false);
+                                if (error) setError('');
+                              }}
+                              className={`luxury-select-item ${isSelected ? 'selected' : ''}`}
+                              style={{
+                                width: '100%',
+                                padding: '11px 18px',
+                                border: 'none',
+                                borderRadius: '12px',
+                                textAlign: 'left',
+                                backgroundColor: isSelected ? '#3d5a99' : 'transparent',
+                                color: isSelected ? '#ffffff' : '#333333',
+                                fontSize: '13px',
+                                fontFamily: "'Lato', sans-serif",
+                                fontWeight: isSelected ? '700' : '500',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                              }}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
+
                   <div className="details-form-group date-wrapper">
                     <input 
                       type="date" 
@@ -233,6 +361,7 @@ const FaqEnquiry = ({ data = {}, enquirySection }) => {
                       placeholder={sectionData?.datePlaceholder || "Select Date & Time*"} 
                       className="details-form-input details-form-date" 
                       required 
+                      disabled={loading}
                     />
                   </div>
                   <button type="submit" className="details-submit-btn" disabled={loading}>

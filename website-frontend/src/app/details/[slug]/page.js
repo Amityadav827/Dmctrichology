@@ -115,7 +115,7 @@ export default async function DynamicDetailsPage({ params }) {
       <ServiceEditorialFaq data={service.editorialFaqSection || null} pageSlug={slug} googleReviewCta={googleReviewCta} />
       <HairTransplantResultsSection data={resultsSection} />
       <HairTransplantVideosSection data={videosSection} />
-      <FaqEnquiry data={faqEnquiry || {}} enquirySection={enquirySection} />
+      <FaqEnquiry data={faqEnquiry || {}} enquirySection={enquirySection} pageSlug={slug} />
     </div>
   );
 }

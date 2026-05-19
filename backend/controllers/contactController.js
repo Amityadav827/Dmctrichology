@@ -2,7 +2,7 @@ const supabase = require("../config/supabase");
 
 const createContact = async (req, res, next) => {
   try {
-    const { name, email, mobile, message, service, source } = req.body;
+    const { name, email, mobile, message, service, source, enquiry_type, preferred_date, service_slug } = req.body;
 
     // Validation
     if (!name || !name.trim()) {
@@ -15,15 +15,10 @@ const createContact = async (req, res, next) => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       return res.status(400).json({ success: false, message: "Please enter a valid email address." });
     }
-    if (!mobile || !mobile.trim()) {
-      return res.status(400).json({ success: false, message: "Please enter your mobile number." });
-    }
-    if (!/^\d{10}$/.test(mobile.trim().replace(/\s+/g, ''))) {
-      return res.status(400).json({ success: false, message: "Please enter a valid 10-digit mobile number." });
-    }
 
-    const trimmedMobile = mobile.trim().replace(/\s+/g, '');
+    const trimmedMobile = mobile ? mobile.trim().replace(/\s+/g, '') : "0000000000";
 
+    // Attempt to insert with full columns
     const { data, error } = await supabase
       .from('contacts')
       .insert([{ 
@@ -32,14 +27,44 @@ const createContact = async (req, res, next) => {
         mobile: trimmedMobile, 
         message: message ? message.trim() : "No message provided.", 
         status: 'new',
-        service: service ? service.trim() : null,
-        enquiry_type: service ? service.trim() : null,
+        service: service ? service.trim() : (enquiry_type ? enquiry_type.trim() : null),
+        enquiry_type: enquiry_type ? enquiry_type.trim() : (service ? service.trim() : null),
+        preferred_date: preferred_date || null,
+        service_slug: service_slug || null,
         source: source ? source.trim() : 'contact-us-page'
       }])
       .select()
       .single();
 
-    if (error) return res.status(500).json({ success: false, message: error.message });
+    if (error) {
+      // If error is due to missing columns in DB, fall back to inserting columns inside the message field
+      if (error.message.includes('preferred_date') || error.message.includes('service_slug') || error.code === '42703') {
+        const formattedMsg = `[Preferred Date: ${preferred_date || 'N/A'}] [Service: ${service_slug || 'N/A'}]\n\n${message || 'No message provided.'}`;
+        const { data: fbData, error: fbError } = await supabase
+          .from('contacts')
+          .insert([{
+            name: name.trim(), 
+            email: email.trim().toLowerCase(), 
+            mobile: trimmedMobile, 
+            message: formattedMsg.trim(), 
+            status: 'new',
+            service: service ? service.trim() : (enquiry_type ? enquiry_type.trim() : null),
+            enquiry_type: enquiry_type ? enquiry_type.trim() : (service ? service.trim() : null),
+            source: source ? source.trim() : 'contact-us-page'
+          }])
+          .select()
+          .single();
+
+        if (fbError) return res.status(500).json({ success: false, message: fbError.message });
+        
+        return res.status(201).json({
+          success: true,
+          data: { ...fbData, _id: fbData.id },
+        });
+      }
+      
+      return res.status(500).json({ success: false, message: error.message });
+    }
 
     return res.status(201).json({
       success: true,

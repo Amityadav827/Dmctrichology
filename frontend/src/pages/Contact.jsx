@@ -165,6 +165,36 @@ const FilterDropdown = ({ value, onChange, options, label, icon: Icon }) => {
   );
 };
 
+const getLeadEnquiryType = (item) => {
+  if (!item) return "";
+  if (item.enquiry_type) return item.enquiry_type;
+  if (item.service) return item.service;
+  // Parse from message if available
+  const match = item.message?.match(/\[Service:\s*([^\]]+)\]/);
+  return match ? match[1] : (item.service || "General Enquiry");
+};
+
+const getLeadPreferredDate = (item) => {
+  if (!item) return "";
+  if (item.preferred_date) {
+    try {
+      return new Date(item.preferred_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch {
+      return item.preferred_date;
+    }
+  }
+  // Parse from message if available
+  const match = item.message?.match(/\[Preferred Date:\s*([^\]]+)\]/);
+  if (match) {
+    try {
+      return new Date(match[1]).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch {
+      return match[1];
+    }
+  }
+  return "N/A";
+};
+
 function Contact() {
   const [items, setItems] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, totalPages: 1 });
@@ -403,6 +433,9 @@ function Contact() {
                   </th>
                   <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Lead Name</th>
                   <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Contact Info</th>
+                  <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Enquiry / Service</th>
+                  <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Preferred Date</th>
+                  <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Source</th>
                   <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Message</th>
                   <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
                   <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date</th>
@@ -412,7 +445,7 @@ function Contact() {
               <tbody className="divide-y divide-slate-100">
                 {items.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="px-6 py-20 text-center text-slate-400 font-medium italic">
+                    <td colSpan="10" className="px-6 py-20 text-center text-slate-400 font-medium italic">
                       No contact inquiries found matching your filters.
                     </td>
                   </tr>
@@ -452,6 +485,21 @@ function Contact() {
                           </div>
                         </div>
                       </td>
+                      <td className="px-6 py-5 align-middle">
+                        <span className="text-xs font-bold text-slate-700 capitalize">
+                          {getLeadEnquiryType(item)}
+                        </span>
+                      </td>
+                      <td className="px-6 py-5 align-middle">
+                        <span className="text-xs font-semibold text-slate-600">
+                          {getLeadPreferredDate(item)}
+                        </span>
+                      </td>
+                      <td className="px-6 py-5 align-middle">
+                        <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wider">
+                          {item.source || 'contact-us'}
+                        </span>
+                      </td>
                       <td className="px-6 py-5 max-w-xs align-middle">
                         <button
                           type="button"
@@ -459,7 +507,7 @@ function Contact() {
                           title={item.message}
                           className="w-full text-left text-xs text-slate-500 font-medium truncate hover:text-blue-600 transition"
                         >
-                          {item.message}
+                          {item.message?.replace(/\[Preferred Date:[^\]]+\]\s*\[Service:[^\]]+\]\n*/, '') || item.message}
                         </button>
                       </td>
                       <td className="px-6 py-5 align-middle">
@@ -552,7 +600,7 @@ function Contact() {
             
             <div className="p-8">
               <div className="p-6 rounded-2xl bg-blue-50/30 border border-blue-100 text-sm text-slate-600 leading-relaxed font-medium italic">
-                "{messageModal.item?.message}"
+                "{messageModal.item?.message?.replace(/\[Preferred Date:[^\]]+\]\s*\[Service:[^\]]+\]\n*/, '') || messageModal.item?.message}"
               </div>
               
               <div className="mt-8 flex flex-col gap-4">
@@ -567,6 +615,24 @@ function Contact() {
                     <a href={`tel:${messageModal.item?.mobile}`} className="text-sm font-bold text-slate-900">
                       {messageModal.item?.mobile}
                     </a>
+                 </div>
+                 <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase">Enquiry / Service Type</span>
+                    <span className="text-sm font-bold text-slate-950 capitalize">
+                      {getLeadEnquiryType(messageModal.item)}
+                    </span>
+                 </div>
+                 <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase">Preferred Date</span>
+                    <span className="text-sm font-bold text-slate-950">
+                      {getLeadPreferredDate(messageModal.item)}
+                    </span>
+                 </div>
+                 <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase">Source</span>
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded bg-blue-100 text-blue-800 uppercase tracking-wide">
+                      {messageModal.item?.source || 'contact-us'}
+                    </span>
                  </div>
               </div>
 
