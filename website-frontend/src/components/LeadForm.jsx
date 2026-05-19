@@ -37,6 +37,16 @@ export default function LeadForm() {
     loadSettings();
   }, []);
 
+  // Success auto-hide timer after 4 seconds
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess(false);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     // Reset success/error states on typing
@@ -46,6 +56,8 @@ export default function LeadForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return; // Prevent duplicate submits
+    
     setError('');
     setSuccess(false);
 
@@ -83,7 +95,7 @@ export default function LeadForm() {
       });
       setSuccess(true);
       setFormData({ name: '', mobile: '', code: '' });
-      generateCaptcha();
+      generateCaptcha(); // Regenerate captcha after successful submit
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong. Please try again.');
     } finally {
@@ -92,7 +104,24 @@ export default function LeadForm() {
   };
 
   return (
-    <div className="form-container" style={{ backgroundColor: '#FFFBF0', borderRadius: '24px', padding: '24px' }}>
+    <div className="form-container" style={{ backgroundColor: '#FFFBF0', borderRadius: '24px', padding: '24px', position: 'relative' }}>
+      {/* Dynamic keyframe style block for smooth fade + slide transitions */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes toastFadeSlide {
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .luxury-toast {
+          animation: toastFadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}} />
+
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', height: '30px' }}>
         <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
         <span className="section-subtitle" style={{ fontSize: '11px' }}>Book a Session</span>
@@ -134,7 +163,7 @@ export default function LeadForm() {
       </div>
 
       {success && (
-        <div style={{
+        <div className="luxury-toast" style={{
           background: 'rgba(46, 125, 50, 0.08)',
           border: '1px solid rgba(46, 125, 50, 0.25)',
           borderRadius: '12px',
@@ -153,7 +182,7 @@ export default function LeadForm() {
         </div>
       )}
       {error && (
-        <div style={{
+        <div className="luxury-toast" style={{
           background: 'rgba(198, 40, 40, 0.08)',
           border: '1px solid rgba(198, 40, 40, 0.25)',
           borderRadius: '12px',

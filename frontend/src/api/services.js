@@ -361,7 +361,15 @@ export const deleteCallback = async (id) => {
   return data;
 };
 
-export const exportCallbacksCsv = async () => downloadCsv("/callbacks/export/csv", "callback-leads.csv");
+export const bulkDeleteCallbacks = async (payload) => {
+  const { data } = await api.post("/callbacks/bulk-delete", payload);
+  return data;
+};
+
+export const exportCallbacksCsv = async (params) => {
+  const queryStr = params ? new URLSearchParams(params).toString() : "";
+  return downloadCsv(`/callbacks/export/csv${queryStr ? `?${queryStr}` : ""}`, "callback-leads.csv");
+};
 
 export const getContacts = async (params) => {
   const { data } = await api.get("/contact", { params });

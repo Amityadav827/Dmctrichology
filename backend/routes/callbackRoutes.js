@@ -4,6 +4,7 @@ const {
   getCallbacks,
   updateCallbackStatus,
   deleteCallback,
+  bulkDeleteCallbacks,
   exportCallbacksCsv,
 } = require("../controllers/callbackController");
 const { protect, adminOnly } = require("../middleware/authMiddleware");
@@ -15,6 +16,7 @@ router.post("/", publicFormRateLimit, createCallback);
 router.use(protect, adminOnly);
 router.get("/", getCallbacks);
 router.get("/export/csv", exportCallbacksCsv);
+router.post("/bulk-delete", bulkDeleteCallbacks);
 router.patch("/:id/status", updateCallbackStatus);
 router.delete("/:id", deleteCallback);
 
