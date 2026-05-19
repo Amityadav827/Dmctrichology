@@ -1973,10 +1973,8 @@
 
 /* ─── DYNAMIC NOT CANDIDATES SECTION ─────────────────────────── */
 .service-not-candidates-section {
-  background: #ffffff;
-  padding: 80px 5% 90px 5%;
-  border-top: 1px solid #f2ede2;
-  border-bottom: 1px solid #f2ede2;
+    background: #fff;
+    padding: 80px 5% 90px;
 }
 
 .service-not-candidates-container {
@@ -2084,9 +2082,9 @@
 }
 
 .service-techniques-divider {
+  background: #3d5a99;
   width: 60px;
   height: 1px;
-  background: #c5a880;
   margin: 0 auto;
 }
 
@@ -2097,45 +2095,45 @@
 }
 
 .service-techniques-card {
-  background: #fcfbf7;
-  border: 1px solid #f2ede2;
+  background: #3d5a99;
+  border: 1px solid #ffffff;
   border-radius: 24px;
-  padding: 40px;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all 0.3s ease;
+  padding: 40px;
+  transition: all .3s;
+  display: flex;
 }
 
 .service-techniques-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(197, 168, 128, 0.08);
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.08);
 }
 
 .service-techniques-num {
-  font-family: 'Marcellus', serif;
-  font-size: 40px;
-  color: rgba(197, 168, 128, 0.4);
+  color: #ffffff66;
   margin-bottom: 20px;
+  font-family: Marcellus, serif;
+  font-size: 40px;
   line-height: 1;
 }
 
 .service-techniques-title {
-  font-family: 'Marcellus', serif;
-  font-size: 18px;
-  color: #111111;
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 15px;
+  font-family: Marcellus, serif;
+  font-size: 18px;
   font-weight: 600;
 }
 
 .service-techniques-desc {
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  color: #555555;
-  line-height: 1.7;
+  color: #ffffff;
   white-space: pre-line;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 /* ─── DYNAMIC INFO BLOCKS SECTION ────────────────────────────── */
