@@ -7,6 +7,7 @@ import {
   ArrowUp, ArrowDown, Upload, Film, ExternalLink, Star
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ServiceSearchSelector from "../../components/ServiceSearchSelector";
 
 // ─── Unified Media Item Editor (supports Image + Video) ───────────────────────
 function MediaItemEditor({ item, index, onUpdate, onRemove, onPickFromLibrary }) {
@@ -1000,15 +1001,13 @@ export default function ServiceDetailCMS() {
       {/* Service Selector */}
       <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-8 mb-8 flex flex-col md:flex-row gap-4 items-center">
         <label className="text-[12px] font-black uppercase text-slate-500 tracking-widest min-w-max">Select Service to Edit:</label>
-        <select 
-          value={selectedSlug} 
-          onChange={e => setSelectedSlug(e.target.value)}
-          className="flex-1 px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold outline-none cursor-pointer"
-        >
-          {services.map(s => (
-            <option key={s.slug} value={s.slug}>{s.title} ({s.category})</option>
-          ))}
-        </select>
+        <div className="flex-1 w-full">
+          <ServiceSearchSelector 
+            services={services} 
+            selectedSlug={selectedSlug} 
+            onChange={setSelectedSlug} 
+          />
+        </div>
       </div>
 
       {!data || fetchingDetails ? (
