@@ -158,7 +158,8 @@ export default function BlogSection() {
 
           {/* View All Button */}
           <div style={{ textAlign: 'center', marginTop: '60px' }}>
-            <button className="view-all-blogs-btn" style={{
+            <Link href="https://dmctrichology-mkm4.vercel.app/blog" className="view-all-blogs-btn" style={{
+              textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '12px',
@@ -184,7 +185,7 @@ export default function BlogSection() {
                   style={{ width: '12px', height: '9px' }} 
                 />
               </span>
-            </button>
+            </Link>
           </div>
 
         </div>

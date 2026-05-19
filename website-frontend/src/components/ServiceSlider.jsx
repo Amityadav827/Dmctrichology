@@ -66,7 +66,7 @@ export default function ServiceSlider() {
                 {title}
               </EditableText>
             </h2>
-            <a href={viewAllLink} style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <a href="https://dmctrichology-mkm4.vercel.app/service" style={{ position: 'absolute', right: 0, bottom: '10px', color: '#888', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <EditableText sectionId="services" fieldPath="viewAllText" tag="span">
                 {viewAllText}
               </EditableText>
