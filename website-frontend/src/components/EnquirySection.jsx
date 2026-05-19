@@ -225,13 +225,15 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
 
     setLoading(true);
     try {
+      const isContactPage = typeof window !== "undefined" && window.location.pathname.includes("contact-us");
       const payload = {
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         mobile: trimmedMobile,
         service: formData.service,
         appointmentDate: selectedDateTime,
-        message: formData.message.trim()
+        message: formData.message.trim(),
+        source: isContactPage ? "contact-us-page" : "consultation-form"
       };
       const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
       const API_URL = process.env.NEXT_PUBLIC_API_URL || (isLocal ? "http://localhost:10000/api" : 'https://dmctrichology-1.onrender.com/api');

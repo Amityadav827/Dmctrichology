@@ -2,7 +2,7 @@ const supabase = require("../config/supabase");
 
 const createAppointment = async (req, res, next) => {
   try {
-    const { name, email, mobile, service, appointmentDate, message } = req.body;
+    const { name, email, mobile, service, appointmentDate, message, source } = req.body;
 
     // Validation
     if (!name || !name.trim()) {
@@ -65,7 +65,7 @@ const createAppointment = async (req, res, next) => {
           message: message ? message.trim() : "",
           status: "new",
           notes: "",
-          source: "consultation-form"
+          source: source && source.trim() ? source.trim() : "consultation-form"
         }
       ])
       .select()
