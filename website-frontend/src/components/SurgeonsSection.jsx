@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { CheckCircle2, MoveRight, ArrowUpRight } from 'lucide-react';
+import { Check, MoveRight } from 'lucide-react';
 import { fetchSurgeons } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
+
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
 
 const SurgeonsSection = () => {
   const [data, setData] = useState(null);
@@ -32,7 +34,7 @@ const SurgeonsSection = () => {
 
   return (
     <EditableSection sectionId="surgeons-section" label="Meet Our Surgeons">
-      <section className="surgeons-section" style={{ padding: '100px 5%', backgroundColor: '#FFFAF1' }}>
+      <section className="surgeons-section" style={{ padding: '100px 5%', backgroundColor: '#E8EAF6' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           
           {/* Header */}
@@ -41,7 +43,7 @@ const SurgeonsSection = () => {
               <img 
                 src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                 alt="icon" 
-                style={{ width: '40px', height: 'auto' }} 
+                style={{ width: '40px', height: 'auto', filter: blueIconFilter }} 
               />
               <EditableText sectionId="surgeons-section" fieldPath="badgeText" tag="span" className="section-subtitle">
                 {badgeText}
@@ -93,7 +95,7 @@ const SurgeonsSection = () => {
             {currentSurgeon && (
               <div style={{ 
                 flex: '2 1 600px', 
-                backgroundColor: '#FEF0D7', 
+                backgroundColor: '#3B5998', 
                 borderRadius: '40px', 
                 padding: '30px',
                 display: 'flex',
@@ -112,17 +114,17 @@ const SurgeonsSection = () => {
 
                 {/* Info */}
                 <div style={{ flex: '1 1 300px', padding: '10px 0' }}>
-                  <div style={{ marginBottom: '20px' }}>
+                  <div style={{ marginBottom: '20px', width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img 
-                      src="https://res.cloudinary.com/dseixl6px/image/upload/v1777621065/dmc-trichology/de4kyqzwsgkrkdfsihkv.png" 
+                      src="/icons/surgeons/surgeon-badge.svg" 
                       alt="icon" 
-                      style={{ width: '40px' }} 
+                      style={{ width: '26px', height: '26px', objectFit: 'contain' }} 
                     />
                   </div>
 
                   <h3 style={{ 
                     fontSize: '28px', 
-                    color: '#000', 
+                    color: '#ffffff', 
                     fontFamily: "'Marcellus', serif", 
                     marginBottom: '15px',
                     fontWeight: '400'
@@ -135,7 +137,7 @@ const SurgeonsSection = () => {
                   <p style={{ 
                     fontSize: '14px', 
                     lineHeight: '22px', 
-                    color: '#333', 
+                    color: '#ffffff', 
                     fontFamily: "'Marcellus', serif",
                     marginBottom: '20px'
                   }}>
@@ -147,12 +149,10 @@ const SurgeonsSection = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '30px' }}>
                     {Array.isArray(currentSurgeon.features) && currentSurgeon.features.map((feature, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <img 
-                          src="https://res.cloudinary.com/dseixl6px/image/upload/v1777621065/dmc-trichology/egrvgm3b2utj3jai3g2k.png" 
-                          alt="check" 
-                          style={{ width: '16px', height: 'auto' }} 
-                        />
-                        <span style={{ fontSize: '13px', color: '#333', fontFamily: "'Marcellus', serif" }}>
+                        <span style={{ width: '18px', height: '18px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.75)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 18px' }}>
+                          <Check size={12} color="#ffffff" strokeWidth={3} />
+                        </span>
+                        <span style={{ fontSize: '13px', color: '#ffffff', fontFamily: "'Marcellus', serif" }}>
                           <EditableText sectionId="surgeons-section" fieldPath={`surgeons.${realActiveIndex}.features.${i}`} tag="span">
                             {feature}
                           </EditableText>
@@ -164,7 +164,7 @@ const SurgeonsSection = () => {
                   <a href="https://dmctrichology-mkm4.vercel.app/service" className="surgeon-detail-btn" style={{ 
                     padding: '12px 25px', 
                     borderRadius: '30px', 
-                    border: '1px solid #000', 
+                    border: '1px solid #ffffff', 
                     fontFamily: "'Marcellus', serif",
                     fontSize: '14px',
                     display: 'flex',
@@ -172,7 +172,7 @@ const SurgeonsSection = () => {
                     gap: '10px',
                     cursor: 'pointer',
                     textDecoration: 'none',
-                    color: '#000',
+                    color: '#ffffff',
                     width: 'fit-content'
                   }}>
                     <EditableText sectionId="surgeons-section" fieldPath={`surgeons.${realActiveIndex}.buttonText`} tag="span">
@@ -190,13 +190,13 @@ const SurgeonsSection = () => {
 
         <style jsx>{`
           .surgeon-tab {
-            background-color: #FEF0D7;
+            background-color: #A8B7CA;
             color: #000;
           }
 
           .surgeon-tab.active,
           .surgeon-tab:hover {
-            background-color: #000;
+            background-color: #3B5998;
             color: #fff;
           }
 
@@ -216,17 +216,27 @@ const SurgeonsSection = () => {
           }
 
           .surgeon-detail-btn:hover {
-            background-color: #000;
-            color: #fff !important;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+            background-color: #ffffff;
+            color: #3B5998 !important;
+            border-color: #ffffff !important;
+            box-shadow: 0 10px 24px rgba(255, 255, 255, 0.14);
+          }
+
+          .surgeon-detail-btn:hover span:first-child {
+            color: #3B5998 !important;
+          }
+
+          .surgeon-detail-btn:focus-visible {
+            outline: 2px solid #ffffff;
+            outline-offset: 3px;
           }
 
           .surgeon-detail-arrow {
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background-color: #000;
-            color: #fff;
+            background-color: #ffffff;
+            color: #3B5998;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -235,8 +245,8 @@ const SurgeonsSection = () => {
           }
 
           .surgeon-detail-btn:hover .surgeon-detail-arrow {
-            background-color: #fff;
-            color: #000;
+            background-color: #3B5998;
+            color: #ffffff;
             transform: rotate(0deg) translateX(3px);
           }
 

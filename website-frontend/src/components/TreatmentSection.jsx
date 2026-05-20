@@ -4,6 +4,8 @@ import { fetchTreatmentPlan } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
+
 export default function TreatmentSection() {
   const [data, setData] = useState(null);
 
@@ -45,7 +47,7 @@ export default function TreatmentSection() {
 
   return (
     <EditableSection sectionId="treatment-plan-section" label="Know The Right Treatment">
-      <section style={{ padding: '0', backgroundColor: '#fff' }}>
+      <section style={{ padding: '90px 5%', backgroundColor: '#E8EAF6' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           
           {/* Section Header */}
@@ -60,7 +62,7 @@ export default function TreatmentSection() {
                <img 
                  src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                  alt="icon" 
-                 style={{ width: '45px', height: 'auto', objectFit: 'contain' }} 
+                 style={{ width: '45px', height: 'auto', objectFit: 'contain', filter: blueIconFilter }} 
                />
                <EditableText sectionId="treatment-plan-section" fieldPath="badgeText" tag="span" className="section-subtitle" style={{ whiteSpace: 'nowrap' }}>
                  {badgeText}
@@ -79,7 +81,7 @@ export default function TreatmentSection() {
               <div key={index} style={{ 
                 flex: '1 1 600px', 
                 display: 'flex', 
-                backgroundColor: '#F7F8F8', 
+                backgroundColor: '#3B5998', 
                 borderRadius: '30px', 
                 overflow: 'hidden',
                 minHeight: '300px'
@@ -91,12 +93,12 @@ export default function TreatmentSection() {
                 
                 {/* Content Side */}
                 <div style={{ flex: 1, padding: '40px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <h3 style={{ fontSize: '28px', color: '#333333', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '15px' }}>
+                  <h3 style={{ fontSize: '28px', color: '#ffffff', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '15px' }}>
                     <EditableText sectionId="treatment-plan-section" fieldPath={`cards.${index}.title`} tag="span">
                       {card.title}
                     </EditableText>
                   </h3>
-                  <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Marcellus', serif", lineHeight: '1.6', marginBottom: '30px' }}>
+                  <p style={{ fontSize: '14px', color: '#ffffff', fontFamily: "'Marcellus', serif", lineHeight: '1.6', marginBottom: '30px' }}>
                     <EditableText sectionId="treatment-plan-section" fieldPath={`cards.${index}.description`} tag="span">
                       {card.description}
                     </EditableText>
@@ -106,8 +108,8 @@ export default function TreatmentSection() {
                     display: 'flex', 
                     alignItems: 'center', 
                     gap: '12px', 
-                    backgroundColor: '#000', 
-                    color: '#fff', 
+                    backgroundColor: '#ffffff', 
+                    color: '#3B5998', 
                     padding: '12px 25px', 
                     borderRadius: '10px', 
                     textDecoration: 'none',
@@ -115,7 +117,8 @@ export default function TreatmentSection() {
                     fontSize: '14px',
                     fontWeight: 'bold',
                     fontFamily: "'Marcellus', serif",
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    border: '1px solid #ffffff'
                   }}>
                     <EditableText sectionId="treatment-plan-section" fieldPath={`cards.${index}.buttonText`} tag="span">
                       {card.buttonText}
@@ -133,8 +136,9 @@ export default function TreatmentSection() {
 
         <style jsx>{`
           .treatment-btn:hover {
-            background-color: #E4B753 !important;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            background-color: transparent !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 22px rgba(255,255,255,0.14);
           }
           .treatment-btn:hover svg {
             transform: translateX(5px);

@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { fetchWhyChooseDMC } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
+
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
 
 const defaultFeatures = [
   { text: "Golden Technique", enabled: true },
@@ -66,7 +68,7 @@ const AboutUsCare = () => {
                <img 
                  src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                  alt="icon" 
-                 style={{ width: '40px', height: 'auto' }} 
+                 style={{ width: '40px', height: 'auto', filter: blueIconFilter }} 
                />
                <EditableText sectionId="why-choose-dmc" fieldPath="badgeText" tag="span" className="section-subtitle">
                  {subtitle}
@@ -114,22 +116,23 @@ const AboutUsCare = () => {
               {/* Box Right: Points with Background */}
               <div style={{ 
                 width: '60%', 
-                padding: '20px', 
-                backgroundImage: `url('https://res.cloudinary.com/dseixl6px/image/upload/v1777615992/dmc-trichology/une4wf3ini0mowjzhgq3.png')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                padding: '28px 24px', 
+                backgroundColor: '#3B5998',
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
                 alignContent: 'center',
-                gap: '10px',
+                columnGap: '26px',
+                rowGap: '16px',
                 position: 'relative'
               }}>
                 {activeFeatures.map((item, index) => {
                   const realIndex = safeFeatures ? data.features.indexOf(item) : index;
                   return (
-                    <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '6px', zIndex: 2 }}>
-                      <CheckCircle2 size={14} color="#fff" />
-                      <span style={{ color: '#fff', fontSize: '12px', fontFamily: "'Marcellus', serif" }}>
+                    <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 2, minWidth: 0 }}>
+                      <span style={{ width: '20px', height: '20px', flex: '0 0 20px', borderRadius: '50%', backgroundColor: '#E8EAF6', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Check size={13} color="#3B5998" strokeWidth={3} />
+                      </span>
+                      <span style={{ color: '#fff', fontSize: '13px', lineHeight: '1.35', fontFamily: "'Marcellus', serif" }}>
                         <EditableText sectionId="why-choose-dmc" fieldPath={`features.${realIndex}.text`} tag="span">
                           {item.text}
                         </EditableText>

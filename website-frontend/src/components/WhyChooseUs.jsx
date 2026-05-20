@@ -4,6 +4,15 @@ import { fetchWhyChooseUs } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
+
+const featureIconByTitle = {
+  'natural results': '/icons/why-choose-us/natural-results.svg',
+  'customized care': '/icons/why-choose-us/customized-care.svg',
+  'reduce surgical': '/icons/why-choose-us/reduce-surgical.svg',
+  'complete aftercare': '/icons/why-choose-us/complete-aftercare.svg'
+};
+
 const defaultFeatures = [
   { icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777548895/dmc-trichology/tcy9wy64djnagoimcfnx.png', title: 'Natural Results', desc: 'Every Hairline Is Designed To Match Your Facial Structure For A Natural Look.', side: 'left', enabled: true },
   { icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777548895/dmc-trichology/ecjlnpbmt8rk3ebxazva.png', title: 'Customized Care', desc: 'Every Hair Loss Condition Is Different And Also Unique.', side: 'left', enabled: true },
@@ -50,9 +59,10 @@ const WhyChooseUs = () => {
   // Render a single feature card — design identical to original
   const renderCard = (feat, sideIndex) => {
     const realIndex = getOriginalIndex(feat);
+    const displayIcon = featureIconByTitle[String(feat.title || '').toLowerCase()] || feat.icon;
     return (
       <div className="card-item" style={{
-        backgroundColor: '#000',
+        backgroundColor: '#3B5998',
         borderRadius: '24px',
         padding: '20px',
         display: 'flex',
@@ -62,11 +72,11 @@ const WhyChooseUs = () => {
         color: '#fff',
         textAlign: 'left',
         zIndex: 2,
-        boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+        boxShadow: '0 20px 40px rgba(59, 89, 152, 0.22)',
         transition: 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
       }}>
         <div style={{
-          backgroundColor: '#FEF0D7',
+          backgroundColor: '#E8EAF6',
           borderRadius: '16px',
           padding: '12px',
           minWidth: '85px',
@@ -75,10 +85,10 @@ const WhyChooseUs = () => {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          <img src={feat.icon} alt={feat.title} style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+          <img src={displayIcon} alt={feat.title} style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
         </div>
         <div>
-          <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '24px', marginBottom: '8px', fontWeight: 400, color: '#FEF0D7' }}>
+          <h4 style={{ fontFamily: "'Marcellus', serif", fontSize: '24px', marginBottom: '8px', fontWeight: 400, color: '#FFFFFF' }}>
             <EditableText sectionId="why-choose-us" fieldPath={`features.${realIndex}.title`} tag="span">
               {feat.title}
             </EditableText>
@@ -111,7 +121,7 @@ const WhyChooseUs = () => {
     <EditableSection sectionId="why-choose-us" label="Why Choose Us">
       <section className="why-choose-us" style={{ ...sectionPadding, textAlign: 'center', overflow: 'hidden', position: 'relative' }}>
         <div className="section-tag" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
-          <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto' }} />
+          <img src={iconUrl} alt="icon" style={{ width: '50px', height: 'auto', filter: blueIconFilter }} />
           <EditableText sectionId="why-choose-us" fieldPath="subtitle" tag="span" className="section-subtitle">
             {subtitle}
           </EditableText>

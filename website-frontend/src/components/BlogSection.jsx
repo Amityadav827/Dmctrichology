@@ -53,8 +53,8 @@ export default function BlogSection() {
           
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
-               <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto' }} />
+            <div className="blog-section-eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
+               <span className="blog-section-line" aria-hidden="true"></span>
                <EditableText sectionId="blogs-home-section" fieldPath="badgeText" tag="span" className="section-subtitle">
                  {badgeText}
                </EditableText>
@@ -78,7 +78,7 @@ export default function BlogSection() {
                 key={index} 
                 className="home-blog-card"
                 style={{
-                  backgroundColor: '#F9F7F2',
+                  backgroundColor: '#E8EAF6',
                   borderRadius: '40px',
                   padding: '25px',
                   display: 'flex',
@@ -98,7 +98,7 @@ export default function BlogSection() {
                     position: 'absolute', 
                     top: '20px', 
                     left: '20px', 
-                    backgroundColor: '#000', 
+                    backgroundColor: '#3B5998', 
                     color: '#fff', 
                     padding: '6px 20px', 
                     borderRadius: '30px',
@@ -113,10 +113,10 @@ export default function BlogSection() {
 
                 {/* Content */}
                 <div className="home-blog-author-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-                  <div>
-                     <img src={blog.authorIcon} alt="author" style={{ width: '32px' }} />
+                  <div className="home-blog-author-icon">
+                     <img src="/icons/blog/author.svg" alt="author" />
                   </div>
-                  <span className="home-blog-author" style={{ fontSize: '16px', color: '#666', fontFamily: "'Marcellus', serif" }}>
+                  <span className="home-blog-author" style={{ fontSize: '16px', color: '#000', fontFamily: "'Marcellus', serif" }}>
                     <EditableText sectionId="blogs-home-section" fieldPath={`blogs.${index}.author`} tag="span">
                       {blog.author}
                     </EditableText>
@@ -192,7 +192,7 @@ export default function BlogSection() {
 
         <style jsx global>{`
           .home-blog-card:hover {
-            background-color: #000 !important;
+            background-color: #3B5998 !important;
             border-color: transparent !important;
           }
 
@@ -203,7 +203,7 @@ export default function BlogSection() {
           }
 
           .home-blog-card:hover .home-blog-date-pill {
-            background-color: rgba(255,255,255,0.9) !important;
+            background-color: #fff !important;
             color: #000 !important;
           }
 
@@ -212,31 +212,89 @@ export default function BlogSection() {
             color: #fff !important;
           }
 
+          .blog-section-line {
+            width: 48px;
+            height: 1px;
+            background-color: #3B5998;
+            position: relative;
+            display: inline-block;
+          }
+
+          .blog-section-line::after {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #3B5998;
+            position: absolute;
+            right: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+
+          .blog-section-eyebrow .section-subtitle {
+            color: #3B5998 !important;
+          }
+
+          .home-blog-author-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #3B5998;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            transition: background-color 0.3s ease;
+          }
+
+          .home-blog-author-icon img {
+            width: 15px;
+            height: 15px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            transition: filter 0.3s ease;
+          }
+
+          .home-blog-card:hover .home-blog-author-icon {
+            background-color: #fff;
+          }
+
+          .home-blog-card:hover .home-blog-author-icon img {
+            filter: brightness(0) saturate(100%) invert(34%) sepia(19%) saturate(1704%) hue-rotate(183deg) brightness(92%) contrast(89%);
+          }
+
           .view-all-blogs-btn:hover {
-            background-color: #000 !important;
+            background-color: #3B5998 !important;
             color: #fff !important;
-            border-color: #000 !important;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+            border-color: #3B5998 !important;
+            box-shadow: 0 12px 24px rgba(59, 89, 152, 0.22);
           }
 
           .blog-btn-arrow-wrap {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: #000;
+            background-color: #3B5998;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            transform: rotate(-45deg);
             transition: transform 0.3s ease, background-color 0.3s ease;
           }
 
           .view-all-blogs-btn:hover .blog-btn-arrow-wrap {
             background-color: #fff;
-            transform: translateX(4px);
+            transform: rotate(0deg);
+          }
+
+          .blog-btn-arrow {
+            filter: brightness(0) invert(1);
+            transition: filter 0.3s ease;
           }
 
           .view-all-blogs-btn:hover .blog-btn-arrow {
-            filter: brightness(0);
+            filter: brightness(0) saturate(100%) invert(34%) sepia(19%) saturate(1704%) hue-rotate(183deg) brightness(92%) contrast(89%);
           }
 
           @media (max-width: 768px) {

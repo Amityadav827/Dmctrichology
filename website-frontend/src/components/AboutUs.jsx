@@ -5,6 +5,8 @@ import CountUpStat from './CountUpStat';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
+
 const AboutUs = () => {
   const [data, setData] = useState(null);
 
@@ -38,7 +40,7 @@ const AboutUs = () => {
             <img 
               src={sectionIcon} 
               alt="icon" 
-              style={{ width: '40px', height: 'auto' }} 
+              style={{ width: '40px', height: 'auto', filter: blueIconFilter }} 
             />
             <EditableText sectionId="about-us" fieldPath="subtitle" tag="span" className="section-subtitle">
               {subtitle}
@@ -89,7 +91,7 @@ const AboutUs = () => {
                     <img 
                       src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                       alt="divider" 
-                      style={{ width: '60px', height: 'auto', marginBottom: '10px' }} 
+                      style={{ width: '60px', height: 'auto', marginBottom: '10px', filter: blueIconFilter }} 
                     />
                   )}
                   <p style={{ fontSize: '12px', color: '#777', fontFamily: "'Marcellus', serif", maxWidth: '180px', lineHeight: '1.6' }}>

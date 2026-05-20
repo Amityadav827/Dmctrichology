@@ -4,6 +4,8 @@ import { fetchHomeFAQ } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
+
 export default function FaqSection() {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState('');
@@ -60,7 +62,7 @@ export default function FaqSection() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '60px', flexWrap: 'wrap', gap: '30px' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
-                <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto' }} />
+                <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '40px', height: 'auto', filter: blueIconFilter }} />
                 <EditableText sectionId="faq-section" fieldPath="badgeText" tag="span" className="section-subtitle">
                   {badgeText}
                 </EditableText>
@@ -82,7 +84,7 @@ export default function FaqSection() {
                     padding: '12px 25px',
                     borderRadius: '50px',
                     border: 'none',
-                    backgroundColor: activeTab === cat.title ? '#000' : 'transparent',
+                    backgroundColor: activeTab === cat.title ? '#3B5998' : 'transparent',
                     color: activeTab === cat.title ? '#fff' : '#000',
                     cursor: 'pointer',
                     fontSize: '14px',
@@ -124,13 +126,13 @@ export default function FaqSection() {
                   key={index}
                   className="faq-card"
                   style={{
-                    backgroundColor: '#F9F7F2',
+                    backgroundColor: '#E8EAF6',
                     borderRadius: '40px',
                     padding: '20px',
                     display: 'flex',
                     gap: '20px',
                     alignItems: 'center',
-                    border: '1px solid #E5E5E5',
+                    border: '1px solid #4D4D4D',
                     transition: 'all 0.3s ease',
                     minHeight: '120px'
                   }}
@@ -144,12 +146,12 @@ export default function FaqSection() {
                     />
                   </div>
                   <div>
-                    <h3 style={{ fontSize: '22px', color: '#333', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px', lineHeight: '1.3' }}>
+                    <h3 style={{ fontSize: '22px', color: '#000000', fontFamily: "'Marcellus', serif", fontWeight: '400', marginBottom: '10px', lineHeight: '1.3' }}>
                       <EditableText sectionId="faq-section" fieldPath={`categories.${catIndex}.faqs.${index}.question`} tag="span">
                         {faq.question}
                       </EditableText>
                     </h3>
-                    <p style={{ fontSize: '14px', color: '#666', fontFamily: "'Marcellus', serif", lineHeight: '1.6' }}>
+                    <p style={{ fontSize: '14px', color: '#000000', fontFamily: "'Marcellus', serif", lineHeight: '1.6' }}>
                       <EditableText sectionId="faq-section" fieldPath={`categories.${catIndex}.faqs.${index}.answer`} tag="span">
                         {faq.answer}
                       </EditableText>
@@ -162,7 +164,7 @@ export default function FaqSection() {
 
           {/* View All Button */}
           <div style={{ textAlign: 'center', marginTop: '60px' }}>
-            <a href="https://dmctrichology-mkm4.vercel.app/service" className="view-all-faq-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '12px 30px', borderRadius: '50px', border: '1px solid #E5E5E5', backgroundColor: '#fff', color: '#000', cursor: 'pointer', fontSize: '14px', fontWeight: '600', fontFamily: "'Marcellus', serif" }}>
+            <a href="https://dmctrichology-mkm4.vercel.app/service" className="view-all-faq-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '10px 10px 10px 28px', borderRadius: '50px', border: '1px solid #E5E5E5', backgroundColor: '#fff', color: '#000', cursor: 'pointer', fontSize: '14px', fontWeight: '600', fontFamily: "'Marcellus', serif" }}>
               <EditableText sectionId="faq-section" fieldPath="buttonText" tag="span">
                 {buttonText}
               </EditableText>
@@ -175,10 +177,11 @@ export default function FaqSection() {
 
         <style jsx>{`
           .faq-card:hover {
-            background-color: #000 !important;
+            background-color: #3B5998 !important;
+            border-color: #4D4D4D !important;
             color: #fff;
             transform: none;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 15px 30px rgba(59,89,152,0.18);
           }
 
           .faq-card:hover h3,
@@ -190,7 +193,7 @@ export default function FaqSection() {
             width: 58px;
             height: 58px;
             border-radius: 50%;
-            background-color: #000;
+            background-color: #3B5998;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -199,6 +202,7 @@ export default function FaqSection() {
 
           .faq-icon-img {
             transition: none;
+            filter: brightness(0) invert(1);
           }
 
           .faq-card:hover .faq-icon-circle {
@@ -211,7 +215,7 @@ export default function FaqSection() {
           .faq-card:hover .faq-second-right-icon-img,
           .faq-card:hover .faq-third-left-icon-img,
           .faq-card:hover .faq-third-right-icon-img {
-            filter: brightness(0);
+            filter: brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%);
           }
 
           .faq-first-icon-img {
@@ -241,7 +245,7 @@ export default function FaqSection() {
           }
 
           .faq-card:hover .faq-second-right-icon-img {
-            filter: brightness(0);
+            filter: brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%);
           }
 
           .faq-third-right-icon-img {
@@ -254,30 +258,31 @@ export default function FaqSection() {
           }
 
           .view-all-faq-btn:hover {
-            background-color: #000 !important;
+            background-color: #3B5998 !important;
             color: #fff !important;
-            border-color: #000 !important;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+            border-color: #3B5998 !important;
+            box-shadow: 0 12px 24px rgba(59,89,152,0.18);
           }
 
           .faq-btn-arrow-wrap {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: #000;
+            background-color: #3B5998;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            transform: rotate(-45deg);
             transition: transform 0.3s ease, background-color 0.3s ease;
           }
 
           .view-all-faq-btn:hover .faq-btn-arrow-wrap {
             background-color: #fff;
-            transform: translateX(4px);
+            transform: rotate(0deg);
           }
 
           .view-all-faq-btn:hover .faq-btn-arrow {
-            filter: brightness(0);
+            filter: brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%);
           }
 
           @media (max-width: 768px) {

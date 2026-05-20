@@ -5,6 +5,10 @@ import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 import { useBuilder } from '../context/BuilderContext';
 
+const createCaptcha = () => Math.floor(1000 + Math.random() * 9000).toString();
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
+const whiteIconFilter = 'brightness(0) invert(1)';
+
 const EnquirySection = ({ sectionId = "consultation-section", data: propData, label = "Request Consultation" }) => {
   const { isEditMode, siteConfig } = useBuilder();
   const [data, setData] = useState(propData || {});
@@ -16,7 +20,7 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
     service: '',
     message: ''
   });
-  const [captcha, setCaptcha] = useState('');
+  const [captcha, setCaptcha] = useState(createCaptcha);
   const [captchaInput, setCaptchaInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -35,12 +39,10 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
 
   // Generate 4-digit captcha
   const generateCaptcha = () => {
-    setCaptcha(Math.floor(1000 + Math.random() * 9000).toString());
+    setCaptcha(createCaptcha());
   };
 
   useEffect(() => {
-    generateCaptcha();
-    
     // Fetch CMS services for dynamic service enquiry options
     fetchServices().then(res => {
       if (res && res.success && Array.isArray(res.data)) {
@@ -67,6 +69,7 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
   // Real-time sync from Visual Builder
   useEffect(() => {
     if (isEditMode && siteConfig && siteConfig.sectionId === sectionId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setData(prev => ({ ...prev, ...siteConfig.data }));
     }
   }, [isEditMode, siteConfig, sectionId]);
@@ -79,6 +82,7 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
         }
       });
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setData(propData);
     }
   }, [propData]);
@@ -299,7 +303,7 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
             {/* Header and Contact Info */}
             <div style={{ flex: '1 1 500px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
-                <img src={iconUrl} alt="icon" style={{ width: '40px', height: 'auto' }} />
+                <img src={iconUrl} alt="icon" style={{ width: '40px', height: 'auto', filter: blueIconFilter }} />
                 <EditableText sectionId={sectionId} fieldPath="badgeText" tag="span" className="section-subtitle">
                   {badgeText}
                 </EditableText>
@@ -318,7 +322,9 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
               {/* Contact Info Grid */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/onx0emcsxjwpat8uk5i4.png" alt="icon" style={{ width: '30px' }} />
+                  <span style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#3B5998', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 36px' }}>
+                    <img src="/icons/consultation/phone.svg" alt="icon" style={{ width: '17px', height: '17px', objectFit: 'contain', filter: whiteIconFilter }} />
+                  </span>
                   <div>
                     <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Marcellus', serif" }}>Phone Number</p>
                     <a href={`tel:${phoneNumber}`} style={{ textDecoration: 'none', color: '#000' }}>
@@ -329,7 +335,9 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
                   </div>
                 </div>
                 <div style={{ borderLeft: '1px solid #ddd', paddingLeft: '30px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/tvkpjjjy78damrrfvi57.png" alt="icon" style={{ width: '30px' }} />
+                  <span style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#3B5998', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 36px' }}>
+                    <img src="/icons/consultation/clock.svg" alt="icon" style={{ width: '17px', height: '17px', objectFit: 'contain', filter: whiteIconFilter }} />
+                  </span>
                   <div>
                     <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Marcellus', serif" }}>Service Timing ( Mon To Sat )</p>
                     <p style={{ margin: 0, fontSize: '14px', color: '#000', fontFamily: "'Marcellus', serif" }}>
@@ -338,7 +346,9 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
                   </div>
                 </div>
                 <div style={{ borderLeft: '1px solid #ddd', paddingLeft: '30px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/dmc-trichology/tvkpjjjy78damrrfvi57.png" alt="icon" style={{ width: '30px' }} />
+                  <span style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#3B5998', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 36px' }}>
+                    <img src="/icons/consultation/clock.svg" alt="icon" style={{ width: '17px', height: '17px', objectFit: 'contain', filter: whiteIconFilter }} />
+                  </span>
                   <div>
                     <p style={{ margin: 0, fontSize: '11px', color: '#777', fontFamily: "'Marcellus', serif" }}>Service Timing ( Sunday )</p>
                     <p style={{ margin: 0, fontSize: '14px', color: '#000', fontFamily: "'Marcellus', serif" }}>
@@ -425,9 +435,13 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
                    <div 
                       onClick={() => !loading && setShowCalendar(!showCalendar)}
                       className="calendar-trigger-btn"
-                      style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', width: '40px', height: '40px', backgroundColor: '#000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifycontent: 'center', cursor: loading ? 'not-allowed' : 'pointer', transition: 'all 0.3s ease', zIndex: 5, justifyContent: 'center' }}
+                      style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', width: '40px', height: '40px', backgroundColor: '#3B5998', borderRadius: '50%', display: 'flex', alignItems: 'center', justifycontent: 'center', cursor: loading ? 'not-allowed' : 'pointer', transition: 'all 0.3s ease', zIndex: 5, justifyContent: 'center' }}
                    >
-                      <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777623764/bze1cv4xanahe5dvljhb.png" style={{ width: '22px', height: '22px', filter: 'invert(1)' }} alt="icon" />
+                      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style={{ display: 'block' }}>
+                        <rect x="4" y="5" width="16" height="15" rx="2.5" fill="none" stroke="#ffffff" strokeWidth="2" />
+                        <path d="M8 3v4M16 3v4M4 10h16" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M8 14h2M12 14h2M16 14h2M8 17h2M12 17h2" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
                    </div>
 
                    {showCalendar && (
@@ -467,13 +481,13 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
                                           fontSize: '10px',
                                           fontWeight: 'bold',
                                           borderRadius: '8px',
-                                          border: isSelected ? '1px solid #d4af37' : '1px solid #e2e8f0',
-                                          backgroundColor: isSelected ? '#d4af37' : '#fff',
+                                          border: isSelected ? '1px solid #3B5998' : '1px solid #e2e8f0',
+                                          backgroundColor: isSelected ? '#3B5998' : '#fff',
                                           color: isSelected ? '#fff' : '#4a5568',
                                           cursor: 'pointer',
                                           transition: 'all 0.2s',
                                           fontFamily: 'Lato, sans-serif',
-                                          boxShadow: isSelected ? '0 4px 10px rgba(212,175,55,0.2)' : 'none'
+                                          boxShadow: isSelected ? '0 4px 10px rgba(59,89,152,0.22)' : 'none'
                                         }}
                                       >
                                         {time}
@@ -492,7 +506,7 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
                             style={{ 
                               width: '100%', 
                               padding: '12px', 
-                              backgroundColor: '#000', 
+                              backgroundColor: '#3B5998', 
                               color: '#fff', 
                               border: 'none', 
                               borderRadius: '30px', 
@@ -513,17 +527,19 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
                 </div>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                   <div style={{ padding: '15px 20px', backgroundColor: '#E4B753', borderRadius: '30px', color: '#fff', fontWeight: 'bold', letterSpacing: '4px', userSelect: 'none' }}>{captcha}</div>
+                   <div style={{ padding: '15px 20px', backgroundColor: '#3B5998', borderRadius: '30px', color: '#fff', fontWeight: 'bold', letterSpacing: '4px', userSelect: 'none' }}>{captcha}</div>
                    <input type="text" value={captchaInput} onChange={e => setCaptchaInput(e.target.value)} placeholder="Code*" className="premium-input" style={{ width: '100%', padding: '15px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif" }} disabled={loading} required />
                 </div>
                 <div style={{ gridColumn: 'span 2' }}>
                    <textarea name="message" value={formData.message} onChange={handleChange} placeholder={messagePlaceholder} className="premium-textarea" style={{ width: '100%', padding: '20px 25px', borderRadius: '30px', border: 'none', backgroundColor: '#F2F2F2', outline: 'none', fontFamily: "'Marcellus', serif", minHeight: '100px', resize: 'none', transition: 'all 0.3s ease' }} disabled={loading}></textarea>
                 </div>
                 <div style={{ gridColumn: 'span 2' }}>
-                  <button type="submit" className="premium-submit-btn" style={{ width: '100%', padding: '15px', borderRadius: '30px', backgroundColor: '#000', color: '#fff', border: 'none', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', fontFamily: "'Marcellus', serif", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', position: 'relative', overflow: 'hidden' }} disabled={loading}>
+                  <button type="submit" className="premium-submit-btn" style={{ width: '100%', padding: '15px', borderRadius: '30px', backgroundColor: '#3B5998', color: '#fff', border: 'none', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', fontFamily: "'Marcellus', serif", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', position: 'relative', overflow: 'hidden' }} disabled={loading}>
                     <EditableText sectionId={sectionId} fieldPath="buttonText" tag="span">{loading ? 'Scheduling...' : buttonText}</EditableText>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="consultation-btn-arrow">
-                      <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/xc065ftxo6zamcldpd59.png" style={{ width: '40px' }} alt="arrow" />
+                    <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="consultation-btn-arrow">
+                      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style={{ display: 'block' }}>
+                        <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#3B5998" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
                     </div>
                   </button>
                 </div>
@@ -542,11 +558,11 @@ const EnquirySection = ({ sectionId = "consultation-section", data: propData, la
         </div>
 
         <style jsx>{`
-          .premium-input:focus, .premium-select:focus, .premium-textarea:focus { background-color: #fff !important; box-shadow: 0 0 0 2px #E4B753; }
+          .premium-input:focus, .premium-select:focus, .premium-textarea:focus, .premium-input-readonly:focus { background-color: #fff !important; box-shadow: 0 0 0 2px #3B5998; }
           .premium-input:hover, .premium-select:hover, .premium-textarea:hover { background-color: #ededed; }
-          .calendar-trigger-btn:hover { transform: translateY(-50%) scale(1.1) !important; background-color: #333 !important; }
+          .calendar-trigger-btn:hover { transform: translateY(-50%) scale(1.1) !important; background-color: #314b82 !important; }
           .consultation-btn-arrow { transform: rotate(-45deg); transition: transform 0.4s ease; }
-          .premium-submit-btn:hover { transform: none; box-shadow: 0 15px 30px rgba(0,0,0,0.2); background-color: #1a1a1a; }
+          .premium-submit-btn:hover { transform: none; box-shadow: 0 15px 30px rgba(59, 89, 152, 0.28); background-color: #314b82 !important; }
           .premium-submit-btn:hover .consultation-btn-arrow { transform: rotate(0deg) translateX(5px); }
           .premium-submit-btn:active { transform: none; }
           

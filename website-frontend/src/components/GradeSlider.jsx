@@ -10,6 +10,8 @@ import EditableText from './Editable/EditableText';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+const whiteIconFilter = 'brightness(0) invert(1)';
+
 const defaultGrades = [
   { id: 1, grade: 'GRADE 1', displayNum: '1', area: '20 cm²', density: '40/cm²', grafts: '800', session: '1', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/s4afgaemlnxgpza6klc2.png' },
   { id: 2, grade: 'GRADE 2', displayNum: '2', area: '40 cm²', density: '40/cm²', grafts: '1600', session: '1', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/txprqtwbqrckrqbbtkbm.png' },
@@ -42,7 +44,7 @@ export default function GradeSlider() {
 
   const heading = data ? (data.heading || '') : 'Know Your Grade For Hair Transplant';
   const badgeText = data ? (data.badgeText || '') : 'EQUIP YOUR RECOVERY';
-  const bgColor = data ? (data.backgroundColor || '#000000') : '#000000';
+  const bgColor = '#3B5998';
 
   const safeGrades = Array.isArray(data?.grades) ? data.grades : null;
   const activeGrades = (safeGrades && safeGrades.length > 0)
@@ -60,7 +62,7 @@ export default function GradeSlider() {
              <img 
                src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                alt="icon" 
-               style={{ width: '40px', height: 'auto' }} 
+               style={{ width: '40px', height: 'auto', filter: whiteIconFilter }} 
              />
              <EditableText 
                ref={badgeRef}
@@ -129,7 +131,7 @@ export default function GradeSlider() {
                         width: '100%',
                         height: '100%',
                         backfaceVisibility: 'hidden',
-                        backgroundColor: '#FFFAF1',
+                        backgroundColor: '#FFFFFF',
                         borderRadius: '25px',
                         padding: '20px',
                         display: 'flex',
@@ -146,7 +148,7 @@ export default function GradeSlider() {
                         width: '100%',
                         height: '100%',
                         backfaceVisibility: 'hidden',
-                        backgroundColor: '#FFFAF1',
+                        backgroundColor: '#D7DDE9',
                         borderRadius: '25px',
                         padding: '25px 20px',
                         transform: 'rotateY(180deg)',
@@ -161,7 +163,7 @@ export default function GradeSlider() {
                               {item.grade}
                             </EditableText>
                           </span>
-                          <img src={item.image} alt={item.grade} style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid #F09819' }} />
+                          <img src={item.image} alt={item.grade} style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid #3B5998' }} />
                         </div>
 
                         <div style={{ flexGrow: 1 }}>
@@ -181,9 +183,9 @@ export default function GradeSlider() {
                               </EditableText>
                             </span>
                           </div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', backgroundColor: '#FBEED7', margin: '8px -5px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '6px' }}>
-                            <span style={{ color: '#666', fontSize: '13px' }}>No. of Grafts</span>
-                            <span style={{ fontWeight: '700', color: '#F09819', fontSize: '13px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', backgroundColor: '#A8B7CA', margin: '8px -5px', paddingLeft: '5px', paddingRight: '5px', borderRadius: '6px' }}>
+                            <span style={{ color: '#1f2937', fontSize: '13px' }}>No. of Grafts</span>
+                            <span style={{ fontWeight: '700', color: '#1f2937', fontSize: '13px' }}>
                               <EditableText sectionId="grade-slider" fieldPath={`grades.${realIndex}.grafts`} tag="span">
                                 {item.grafts}
                               </EditableText>

@@ -5,6 +5,8 @@ import { fetchReviews } from '../services/api';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
+
 const ReviewCard = ({ name, text, sectionId, index }) => (
   <div style={{
     backgroundColor: '#fff',
@@ -111,7 +113,7 @@ const TestimonialSection = () => {
           {/* Header Section */}
           <div style={{ textAlign: 'center', marginBottom: '80px' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '32px', height: 'auto', objectFit: 'contain' }} />
+              <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '32px', height: 'auto', objectFit: 'contain', filter: blueIconFilter }} />
               <EditableText sectionId="reviews-section" fieldPath="badgeText" tag="span" className="section-subtitle">
                 {subtitle}
               </EditableText>
@@ -150,8 +152,13 @@ const TestimonialSection = () => {
           </div>
           
           <div style={{ textAlign: 'center', marginTop: '60px' }}>
-            <button className="view-all-testimonials-btn" style={{ padding: '12px 40px', borderRadius: '10px', border: '1px solid #ddd', backgroundColor: '#fff', color: '#1C1C1C', fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.3s ease' }}>
-              View All
+            <button className="view-all-testimonials-btn" style={{ padding: '7px 7px 7px 24px', borderRadius: '999px', border: '1px solid #1C1C1C', backgroundColor: '#fff', color: '#1C1C1C', fontSize: '14px', fontWeight: '500', cursor: 'pointer', transition: 'all 0.3s ease', display: 'inline-flex', alignItems: 'center', gap: '18px', fontFamily: "'Marcellus', serif" }}>
+              <span>View All</span>
+              <span className="view-all-testimonials-arrow" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
             </button>
           </div>
         </div>
@@ -167,7 +174,24 @@ const TestimonialSection = () => {
 
         <style jsx>{`
           .premium-review-card:hover, .premium-video-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important; border-color: #E4B753 !important; }
-          .view-all-testimonials-btn:hover { background-color: #000 !important; color: #fff !important; transform: translateY(-2px); }
+          .view-all-testimonials-btn:hover { background-color: #3B5998 !important; border-color: #3B5998 !important; color: #fff !important; transform: translateY(-2px); }
+          .view-all-testimonials-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #3B5998;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-45deg);
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+          }
+          .view-all-testimonials-btn:hover .view-all-testimonials-arrow {
+            background-color: #ffffff;
+            color: #3B5998;
+            transform: rotate(0deg);
+          }
           @media (max-width: 1200px) { .testimonial-col-3, .testimonial-col-4 { display: none !important; } }
           @media (max-width: 992px) { .testimonial-col-2 { display: none !important; } }
           @media (max-width: 768px) {

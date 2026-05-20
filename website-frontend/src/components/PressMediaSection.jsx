@@ -71,8 +71,8 @@ export default function PressMediaSection() {
     <EditableSection sectionId="press-media-section" label="Press & Media Section">
       <section style={{ padding: '60px 5%', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ 
-            backgroundColor: '#FFFAF1', 
+          <div className="press-media-card" style={{ 
+            backgroundColor: '#3B5998', 
             borderRadius: '30px', 
             padding: '40px',
             position: 'relative'
@@ -87,7 +87,7 @@ export default function PressMediaSection() {
               
               {/* Left Side: Heading + Rating */}
               <div style={{ flex: '1.2', minWidth: '350px' }}>
-                <h2 className="section-title" style={{ margin: '0 0 50px 0', maxWidth: '650px' }}>
+                <h2 className="section-title press-media-title" style={{ margin: '0 0 50px 0', maxWidth: '650px', color: '#fff' }}>
                   <EditableText sectionId="press-media-section" fieldPath="heading" tag="span">
                     {heading}
                   </EditableText>
@@ -101,7 +101,7 @@ export default function PressMediaSection() {
                         width: '54px', 
                         height: '54px', 
                         borderRadius: '50%', 
-                        border: '3px solid #FFFAF1',
+                        border: '3px solid #3B5998',
                         marginLeft: i === 0 ? '0' : '-18px',
                         overflow: 'hidden',
                         backgroundColor: '#E5E5E5'
@@ -113,7 +113,7 @@ export default function PressMediaSection() {
 
                   {/* Rating Info */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                    <div style={{ fontSize: '16px', fontWeight: '500', color: '#1C1C1C', fontFamily: "'Marcellus', serif" }}>
+                    <div style={{ fontSize: '16px', fontWeight: '500', color: '#fff', fontFamily: "'Marcellus', serif" }}>
                       <EditableText sectionId="press-media-section" fieldPath="ratingText" tag="span">
                         {ratingText}
                       </EditableText>
@@ -145,8 +145,8 @@ export default function PressMediaSection() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '15px',
-                  backgroundColor: '#000',
-                  color: '#fff',
+                  backgroundColor: '#EDEEF8',
+                  color: '#3B5998',
                   padding: '10px 10px 10px 30px',
                   borderRadius: '100px',
                   border: 'none',
@@ -163,14 +163,14 @@ export default function PressMediaSection() {
                   <div className="arrow-container" style={{
                     width: '45px',
                     height: '45px',
-                    backgroundColor: '#fff',
+                    backgroundColor: '#486A91',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     transition: 'transform 0.3s ease'
                   }}>
-                     <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" className="btn-arrow-icon" style={{ width: '18px', filter: 'brightness(0)' }} />
+                     <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" className="btn-arrow-icon" style={{ width: '18px', filter: 'brightness(0) invert(1)' }} />
                   </div>
                 </button>
 
@@ -213,9 +213,20 @@ export default function PressMediaSection() {
         </div>
 
         <style jsx>{`
+          .press-media-card {
+            box-shadow: 0 24px 60px rgba(59, 89, 152, 0.18);
+          }
+          .press-media-title :global(*) {
+            color: #fff !important;
+          }
           .free-consult-btn:hover {
             transform: none !important;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25) !important;
+            background-color: #fff !important;
+            color: #3B5998 !important;
+            box-shadow: 0 14px 30px rgba(15, 35, 79, 0.24) !important;
+          }
+          .free-consult-btn:hover .arrow-container {
+            background-color: #3B5998 !important;
           }
           .free-consult-btn:hover .arrow-container {
             transform: rotate(45deg) !important;

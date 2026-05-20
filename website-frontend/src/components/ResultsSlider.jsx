@@ -11,6 +11,8 @@ import EditableText from './Editable/EditableText';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
+
 const defaultResults = [
   { id: 1, title: 'Korean Facial Illumination', beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612758/dmc-trichology/dvy3knew0pzq1gg8fr8q.png', afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/uttbdof06l4xbpvexlv9.png', sessions: 'After 6 sessions' },
   { id: 2, title: 'Acne Arrestor Facial With Salicylic Peel', beforeImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612757/dmc-trichology/g7fs5kfpckmmcjwg5sk0.png', afterImg: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777612758/dmc-trichology/zxyvkmr0uf8pf5qxgfvf.png', sessions: 'After 4 sessions' },
@@ -33,7 +35,7 @@ export default function ResultsSlider() {
 
   const heading = data ? (data.heading || '') : 'Results that speak for themselves';
   const badgeText = data ? (data.badgeText || '') : 'BEFORE AND AFTER';
-  const bgColor = data ? (data.backgroundColor || '#FFFAF1') : '#FFFAF1';
+  const bgColor = '#E8EAF6';
 
   const safeResults = Array.isArray(data?.results) ? data.results : null;
   const activeResults = (safeResults && safeResults.length > 0)
@@ -52,7 +54,7 @@ export default function ResultsSlider() {
                <img 
                  src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                  alt="icon" 
-                 style={{ width: '50px', height: 'auto' }} 
+                 style={{ width: '50px', height: 'auto', filter: blueIconFilter }} 
                />
                <EditableText sectionId="results-slider" fieldPath="badgeText" tag="span" className="section-subtitle">
                  {badgeText}
@@ -93,7 +95,7 @@ export default function ResultsSlider() {
                 return (
                   <SwiperSlide key={index}>
                     <div className="result-card" style={{ 
-                      backgroundColor: '#FBEED7', 
+                      backgroundColor: '#A8B7CA', 
                       borderRadius: '16px', 
                       padding: '24px',
                       height: '100%',
@@ -101,7 +103,7 @@ export default function ResultsSlider() {
                       flexDirection: 'column',
                       alignItems: 'center',
                       textAlign: 'center',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+                      boxShadow: '0px 2.61px 7.84px 0px #4A46460D',
                       transition: 'transform 0.3s ease'
                     }}>
                       <h3 style={{ 

@@ -11,6 +11,8 @@ import EditableText from './Editable/EditableText';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+const blueIconFilter = 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)';
+
 const defaultServices = [
   { title: "Follicular Unit Extraction (FUE)", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709679/dmc-trichology/dnnerjyyebzufaoya4hd.png", link: "#" },
   { title: "Follicular Unit Transplantation (FUT)", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777709678/dmc-trichology/scwz5ugmiwn9npmzpk5d.png", link: "#" },
@@ -46,7 +48,7 @@ export default function ServiceSlider() {
 
   return (
     <EditableSection sectionId="services" label="Services Slider">
-      <section className="service-slider-section" style={{ backgroundColor: '#FFFAF1', padding: '80px 5%' }}>
+      <section className="service-slider-section" style={{ backgroundColor: '#E8EAF6', padding: '80px 5%' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           
           {/* Top Area - Centered */}
@@ -55,7 +57,7 @@ export default function ServiceSlider() {
               <img 
                 src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" 
                 alt="icon" 
-                style={{ width: '40px', height: 'auto' }} 
+                style={{ width: '40px', height: 'auto', filter: blueIconFilter }} 
               />
               <EditableText sectionId="services" fieldPath="subtitle" tag="span" className="section-subtitle">
                 {subtitle}

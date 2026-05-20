@@ -2,13 +2,15 @@
 import { useState, useEffect } from 'react';
 import { submitLead, fetchSiteSettings } from '../services/api';
 
+const createCaptcha = () => Math.floor(1000 + Math.random() * 9000).toString();
+
 export default function LeadForm() {
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
     code: ''
   });
-  const [captcha, setCaptcha] = useState('');
+  const [captcha, setCaptcha] = useState(createCaptcha);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -16,13 +18,10 @@ export default function LeadForm() {
 
   // Function to generate random 4-digit number
   const generateCaptcha = () => {
-    const num = Math.floor(1000 + Math.random() * 9000).toString();
-    setCaptcha(num);
+    setCaptcha(createCaptcha());
   };
 
   useEffect(() => {
-    generateCaptcha();
-    
     // Fetch CMS settings for dynamic stats
     const loadSettings = async () => {
       try {
@@ -104,7 +103,7 @@ export default function LeadForm() {
   };
 
   return (
-    <div className="form-container" style={{ backgroundColor: '#FFFBF0', borderRadius: '24px', padding: '24px', position: 'relative' }}>
+    <div className="form-container" style={{ backgroundColor: '#E8EAF6', borderRadius: '24px', padding: '24px', position: 'relative' }}>
       {/* Dynamic keyframe style block for smooth fade + slide transitions */}
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes toastFadeSlide {
@@ -123,7 +122,7 @@ export default function LeadForm() {
       `}} />
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', height: '30px' }}>
-        <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
+        <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lsmvsocjusyrery1hjum.png" alt="icon" style={{ width: '30px', height: '30px', objectFit: 'contain', filter: 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)' }} />
         <span className="section-subtitle" style={{ fontSize: '11px' }}>Book a Session</span>
       </div>
       
@@ -251,10 +250,10 @@ export default function LeadForm() {
         </div>
 
         <div style={{ marginTop: '32px' }}>
-          <button type="submit" className="btn-primary hero-submit-btn" style={{ width: '100%', position: 'relative', height: '60px', borderRadius: '50px', padding: '0 24px', cursor: loading ? 'not-allowed' : 'pointer' }} disabled={loading}>
-            <span style={{ fontFamily: "'Marcellus', serif", fontSize: '1.2rem', color: '#000', margin: '0 auto' }}>{loading ? 'Submitting...' : 'Submit'}</span>
-            <div className="icon-circle" style={{ position: 'absolute', right: '10px', backgroundColor: '#000', width: '40px', height: '40px' }}>
-              <img className="hero-submit-arrow" src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '16px', height: '16px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+          <button type="submit" className="btn-primary hero-submit-btn" style={{ width: '100%', position: 'relative', height: '60px', borderRadius: '50px', padding: '0 24px', cursor: loading ? 'not-allowed' : 'pointer', background: '#3B5998', backgroundColor: '#3B5998' }} disabled={loading}>
+            <span style={{ fontFamily: "'Marcellus', serif", fontSize: '1.2rem', color: '#ffffff', margin: '0 auto' }}>{loading ? 'Submitting...' : 'Submit'}</span>
+            <div className="icon-circle" style={{ position: 'absolute', right: '10px', backgroundColor: '#ffffff', width: '40px', height: '40px' }}>
+              <img className="hero-submit-arrow" src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" style={{ width: '16px', height: '16px', objectFit: 'contain', filter: 'brightness(0) saturate(100%) invert(31%) sepia(22%) saturate(1838%) hue-rotate(181deg) brightness(91%) contrast(89%)' }} />
             </div>
           </button>
         </div>

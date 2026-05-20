@@ -207,7 +207,7 @@ export default function Footer() {
 
   return (
     <EditableSection sectionId="footer-section" label="Footer Section">
-      <footer style={{ backgroundColor: '#FEF9F1', position: 'relative', overflow: 'hidden' }}>
+      <footer style={{ backgroundColor: '#EDEEF8', position: 'relative', overflow: 'hidden' }}>
         
         {/* Top Footer Section (Beige) */}
         <div style={{ padding: '80px 5% 180px 5%', maxWidth: '1400px', margin: '0 auto' }}>
@@ -270,7 +270,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Footer Section (Black) */}
-        <div style={{ backgroundColor: '#000', padding: '0 5% 0 5%', position: 'relative' }}>
+        <div style={{ backgroundColor: '#3B5998', padding: '0 5% 0 5%', position: 'relative' }}>
           <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '100px' }}>
 
             {/* Left Side: Logo & About */}
@@ -306,9 +306,10 @@ export default function Footer() {
               zIndex: '10'
             }}>
               <div style={{
-                backgroundColor: '#FEF9F1',
+                backgroundColor: '#D3E1F3',
                 borderRadius: '40px',
                 padding: '60px 50px',
+                border: '1px solid #ABBBCA',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.15)',
                 textAlign: 'center'
               }}>
@@ -347,6 +348,7 @@ export default function Footer() {
                       required
                     />
                     <button 
+                      className="footer-submit-btn"
                       type="submit"
                       disabled={loading}
                       style={{ 
@@ -364,7 +366,9 @@ export default function Footer() {
                       }}
                     >
                       <EditableText sectionId="footer-section" fieldPath="newsletter.buttonText" tag="span">{loading ? "Submitting..." : newsletter.buttonText}</EditableText>
-                      <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" alt="email" style={{ width: '24px' }} />
+                      <span className="footer-submit-arrow">
+                        <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777622110/dmc-trichology/mzd4ynevgozuwiehhwah.png" alt="email" style={{ width: '24px' }} />
+                      </span>
                     </button>
                   </div>
 
@@ -453,6 +457,25 @@ export default function Footer() {
           }
           .premium-footer-pill:hover {
             transform: scale(1.04);
+          }
+          .footer-submit-btn {
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+          }
+          .footer-submit-arrow {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(0deg);
+            transition: transform 0.3s ease;
+          }
+          .footer-submit-btn:hover {
+            box-shadow: 0 10px 22px rgba(59, 89, 152, 0.18);
+          }
+          .footer-submit-btn:hover .footer-submit-arrow {
+            transform: rotate(45deg);
           }
           @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(8px); }
