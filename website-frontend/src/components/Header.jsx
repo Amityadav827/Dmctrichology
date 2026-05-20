@@ -8,11 +8,34 @@ import EditableText from './Editable/EditableText';
 
 export default function Header({ initialHeader }) {
   const [headerData, setHeaderData] = useState(initialHeader || null);
+  const [headerState, setHeaderState] = useState('default');
 
   useEffect(() => {
     fetchHeader().then(data => {
       if (data && data.data) setHeaderData(data.data);
     });
+  }, []);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 120) {
+        setHeaderState('default');
+      } else if (currentScrollY < lastScrollY) {
+        setHeaderState('sticky');
+      } else {
+        setHeaderState('hidden');
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const logoUrl = headerData?.logoUrl || 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530477/dmc-trichology/pntwhlftziotd6k0kdkg.png';
@@ -21,7 +44,7 @@ export default function Header({ initialHeader }) {
 
   return (
     <EditableSection sectionId="header" label="Header">
-      <header className="header">
+      <header className={`header header-${headerState}`}>
         <div className="header-container">
           <div className="logo">
             <Link href="/" aria-label="Go to homepage">

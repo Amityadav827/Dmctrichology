@@ -3,6 +3,7 @@ import { useSearchParams, usePathname } from 'next/navigation';
 import TopBar from '../components/TopBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import ScrollToTopButton from '../components/ScrollToTopButton';
 
 export default function GlobalLayoutWrapper({ children, initialHeader, initialTopBar }) {
   const searchParams = useSearchParams();
@@ -37,6 +38,7 @@ export default function GlobalLayoutWrapper({ children, initialHeader, initialTo
       </main>
 
       {!isEditingHeader && <Footer />}
+      {!(isEditingHeader || isEditingFooter) && <ScrollToTopButton />}
     </>
   );
 }
