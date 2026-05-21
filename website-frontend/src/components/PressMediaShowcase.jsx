@@ -102,18 +102,18 @@ const MediaCard = ({ card, idx }) => {
 
         {/* Gradient overlay on image */}
         <div className="pm-card-img-overlay" />
+      </div>
 
-        {/* Media logo badge overlay - bottom center exactly like reference */}
-        <div className="pm-card-logo-wrap">
-          <img
-            src={card.mediaLogo || 'https://www.dmctrichology.com/assets/images/media_logo1.webp'}
-            alt={card.mediaTitle || 'Media outlet logo'}
-            className="pm-card-logo"
-            onError={(e) => {
-              e.target.src = 'https://www.dmctrichology.com/assets/images/media_logo1.webp';
-            }}
-          />
-        </div>
+      {/* Media logo badge overlay - moved outside pm-card-img-wrap to allow overflow & perfect center-line alignment */}
+      <div className="pm-card-logo-wrap">
+        <img
+          src={card.mediaLogo || 'https://www.dmctrichology.com/assets/images/media_logo1.webp'}
+          alt={card.mediaTitle || 'Media outlet logo'}
+          className="pm-card-logo"
+          onError={(e) => {
+            e.target.src = 'https://www.dmctrichology.com/assets/images/media_logo1.webp';
+          }}
+        />
       </div>
     </div>
   );
@@ -212,7 +212,7 @@ const ShowcaseStyles = () => (
     .pm-card {
       background: #ffffff;
       border-radius: 32px;
-      overflow: hidden;
+      overflow: visible;
       border: 1px solid rgba(184, 164, 134, 0.15);
       box-shadow: 0 16px 48px rgba(184, 164, 134, 0.15), 0 4px 12px rgba(0, 0, 0, 0.03);
       transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
@@ -284,9 +284,9 @@ const ShowcaseStyles = () => (
     /* Media Logo Badge Overlay — Bottom Center exactly like reference */
     .pm-card-logo-wrap {
       position: absolute;
-      bottom: 24px;
+      bottom: 0;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, 50%);
       background: #ffffff;
       border-radius: 14px;
       padding: 10px 24px;
@@ -304,7 +304,7 @@ const ShowcaseStyles = () => (
 
     .pm-card-anchor:hover .pm-card-logo-wrap,
     .pm-card:hover .pm-card-logo-wrap {
-      transform: translateX(-50%) translateY(-5px);
+      transform: translate(-50%, calc(50% - 6px)) scale(1.02);
       box-shadow: 0 16px 40px rgba(184, 164, 134, 0.25);
     }
 
@@ -356,7 +356,6 @@ const ShowcaseStyles = () => (
       .pm-card-logo-wrap {
         height: 44px;
         padding: 8px 18px;
-        bottom: 20px;
       }
     }
   `}</style>
