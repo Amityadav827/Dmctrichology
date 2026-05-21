@@ -123,7 +123,7 @@ export default function AboutDrNandaniHero({ data = {} }) {
       <style dangerouslySetInnerHTML={{ __html: `
         .dr-nandani-hero-wrapper {
           position: relative;
-          padding: 80px 5%;
+          padding: 140px 5% 90px 5%;
           background-color: ${backgroundColor};
           background-size: cover;
           background-position: center;
@@ -153,9 +153,15 @@ export default function AboutDrNandaniHero({ data = {} }) {
         }
 
         @media (max-width: 1024px) {
+          .dr-nandani-hero-wrapper {
+            padding: 110px 5% 60px 5% !important;
+          }
           .dr-nandani-hero-inner-grid {
             grid-template-columns: 1fr;
             gap: 36px;
+          }
+          .doctor-portrait-bordered-holder {
+            max-width: 380px !important;
           }
         }
 
@@ -172,8 +178,8 @@ export default function AboutDrNandaniHero({ data = {} }) {
           box-shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
           background-color: #ffffff;
           width: 100%;
-          max-width: 400px;
-          aspect-ratio: 4/5;
+          max-width: 460px;
+          aspect-ratio: 4/4.5;
           overflow: hidden;
           display: flex;
           align-items: center;
