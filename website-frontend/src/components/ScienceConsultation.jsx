@@ -1,9 +1,12 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import EditableSection from './Editable/EditableSection';
+import EditableText from './Editable/EditableText';
+import { useBuilder } from '../context/BuilderContext';
 import { submitLead } from '../services/api';
 
 const ScienceConsultation = ({ data: initialData = {} }) => {
+  const { isEditMode, siteConfig } = useBuilder();
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -21,6 +24,25 @@ const ScienceConsultation = ({ data: initialData = {} }) => {
   useEffect(() => {
     setData(initialData);
   }, [initialData]);
+
+  // Real-time sync from Visual Builder (postMessage UPDATE_CONFIG)
+  useEffect(() => {
+    if (isEditMode && siteConfig) {
+      const updatedData = { ...data };
+      let hasChanges = false;
+
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('science-consultation.consultationSection.')) {
+          hasChanges = true;
+          const field = key.replace('science-consultation.consultationSection.', '');
+          updatedData[field] = siteConfig[key];
+        }
+      });
+
+      if (hasChanges) setData(updatedData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditMode, siteConfig]);
 
   useEffect(() => {
     const handleCmsUpdate = (e) => {
@@ -67,8 +89,14 @@ const ScienceConsultation = ({ data: initialData = {} }) => {
         <div className="sci-consult-container">
           
           <div className="sci-consult-header">
-            <h2 className="sci-consult-title">{data?.title || 'Begin Your Journey'}</h2>
-            <p className="sci-consult-timing">{data?.timingText || 'Available Mon - Sat: 10:00 AM - 7:00 PM'}</p>
+            <h2 className="sci-consult-title">
+              <EditableText sectionId="science-consultation" fieldPath="consultationSection.title" tag="span">
+                {String(data?.title || 'Begin Your Journey')}
+              </EditableText>
+            </h2>
+            <EditableText sectionId="science-consultation" fieldPath="consultationSection.timingText" tag="p" className="sci-consult-timing">
+              {String(data?.timingText || 'Available Mon - Sat: 10:00 AM - 7:00 PM')}
+            </EditableText>
           </div>
 
           {success && <div className="sci-alert sci-alert-success">✓ Consultation request sent successfully! We will contact you soon.</div>}
@@ -104,7 +132,11 @@ const ScienceConsultation = ({ data: initialData = {} }) => {
             </div>
             
             <button type="submit" disabled={loading} className="sci-submit-btn">
-              {loading ? 'Submitting...' : 'Request Consultation'}
+              {loading ? 'Submitting...' : (
+                <EditableText sectionId="science-consultation" fieldPath="consultationSection.ctaText" tag="span">
+                  {String(data?.ctaText || 'Request Consultation')}
+                </EditableText>
+              )}
             </button>
           </form>
 

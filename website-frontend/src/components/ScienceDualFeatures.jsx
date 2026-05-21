@@ -1,13 +1,42 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import EditableSection from './Editable/EditableSection';
+import EditableText from './Editable/EditableText';
+import { useBuilder } from '../context/BuilderContext';
 
 const ScienceDualFeatures = ({ data: initialData = {} }) => {
+  const { isEditMode, siteConfig } = useBuilder();
   const [data, setData] = useState(initialData);
 
   useEffect(() => {
     setData(initialData);
   }, [initialData]);
+
+  // Real-time sync from Visual Builder (postMessage UPDATE_CONFIG)
+  useEffect(() => {
+    if (isEditMode && siteConfig) {
+      const updatedData = { ...data };
+      let hasChanges = false;
+
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('science-dual-features.dualFeatureSection.')) {
+          hasChanges = true;
+          const path = key.replace('science-dual-features.dualFeatureSection.', '');
+          // path can be "leftCard.title" or "rightCard.description" etc
+          if (path.includes('.')) {
+            const [cardSide, field] = path.split('.');
+            if (!updatedData[cardSide]) updatedData[cardSide] = {};
+            updatedData[cardSide][field] = siteConfig[key];
+          } else {
+            updatedData[path] = siteConfig[key];
+          }
+        }
+      });
+
+      if (hasChanges) setData(updatedData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditMode, siteConfig]);
 
   useEffect(() => {
     const handleCmsUpdate = (e) => {
@@ -43,8 +72,14 @@ const ScienceDualFeatures = ({ data: initialData = {} }) => {
           <div className="sci-dual-card">
              {left.image && <div className="sci-dual-img" style={{ backgroundImage: `url(${left.image})` }}></div>}
              <div className="sci-dual-content">
-               <h3 className="sci-dual-title">{left.title || 'Advanced Diagnostics'}</h3>
-               <p className="sci-dual-desc">{left.description || 'We utilize state-of-the-art diagnostic tools to understand the root cause of your hair loss.'}</p>
+               <h3 className="sci-dual-title">
+                 <EditableText sectionId="science-dual-features" fieldPath="dualFeatureSection.leftCard.title" tag="span">
+                   {String(left.title || 'Advanced Diagnostics')}
+                 </EditableText>
+               </h3>
+               <EditableText sectionId="science-dual-features" fieldPath="dualFeatureSection.leftCard.description" tag="p" className="sci-dual-desc">
+                 {String(left.description || 'We utilize state-of-the-art diagnostic tools to understand the root cause of your hair loss.')}
+               </EditableText>
                <ul className="sci-dual-list">
                  {(left.bullets || []).map((bullet, i) => (
                    <li key={i}>{bullet}</li>
@@ -56,8 +91,14 @@ const ScienceDualFeatures = ({ data: initialData = {} }) => {
           <div className="sci-dual-card sci-dual-right">
              {right.image && <div className="sci-dual-img" style={{ backgroundImage: `url(${right.image})` }}></div>}
              <div className="sci-dual-content">
-               <h3 className="sci-dual-title">{right.title || 'Precision Treatment'}</h3>
-               <p className="sci-dual-desc">{right.description || 'Our treatments are tailored to your unique genetic and physiological profile for optimal results.'}</p>
+               <h3 className="sci-dual-title">
+                 <EditableText sectionId="science-dual-features" fieldPath="dualFeatureSection.rightCard.title" tag="span">
+                   {String(right.title || 'Precision Treatment')}
+                 </EditableText>
+               </h3>
+               <EditableText sectionId="science-dual-features" fieldPath="dualFeatureSection.rightCard.description" tag="p" className="sci-dual-desc">
+                 {String(right.description || 'Our treatments are tailored to your unique genetic and physiological profile for optimal results.')}
+               </EditableText>
                <ul className="sci-dual-list">
                  {(right.bullets || []).map((bullet, i) => (
                    <li key={i}>{bullet}</li>

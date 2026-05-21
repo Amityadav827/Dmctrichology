@@ -114,7 +114,7 @@ export default function VisualLiveBuilder() {
         { id: 'influencer-cards', label: 'Influencer Showcase Cards' }
       ];
     }
-    if (currentSlug === 'science-at-dmc-trichology') {
+    if (currentSlug === 'science-at-dmc-trichology' || currentSlug === 'science-at-dmc') {
       return [
         { id: 'science-hero', label: 'Science Hero Banner' },
         { id: 'science-intro', label: 'Science Intro Section' },

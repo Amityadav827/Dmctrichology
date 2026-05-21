@@ -1,13 +1,35 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import EditableSection from './Editable/EditableSection';
+import EditableText from './Editable/EditableText';
+import { useBuilder } from '../context/BuilderContext';
 
 const ScienceHero = ({ data: initialData = {} }) => {
+  const { isEditMode, siteConfig } = useBuilder();
   const [data, setData] = useState(initialData);
 
   useEffect(() => {
     setData(initialData);
   }, [initialData]);
+
+  // Real-time sync from Visual Builder (postMessage UPDATE_CONFIG)
+  useEffect(() => {
+    if (isEditMode && siteConfig) {
+      const updatedData = { ...data };
+      let hasChanges = false;
+
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('science-hero.hero.')) {
+          hasChanges = true;
+          const field = key.replace('science-hero.hero.', '');
+          updatedData[field] = siteConfig[key];
+        }
+      });
+
+      if (hasChanges) setData(updatedData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditMode, siteConfig]);
 
   useEffect(() => {
     const handleCmsUpdate = (e) => {
@@ -48,11 +70,15 @@ const ScienceHero = ({ data: initialData = {} }) => {
         {/* Content */}
         <div className="sci-hero-content max-w-[1400px] mx-auto w-full">
           <div className="sci-hero-badge">
-            {data?.subtitle || 'ADVANCED HAIR RESTORATION SCIENCE'}
+            <EditableText sectionId="science-hero" fieldPath="hero.subtitle" tag="span">
+              {String(data?.subtitle || 'ADVANCED HAIR RESTORATION SCIENCE')}
+            </EditableText>
           </div>
 
           <h1 className="sci-hero-title">
-            {data?.title || 'Science at DMC Trichology'}
+            <EditableText sectionId="science-hero" fieldPath="hero.title" tag="span">
+              {String(data?.title || 'Science at DMC Trichology')}
+            </EditableText>
           </h1>
 
           <div className="sci-hero-breadcrumb">
@@ -63,7 +89,9 @@ const ScienceHero = ({ data: initialData = {} }) => {
               </svg>
             </span>
             <span className="sci-bc-current">
-              {data?.breadcrumbText || 'Science at DMC Trichology'}
+              <EditableText sectionId="science-hero" fieldPath="hero.breadcrumbText" tag="span">
+                {String(data?.breadcrumbText || 'Science at DMC Trichology')}
+              </EditableText>
             </span>
           </div>
         </div>

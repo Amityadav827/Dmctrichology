@@ -1,13 +1,35 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import EditableSection from './Editable/EditableSection';
+import EditableText from './Editable/EditableText';
+import { useBuilder } from '../context/BuilderContext';
 
 const ScienceIntro = ({ data: initialData = {} }) => {
+  const { isEditMode, siteConfig } = useBuilder();
   const [data, setData] = useState(initialData);
 
   useEffect(() => {
     setData(initialData);
   }, [initialData]);
+
+  // Real-time sync from Visual Builder (postMessage UPDATE_CONFIG)
+  useEffect(() => {
+    if (isEditMode && siteConfig) {
+      const updatedData = { ...data };
+      let hasChanges = false;
+
+      Object.keys(siteConfig).forEach(key => {
+        if (key.startsWith('science-intro.introSection.')) {
+          hasChanges = true;
+          const field = key.replace('science-intro.introSection.', '');
+          updatedData[field] = siteConfig[key];
+        }
+      });
+
+      if (hasChanges) setData(updatedData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditMode, siteConfig]);
 
   useEffect(() => {
     const handleCmsUpdate = (e) => {
@@ -28,11 +50,15 @@ const ScienceIntro = ({ data: initialData = {} }) => {
       <section className="sci-intro-section" style={{ backgroundImage: data?.backgroundImage ? `url(${data?.backgroundImage})` : 'none' }}>
         <div className="sci-intro-container">
           <div className="sci-intro-card">
-            <h2 className="sci-intro-heading">{data?.heading || 'The Science Behind Hair Restoration'}</h2>
+            <h2 className="sci-intro-heading">
+              <EditableText sectionId="science-intro" fieldPath="introSection.heading" tag="span">
+                {String(data?.heading || 'The Science Behind Hair Restoration')}
+              </EditableText>
+            </h2>
             <div className="sci-intro-divider"></div>
-            <p className="sci-intro-desc">
-              {data?.description || 'At DMC Trichology, we blend cutting-edge medical science with artistic precision to deliver natural-looking hair restoration. Our protocols are rooted in evidence-based medicine.'}
-            </p>
+            <EditableText sectionId="science-intro" fieldPath="introSection.description" tag="p" className="sci-intro-desc">
+              {String(data?.description || 'At DMC Trichology, we blend cutting-edge medical science with artistic precision to deliver natural-looking hair restoration. Our protocols are rooted in evidence-based medicine.')}
+            </EditableText>
           </div>
         </div>
       </section>
