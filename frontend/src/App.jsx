@@ -54,6 +54,7 @@ import BlogsHomeCMS from "./pages/cms/BlogsHomeCMS";
 import PressMediaCMS from "./pages/cms/PressMediaCMS";
 import VirtualTourCMS from "./pages/cms/VirtualTourCMS";
 import InfluencerCMS from "./pages/cms/InfluencerCMS";
+import ScienceDmcCMS from "./pages/cms/ScienceDmcCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 import DetailsBannerCMS from "./pages/cms/DetailsBannerCMS";
 import ServiceIntroCMS from "./pages/cms/ServiceIntroCMS";
@@ -220,6 +221,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <InfluencerCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/science-at-dmc"
+          element={
+            <ProtectedRoute permission="cms">
+              <ScienceDmcCMS />
             </ProtectedRoute>
           }
         />

@@ -114,6 +114,14 @@ export default function VisualLiveBuilder() {
         { id: 'influencer-cards', label: 'Influencer Showcase Cards' }
       ];
     }
+    if (currentSlug === 'science-at-dmc-trichology') {
+      return [
+        { id: 'science-hero', label: 'Science Hero Banner' },
+        { id: 'science-intro', label: 'Science Intro Section' },
+        { id: 'science-dual-features', label: 'Science Dual Features' },
+        { id: 'science-consultation', label: 'Science Consultation Form' }
+      ];
+    }
     return allSections;
   };
 
@@ -226,6 +234,10 @@ export default function VisualLiveBuilder() {
           case 'virtual-tour-cards': endpoint = '/virtual-tour'; break;
           case 'influencer-hero': endpoint = '/influencers'; break;
           case 'influencer-cards': endpoint = '/influencers'; break;
+          case 'science-hero':
+          case 'science-intro':
+          case 'science-dual-features':
+          case 'science-consultation': endpoint = '/science-dmc'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 
@@ -472,7 +484,11 @@ export default function VisualLiveBuilder() {
                             'Virtual Tour Hero Banner': '/cms/virtual-tour',
                             'Virtual Tour Gallery Cards': '/cms/virtual-tour',
                             'Influencer Hero Banner': '/cms/influencers',
-                            'Influencer Showcase Cards': '/cms/influencers'
+                            'Influencer Showcase Cards': '/cms/influencers',
+                            'Science Hero Banner': '/cms/science-at-dmc',
+                            'Science Intro Section': '/cms/science-at-dmc',
+                            'Science Dual Features': '/cms/science-at-dmc',
+                            'Science Consultation Form': '/cms/science-at-dmc'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
