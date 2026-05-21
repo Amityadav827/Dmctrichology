@@ -12,6 +12,8 @@ export const metadata = {
 // Disable static generation because this is now a dynamic catch-all route for CMS pages
 export const dynamic = 'force-dynamic';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dmctrichology-1.onrender.com/api';
+
 export default async function DynamicSlugPage({ params }) {
   const { slug } = await params;
 
@@ -19,7 +21,7 @@ export default async function DynamicSlugPage({ params }) {
   
   try {
     // 1. Fetch dynamic page from CMS generic Pages
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/slug/${slug}`, {
+    const res = await fetch(`${API_BASE}/pages/slug/${slug}`, {
       cache: 'no-store'
     });
     
@@ -45,7 +47,7 @@ export default async function DynamicSlugPage({ params }) {
       };
 
       try {
-        const scienceRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/science-dmc`, {
+        const scienceRes = await fetch(`${API_BASE}/science-dmc`, {
           cache: 'no-store'
         });
         const scienceJson = await scienceRes.json();
