@@ -60,22 +60,17 @@ const InfluencerShowcase = ({ cards: initialCards = [] }) => {
       <EditableSection sectionId="influencer-cards" label="Influencer Showcase Cards">
         <section className="inf-gallery-section" id="influencer-showcase">
           <div className="inf-gallery-inner">
-            <div className="inf-header-simple">
-              <h1 className="inf-page-title">Creator Collaborations</h1>
-              <p className="inf-page-subtitle">Hear from those who trust our premium treatments.</p>
-            </div>
-
-            {visibleCards.length === 0 ? (
-              <div className="inf-gallery-empty">
-                <p>No influencer cards available yet.</p>
-              </div>
-            ) : (
-              <div className="inf-cards-grid">
-                {visibleCards.map((card, idx) => (
-                  <InfluencerCard key={card.id || idx} card={card} idx={idx} />
-                ))}
-              </div>
-            )}
+        {visibleCards.length === 0 ? (
+          <div className="inf-gallery-empty">
+            <p>No influencer cards available yet.</p>
+          </div>
+        ) : (
+          <div className="inf-cards-grid">
+            {visibleCards.map((card, idx) => (
+              <InfluencerCard key={card.id || idx} card={card} idx={idx} />
+            ))}
+          </div>
+        )}
           </div>
         </section>
       </EditableSection>
@@ -192,20 +187,17 @@ const InfluencerCard = ({ card, idx }) => {
                 </svg>
             </div>
         )}
+      </div>
 
-        {/* Glass overlay */}
-        <div className={`inf-card-glass-overlay ${videoData.type !== 'native' ? 'inf-iframe-overlay' : ''}`}>
-          <div className="inf-card-glass-content">
-            <h3 className="inf-card-title">{card.title}</h3>
-            <p className="inf-card-desc">{card.subtitle}</p>
-            {card.ctaLink && card.ctaLink !== '#' && (
-              <a href={card.ctaLink} target="_blank" rel="noopener noreferrer" className="inf-card-btn">
-                {card.ctaText || 'Watch Now'}
-              </a>
-            )}
-          </div>
-        </div>
-
+      {/* Content below video */}
+      <div className="inf-card-content">
+        <h3 className="inf-card-title">{card.title}</h3>
+        <p className="inf-card-desc">{card.subtitle}</p>
+        {card.ctaLink && card.ctaLink !== '#' && (
+          <a href={card.ctaLink} target="_blank" rel="noopener noreferrer" className="inf-card-btn">
+            {card.ctaText || 'Watch Now'}
+          </a>
+        )}
       </div>
     </div>
   );
@@ -217,35 +209,14 @@ const GalleryStyles = () => (
   <style>{`
     .inf-gallery-section {
       background: linear-gradient(180deg, #f5f7fb 0%, #ffffff 100%);
-      padding: 0px 5% 100px;
+      padding: 90px 5% 100px;
       position: relative;
       overflow: hidden;
-      min-height: 80vh;
-    }
-
-    .inf-header-simple {
-      text-align: center;
-      margin-bottom: 60px;
-      animation: infCardFadeIn 0.8s ease both;
-    }
-
-    .inf-page-title {
-      font-family: 'Marcellus', serif !important;
-      font-size: 42px !important;
-      color: #1a2740 !important;
-      margin: 0 0 16px !important;
-    }
-
-    .inf-page-subtitle {
-      font-family: 'Lato', sans-serif;
-      font-size: 16px;
-      color: #64748b;
-      max-width: 600px;
-      margin: 0 auto;
+      min-height: auto;
     }
 
     .inf-gallery-inner {
-      max-width: 1100px; /* Tighter container for smaller cards */
+      max-width: 1200px;
       margin: 0 auto;
       position: relative;
       z-index: 1;
@@ -253,27 +224,28 @@ const GalleryStyles = () => (
 
     .inf-cards-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(280px, 320px));
+      grid-template-columns: repeat(3, minmax(320px, 360px));
       gap: 40px;
-      justify-content: center; /* Center the cards */
+      justify-content: center;
     }
 
     .inf-card {
       position: relative;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
       animation: infCardFadeIn 0.8s cubic-bezier(0.22,1,0.36,1) both;
-      background: #000;
+      background: #ffffff;
       width: 100%;
-      height: 560px; /* Reduced fixed height */
-      max-width: 320px;
+      max-width: 360px;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
     }
 
     .inf-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.15);
     }
 
     @keyframes infCardFadeIn {
@@ -284,9 +256,10 @@ const GalleryStyles = () => (
     .inf-card-media-wrap {
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 480px; /* Fixed height for video section */
       overflow: hidden;
       background: #000;
+      flex-shrink: 0;
     }
 
     .inf-card-video, .inf-card-iframe {
@@ -339,57 +312,38 @@ const GalleryStyles = () => (
         transform: scale(1.1);
     }
 
-    .inf-card-glass-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 30%, transparent 100%);
+    .inf-card-content {
+      padding: 24px;
+      background: #ffffff;
+      flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 30px;
-      opacity: 1;
-      pointer-events: none; /* Let clicks pass to video if native */
-      transition: opacity 0.4s ease;
-    }
-
-    .inf-iframe-overlay {
-        /* When hovering iframe, hide our overlay so they can click native controls */
-        pointer-events: none;
-    }
-    .inf-card:hover .inf-iframe-overlay {
-        opacity: 0;
-    }
-
-    .inf-card-glass-content {
-      transform: translateY(0);
-      pointer-events: auto; /* Let them click CTA */
     }
 
     .inf-card-title {
       font-family: 'Marcellus', serif !important;
-      font-size: 22px !important;
-      color: #ffffff !important;
-      margin: 0 0 6px !important;
+      font-size: 20px !important;
+      color: #1a2740 !important;
+      margin: 0 0 8px !important;
       line-height: 1.3 !important;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .inf-card-desc {
       font-family: 'Lato', sans-serif;
       font-size: 14px;
-      color: rgba(255,255,255,0.9);
-      margin: 0 0 16px;
-      line-height: 1.4;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      color: #64748b;
+      margin: 0 0 20px;
+      line-height: 1.5;
+      flex-grow: 1;
     }
 
     .inf-card-btn {
+      align-self: flex-start;
       display: inline-block;
       padding: 10px 24px;
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.4);
-      color: #ffffff;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #3b5998;
       font-family: 'Lato', sans-serif;
       font-size: 11px;
       font-weight: 700;
@@ -397,22 +351,21 @@ const GalleryStyles = () => (
       letter-spacing: 1.5px;
       border-radius: 100px;
       text-decoration: none;
-      transition: background 0.3s ease, color 0.3s ease;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     .inf-card-btn:hover {
-      background: #ffffff;
-      color: #3b5998;
+      background: #3b5998;
+      color: #ffffff;
+      border-color: #3b5998;
     }
 
     @media (max-width: 1024px) {
-      .inf-cards-grid { grid-template-columns: repeat(2, minmax(280px, 320px)); }
+      .inf-cards-grid { grid-template-columns: repeat(2, minmax(320px, 360px)); }
     }
 
     @media (max-width: 640px) {
-      .inf-gallery-section { padding: 40px 0 70px; }
-      .inf-page-title { font-size: 32px !important; padding: 0 20px;}
-      .inf-page-subtitle { padding: 0 20px;}
+      .inf-gallery-section { padding: 60px 0 70px; }
       /* Mobile 1-column slider feel - horizontally scrollable */
       .inf-cards-grid { 
         display: flex;
@@ -427,7 +380,9 @@ const GalleryStyles = () => (
         flex: 0 0 85%;
         max-width: 100%;
         scroll-snap-align: center;
-        height: 500px;
+      }
+      .inf-card-media-wrap {
+        height: 420px;
       }
     }
   `}</style>

@@ -4,6 +4,8 @@ import { toast } from 'react-hot-toast';
 import {
   Save,
   Loader2,
+  Layout,
+  Image as ImageIcon,
   Plus,
   Trash2,
   Eye,
@@ -11,6 +13,7 @@ import {
   ArrowUp,
   ArrowDown,
   Monitor,
+  Settings,
   Users,
   Video,
   Link as LinkIcon
@@ -44,6 +47,17 @@ const inputCls =
   'w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-medium outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all';
 
 // ─── Default data ──────────────────────────────────────────────────────────────
+const DEFAULT_HERO = {
+  title: 'Influencers',
+  breadcrumbText: 'Influencers',
+  backgroundColor: '#3b5998',
+  overlayOpacity: 0.55,
+  bannerHeight: '420px',
+  bannerImage: '',
+  ctaText: 'Watch Stories',
+  ctaLink: '#influencer-showcase',
+};
+
 const DEFAULT_CARD = {
   id: '',
   videoUrl: '',
@@ -60,9 +74,10 @@ const DEFAULT_CARD = {
 };
 
 export default function InfluencerCMS() {
-  const [data, setData] = useState({ influencerCards: [] });
+  const [data, setData] = useState({ hero: { ...DEFAULT_HERO }, influencerCards: [] });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState('hero');
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -70,6 +85,7 @@ export default function InfluencerCMS() {
       const res = await axios.get('/influencers');
       if (res.data.success) {
         setData({
+          hero: { ...DEFAULT_HERO, ...(res.data.data.hero || {}) },
           influencerCards: Array.isArray(res.data.data.influencerCards) ? res.data.data.influencerCards : [],
         });
       }
@@ -89,6 +105,7 @@ export default function InfluencerCMS() {
     setSaving(true);
     try {
       const payload = {
+        hero: data.hero,
         influencerCards: data.influencerCards.map((c, i) => ({ ...c, order: i })),
       };
       await axios.put('/influencers', payload);
@@ -99,6 +116,33 @@ export default function InfluencerCMS() {
       console.error(err);
     } finally {
       setSaving(false);
+    }
+  };
+
+  // ─── Hero handlers ───────────────────────────────────────────────────────────
+  const updateHero = (field, value) => {
+    setData((prev) => ({
+      ...prev,
+      hero: { ...prev.hero, [field]: value },
+    }));
+  };
+
+  const handleHeroImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      toast.loading('Uploading banner...', { id: 'upload' });
+      const res = await axios.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      if (res.data.success) {
+        updateHero('bannerImage', res.data.url);
+        toast.success('Uploaded successfully', { id: 'upload' });
+      }
+    } catch (err) {
+      toast.error('Upload failed', { id: 'upload' });
     }
   };
 
@@ -213,7 +257,138 @@ export default function InfluencerCMS() {
         </div>
       </div>
 
+      {/* ─── Tabs ─── */}
+      <div className="flex items-center gap-2 mb-8 bg-slate-200/50 p-1.5 rounded-2xl w-fit">
+        {[
+          { id: 'hero', icon: Layout, label: 'Hero Banner' },
+          { id: 'cards', icon: Users, label: 'Influencer Reels' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all ${
+              activeTab === tab.id
+                ? 'bg-white text-blue-600 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+            }`}
+          >
+            <tab.icon size={16} /> {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ─── Hero Tab ─── */}
+      {activeTab === 'hero' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                  <Layout size={20} />
+                </div>
+                <h2 className="text-xl font-bold text-slate-800">Content</h2>
+              </div>
+              <div className="grid grid-cols-1 gap-6">
+                <Field label="Main Title">
+                  <input
+                    type="text"
+                    value={data.hero.title}
+                    onChange={(e) => updateHero('title', e.target.value)}
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Breadcrumb Text">
+                  <input
+                    type="text"
+                    value={data.hero.breadcrumbText}
+                    onChange={(e) => updateHero('breadcrumbText', e.target.value)}
+                    className={inputCls}
+                  />
+                </Field>
+              </div>
+            </div>
+
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                  <ImageIcon size={20} />
+                </div>
+                <h2 className="text-xl font-bold text-slate-800">Background Media</h2>
+              </div>
+              <Field label="Banner Background Image">
+                <div className="space-y-4">
+                  <ImgPreview src={data.hero.bannerImage} className="w-full h-48 object-cover rounded-2xl" />
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={data.hero.bannerImage}
+                      onChange={(e) => updateHero('bannerImage', e.target.value)}
+                      placeholder="Image URL"
+                      className={`${inputCls} flex-1`}
+                    />
+                    <label className="flex items-center justify-center px-6 bg-slate-900 text-white rounded-2xl cursor-pointer hover:bg-slate-800 transition-colors font-bold text-sm shrink-0">
+                      Upload
+                      <input type="file" className="hidden" accept="image/*" onChange={handleHeroImageUpload} />
+                    </label>
+                  </div>
+                </div>
+              </Field>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+                  <Settings size={20} />
+                </div>
+                <h2 className="text-xl font-bold text-slate-800">Design</h2>
+              </div>
+              <div className="space-y-6">
+                <Field label="Banner Height">
+                  <input
+                    type="text"
+                    value={data.hero.bannerHeight}
+                    onChange={(e) => updateHero('bannerHeight', e.target.value)}
+                    className={inputCls}
+                    placeholder="e.g., 420px"
+                  />
+                </Field>
+                <Field label="Background Color (Theme)">
+                  <div className="flex gap-4 items-center">
+                    <input
+                      type="color"
+                      value={data.hero.backgroundColor}
+                      onChange={(e) => updateHero('backgroundColor', e.target.value)}
+                      className="w-14 h-14 rounded-xl cursor-pointer border-0 p-0"
+                    />
+                    <input
+                      type="text"
+                      value={data.hero.backgroundColor}
+                      onChange={(e) => updateHero('backgroundColor', e.target.value)}
+                      className={inputCls}
+                    />
+                  </div>
+                </Field>
+                <Field label={`Overlay Opacity: ${data.hero.overlayOpacity}`}>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value={data.hero.overlayOpacity}
+                    onChange={(e) => updateHero('overlayOpacity', parseFloat(e.target.value))}
+                    className="w-full accent-blue-600 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                  />
+                </Field>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ─── Cards Section ─── */}
+      {activeTab === 'cards' && (
       <div className="space-y-6">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -396,9 +571,10 @@ export default function InfluencerCMS() {
                 <Plus size={18} /> Add First Card
               </button>
             </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

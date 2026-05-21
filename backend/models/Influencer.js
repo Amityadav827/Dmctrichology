@@ -16,6 +16,16 @@ const influencerCardSchema = new mongoose.Schema({
 }, { _id: false });
 
 const InfluencerSchema = new mongoose.Schema({
+  hero: {
+    title: { type: String, default: 'Influencers' },
+    breadcrumbText: { type: String, default: 'Influencers' },
+    backgroundColor: { type: String, default: '#3b5998' },
+    overlayOpacity: { type: Number, default: 0.55 },
+    bannerHeight: { type: String, default: '420px' },
+    bannerImage: { type: String, default: '' },
+    ctaText: { type: String, default: 'Watch Stories' },
+    ctaLink: { type: String, default: '#influencer-showcase' }
+  },
   influencerCards: [influencerCardSchema]
 }, { timestamps: true });
 

@@ -42,6 +42,7 @@ exports.updateInfluencers = async (req, res) => {
 
     const u = req.body;
 
+    if (u.hero !== undefined) data.hero = { ...data.hero.toObject?.() ?? data.hero, ...u.hero };
     if (u.influencerCards !== undefined) data.influencerCards = u.influencerCards;
 
     await data.save();

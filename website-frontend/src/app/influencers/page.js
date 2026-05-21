@@ -1,3 +1,4 @@
+import InfluencerHero from '../../components/InfluencerHero';
 import InfluencerShowcase from '../../components/InfluencerShowcase';
 import '../service.css';
 
@@ -29,10 +30,12 @@ async function fetchInfluencerData() {
 export default async function InfluencersPage() {
   const data = await fetchInfluencerData();
 
+  const hero = data?.hero || {};
   const influencerCards = data?.influencerCards || [];
 
   return (
-    <div className="bg-white min-h-screen pt-24">
+    <div className="bg-white min-h-screen">
+      <InfluencerHero data={hero} />
       <InfluencerShowcase cards={influencerCards} />
     </div>
   );
