@@ -132,7 +132,7 @@ const GalleryStyles = () => (
     .vt-card-img-wrap {
       position: relative;
       width: 100%;
-      aspect-ratio: 4/5;
+      aspect-ratio: 4/3;
       overflow: hidden;
       background: #ffffff;
       cursor: pointer;
@@ -173,7 +173,6 @@ const GalleryStyles = () => (
 
     .vt-card:hover .vt-card-glass-overlay {
       opacity: 1;
-      background: linear-gradient(to top, rgba(59,89,152,0.95) 0%, rgba(59,89,152,0.6) 60%, rgba(59,89,152,0.2) 100%);
     }
 
     .vt-card-glass-content {
@@ -246,7 +245,6 @@ const GalleryStyles = () => (
 
     @media (max-width: 1024px) {
       .vt-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-      .vt-card-img-wrap { aspect-ratio: 1/1; }
     }
 
     @media (max-width: 640px) {
