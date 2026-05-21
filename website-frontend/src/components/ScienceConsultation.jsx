@@ -105,7 +105,7 @@ const ScienceConsultation = ({ data: initialData = {} }) => {
       const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
       const API_URL = process.env.NEXT_PUBLIC_API_URL || (isLocal ? "http://localhost:10000/api" : 'https://dmctrichology-1.onrender.com/api');
 
-      const response = await fetch(`${API_URL}/appointment`, {
+      const response = await fetch(`${API_URL}/science-consultations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

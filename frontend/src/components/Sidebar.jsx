@@ -6,7 +6,7 @@ import {
   FileText, Scissors, Layers, HelpCircle, Activity, List,
   Video, PlayCircle, Image as ImageIcon, Users, Shield,
   Key, Menu as MenuIcon, Settings, Wrench, Globe, Link as LinkIcon, Bot,
-  ChevronDown, ChevronRight, Home, Eye
+  ChevronDown, ChevronRight, Home, Eye, FlaskConical
 } from "lucide-react";
 
 const getNavClass = ({ isActive }) =>
@@ -153,6 +153,9 @@ function Sidebar() {
                 </NavLink>
                 <NavLink to="/leads/appointment" className={getNavClass}>
                   <CalendarCheck size={16} /> Consultation Requests
+                </NavLink>
+                <NavLink to="/leads/science-consultation" className={getNavClass}>
+                  <FlaskConical size={16} /> Science Consultation Leads
                 </NavLink>
                 <NavLink to="/leads/newsletter" className={getNavClass}>
                   <Users size={16} /> Newsletter Subscribers

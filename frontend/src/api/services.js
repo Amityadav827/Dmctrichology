@@ -421,6 +421,31 @@ export const exportAppointmentsCsv = async (params) => {
   return downloadCsv(`/appointment/export${queryStr ? `?${queryStr}` : ""}`, "appointment-leads.csv");
 };
 
+export const getScienceConsultations = async (params) => {
+  const { data } = await api.get("/science-consultations", { params });
+  return data;
+};
+
+export const updateScienceConsultation = async (id, payload) => {
+  const { data } = await api.put(`/science-consultations/${id}`, payload);
+  return data;
+};
+
+export const deleteScienceConsultation = async (id) => {
+  const { data } = await api.delete(`/science-consultations/${id}`);
+  return data;
+};
+
+export const bulkDeleteScienceConsultations = async (payload) => {
+  const { data } = await api.post("/science-consultations/bulk-delete", payload);
+  return data;
+};
+
+export const exportScienceConsultationsCsv = async (params) => {
+  const queryStr = params ? new URLSearchParams(params).toString() : "";
+  return downloadCsv(`/science-consultations/export${queryStr ? `?${queryStr}` : ""}`, "science-consultation-leads.csv");
+};
+
 export const getNewsletterSubscribers = async (params) => {
   const { data } = await api.get("/newsletter", { params });
   return data;

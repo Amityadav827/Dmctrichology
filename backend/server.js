@@ -64,6 +64,7 @@ const serviceDetailRoutes = require("./routes/serviceDetailRoutes");
 const contactPageRoutes = require("./routes/contactPageRoutes");
 const blogPageRoutes = require("./routes/blogPageRoutes");
 const blogCommentRoutes = require("./routes/commentRoutes");
+const scienceConsultationRoutes = require("./routes/scienceConsultationRoutes");
 
 // Database Connection
 const connectDB = require("./config/db");
@@ -203,6 +204,7 @@ app.use("/api/service-details", serviceDetailRoutes);
 app.use("/api/contact-page", contactPageRoutes);
 app.use("/api/blog-page", blogPageRoutes);
 app.use("/api/blog-comments", blogCommentRoutes);
+app.use("/api/science-consultations", scienceConsultationRoutes);
 
 
 // SEO

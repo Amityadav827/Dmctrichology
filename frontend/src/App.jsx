@@ -26,6 +26,7 @@ import TreatmentEnquiries from "./pages/TreatmentEnquiries";
 import Blogs from "./pages/Blogs";
 import BlogCategory from "./pages/BlogCategory";
 import AppointmentList from "./pages/AppointmentList";
+import ScienceConsultationList from "./pages/ScienceConsultationList";
 import NewsletterList from "./pages/NewsletterList";
 import Pages from "./pages/Pages";
 import WebsiteSettings from "./pages/WebsiteSettings";
@@ -613,6 +614,14 @@ function App() {
           element={
             <ProtectedRoute permission="users">
               <AppointmentList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="leads/science-consultation"
+          element={
+            <ProtectedRoute permission="users">
+              <ScienceConsultationList />
             </ProtectedRoute>
           }
         />
