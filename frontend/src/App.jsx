@@ -52,6 +52,7 @@ import TreatmentPlanCMS from "./pages/cms/TreatmentPlanCMS";
 import FaqCMS from "./pages/cms/FaqCMS";
 import BlogsHomeCMS from "./pages/cms/BlogsHomeCMS";
 import PressMediaCMS from "./pages/cms/PressMediaCMS";
+import VirtualTourCMS from "./pages/cms/VirtualTourCMS";
 import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 import DetailsBannerCMS from "./pages/cms/DetailsBannerCMS";
 import ServiceIntroCMS from "./pages/cms/ServiceIntroCMS";
@@ -202,6 +203,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <PressMediaCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/virtual-tour"
+          element={
+            <ProtectedRoute permission="cms">
+              <VirtualTourCMS />
             </ProtectedRoute>
           }
         />

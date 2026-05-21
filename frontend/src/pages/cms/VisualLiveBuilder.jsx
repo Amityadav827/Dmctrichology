@@ -102,6 +102,12 @@ export default function VisualLiveBuilder() {
         { id: 'press-media-cards', label: 'Press Media Featured Cards' }
       ];
     }
+    if (currentSlug === 'virtual-tour') {
+      return [
+        { id: 'virtual-tour-hero', label: 'Virtual Tour Hero Banner' },
+        { id: 'virtual-tour-cards', label: 'Virtual Tour Gallery Cards' }
+      ];
+    }
     return allSections;
   };
 
@@ -210,6 +216,8 @@ export default function VisualLiveBuilder() {
           case 'blog-listing': endpoint = '/blog-page'; break;
           case 'press-media-hero': endpoint = '/press-media'; break;
           case 'press-media-cards': endpoint = '/press-media'; break;
+          case 'virtual-tour-hero': endpoint = '/virtual-tour'; break;
+          case 'virtual-tour-cards': endpoint = '/virtual-tour'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 
@@ -452,7 +460,9 @@ export default function VisualLiveBuilder() {
                             'Blog Hero Banner': '/cms/blog-page',
                             'Blog Listing Section': '/cms/blog-page',
                             'Press Media Hero Banner': '/cms/press-media',
-                            'Press Media Featured Cards': '/cms/press-media'
+                            'Press Media Featured Cards': '/cms/press-media',
+                            'Virtual Tour Hero Banner': '/cms/virtual-tour',
+                            'Virtual Tour Gallery Cards': '/cms/virtual-tour'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
