@@ -141,7 +141,7 @@ const ShowcaseStyles = () => (
   <style>{`
     /* ─── Section Wrapper ─────────────────────────────────── */
     .pm-showcase-section {
-      background: #FAF6EE;
+      background: #ffffff;
       padding: 100px 5% 120px;
       position: relative;
       overflow: hidden;
