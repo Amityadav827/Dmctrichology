@@ -124,8 +124,7 @@ export default function VisualLiveBuilder() {
     }
     if (currentSlug === 'about-dr-nandani-dadu') {
       return [
-        { id: 'about-nandani-hero', label: 'About Dr Nandani Hero' },
-        { id: 'about-nandani-intro', label: 'About Dr Nandani Intro' }
+        { id: 'about-nandani-hero', label: 'About Dr Nandani Hero' }
       ];
     }
     return allSections;

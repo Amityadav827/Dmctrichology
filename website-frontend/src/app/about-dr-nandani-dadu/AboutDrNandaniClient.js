@@ -30,11 +30,15 @@ export default function AboutDrNandaniClient({ initialData }) {
         const prefix = sectionPrefixes.find(p => key.startsWith(p));
         if (!prefix) return;
 
-        // Extract key and nested paths (e.g. "hero.badge", "intro.bulletList.0")
+        // Extract key and nested paths (e.g. "doctorName")
         const fieldPath = key.replace(prefix, '');
         const parts = fieldPath.split('.');
         
-        let current = newData;
+        let current = prefix === 'about-nandani-hero.' ? newData.hero : newData;
+        if (!current) {
+          newData.hero = {};
+          current = newData.hero;
+        }
         for (let i = 0; i < parts.length - 1; i++) {
           const part = parts[i];
           if (!current[part]) {
@@ -63,7 +67,11 @@ export default function AboutDrNandaniClient({ initialData }) {
       setPageData(prev => {
         const newData = JSON.parse(JSON.stringify(prev));
         const parts = fieldPath.split('.');
-        let current = newData;
+        let current = sectionId === 'about-nandani-hero' ? newData.hero : newData;
+        if (!current) {
+          newData.hero = {};
+          current = newData.hero;
+        }
         for (let i = 0; i < parts.length - 1; i++) {
           if (!current[parts[i]]) {
             current[parts[i]] = isNaN(parts[i+1]) ? {} : [];
@@ -79,12 +87,9 @@ export default function AboutDrNandaniClient({ initialData }) {
     return () => window.removeEventListener('cms-update', handleCmsUpdate);
   }, [isEditing]);
 
-  if (!pageData) return null;
-
   return (
-    <main style={{ backgroundColor: '#0D0D1A', minHeight: '100vh' }}>
-      <AboutDrNandaniHero data={pageData} />
-      <AboutDrNandaniIntro data={pageData.intro} />
+    <main style={{ minHeight: '100vh', backgroundColor: pageData.hero?.backgroundColor || '#3b5998' }}>
+      <AboutDrNandaniHero data={pageData.hero || {}} />
     </main>
   );
 }

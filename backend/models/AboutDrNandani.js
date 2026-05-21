@@ -2,20 +2,21 @@ const mongoose = require('mongoose');
 
 const AboutDrNandaniSchema = new mongoose.Schema({
   hero: {
-    badge: { type: String, default: "PIONEERING TRICHOLOGY & DERMATOLOGY" },
-    title: { type: String, default: "Dr. Nandani Dadu" },
-    subtitle: { type: String, default: "MD (Dermatology), Founder & Director. A pioneering hair transplant surgeon and dermatologist bringing elite clinical precision to customized hair restoration." },
-    credentials: { 
-      type: [String], 
-      default: [
-        "MD - Dermatology, Venereology & Leprosy",
-        "Gold Medalist in Aesthetic Dermatology",
-        "15+ Years of Clinical Expertise",
-        "5,000+ Successful Hair Transformations"
-      ] 
-    },
-    image: { type: String, default: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png" },
-    ctaText: { type: String, default: "Book Luxury Consultation" }
+    backgroundImage: { type: String, default: "" },
+    doctorImage: { type: String, default: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png" },
+    mainHeading: { type: String, default: "BEST HAIR TRANSPLANT SURGEON IN DELHI" },
+    doctorName: { type: String, default: "Dr. Nandani Dadu" },
+    degreeText: { type: String, default: "MD (Dermatology)" },
+    descriptionParagraph: { type: String, default: "Dr. Nandini Dadu, MBBS, a Board-Certified Trichologist, has been studying hair and scalp treatments for over ten years. Throughout her career, she has successfully treated severe cases with excellent outcomes and has attained the title of the best hair transplant surgeon in Delhi." },
+    namePlaceholder: { type: String, default: "Name*" },
+    phonePlaceholder: { type: String, default: "Mobile Number*" },
+    emailPlaceholder: { type: String, default: "E-Mail Address*" },
+    datePlaceholder: { type: String, default: "Select Preferred Date*" },
+    messagePlaceholder: { type: String, default: "Enter Your Message Here" },
+    captchaPlaceholder: { type: String, default: "Code*" },
+    submitButtonText: { type: String, default: "Schedule Your Visit" },
+    backgroundColor: { type: String, default: "#3b5998" },
+    overlayOpacity: { type: Number, default: 0.4 }
   },
   
   intro: {
