@@ -226,7 +226,7 @@ const GalleryStyles = () => (
       background: #ffffff;
       width: 100%;
       max-width: 360px;
-      height: 340px;
+      height: 450px;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
       display: flex;
       flex-direction: column;
