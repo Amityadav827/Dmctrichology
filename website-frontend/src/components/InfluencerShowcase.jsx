@@ -226,6 +226,7 @@ const GalleryStyles = () => (
       background: #ffffff;
       width: 100%;
       max-width: 360px;
+      height: 340px;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
       display: flex;
       flex-direction: column;
@@ -319,9 +320,6 @@ const GalleryStyles = () => (
         flex: 0 0 85%;
         max-width: 100%;
         scroll-snap-align: center;
-      }
-      .inf-card-media-wrap {
-        height: 420px;
       }
     }
   `}</style>
