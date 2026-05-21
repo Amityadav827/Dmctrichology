@@ -64,16 +64,63 @@ const ScienceConsultation = ({ data: initialData = {} }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setSuccess(false);
     setError('');
+    setSuccess(false);
+
+    // Frontend validations
+    if (!formData.name.trim()) {
+      setError('Please enter your name.');
+      return;
+    }
+    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    const trimmedMobile = formData.phone.replace(/\s+/g, '');
+    if (!trimmedMobile || !/^\d{10}$/.test(trimmedMobile)) {
+      setError('Please enter a valid 10-digit mobile phone number.');
+      return;
+    }
+    if (!formData.date) {
+      setError('Please select a preferred appointment date.');
+      return;
+    }
+    if (!formData.service) {
+      setError('Please select a service option.');
+      return;
+    }
+
+    setLoading(true);
     try {
-      await submitLead(formData);
-      setSuccess(true);
-      setFormData({ name: '', phone: '', email: '', date: '', service: 'Hair Restoration', message: '' });
-      setTimeout(() => setSuccess(false), 5000);
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        mobile: trimmedMobile,
+        service: formData.service,
+        appointmentDate: `${formData.date}T10:00:00`, // Standard morning default
+        message: formData.message.trim(),
+        source: 'science-page'
+      };
+
+      const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || (isLocal ? "http://localhost:10000/api" : 'https://dmctrichology-1.onrender.com/api');
+
+      const response = await fetch(`${API_URL}/appointment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setSuccess(true);
+        setFormData({ name: '', phone: '', email: '', date: '', service: 'Hair Restoration', message: '' });
+        setTimeout(() => setSuccess(false), 5000);
+      } else {
+        setError(result.message || 'Failed to submit request. Please try again.');
+      }
     } catch (err) {
-      setError('Failed to send request. Please try again or call us.');
+      setError('Failed to send request. Please check your connection or call us.');
     } finally {
       setLoading(false);
     }
@@ -111,7 +158,7 @@ const ScienceConsultation = ({ data: initialData = {} }) => {
                 <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone Number *" required />
               </div>
               <div className="sci-input-group">
-                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email Address" />
+                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email Address *" required />
               </div>
             </div>
             <div className="sci-input-row">
