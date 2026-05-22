@@ -105,6 +105,39 @@ const fallbackData = {
     paddingBottom: '100px',
     gridGap: '70px'
   },
+  featuredInSection: {
+    sectionHeading: 'As Featured In',
+    descriptionText: 'For her strong focus on the doctor-patient relationship, Dr. Nivedita Dadu has become the most sought-after Dermatology expert and also featured in various national and regional publications including:',
+    sectionBgColor: '#ffffff',
+    paddingTop: '72px',
+    paddingBottom: '72px',
+    publications: [
+      { id: 1, title: 'Dainik Bhaskar', imageUrl: '', link: '', enabled: true },
+      { id: 2, title: 'NDTV', imageUrl: '', link: '', enabled: true },
+      { id: 3, title: 'Femina', imageUrl: '', link: '', enabled: true },
+      { id: 4, title: 'Deccan Herald', imageUrl: '', link: '', enabled: true },
+      { id: 5, title: "Woman's Era", imageUrl: '', link: '', enabled: true },
+      { id: 6, title: 'Hindustan Times', imageUrl: '', link: '', enabled: true },
+      { id: 7, title: 'Stayfit', imageUrl: '', link: '', enabled: true },
+      { id: 8, title: 'Practo', imageUrl: '', link: '', enabled: true },
+      { id: 9, title: 'Mail Today', imageUrl: '', link: '', enabled: true }
+    ]
+  },
+  patientCareSection: {
+    sectionBgColor: '#f8f9fa',
+    paddingTop: '80px',
+    paddingBottom: '80px',
+    maxWidth: '1200px',
+    cardBorderRadius: '0px',
+    cardShadowIntensity: '0 6px 32px rgba(0,0,0,0.07)',
+    gridGap: '32px',
+    leftCardTitle: 'Patient Centred Care',
+    leftCardBgColor: '#ffffff',
+    leftCardContent: '<p>Dr. Nivedita Dadu offers professional-grade, most personalised skin & hair care treatments to each individual patient. She, along with her team of dermatologists & aestheticians, has treated over 100 thousands critical cases throughout her career with optimal results. She is always available to her patients, offering compassionate care and utmost respect to ensure healthy skin & hair for all.</p><p>Dr. Nivedita takes the practice of skin & hair care seriously and will make sure you receive the care you deserve.</p>',
+    rightCardTitle: 'Professionalism',
+    rightCardBgColor: '#ffffff',
+    rightCardContent: '<p>Dr. Nivedita Dadu maintains a highly professional environment to offer quality clinical care. She is one of the most recognised and respected skin & hair specialist professionals making her the best dermatologist giving customised treatment solutions that work- not just today, but for life.</p>'
+  },
   seo: {
     metaTitle: 'Dr. Nivedita Dadu | Expert Dermatologist & Trichologist in Delhi',
     metaDescription: 'Consult Dr. Nivedita Dadu, renowned Dermatologist and Trichologist at DMC Trichology Delhi. Expert in advanced hair restoration, scalp treatments, and dermatological care.',

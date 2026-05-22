@@ -120,6 +120,42 @@ const AboutDrNiveditaSchema = new mongoose.Schema({
     paddingBottom: { type: String, default: '100px' },
     gridGap: { type: String, default: '70px' }
   },
+  featuredInSection: {
+    sectionHeading: { type: String, default: 'As Featured In' },
+    descriptionText: { type: String, default: 'For her strong focus on the doctor-patient relationship, Dr. Nivedita Dadu has become the most sought-after Dermatology expert and also featured in various national and regional publications including:' },
+    sectionBgColor: { type: String, default: '#ffffff' },
+    paddingTop: { type: String, default: '72px' },
+    paddingBottom: { type: String, default: '72px' },
+    publications: {
+      type: [mongoose.Schema.Types.Mixed],
+      default: [
+        { id: 1, title: 'Dainik Bhaskar', imageUrl: '', link: '', enabled: true },
+        { id: 2, title: 'NDTV', imageUrl: '', link: '', enabled: true },
+        { id: 3, title: 'Femina', imageUrl: '', link: '', enabled: true },
+        { id: 4, title: 'Deccan Herald', imageUrl: '', link: '', enabled: true },
+        { id: 5, title: "Woman's Era", imageUrl: '', link: '', enabled: true },
+        { id: 6, title: 'Hindustan Times', imageUrl: '', link: '', enabled: true },
+        { id: 7, title: 'Stayfit', imageUrl: '', link: '', enabled: true },
+        { id: 8, title: 'Practo', imageUrl: '', link: '', enabled: true },
+        { id: 9, title: 'Mail Today', imageUrl: '', link: '', enabled: true }
+      ]
+    }
+  },
+  patientCareSection: {
+    sectionBgColor: { type: String, default: '#f8f9fa' },
+    paddingTop: { type: String, default: '80px' },
+    paddingBottom: { type: String, default: '80px' },
+    maxWidth: { type: String, default: '1200px' },
+    cardBorderRadius: { type: String, default: '0px' },
+    cardShadowIntensity: { type: String, default: '0 6px 32px rgba(0,0,0,0.07)' },
+    gridGap: { type: String, default: '32px' },
+    leftCardTitle: { type: String, default: 'Patient Centred Care' },
+    leftCardBgColor: { type: String, default: '#ffffff' },
+    leftCardContent: { type: String, default: '<p>Dr. Nivedita Dadu offers professional-grade, most personalised skin & hair care treatments to each individual patient. She, along with her team of dermatologists & aestheticians, has treated over 100 thousands critical cases throughout her career with optimal results. She is always available to her patients, offering compassionate care and utmost respect to ensure healthy skin & hair for all.</p><p>Dr. Nivedita takes the practice of skin & hair care seriously and will make sure you receive the care you deserve.</p>' },
+    rightCardTitle: { type: String, default: 'Professionalism' },
+    rightCardBgColor: { type: String, default: '#ffffff' },
+    rightCardContent: { type: String, default: '<p>Dr. Nivedita Dadu maintains a highly professional environment to offer quality clinical care. She is one of the most recognised and respected skin & hair specialist professionals making her the best dermatologist giving customised treatment solutions that work- not just today, but for life.</p>' }
+  },
   seo: {
     metaTitle: { type: String, default: 'Dr. Nivedita Dadu | Expert Dermatologist & Trichologist in Delhi' },
     metaDescription: { type: String, default: 'Consult Dr. Nivedita Dadu, renowned Dermatologist and Trichologist at DMC Trichology Delhi. Expert in advanced hair restoration, scalp treatments, and dermatological care.' },

@@ -9,6 +9,8 @@ import AboutDrNiveditaSpecialist from '../../components/AboutDrNiveditaSpecialis
 import AboutDrNiveditaMembership from '../../components/AboutDrNiveditaMembership';
 import AboutDrNiveditaEducationExperience from '../../components/AboutDrNiveditaEducationExperience';
 import AboutDrNiveditaCredentials from '../../components/AboutDrNiveditaCredentials';
+import AboutDrNiveditaFeaturedIn from '../../components/AboutDrNiveditaFeaturedIn';
+import AboutDrNiveditaPatientCare from '../../components/AboutDrNiveditaPatientCare';
 import AboutDrNiveditaOtherSpecialities from '../../components/AboutDrNiveditaOtherSpecialities';
 
 // Map sectionId prefix → pageData key
@@ -19,6 +21,8 @@ const SECTION_MAP = {
   'about-nivedita-membership.':           'membership',
   'about-nivedita-education.':            'educationExperience',
   'about-nivedita-credentials.':          'credentialsSection',
+  'about-nivedita-featured-in.':          'featuredInSection',
+  'about-nivedita-patient-care.':         'patientCareSection',
   'about-nivedita-other-specialities.':   'otherSpecialitiesSection',
 };
 
@@ -29,6 +33,8 @@ const SECTION_ID_MAP = {
   'about-nivedita-membership':          'membership',
   'about-nivedita-education':           'educationExperience',
   'about-nivedita-credentials':         'credentialsSection',
+  'about-nivedita-featured-in':         'featuredInSection',
+  'about-nivedita-patient-care':        'patientCareSection',
   'about-nivedita-other-specialities':  'otherSpecialitiesSection',
 };
 
@@ -102,6 +108,8 @@ export default function AboutDrNiveditaClient({ initialData }) {
       <AboutDrNiveditaMembership data={pageData.membership || {}} />
       <AboutDrNiveditaEducationExperience data={pageData.educationExperience || {}} />
       <AboutDrNiveditaCredentials data={pageData.credentialsSection || {}} />
+      <AboutDrNiveditaFeaturedIn data={pageData.featuredInSection || {}} />
+      <AboutDrNiveditaPatientCare data={pageData.patientCareSection || {}} />
       <AboutDrNiveditaOtherSpecialities data={pageData.otherSpecialitiesSection || {}} />
     </main>
   );

@@ -111,6 +111,8 @@ export default function AboutDrNiveditaCMS() {
   const membership = data.membership || {};
   const eduExp = data.educationExperience || {};
   const credentials = data.credentialsSection || {};
+  const featuredIn = data.featuredInSection || {};
+  const patientCare = data.patientCareSection || {};
   const otherSpec = data.otherSpecialitiesSection || {};
   const seo = data.seo || {};
 
@@ -144,6 +146,8 @@ export default function AboutDrNiveditaCMS() {
         <button style={s.tab(activeSection === "membership")} onClick={() => setActiveSection("membership")}><Award size={13} /> Membership Section</button>
         <button style={s.tab(activeSection === "education")} onClick={() => setActiveSection("education")}><BookOpen size={13} /> Education & Experience</button>
         <button style={s.tab(activeSection === "credentials")} onClick={() => setActiveSection("credentials")}><Briefcase size={13} /> Credentials Section</button>
+        <button style={s.tab(activeSection === "featured")} onClick={() => setActiveSection("featured")}><Star size={13} /> Featured In</button>
+        <button style={s.tab(activeSection === "patientcare")} onClick={() => setActiveSection("patientcare")}><User size={13} /> Patient Care</button>
         <button style={s.tab(activeSection === "other")} onClick={() => setActiveSection("other")}><Settings size={13} /> Other Specialities</button>
         <button style={s.tab(activeSection === "seo")} onClick={() => setActiveSection("seo")}><Globe size={13} /> SEO & Metadata</button>
       </div>
@@ -594,6 +598,156 @@ export default function AboutDrNiveditaCMS() {
               {uploadingImage ? "Uploading..." : "Upload Section Image"}
               <input type="file" accept="image/*" onChange={e => handleImageUpload(e, "otherSpecialitiesSection", "image")} style={{ display: "none" }} disabled={uploadingImage} />
             </label>
+          </div>
+        </>
+      )}
+
+      {/* ── AS FEATURED IN SECTION ───────────────────── */}
+      {activeSection === "featured" && (
+        <>
+          <div style={s.card}>
+            <p style={s.cardTitle}><Star size={16} color="#3b5998" /> Section Settings</p>
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Section Heading</label>
+                <input style={s.input} value={featuredIn.sectionHeading || ""} onChange={e => updateSectionField("featuredInSection", "sectionHeading", e.target.value)} placeholder="As Featured In" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Background Color</label>
+                <div style={s.colorRow}>
+                  <input type="color" value={featuredIn.sectionBgColor || "#ffffff"} onChange={e => updateSectionField("featuredInSection", "sectionBgColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
+                  <input style={{ ...s.input, flex: 1 }} value={featuredIn.sectionBgColor || "#ffffff"} onChange={e => updateSectionField("featuredInSection", "sectionBgColor", e.target.value)} />
+                </div>
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Padding Top</label>
+                <input style={s.input} value={featuredIn.paddingTop || "72px"} onChange={e => updateSectionField("featuredInSection", "paddingTop", e.target.value)} placeholder="72px" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Padding Bottom</label>
+                <input style={s.input} value={featuredIn.paddingBottom || "72px"} onChange={e => updateSectionField("featuredInSection", "paddingBottom", e.target.value)} placeholder="72px" />
+              </div>
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Description Paragraph</label>
+              <textarea style={s.textarea} value={featuredIn.descriptionText || ""} onChange={e => updateSectionField("featuredInSection", "descriptionText", e.target.value)} rows={3} />
+            </div>
+          </div>
+
+          <div style={s.card}>
+            <p style={s.cardTitle}><ImageIcon size={16} color="#3b5998" /> Publication Logos</p>
+            <p style={{ fontSize: 12, color: "#64748b", marginBottom: 16 }}>Each publication appears as a bordered logo card. Upload an image or leave blank to show the title as text.</p>
+            {(featuredIn.publications || []).map((pub, idx) => (
+              <div key={idx} style={{ background: "#f8fafc", borderRadius: 8, padding: "14px", marginBottom: 12, border: "1px solid #e2e8f0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#1e293b" }}>Publication #{idx + 1}</span>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <label style={{ fontSize: 12, color: "#475569", display: "flex", gap: 6, alignItems: "center", cursor: "pointer" }}>
+                      <input type="checkbox" checked={pub.enabled !== false} onChange={e => updateNestedField(`featuredInSection.publications.${idx}.enabled`, e.target.checked)} /> Enabled
+                    </label>
+                    <button style={s.removeBtn} onClick={() => { const upd = [...(featuredIn.publications || [])]; upd.splice(idx, 1); updateSectionField("featuredInSection", "publications", upd); }}><Trash2 size={13} /></button>
+                  </div>
+                </div>
+                <div style={s.grid2}>
+                  <div style={s.fieldGroup}>
+                    <label style={s.label}>Publication Name</label>
+                    <input style={s.input} value={pub.title || ""} onChange={e => updateNestedField(`featuredInSection.publications.${idx}.title`, e.target.value)} placeholder="NDTV" />
+                  </div>
+                  <div style={s.fieldGroup}>
+                    <label style={s.label}>External Link (optional)</label>
+                    <input style={s.input} value={pub.link || ""} onChange={e => updateNestedField(`featuredInSection.publications.${idx}.link`, e.target.value)} placeholder="https://..." />
+                  </div>
+                </div>
+                <div style={s.fieldGroup}>
+                  <label style={s.label}>Logo Image URL</label>
+                  <input style={s.input} value={pub.imageUrl || ""} onChange={e => updateNestedField(`featuredInSection.publications.${idx}.imageUrl`, e.target.value)} placeholder="https://..." />
+                </div>
+                {pub.imageUrl && <div style={{ ...s.imgPreviewBox, maxWidth: 120 }}><img src={pub.imageUrl} alt={pub.title} style={{ width: "100%", display: "block", objectFit: "contain" }} /></div>}
+              </div>
+            ))}
+            <button style={s.addBtn} onClick={() => updateSectionField("featuredInSection", "publications", [...(featuredIn.publications || []), { id: Date.now(), title: "New Publication", imageUrl: "", link: "", enabled: true }])}>
+              <Plus size={14} /> Add Publication
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* ── PATIENT CARE SECTION ─────────────────────── */}
+      {activeSection === "patientcare" && (
+        <>
+          <div style={s.card}>
+            <p style={s.cardTitle}><User size={16} color="#3b5998" /> Section Settings</p>
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Section Background Color</label>
+                <div style={s.colorRow}>
+                  <input type="color" value={patientCare.sectionBgColor || "#f8f9fa"} onChange={e => updateSectionField("patientCareSection", "sectionBgColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
+                  <input style={{ ...s.input, flex: 1 }} value={patientCare.sectionBgColor || "#f8f9fa"} onChange={e => updateSectionField("patientCareSection", "sectionBgColor", e.target.value)} />
+                </div>
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Content Max Width</label>
+                <input style={s.input} value={patientCare.maxWidth || "1200px"} onChange={e => updateSectionField("patientCareSection", "maxWidth", e.target.value)} placeholder="1200px" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Padding Top</label>
+                <input style={s.input} value={patientCare.paddingTop || "80px"} onChange={e => updateSectionField("patientCareSection", "paddingTop", e.target.value)} placeholder="80px" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Padding Bottom</label>
+                <input style={s.input} value={patientCare.paddingBottom || "80px"} onChange={e => updateSectionField("patientCareSection", "paddingBottom", e.target.value)} placeholder="80px" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Cards Gap</label>
+                <input style={s.input} value={patientCare.gridGap || "32px"} onChange={e => updateSectionField("patientCareSection", "gridGap", e.target.value)} placeholder="32px" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Card Border Radius</label>
+                <input style={s.input} value={patientCare.cardBorderRadius || "0px"} onChange={e => updateSectionField("patientCareSection", "cardBorderRadius", e.target.value)} placeholder="0px" />
+              </div>
+            </div>
+          </div>
+
+          <div style={s.card}>
+            <p style={s.cardTitle}><Award size={16} color="#3b5998" /> Left Card — Patient Centred Care</p>
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Card Title</label>
+                <input style={s.input} value={patientCare.leftCardTitle || ""} onChange={e => updateSectionField("patientCareSection", "leftCardTitle", e.target.value)} placeholder="Patient Centred Care" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Card Background Color</label>
+                <div style={s.colorRow}>
+                  <input type="color" value={patientCare.leftCardBgColor || "#ffffff"} onChange={e => updateSectionField("patientCareSection", "leftCardBgColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
+                  <input style={{ ...s.input, flex: 1 }} value={patientCare.leftCardBgColor || "#ffffff"} onChange={e => updateSectionField("patientCareSection", "leftCardBgColor", e.target.value)} />
+                </div>
+              </div>
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Card Content (HTML supported)</label>
+              <textarea style={{ ...s.textarea, minHeight: 160 }} value={patientCare.leftCardContent || ""} onChange={e => updateSectionField("patientCareSection", "leftCardContent", e.target.value)} rows={7} />
+            </div>
+          </div>
+
+          <div style={s.card}>
+            <p style={s.cardTitle}><Briefcase size={16} color="#3b5998" /> Right Card — Professionalism</p>
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Card Title</label>
+                <input style={s.input} value={patientCare.rightCardTitle || ""} onChange={e => updateSectionField("patientCareSection", "rightCardTitle", e.target.value)} placeholder="Professionalism" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Card Background Color</label>
+                <div style={s.colorRow}>
+                  <input type="color" value={patientCare.rightCardBgColor || "#ffffff"} onChange={e => updateSectionField("patientCareSection", "rightCardBgColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
+                  <input style={{ ...s.input, flex: 1 }} value={patientCare.rightCardBgColor || "#ffffff"} onChange={e => updateSectionField("patientCareSection", "rightCardBgColor", e.target.value)} />
+                </div>
+              </div>
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Card Content (HTML supported)</label>
+              <textarea style={{ ...s.textarea, minHeight: 160 }} value={patientCare.rightCardContent || ""} onChange={e => updateSectionField("patientCareSection", "rightCardContent", e.target.value)} rows={7} />
+            </div>
           </div>
         </>
       )}
