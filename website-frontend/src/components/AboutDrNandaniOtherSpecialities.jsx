@@ -80,7 +80,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
                 fontSize: "36px",
                 lineHeight: "1.2",
                 fontWeight: "400",
-                color: "#000000",
+                color: "#ffffff",
                 margin: "0",
                 fontFamily: "'Marcellus', serif",
                 letterSpacing: "0.03em"
@@ -96,7 +96,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
               style={{
                 fontSize: "16px",
                 lineHeight: "1.7",
-                color: "#000000",
+                color: "#ffffff",
                 margin: "0",
                 fontFamily: "'Marcellus', serif",
                 fontWeight: "300"
@@ -148,7 +148,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
                       fontSize: "15px",
                       lineHeight: "1.4",
                       fontWeight: "400",
-                      color: "#000000",
+                      color: "#ffffff",
                       fontFamily: "'Marcellus', serif"
                     }}
                   >
@@ -165,7 +165,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
               style={{
                 fontSize: "15px",
                 lineHeight: "1.7",
-                color: "#000000",
+                color: "#ffffff",
                 margin: "0",
                 fontFamily: "'Marcellus', serif",
                 fontWeight: "300"
