@@ -179,6 +179,7 @@ export default function AboutDrNandaniCMS() {
           <SectionTab id="specialist" label="SPECIALIST INFO" icon={Sparkles} />
           <SectionTab id="timeline" label="TIMELINE FLOW" icon={Sliders} />
           <SectionTab id="education" label="EDU & EXP ITEMS" icon={Award} />
+          <SectionTab id="credentials" label="CREDENTIALS SECTION" icon={Award} />
           <SectionTab id="seo" label="SEO & METADATA" icon={Globe} />
         </div>
       </div>
@@ -949,6 +950,195 @@ export default function AboutDrNandaniCMS() {
                     <div className="text-sm text-slate-400 italic py-2 pl-3">No professional experience records added. Click Add Experience to add one.</div>
                   )}
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* CREDENTIALS SECTION */}
+        {activeSection === "credentials" && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <h3 className="text-lg font-black mb-8 text-slate-800 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <Award size={18} />
+                </div>
+                Credentials Cinematic Banner & Opacity
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Cinematic Background Banner Image</label>
+                  <div className="flex gap-4 items-center">
+                    <input 
+                      type="text" 
+                      value={data.credentialsSection?.bannerImage || ""} 
+                      onChange={e => updateNestedField("credentialsSection.bannerImage", e.target.value)} 
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                    <label className="flex items-center justify-center p-4 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl cursor-pointer transition-all aspect-square shrink-0">
+                      {uploadingImage ? <Loader2 size={20} className="animate-spin" /> : <ImageIcon size={20} />}
+                      <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, "credentialsSection", "bannerImage")} disabled={uploadingImage} />
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="block text-[10px] font-black uppercase text-slate-400 tracking-widest">Banner Overlay Opacity</label>
+                    <span className="text-xs font-black text-indigo-600">{data.credentialsSection?.overlayOpacity ?? 0.35}</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="1" 
+                    step="0.05"
+                    value={data.credentialsSection?.overlayOpacity ?? 0.35} 
+                    onChange={e => updateNestedField("credentialsSection.overlayOpacity", parseFloat(e.target.value))} 
+                    className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-indigo-600" 
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <h3 className="text-lg font-black mb-8 text-slate-800 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <Sliders size={18} />
+                </div>
+                Heading & Repeatable Credentials List
+              </h3>
+
+              <div className="grid grid-cols-1 gap-8">
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Section Main Heading</label>
+                  <input 
+                    type="text" 
+                    value={data.credentialsSection?.heading || ""} 
+                    onChange={e => updateNestedField("credentialsSection.heading", e.target.value)} 
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                {/* Repeatable Checklist */}
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="block text-[10px] font-black uppercase text-slate-400 tracking-widest">Repeatable Credentials Items</label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const currentList = data.credentialsSection?.credentialsList || [];
+                        updateNestedField("credentialsSection.credentialsList", [...currentList, { text: "NEW FELLOWSHIP RECORD" }]);
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-bold hover:bg-indigo-100 transition-all"
+                    >
+                      <Plus size={12} />
+                      Add Credential
+                    </button>
+                  </div>
+                  <div className="space-y-3">
+                    {(data.credentialsSection?.credentialsList || []).map((cred, idx) => (
+                      <div key={idx} className="flex gap-3 items-center">
+                        <input 
+                          type="text" 
+                          value={cred.text || ""} 
+                          onChange={e => updateNestedField(`credentialsSection.credentialsList.${idx}.text`, e.target.value)} 
+                          className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const filtered = data.credentialsSection.credentialsList.filter((_, cIdx) => cIdx !== idx);
+                            updateNestedField("credentialsSection.credentialsList", filtered);
+                          }}
+                          className="p-3.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-2xl transition-all"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <h3 className="text-lg font-black mb-8 text-slate-800 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <Sliders size={18} />
+                </div>
+                Bottom Columns Editorial Content (Expertise & Commitment)
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Left Column Fields */}
+                <div className="space-y-4">
+                  <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider pb-2 border-b">Left Column: Expertise</h4>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Left Heading</label>
+                    <input 
+                      type="text" 
+                      value={data.credentialsSection?.leftHeading || ""} 
+                      onChange={e => updateNestedField("credentialsSection.leftHeading", e.target.value)} 
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Left Body Text (Rich Text HTML)</label>
+                    <textarea 
+                      rows={12}
+                      value={data.credentialsSection?.leftText || ""} 
+                      onChange={e => updateNestedField("credentialsSection.leftText", e.target.value)} 
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none resize-none" 
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column Fields */}
+                <div className="space-y-4">
+                  <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider pb-2 border-b">Right Column: Commitment</h4>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Right Heading</label>
+                    <input 
+                      type="text" 
+                      value={data.credentialsSection?.rightHeading || ""} 
+                      onChange={e => updateNestedField("credentialsSection.rightHeading", e.target.value)} 
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Right Body Text (Rich Text HTML)</label>
+                    <textarea 
+                      rows={12}
+                      value={data.credentialsSection?.rightText || ""} 
+                      onChange={e => updateNestedField("credentialsSection.rightText", e.target.value)} 
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none resize-none" 
+                    />
+                  </div>
+                </div>
+
+                {/* Padding Control Fields */}
+                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t">
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Section Padding Top (Default: 120px)</label>
+                    <input 
+                      type="text" 
+                      value={data.credentialsSection?.paddingTop || ""} 
+                      onChange={e => updateNestedField("credentialsSection.paddingTop", e.target.value)} 
+                      className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Section Padding Bottom (Default: 80px)</label>
+                    <input 
+                      type="text" 
+                      value={data.credentialsSection?.paddingBottom || ""} 
+                      onChange={e => updateNestedField("credentialsSection.paddingBottom", e.target.value)} 
+                      className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

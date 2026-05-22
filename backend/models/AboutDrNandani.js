@@ -94,6 +94,19 @@ const AboutDrNandaniSchema = new mongoose.Schema({
       hospital: { type: String },
       duration: { type: String }
     }]
+  },
+
+  credentialsSection: {
+    bannerImage: { type: String, default: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png" },
+    overlayOpacity: { type: Number, default: 0.35 },
+    heading: { type: String, default: "Credentials" },
+    credentialsList: [{ text: { type: String } }],
+    leftHeading: { type: String, default: "EXPERTISE IN HAIR & SCALP TREATMENT" },
+    leftText: { type: String, default: "<p>Dr. Nandini Dadu's cutting-edge Hair Loss Treatment technique has made a significant difference in the lives of those suffering from severe hair loss. She is the <strong>best hair specialist in Delhi</strong> available at DMC Trichology in Delhi, Vasant Vihar (South Delhi), & Rajouri Garden (West Delhi). She is solely dedicated to treating male and female hair loss with the most advanced surgical technologies available.</p><p>\"There is way more to hair restoration than JUST SCIENCE. For the optimal outcomes, ARTISTRY & IMAGINATION are required.\"</p><p>Dr. Nandini Dadu has always taken a distinctive approach to hairline design because of her passion for the art and craft of hair restoration procedures. Her primary goal is to achieve natural – superior hairlines while treating the patients' underlying issues. To ensure that her patient is confident and pleased with the most natural-looking and long-lasting outcome, Dr. Nandini meticulously subjects and specifies every aspect of her surgical procedure.</p>" },
+    rightHeading: { type: String, default: "COMMITMENT TO PATIENT" },
+    rightText: { type: String, default: "<p>Dr. Nandini Dadu places a high value on the doctor-patient relationship. She frequently adheres to the culture of having as much interaction as possible with her patients in order to go over the specifics of their hair loss issues and arrive at an accurate diagnosis.</p><p>With Dr. Nandini, the individualized care and attention don't stop after the procedure. She has developed a cultivating focus on patient education and offers an all-inclusive wellness protocol at every step.</p><p>The level of care that Dr. Nandini Dadu gives her patients is exceptional, and every surgical hair transplant by the best hair transplant surgeon in Delhi helps patients benefits due to her in-depth expertise.</p>" },
+    paddingTop: { type: String, default: "120px" },
+    paddingBottom: { type: String, default: "80px" }
   }
 }, { timestamps: true, collection: 'aboutdrnandani' });
 
