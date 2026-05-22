@@ -123,6 +123,22 @@ const AboutDrNandaniSchema = new mongoose.Schema({
     contentMaxWidth: { type: String, default: "1280px" },
     paddingTop: { type: String, default: "110px" },
     paddingBottom: { type: String, default: "110px" }
+  },
+  otherSpecialitiesSection: {
+    heading: { type: String, default: "Other Specialities" },
+    introParagraph: { type: String, default: "Apart from being a leading expert in Trichological Sciences, Dr. Nandini Dadu is also a diligent specialist in cosmetology, performing a number of cosmetic procedures such as :" },
+    specialitiesList: [{
+      title: { type: String }
+    }],
+    conclusionParagraph: { type: String, default: "For more information contact the best hair specialist in Delhi at DMC Trichology. We have our centres located at Vasant Vihar (South Delhi) & Rajouri Garden (West Delhi)." },
+    image: { type: String, default: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png" },
+    imageAlt: { type: String, default: "Other Specialities" },
+    backgroundColor: { type: String, default: "#3b5998" },
+    cardBackgroundColor: { type: String, default: "#000000" },
+    contentMaxWidth: { type: String, default: "1200px" },
+    paddingTop: { type: String, default: "100px" },
+    paddingBottom: { type: String, default: "100px" },
+    gridGap: { type: String, default: "70px" }
   }
 }, { timestamps: true, collection: 'aboutdrnandani' });
 

@@ -182,6 +182,24 @@ const staticFallback = {
     contentMaxWidth: "1280px",
     paddingTop: "110px",
     paddingBottom: "110px"
+  },
+  otherSpecialitiesSection: {
+    heading: "Other Specialities",
+    introParagraph: "Apart from being a leading expert in Trichological Sciences, Dr. Nandini Dadu is also a diligent specialist in cosmetology, performing a number of cosmetic procedures such as :",
+    specialitiesList: [
+      { title: "Skin Laser Treatments," },
+      { title: "Implantations," },
+      { title: "Collagen & other Injectable Wrinkle Fillers.etc." }
+    ],
+    conclusionParagraph: "For more information contact the **best hair specialist in Delhi** at DMC Trichology. We have our centres located at Vasant Vihar (South Delhi) & Rajouri Garden (West Delhi).",
+    image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png",
+    imageAlt: "Other Specialities",
+    backgroundColor: "#3b5998",
+    cardBackgroundColor: "#000000",
+    contentMaxWidth: "1200px",
+    paddingTop: "100px",
+    paddingBottom: "100px",
+    gridGap: "70px"
   }
 };
 

@@ -10,6 +10,7 @@ import AboutDrNandaniTimeline from '../../components/AboutDrNandaniTimeline';
 import AboutDrNandaniEducationExperience from '../../components/AboutDrNandaniEducationExperience';
 import AboutDrNandaniCredentials from '../../components/AboutDrNandaniCredentials';
 import AboutDrNandaniTrust from '../../components/AboutDrNandaniTrust';
+import AboutDrNandaniOtherSpecialities from '../../components/AboutDrNandaniOtherSpecialities';
 
 export default function AboutDrNandaniClient({ initialData }) {
   const [pageData, setPageData] = useState(initialData);
@@ -33,7 +34,8 @@ export default function AboutDrNandaniClient({ initialData }) {
         'about-nandani-timeline.',
         'about-nandani-education.',
         'about-nandani-credentials.',
-        'about-nandani-trust.'
+        'about-nandani-trust.',
+        'about-nandani-other-specialities.'
       ];
 
       Object.keys(siteConfig).forEach(key => {
@@ -66,6 +68,9 @@ export default function AboutDrNandaniClient({ initialData }) {
         } else if (prefix === 'about-nandani-trust.') {
           if (!newData.trustSection) newData.trustSection = {};
           current = newData.trustSection;
+        } else if (prefix === 'about-nandani-other-specialities.') {
+          if (!newData.otherSpecialitiesSection) newData.otherSpecialitiesSection = {};
+          current = newData.otherSpecialitiesSection;
         } else {
           current = newData;
         }
@@ -120,6 +125,9 @@ export default function AboutDrNandaniClient({ initialData }) {
         } else if (sectionId === 'about-nandani-trust') {
           if (!newData.trustSection) newData.trustSection = {};
           current = newData.trustSection;
+        } else if (sectionId === 'about-nandani-other-specialities') {
+          if (!newData.otherSpecialitiesSection) newData.otherSpecialitiesSection = {};
+          current = newData.otherSpecialitiesSection;
         } else {
           current = newData;
         }
@@ -144,6 +152,7 @@ export default function AboutDrNandaniClient({ initialData }) {
       <AboutDrNandaniHero data={pageData.hero || {}} />
       <AboutDrNandaniBreadcrumb data={pageData.breadcrumb || {}} />
       <AboutDrNandaniSpecialist data={pageData.specialist || {}} />
+      <AboutDrNandaniOtherSpecialities data={pageData.otherSpecialitiesSection || {}} />
       <AboutDrNandaniTimeline data={pageData.timeline || {}} />
       <AboutDrNandaniEducationExperience data={pageData.educationExperience || {}} />
       <AboutDrNandaniCredentials data={pageData.credentialsSection || {}} />

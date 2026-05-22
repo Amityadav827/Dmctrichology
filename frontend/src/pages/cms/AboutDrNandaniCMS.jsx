@@ -181,6 +181,7 @@ export default function AboutDrNandaniCMS() {
           <SectionTab id="education" label="EDU & EXP ITEMS" icon={Award} />
           <SectionTab id="credentials" label="CREDENTIALS SECTION" icon={Award} />
           <SectionTab id="trust" label="TRUST SECTION" icon={ShieldCheck} />
+          <SectionTab id="other-specialities" label="OTHER SPECIALITIES" icon={Award} />
           <SectionTab id="seo" label="SEO & METADATA" icon={Globe} />
         </div>
       </div>
@@ -1335,6 +1336,223 @@ export default function AboutDrNandaniCMS() {
                     type="text" 
                     value={data.trustSection?.paddingBottom || ""} 
                     onChange={e => updateNestedField("trustSection.paddingBottom", e.target.value)} 
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* OTHER SPECIALITIES SECTION */}
+        {activeSection === "other-specialities" && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+            {/* Heading, Image & Layout config */}
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <h3 className="text-lg font-black mb-8 text-slate-800 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <Award size={18} />
+                </div>
+                Other Specialities Main Heading & Layout
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Section Main Title Heading</label>
+                  <input 
+                    type="text" 
+                    value={data.otherSpecialitiesSection?.heading || ""} 
+                    onChange={e => updateNestedField("otherSpecialitiesSection.heading", e.target.value)} 
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Right Side Image URL</label>
+                  <div className="flex gap-4 items-center">
+                    <input 
+                      type="text" 
+                      value={data.otherSpecialitiesSection?.image || ""} 
+                      onChange={e => updateNestedField("otherSpecialitiesSection.image", e.target.value)} 
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                    <label className="flex items-center justify-center p-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl cursor-pointer transition-all aspect-square shrink-0">
+                      {uploadingImage ? <Loader2 size={18} className="animate-spin" /> : <ImageIcon size={18} />}
+                      <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, "otherSpecialitiesSection", "image")} disabled={uploadingImage} />
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Image Alt Description</label>
+                  <input 
+                    type="text" 
+                    value={data.otherSpecialitiesSection?.imageAlt || ""} 
+                    onChange={e => updateNestedField("otherSpecialitiesSection.imageAlt", e.target.value)} 
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Outer Section Background Color (Default: #3b5998)</label>
+                  <div className="flex gap-3 items-center">
+                    <input 
+                      type="color" 
+                      value={data.otherSpecialitiesSection?.backgroundColor || "#3b5998"} 
+                      onChange={e => updateNestedField("otherSpecialitiesSection.backgroundColor", e.target.value)} 
+                      className="w-12 h-12 rounded-xl border border-slate-200 cursor-pointer overflow-hidden shrink-0" 
+                    />
+                    <input 
+                      type="text" 
+                      value={data.otherSpecialitiesSection?.backgroundColor || ""} 
+                      onChange={e => updateNestedField("otherSpecialitiesSection.backgroundColor", e.target.value)} 
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Inner Card Background Color (Default: #000000)</label>
+                  <div className="flex gap-3 items-center">
+                    <input 
+                      type="color" 
+                      value={data.otherSpecialitiesSection?.cardBackgroundColor || "#000000"} 
+                      onChange={e => updateNestedField("otherSpecialitiesSection.cardBackgroundColor", e.target.value)} 
+                      className="w-12 h-12 rounded-xl border border-slate-200 cursor-pointer overflow-hidden shrink-0" 
+                    />
+                    <input 
+                      type="text" 
+                      value={data.otherSpecialitiesSection?.cardBackgroundColor || ""} 
+                      onChange={e => updateNestedField("otherSpecialitiesSection.cardBackgroundColor", e.target.value)} 
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Repeatable Speciality Items List */}
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-lg font-black text-slate-800 flex items-center gap-3">
+                  <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                    <Award size={18} />
+                  </div>
+                  Specialities / Cosmetology Procedures List
+                </h3>
+                <button
+                  onClick={() => {
+                    const currentList = data.otherSpecialitiesSection?.specialitiesList || [];
+                    updateNestedField("otherSpecialitiesSection.specialitiesList", [...currentList, { title: "New Cosmetology Specialty" }]);
+                  }}
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-sm"
+                >
+                  + Add Specialty
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                {(data.otherSpecialitiesSection?.specialitiesList || []).map((spec, idx) => (
+                  <div key={idx} className="p-6 bg-slate-50 rounded-[20px] border border-slate-100 space-y-4 relative">
+                    <button
+                      onClick={() => {
+                        const filtered = data.otherSpecialitiesSection.specialitiesList.filter((_, cIdx) => cIdx !== idx);
+                        updateNestedField("otherSpecialitiesSection.specialitiesList", filtered);
+                      }}
+                      className="absolute top-6 right-6 p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-all"
+                      title="Remove specialty"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+
+                    <div className="grid grid-cols-1 gap-6 pr-10">
+                      <div>
+                        <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Specialty Title / Procedure Description</label>
+                        <input 
+                          type="text" 
+                          value={spec.title || ""} 
+                          onChange={e => updateNestedField(`otherSpecialitiesSection.specialitiesList.${idx}.title`, e.target.value)} 
+                          className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-sm font-bold text-slate-800 focus:border-indigo-300 transition-all outline-none" 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {(data.otherSpecialitiesSection?.specialitiesList || []).length === 0 && (
+                  <div className="text-center py-12 bg-slate-50 rounded-[24px] border border-dashed border-slate-200">
+                    <p className="text-sm font-bold text-slate-400">No specialties configured yet. Click the button above to add one.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Intro, Conclusion & Spacing Control Panel */}
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <h3 className="text-lg font-black mb-8 text-slate-800 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <Sliders size={18} />
+                </div>
+                Intro, Conclusion & Spacing Layouts
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Intro Paragraph Text</label>
+                  <textarea 
+                    rows={3}
+                    value={data.otherSpecialitiesSection?.introParagraph || ""} 
+                    onChange={e => updateNestedField("otherSpecialitiesSection.introParagraph", e.target.value)} 
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none resize-none" 
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Bottom Conclusion Editorial Paragraph (supports **bold gold** highlights)</label>
+                  <textarea 
+                    rows={4}
+                    value={data.otherSpecialitiesSection?.conclusionParagraph || ""} 
+                    onChange={e => updateNestedField("otherSpecialitiesSection.conclusionParagraph", e.target.value)} 
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none resize-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Content Max Width (e.g. 1200px, 100%)</label>
+                  <input 
+                    type="text" 
+                    value={data.otherSpecialitiesSection?.contentMaxWidth || ""} 
+                    onChange={e => updateNestedField("otherSpecialitiesSection.contentMaxWidth", e.target.value)} 
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Grid Gap (Default: 70px)</label>
+                  <input 
+                    type="text" 
+                    value={data.otherSpecialitiesSection?.gridGap || ""} 
+                    onChange={e => updateNestedField("otherSpecialitiesSection.gridGap", e.target.value)} 
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Section Spacing Top (Default: 100px)</label>
+                  <input 
+                    type="text" 
+                    value={data.otherSpecialitiesSection?.paddingTop || ""} 
+                    onChange={e => updateNestedField("otherSpecialitiesSection.paddingTop", e.target.value)} 
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Section Spacing Bottom (Default: 100px)</label>
+                  <input 
+                    type="text" 
+                    value={data.otherSpecialitiesSection?.paddingBottom || ""} 
+                    onChange={e => updateNestedField("otherSpecialitiesSection.paddingBottom", e.target.value)} 
                     className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
                   />
                 </div>
