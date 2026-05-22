@@ -49,6 +49,93 @@ const staticFallback = {
     parentUrl: "/",
     currentPageText: "Hair Specialist in Delhi",
     backgroundColor: "#f8f9fa"
+  },
+  specialist: {
+    heading: "Best Hair Specialist in Delhi",
+    description1: "Dr. Nandini Dadu is a well-known former consultant at ARTEMIS HOSPITAL in Gurgaon. Over the years, she has provided insights to several dignitaries and celebrities in New Delhi. She is the best hair specialist in Delhi. She works in close collaboration with doctors at Hair Care & Transplant Surgeons and is always looking for new, cutting-edge products for hair and scalp care treatments.",
+    description2: "Being a specialist in the cosmetological and trichological sciences combined, Dr. Nandini is dedicated to thorough diagnosis, effective treatment processes, and the best DMC Golden Touch Techniques for generating amazing outcomes at the highest level of client satisfaction. So, to get the long-lasting effects opt to get treated by the best hair specialist in Delhi only at DMC Trichology.",
+    highlightedText: "She employs cutting-edge knowledge in Hair & Scalp Treatments with:",
+    bullets: ["MESOGROW", "ADVANCED HGP", "ADVANCED HGP 2.0", "RRT (ROOT RESTORE THERAPY)", "FUE TECHNIQUE (Follicular Hair Transplant)"],
+    sectionBgColor: "#F6F1E7",
+    cardBgColor: "#FFFFFF"
+  },
+  timeline: {
+    heading: "What Makes Dr. Nandini Dadu the Best Hair Transplant Surgeon in Delhi?",
+    sectionBgColor: "#F6F1E7",
+    steps: [
+      {
+        title: "Compassionate Approach",
+        description: "Empathy towards patients makes them feel comfortable and informed.",
+        numberLabel: "01",
+        colorMode: "gold",
+        iconName: "heart"
+      },
+      {
+        title: "Artistic Skills",
+        description: "Expert knowledge and artistic approach ensure the latest and most effective treatments.",
+        numberLabel: "02",
+        colorMode: "navy",
+        iconName: "brain"
+      },
+      {
+        title: "Customized Treatment Plan",
+        description: "Provide tailored treatments for every unique individual and their needs.",
+        numberLabel: "03",
+        colorMode: "gold",
+        iconName: "kit"
+      },
+      {
+        title: "Advanced Technologies",
+        description: "Uses specialized techniques and equipment to achieve maximum results.",
+        numberLabel: "04",
+        colorMode: "navy",
+        iconName: "tech"
+      }
+    ]
+  },
+  educationExperience: {
+    sectionBgColor: "#F6F1E7",
+    educationTitle: "EDUCATION",
+    experienceTitle: "EXPERIENCE",
+    educationItems: [
+      {
+        degree: "MBBS",
+        institution: "Himalayan Institute of Medical Sciences (HIMS), Dehradun",
+        year: "2005"
+      },
+      {
+        degree: "Diploma In Anaesthesia & Critical Care",
+        institution: "Himalayan Institute of Medical Sciences (HIMS), Dehradun",
+        year: "2012"
+      }
+    ],
+    experienceItems: [
+      {
+        role: "Senior Resident Anaesthesia & Critical Care",
+        hospital: "Dr. Ram Manohar Lohia Hospital, New Delhi",
+        duration: "2014 - 2017"
+      },
+      {
+        role: "Fellowship In Pain Medicine",
+        hospital: "King Edward Memorial Hospital, Mumbai",
+        duration: "2017 - 2018"
+      },
+      {
+        role: "Attending Consultant Anaesthesia & Critical Care",
+        hospital: "Primus Hospital, New Delhi",
+        duration: "2018"
+      },
+      {
+        role: "Consultant Pain Medicine & Palliative Care",
+        hospital: "Artemis Hospital, Gurgaon",
+        duration: "2018 - 2020"
+      },
+      {
+        role: "Senior Consultant Hair Transplant Surgeon",
+        hospital: "Dadu Medical Centre, New Delhi",
+        duration: "2020 - Present"
+      }
+    ]
   }
 };
 

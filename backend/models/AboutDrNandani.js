@@ -55,6 +55,44 @@ const AboutDrNandaniSchema = new mongoose.Schema({
     parentUrl: { type: String, default: "/" },
     currentPageText: { type: String, default: "Hair Specialist in Delhi" },
     backgroundColor: { type: String, default: "#f8f9fa" }
+  },
+
+  specialist: {
+    heading: { type: String, default: "Best Hair Specialist in Delhi" },
+    description1: { type: String, default: "Dr. Nandini Dadu is a well-known former consultant at ARTEMIS HOSPITAL in Gurgaon. Over the years, she has provided insights to several dignitaries and celebrities in New Delhi. She is the best hair specialist in Delhi. She works in close collaboration with doctors at Hair Care & Transplant Surgeons and is always looking for new, cutting-edge products for hair and scalp care treatments." },
+    description2: { type: String, default: "Being a specialist in the cosmetological and trichological sciences combined, Dr. Nandini is dedicated to thorough diagnosis, effective treatment processes, and the best DMC Golden Touch Techniques for generating amazing outcomes at the highest level of client satisfaction. So, to get the long-lasting effects opt to get treated by the best hair specialist in Delhi only at DMC Trichology." },
+    highlightedText: { type: String, default: "She employs cutting-edge knowledge in Hair & Scalp Treatments with:" },
+    bullets: { type: [String], default: ["MESOGROW", "ADVANCED HGP", "ADVANCED HGP 2.0", "RRT (ROOT RESTORE THERAPY)", "FUE TECHNIQUE (Follicular Hair Transplant)"] },
+    sectionBgColor: { type: String, default: "#F6F1E7" },
+    cardBgColor: { type: String, default: "#FFFFFF" }
+  },
+
+  timeline: {
+    heading: { type: String, default: "What Makes Dr. Nandini Dadu the Best Hair Transplant Surgeon in Delhi?" },
+    sectionBgColor: { type: String, default: "#F6F1E7" },
+    steps: [{
+      title: { type: String },
+      description: { type: String },
+      numberLabel: { type: String },
+      colorMode: { type: String, enum: ['gold', 'navy'], default: 'gold' },
+      iconName: { type: String }
+    }]
+  },
+
+  educationExperience: {
+    sectionBgColor: { type: String, default: "#F6F1E7" },
+    educationTitle: { type: String, default: "EDUCATION" },
+    experienceTitle: { type: String, default: "EXPERIENCE" },
+    educationItems: [{
+      degree: { type: String },
+      institution: { type: String },
+      year: { type: String }
+    }],
+    experienceItems: [{
+      role: { type: String },
+      hospital: { type: String },
+      duration: { type: String }
+    }]
   }
 }, { timestamps: true, collection: 'aboutdrnandani' });
 

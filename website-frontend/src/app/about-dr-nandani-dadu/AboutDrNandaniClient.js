@@ -5,7 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import { useBuilder } from '../../context/BuilderContext';
 import AboutDrNandaniHero from '../../components/AboutDrNandaniHero';
 import AboutDrNandaniBreadcrumb from '../../components/AboutDrNandaniBreadcrumb';
-import AboutDrNandaniIntro from '../../components/AboutDrNandaniIntro';
+import AboutDrNandaniSpecialist from '../../components/AboutDrNandaniSpecialist';
+import AboutDrNandaniTimeline from '../../components/AboutDrNandaniTimeline';
+import AboutDrNandaniEducationExperience from '../../components/AboutDrNandaniEducationExperience';
 
 export default function AboutDrNandaniClient({ initialData }) {
   const [pageData, setPageData] = useState(initialData);
@@ -25,7 +27,9 @@ export default function AboutDrNandaniClient({ initialData }) {
       const sectionPrefixes = [
         'about-nandani-hero.',
         'about-nandani-breadcrumb.',
-        'about-nandani-intro.'
+        'about-nandani-specialist.',
+        'about-nandani-timeline.',
+        'about-nandani-education.'
       ];
 
       Object.keys(siteConfig).forEach(key => {
@@ -43,6 +47,15 @@ export default function AboutDrNandaniClient({ initialData }) {
         } else if (prefix === 'about-nandani-breadcrumb.') {
           if (!newData.breadcrumb) newData.breadcrumb = {};
           current = newData.breadcrumb;
+        } else if (prefix === 'about-nandani-specialist.') {
+          if (!newData.specialist) newData.specialist = {};
+          current = newData.specialist;
+        } else if (prefix === 'about-nandani-timeline.') {
+          if (!newData.timeline) newData.timeline = {};
+          current = newData.timeline;
+        } else if (prefix === 'about-nandani-education.') {
+          if (!newData.educationExperience) newData.educationExperience = {};
+          current = newData.educationExperience;
         } else {
           current = newData;
         }
@@ -82,6 +95,15 @@ export default function AboutDrNandaniClient({ initialData }) {
         } else if (sectionId === 'about-nandani-breadcrumb') {
           if (!newData.breadcrumb) newData.breadcrumb = {};
           current = newData.breadcrumb;
+        } else if (sectionId === 'about-nandani-specialist') {
+          if (!newData.specialist) newData.specialist = {};
+          current = newData.specialist;
+        } else if (sectionId === 'about-nandani-timeline') {
+          if (!newData.timeline) newData.timeline = {};
+          current = newData.timeline;
+        } else if (sectionId === 'about-nandani-education') {
+          if (!newData.educationExperience) newData.educationExperience = {};
+          current = newData.educationExperience;
         } else {
           current = newData;
         }
@@ -105,6 +127,9 @@ export default function AboutDrNandaniClient({ initialData }) {
     <main style={{ minHeight: '100vh', backgroundColor: pageData.hero?.backgroundColor || '#3b5998' }}>
       <AboutDrNandaniHero data={pageData.hero || {}} />
       <AboutDrNandaniBreadcrumb data={pageData.breadcrumb || {}} />
+      <AboutDrNandaniSpecialist data={pageData.specialist || {}} />
+      <AboutDrNandaniTimeline data={pageData.timeline || {}} />
+      <AboutDrNandaniEducationExperience data={pageData.educationExperience || {}} />
     </main>
   );
 }

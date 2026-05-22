@@ -125,7 +125,10 @@ export default function VisualLiveBuilder() {
     if (currentSlug === 'about-dr-nandani-dadu') {
       return [
         { id: 'about-nandani-hero', label: 'About Dr Nandani Hero' },
-        { id: 'about-nandani-breadcrumb', label: 'Dr Nandani Breadcrumb' }
+        { id: 'about-nandani-breadcrumb', label: 'Dr Nandani Breadcrumb' },
+        { id: 'about-nandani-specialist', label: 'Dr Nandani Specialist Info' },
+        { id: 'about-nandani-timeline', label: 'Dr Nandani Timeline' },
+        { id: 'about-nandani-education', label: 'Dr Nandani Edu & Exp' }
       ];
     }
     return allSections;
@@ -246,7 +249,10 @@ export default function VisualLiveBuilder() {
           case 'science-consultation': endpoint = '/science-dmc'; break;
           case 'about-nandani-hero':
           case 'about-nandani-intro':
-          case 'about-nandani-breadcrumb': endpoint = '/about-dr-nandani'; break;
+          case 'about-nandani-breadcrumb':
+          case 'about-nandani-specialist':
+          case 'about-nandani-timeline':
+          case 'about-nandani-education': endpoint = '/about-dr-nandani'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 
@@ -500,7 +506,10 @@ export default function VisualLiveBuilder() {
                             'Science Consultation Form': '/cms/science-at-dmc',
                             'About Dr Nandani Hero': '/cms/about-dr-nandani',
                             'About Dr Nandani Intro': '/cms/about-dr-nandani',
-                            'Dr Nandani Breadcrumb': '/cms/about-dr-nandani'
+                            'Dr Nandani Breadcrumb': '/cms/about-dr-nandani',
+                            'Dr Nandani Specialist Info': '/cms/about-dr-nandani',
+                            'Dr Nandani Timeline': '/cms/about-dr-nandani',
+                            'Dr Nandani Edu & Exp': '/cms/about-dr-nandani'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
