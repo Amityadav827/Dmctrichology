@@ -144,111 +144,111 @@ export default function AboutDrNandaniTimeline({ data = {} }) {
           )}
 
           {/* Timeline Infographic Wrapper */}
-          <div className="infographic-container">
+          {steps && steps.length > 0 && (
+            <div className="infographic-container">
+              {/* Steps Container */}
+              <div className="timeline-steps-grid">
+                {steps.map((step, idx) => {
+                  const isTop = idx % 2 === 0; // 0, 2 are TOP semicircles (gold); 1, 3 are BOTTOM semicircles (navy)
+                  const isGold = step.colorMode === 'gold' || (!step.colorMode && isTop);
+                  const colorValue = isGold ? "#D4AF37" : "#3b5998";
 
+                  return (
+                    <div key={idx} className={`timeline-step-card-wrapper ${isTop ? 'top-step' : 'bottom-step'}`}>
+                      
+                      {/* Junction Point Indicator */}
+                      <div className="timeline-junction-node" style={{ borderColor: colorValue }} />
 
-            {/* Steps Container */}
-            <div className="timeline-steps-grid">
-              {steps.map((step, idx) => {
-                const isTop = idx % 2 === 0; // 0, 2 are TOP semicircles (gold); 1, 3 are BOTTOM semicircles (navy)
-                const isGold = step.colorMode === 'gold' || (!step.colorMode && isTop);
-                const colorValue = isGold ? "#D4AF37" : "#3b5998";
-
-                return (
-                  <div key={idx} className={`timeline-step-card-wrapper ${isTop ? 'top-step' : 'bottom-step'}`}>
-                    
-                    {/* Junction Point Indicator */}
-                    <div className="timeline-junction-node" style={{ borderColor: colorValue }} />
-
-                    {/* Desktop stems & badges */}
-                    {isTop ? (
-                      /* TOP CARD FLOW: Stem UP -> Badge -> Dome -> Icon -> Title -> Description BELOW axis */
-                      <div className="top-layout-flow">
-                        {/* Number Badge with stem */}
-                        <div className="timeline-badge-group badge-up">
-                          <span className="badge-circle" style={{ backgroundColor: colorValue }}>
-                            <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.numberLabel`}>
-                              {step.numberLabel}
-                            </EditableText>
-                          </span>
-                          <div className="badge-stem-line" style={{ backgroundColor: colorValue }} />
-                        </div>
-
-                        {/* Dome curve (Top Semicircle facing up) */}
-                        <div 
-                          className="dome-semicircle semicircle-top" 
-                          style={{ 
-                            backgroundColor: colorValue,
-                            borderRadius: "120px 120px 0 0"
-                          }}
-                        >
-                          <div className="inner-title-text" style={{ color: "#FFFFFF" }}>
-                            <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.title`}>
-                              {step.title}
-                            </EditableText>
+                      {/* Desktop stems & badges */}
+                      {isTop ? (
+                        /* TOP CARD FLOW: Stem UP -> Badge -> Dome -> Icon -> Title -> Description BELOW axis */
+                        <div className="top-layout-flow">
+                          {/* Number Badge with stem */}
+                          <div className="timeline-badge-group badge-up">
+                            <span className="badge-circle" style={{ backgroundColor: colorValue }}>
+                              <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.numberLabel`}>
+                                {step.numberLabel}
+                              </EditableText>
+                            </span>
+                            <div className="badge-stem-line" style={{ backgroundColor: colorValue }} />
                           </div>
-                          {/* Circular icon holder sitting centered on the bottom flat edge */}
-                          <div className="circular-icon-holder icon-bottom">
-                            {renderIcon(step.iconName)}
-                          </div>
-                        </div>
 
-                        {/* Description copy placed below the axis line */}
-                        <div className="editorial-desc-box desc-below">
-                          <p>
-                            <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.description`}>
-                              {step.description}
-                            </EditableText>
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      /* BOTTOM CARD FLOW: Description ABOVE axis -> Semicircle on bottom -> Stem DOWN -> Badge */
-                      <div className="bottom-layout-flow">
-                        {/* Description copy placed above the axis line */}
-                        <div className="editorial-desc-box desc-above">
-                          <p>
-                            <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.description`}>
-                              {step.description}
-                            </EditableText>
-                          </p>
-                        </div>
-
-                        {/* Dome curve (Bottom Semicircle facing down) */}
-                        <div 
-                          className="dome-semicircle semicircle-bottom" 
-                          style={{ 
-                            backgroundColor: colorValue,
-                            borderRadius: "0 0 120px 120px"
-                          }}
-                        >
-                          {/* Circular icon holder sitting centered on the top flat edge */}
-                          <div className="circular-icon-holder icon-top">
-                            {renderIcon(step.iconName)}
+                          {/* Dome curve (Top Semicircle facing up) */}
+                          <div 
+                            className="dome-semicircle semicircle-top" 
+                            style={{ 
+                              backgroundColor: colorValue,
+                              borderRadius: "120px 120px 0 0"
+                            }}
+                          >
+                            <div className="inner-title-text" style={{ color: "#FFFFFF" }}>
+                              <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.title`}>
+                                {step.title}
+                              </EditableText>
+                            </div>
+                            {/* Circular icon holder sitting centered on the bottom flat edge */}
+                            <div className="circular-icon-holder icon-bottom">
+                              {renderIcon(step.iconName)}
+                            </div>
                           </div>
-                          <div className="inner-title-text" style={{ color: "#FFFFFF", marginTop: "24px" }}>
-                            <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.title`}>
-                              {step.title}
-                            </EditableText>
+
+                          {/* Description copy placed below the axis line */}
+                          <div className="editorial-desc-box desc-below">
+                            <p>
+                              <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.description`}>
+                                {step.description}
+                              </EditableText>
+                            </p>
                           </div>
                         </div>
+                      ) : (
+                        /* BOTTOM CARD FLOW: Description ABOVE axis -> Semicircle on bottom -> Stem DOWN -> Badge */
+                        <div className="bottom-layout-flow">
+                          {/* Description copy placed above the axis line */}
+                          <div className="editorial-desc-box desc-above">
+                            <p>
+                              <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.description`}>
+                                {step.description}
+                              </EditableText>
+                            </p>
+                          </div>
 
-                        {/* Number Badge with stem */}
-                        <div className="timeline-badge-group badge-down">
-                          <div className="badge-stem-line" style={{ backgroundColor: colorValue }} />
-                          <span className="badge-circle" style={{ backgroundColor: colorValue }}>
-                            <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.numberLabel`}>
-                              {step.numberLabel}
-                            </EditableText>
-                          </span>
+                          {/* Dome curve (Bottom Semicircle facing down) */}
+                          <div 
+                            className="dome-semicircle semicircle-bottom" 
+                            style={{ 
+                              backgroundColor: colorValue,
+                              borderRadius: "0 0 120px 120px"
+                            }}
+                          >
+                            {/* Circular icon holder sitting centered on the top flat edge */}
+                            <div className="circular-icon-holder icon-top">
+                              {renderIcon(step.iconName)}
+                            </div>
+                            <div className="inner-title-text" style={{ color: "#FFFFFF", marginTop: "24px" }}>
+                              <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.title`}>
+                                {step.title}
+                              </EditableText>
+                            </div>
+                          </div>
+
+                          {/* Number Badge with stem */}
+                          <div className="timeline-badge-group badge-down">
+                            <div className="badge-stem-line" style={{ backgroundColor: colorValue }} />
+                            <span className="badge-circle" style={{ backgroundColor: colorValue }}>
+                              <EditableText sectionId="about-nandani-timeline" fieldPath={`timeline.steps.${idx}.numberLabel`}>
+                                {step.numberLabel}
+                              </EditableText>
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
