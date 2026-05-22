@@ -129,7 +129,8 @@ export default function VisualLiveBuilder() {
         { id: 'about-nandani-specialist', label: 'Dr Nandani Specialist Info' },
         { id: 'about-nandani-timeline', label: 'Dr Nandani Timeline' },
         { id: 'about-nandani-education', label: 'Dr Nandani Edu & Exp' },
-        { id: 'about-nandani-credentials', label: 'Dr Nandani Credentials' }
+        { id: 'about-nandani-credentials', label: 'Dr Nandani Credentials' },
+        { id: 'about-nandani-trust', label: 'Why Patients Trust Dr. Nandani' }
       ];
     }
     return allSections;
@@ -254,7 +255,8 @@ export default function VisualLiveBuilder() {
           case 'about-nandani-specialist':
           case 'about-nandani-timeline':
           case 'about-nandani-education':
-          case 'about-nandani-credentials': endpoint = '/about-dr-nandani'; break;
+          case 'about-nandani-credentials':
+          case 'about-nandani-trust': endpoint = '/about-dr-nandani'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 

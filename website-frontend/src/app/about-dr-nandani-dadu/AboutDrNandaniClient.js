@@ -9,6 +9,7 @@ import AboutDrNandaniSpecialist from '../../components/AboutDrNandaniSpecialist'
 import AboutDrNandaniTimeline from '../../components/AboutDrNandaniTimeline';
 import AboutDrNandaniEducationExperience from '../../components/AboutDrNandaniEducationExperience';
 import AboutDrNandaniCredentials from '../../components/AboutDrNandaniCredentials';
+import AboutDrNandaniTrust from '../../components/AboutDrNandaniTrust';
 
 export default function AboutDrNandaniClient({ initialData }) {
   const [pageData, setPageData] = useState(initialData);
@@ -31,7 +32,8 @@ export default function AboutDrNandaniClient({ initialData }) {
         'about-nandani-specialist.',
         'about-nandani-timeline.',
         'about-nandani-education.',
-        'about-nandani-credentials.'
+        'about-nandani-credentials.',
+        'about-nandani-trust.'
       ];
 
       Object.keys(siteConfig).forEach(key => {
@@ -61,6 +63,9 @@ export default function AboutDrNandaniClient({ initialData }) {
         } else if (prefix === 'about-nandani-credentials.') {
           if (!newData.credentialsSection) newData.credentialsSection = {};
           current = newData.credentialsSection;
+        } else if (prefix === 'about-nandani-trust.') {
+          if (!newData.trustSection) newData.trustSection = {};
+          current = newData.trustSection;
         } else {
           current = newData;
         }
@@ -112,6 +117,9 @@ export default function AboutDrNandaniClient({ initialData }) {
         } else if (sectionId === 'about-nandani-credentials') {
           if (!newData.credentialsSection) newData.credentialsSection = {};
           current = newData.credentialsSection;
+        } else if (sectionId === 'about-nandani-trust') {
+          if (!newData.trustSection) newData.trustSection = {};
+          current = newData.trustSection;
         } else {
           current = newData;
         }
@@ -139,6 +147,7 @@ export default function AboutDrNandaniClient({ initialData }) {
       <AboutDrNandaniTimeline data={pageData.timeline || {}} />
       <AboutDrNandaniEducationExperience data={pageData.educationExperience || {}} />
       <AboutDrNandaniCredentials data={pageData.credentialsSection || {}} />
+      <AboutDrNandaniTrust data={pageData.trustSection || {}} />
     </main>
   );
 }

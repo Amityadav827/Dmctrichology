@@ -180,6 +180,7 @@ export default function AboutDrNandaniCMS() {
           <SectionTab id="timeline" label="TIMELINE FLOW" icon={Sliders} />
           <SectionTab id="education" label="EDU & EXP ITEMS" icon={Award} />
           <SectionTab id="credentials" label="CREDENTIALS SECTION" icon={Award} />
+          <SectionTab id="trust" label="TRUST SECTION" icon={ShieldCheck} />
           <SectionTab id="seo" label="SEO & METADATA" icon={Globe} />
         </div>
       </div>
@@ -1139,6 +1140,176 @@ export default function AboutDrNandaniCMS() {
                   </div>
                 </div>
 
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TRUST SECTION */}
+        {activeSection === "trust" && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+            {/* Heading, Image & Layout config */}
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <h3 className="text-lg font-black mb-8 text-slate-800 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <ShieldCheck size={18} />
+                </div>
+                Trust Section Heading & Left Graphic Card
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Section Main Title Heading</label>
+                  <input 
+                    type="text" 
+                    value={data.trustSection?.heading || ""} 
+                    onChange={e => updateNestedField("trustSection.heading", e.target.value)} 
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Left Portrait Image URL</label>
+                  <div className="flex gap-4 items-center">
+                    <input 
+                      type="text" 
+                      value={data.trustSection?.image || ""} 
+                      onChange={e => updateNestedField("trustSection.image", e.target.value)} 
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                    <label className="flex items-center justify-center p-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl cursor-pointer transition-all aspect-square shrink-0">
+                      {uploadingImage ? <Loader2 size={18} className="animate-spin" /> : <ImageIcon size={18} />}
+                      <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, "trustSection", "image")} disabled={uploadingImage} />
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Image Alt Description</label>
+                  <input 
+                    type="text" 
+                    value={data.trustSection?.imageAlt || ""} 
+                    onChange={e => updateNestedField("trustSection.imageAlt", e.target.value)} 
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Image Max Width (e.g. 100%, 450px)</label>
+                  <input 
+                    type="text" 
+                    value={data.trustSection?.imageMaxWidth || ""} 
+                    onChange={e => updateNestedField("trustSection.imageMaxWidth", e.target.value)} 
+                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Repeatable Trust Point Items List */}
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-lg font-black text-slate-800 flex items-center gap-3">
+                  <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                    <ShieldCheck size={18} />
+                  </div>
+                  Repeatable Trust Points Checklist
+                </h3>
+                <button
+                  onClick={() => {
+                    const currentPoints = data.trustSection?.trustPoints || [];
+                    updateNestedField("trustSection.trustPoints", [...currentPoints, { title: "NEW TRUST TITLE", description: "Trust point description goes here..." }]);
+                  }}
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-sm"
+                >
+                  + Add Trust Point
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                {(data.trustSection?.trustPoints || []).map((point, idx) => (
+                  <div key={idx} className="p-6 bg-slate-50 rounded-[20px] border border-slate-100 space-y-4 relative">
+                    <button
+                      onClick={() => {
+                        const filtered = data.trustSection.trustPoints.filter((_, cIdx) => cIdx !== idx);
+                        updateNestedField("trustSection.trustPoints", filtered);
+                      }}
+                      className="absolute top-6 right-6 p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-all"
+                      title="Remove trust point"
+                    >
+                      <Trash size={16} />
+                    </button>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pr-10">
+                      <div className="md:col-span-1">
+                        <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Point Title</label>
+                        <input 
+                          type="text" 
+                          value={point.title || ""} 
+                          onChange={e => updateNestedField(`trustSection.trustPoints.${idx}.title`, e.target.value)} 
+                          className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-sm font-bold text-slate-800 focus:border-indigo-300 transition-all outline-none" 
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Point Supporting Description</label>
+                        <textarea 
+                          rows={2}
+                          value={point.description || ""} 
+                          onChange={e => updateNestedField(`trustSection.trustPoints.${idx}.description`, e.target.value)} 
+                          className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-sm font-semibold text-slate-800 focus:border-indigo-300 transition-all outline-none resize-none" 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {(data.trustSection?.trustPoints || []).length === 0 && (
+                  <div className="text-center py-12 bg-slate-50 rounded-[24px] border border-dashed border-slate-200">
+                    <p className="text-sm font-bold text-slate-400">No trust points configured yet. Click the button above to add one.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Conclusion & Spacing Control Panel */}
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <h3 className="text-lg font-black mb-8 text-slate-800 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <Sliders size={18} />
+                </div>
+                Conclusion Text & Spacing Layouts
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Bottom Conclusion Editorial Paragraph</label>
+                  <textarea 
+                    rows={4}
+                    value={data.trustSection?.conclusionParagraph || ""} 
+                    onChange={e => updateNestedField("trustSection.conclusionParagraph", e.target.value)} 
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none resize-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Section Spacing Top (Default: 110px)</label>
+                  <input 
+                    type="text" 
+                    value={data.trustSection?.paddingTop || ""} 
+                    onChange={e => updateNestedField("trustSection.paddingTop", e.target.value)} 
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Section Spacing Bottom (Default: 110px)</label>
+                  <input 
+                    type="text" 
+                    value={data.trustSection?.paddingBottom || ""} 
+                    onChange={e => updateNestedField("trustSection.paddingBottom", e.target.value)} 
+                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
               </div>
             </div>
           </div>
