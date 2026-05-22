@@ -514,7 +514,8 @@ export default function VisualLiveBuilder() {
                             'Dr Nandani Specialist Info': '/cms/about-dr-nandani',
                             'Dr Nandani Timeline': '/cms/about-dr-nandani',
                             'Dr Nandani Edu & Exp': '/cms/about-dr-nandani',
-                            'Dr Nandani Credentials': '/cms/about-dr-nandani'
+                            'Dr Nandani Credentials': '/cms/about-dr-nandani',
+                            'Why Patients Trust Dr. Nandani': '/cms/about-dr-nandani'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}
