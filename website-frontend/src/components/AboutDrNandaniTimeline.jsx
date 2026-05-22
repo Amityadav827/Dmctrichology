@@ -2,11 +2,13 @@
 import React from 'react';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
+import EditableImage from './Editable/EditableImage';
 
 export default function AboutDrNandaniTimeline({ data = {} }) {
   const {
     heading = "What Makes Dr. Nandini Dadu the Best Hair Transplant Surgeon in Delhi?",
     sectionBgColor = "#FFFFFF",
+    sectionImage = "",
     steps = [
       {
         title: "Compassionate Approach",
@@ -103,7 +105,7 @@ export default function AboutDrNandaniTimeline({ data = {} }) {
               fontSize: "30px",
               fontWeight: "600",
               color: "#1A1A1A",
-              marginBottom: "90px",
+              marginBottom: "40px",
               fontFamily: "'Playfair Display', serif",
               lineHeight: "1.4",
               letterSpacing: "0.01em"
@@ -114,10 +116,36 @@ export default function AboutDrNandaniTimeline({ data = {} }) {
             </EditableText>
           </h2>
 
+          {/* Dynamic Image Below Heading */}
+          {sectionImage && (
+            <div 
+              className="timeline-dynamic-image-container"
+              style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                marginBottom: '65px',
+                width: '100%'
+              }}
+            >
+              <EditableImage
+                sectionId="about-nandani-timeline"
+                fieldPath="timeline.sectionImage"
+                src={sectionImage}
+                alt="Dr. Nandini Dadu Hair Transplant"
+                style={{ 
+                  maxWidth: '100%', 
+                  maxHeight: '450px', 
+                  borderRadius: '16px', 
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)',
+                  objectFit: 'cover'
+                }} 
+              />
+            </div>
+          )}
+
           {/* Timeline Infographic Wrapper */}
           <div className="infographic-container">
-            {/* The Horizontal Line for Desktop */}
-            <div className="timeline-horizontal-axis" />
+
 
             {/* Steps Container */}
             <div className="timeline-steps-grid">

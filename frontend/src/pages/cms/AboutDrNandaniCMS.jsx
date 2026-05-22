@@ -636,6 +636,21 @@ export default function AboutDrNandaniCMS() {
                     className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
                   />
                 </div>
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Section Dynamic Image (Centered Below Heading)</label>
+                  <div className="flex gap-4 items-center">
+                    <input 
+                      type="text" 
+                      value={data.timeline?.sectionImage || ""} 
+                      onChange={e => updateSectionField("timeline", "sectionImage", e.target.value)} 
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                    <label className="flex items-center justify-center p-4 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl cursor-pointer transition-all aspect-square shrink-0">
+                      {uploadingImage ? <Loader2 size={20} className="animate-spin" /> : <ImageIcon size={20} />}
+                      <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, "timeline", "sectionImage")} disabled={uploadingImage} />
+                    </label>
+                  </div>
+                </div>
                 <div>
                   <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Section Background Color</label>
                   <div className="flex gap-3 items-center">

@@ -62,6 +62,7 @@ const staticFallback = {
   timeline: {
     heading: "What Makes Dr. Nandini Dadu the Best Hair Transplant Surgeon in Delhi?",
     sectionBgColor: "#FFFFFF",
+    sectionImage: "",
     steps: [
       {
         title: "Compassionate Approach",

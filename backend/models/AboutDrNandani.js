@@ -70,6 +70,7 @@ const AboutDrNandaniSchema = new mongoose.Schema({
   timeline: {
     heading: { type: String, default: "What Makes Dr. Nandini Dadu the Best Hair Transplant Surgeon in Delhi?" },
     sectionBgColor: { type: String, default: "#FFFFFF" },
+    sectionImage: { type: String, default: "" },
     steps: [{
       title: { type: String },
       description: { type: String },
