@@ -152,11 +152,11 @@ export default function AboutDrNandaniClient({ initialData }) {
       <AboutDrNandaniHero data={pageData.hero || {}} />
       <AboutDrNandaniBreadcrumb data={pageData.breadcrumb || {}} />
       <AboutDrNandaniSpecialist data={pageData.specialist || {}} />
-      <AboutDrNandaniOtherSpecialities data={pageData.otherSpecialitiesSection || {}} />
       <AboutDrNandaniTimeline data={pageData.timeline || {}} />
       <AboutDrNandaniEducationExperience data={pageData.educationExperience || {}} />
       <AboutDrNandaniCredentials data={pageData.credentialsSection || {}} />
       <AboutDrNandaniTrust data={pageData.trustSection || {}} />
+      <AboutDrNandaniOtherSpecialities data={pageData.otherSpecialitiesSection || {}} />
     </main>
   );
 }

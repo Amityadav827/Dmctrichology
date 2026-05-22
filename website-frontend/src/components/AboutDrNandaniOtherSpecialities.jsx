@@ -15,8 +15,8 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
     conclusionParagraph = "For more information contact the **best hair specialist in Delhi** at DMC Trichology. We have our centres located at Vasant Vihar (South Delhi) & Rajouri Garden (West Delhi).",
     image = "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png",
     imageAlt = "Other Specialities",
-    backgroundColor = "#3b5998",
-    cardBackgroundColor = "#000000",
+    backgroundColor = "#ffffff",
+    cardBackgroundColor = "#ffffff",
     contentMaxWidth = "1200px",
     paddingTop = "100px",
     paddingBottom = "100px",
@@ -42,7 +42,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
       <section
         className="dr-nandani-other-specialities-wrapper"
         style={{
-          backgroundColor: backgroundColor || "#3b5998",
+          backgroundColor: backgroundColor || "#ffffff",
           paddingTop: paddingTop || "100px",
           paddingBottom: paddingBottom || "100px",
           paddingLeft: "24px",
@@ -57,7 +57,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
         <div
           className="dr-nandani-other-specialities-card"
           style={{
-            backgroundColor: cardBackgroundColor || "#000000",
+            backgroundColor: cardBackgroundColor || "#ffffff",
             borderRadius: "0px",
             maxWidth: contentMaxWidth || "1200px",
             width: "100%",
@@ -80,7 +80,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
                 fontSize: "36px",
                 lineHeight: "1.2",
                 fontWeight: "400",
-                color: "#ffffff",
+                color: "#000000",
                 margin: "0",
                 fontFamily: "'Marcellus', serif",
                 letterSpacing: "0.03em"
@@ -96,7 +96,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
               style={{
                 fontSize: "16px",
                 lineHeight: "1.7",
-                color: "#ffffff",
+                color: "#000000",
                 margin: "0",
                 fontFamily: "'Marcellus', serif",
                 fontWeight: "300"
@@ -148,7 +148,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
                       fontSize: "15px",
                       lineHeight: "1.4",
                       fontWeight: "400",
-                      color: "#ffffff",
+                      color: "#000000",
                       fontFamily: "'Marcellus', serif"
                     }}
                   >
@@ -165,7 +165,7 @@ export default function AboutDrNandaniOtherSpecialities({ data = {} }) {
               style={{
                 fontSize: "15px",
                 lineHeight: "1.7",
-                color: "#ffffff",
+                color: "#000000",
                 margin: "0",
                 fontFamily: "'Marcellus', serif",
                 fontWeight: "300"
