@@ -42,6 +42,13 @@ const staticFallback = {
     metaTitle: "Dr. Nandani Dadu | Best Hair Restoration Specialist & Trichologist",
     metaDescription: "Consult Delhi's premier hair restoration specialist, Dr. Nandani Dadu. Experience luxury clinical consultations, high-density transplants, and customized scalp treatments.",
     ogImage: ""
+  },
+  breadcrumb: {
+    title: "Hair Specialist in Delhi",
+    parentLabel: "Home",
+    parentUrl: "/",
+    currentPageText: "Hair Specialist in Delhi",
+    backgroundColor: "#f8f9fa"
   }
 };
 

@@ -155,6 +155,7 @@ export default function AboutDrNandaniCMS() {
         {/* Section Tabs - Strictly Isolated for Section 1 */}
         <div className="max-w-[1600px] mx-auto px-4 flex items-center justify-between overflow-x-auto border-t border-slate-100 bg-white scrollbar-hide">
           <SectionTab id="hero" label="HERO DESIGN & COPY" icon={User} />
+          <SectionTab id="breadcrumb" label="BREADCRUMB CONFIG" icon={Sliders} />
           <SectionTab id="form" label="CONSULTATION FORM DESIGN" icon={ShieldCheck} />
           <SectionTab id="seo" label="SEO & METADATA" icon={Globe} />
         </div>
@@ -270,6 +271,76 @@ export default function AboutDrNandaniCMS() {
                     onChange={e => updateSectionField("hero", "overlayOpacity", parseFloat(e.target.value))} 
                     className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-indigo-600" 
                   />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* BREADCRUMB CONFIG */}
+        {activeSection === "breadcrumb" && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
+              <h3 className="text-lg font-black mb-8 text-slate-800 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <Sliders size={18} />
+                </div>
+                Breadcrumb Section Controls
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Breadcrumb Title</label>
+                  <input 
+                    type="text" 
+                    value={data.breadcrumb?.title || ""} 
+                    onChange={e => updateSectionField("breadcrumb", "title", e.target.value)} 
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Breadcrumb Parent Label</label>
+                  <input 
+                    type="text" 
+                    value={data.breadcrumb?.parentLabel || ""} 
+                    onChange={e => updateSectionField("breadcrumb", "parentLabel", e.target.value)} 
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Breadcrumb Parent URL</label>
+                  <input 
+                    type="text" 
+                    value={data.breadcrumb?.parentUrl || ""} 
+                    onChange={e => updateSectionField("breadcrumb", "parentUrl", e.target.value)} 
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Breadcrumb Current Page Text</label>
+                  <input 
+                    type="text" 
+                    value={data.breadcrumb?.currentPageText || ""} 
+                    onChange={e => updateSectionField("breadcrumb", "currentPageText", e.target.value)} 
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Breadcrumb Background Color (Default: #f8f9fa)</label>
+                  <div className="flex gap-3 items-center">
+                    <input 
+                      type="color" 
+                      value={data.breadcrumb?.backgroundColor || "#f8f9fa"} 
+                      onChange={e => updateSectionField("breadcrumb", "backgroundColor", e.target.value)} 
+                      className="w-12 h-12 rounded-xl border border-slate-200 cursor-pointer overflow-hidden shrink-0" 
+                    />
+                    <input 
+                      type="text" 
+                      value={data.breadcrumb?.backgroundColor || ""} 
+                      onChange={e => updateSectionField("breadcrumb", "backgroundColor", e.target.value)} 
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
+                    />
+                  </div>
                 </div>
               </div>
             </div>

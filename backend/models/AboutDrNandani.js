@@ -47,6 +47,14 @@ const AboutDrNandaniSchema = new mongoose.Schema({
     metaTitle: { type: String, default: "Dr. Nandani Dadu | Best Hair Restoration Specialist & Trichologist" },
     metaDescription: { type: String, default: "Consult Delhi's premier hair restoration specialist, Dr. Nandani Dadu. Experience luxury clinical consultations, high-density transplants, and customized scalp treatments." },
     ogImage: { type: String, default: "" }
+  },
+
+  breadcrumb: {
+    title: { type: String, default: "Hair Specialist in Delhi" },
+    parentLabel: { type: String, default: "Home" },
+    parentUrl: { type: String, default: "/" },
+    currentPageText: { type: String, default: "Hair Specialist in Delhi" },
+    backgroundColor: { type: String, default: "#f8f9fa" }
   }
 }, { timestamps: true, collection: 'aboutdrnandani' });
 

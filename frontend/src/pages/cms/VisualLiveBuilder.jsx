@@ -124,7 +124,8 @@ export default function VisualLiveBuilder() {
     }
     if (currentSlug === 'about-dr-nandani-dadu') {
       return [
-        { id: 'about-nandani-hero', label: 'About Dr Nandani Hero' }
+        { id: 'about-nandani-hero', label: 'About Dr Nandani Hero' },
+        { id: 'about-nandani-breadcrumb', label: 'Dr Nandani Breadcrumb' }
       ];
     }
     return allSections;
@@ -244,7 +245,8 @@ export default function VisualLiveBuilder() {
           case 'science-dual-features':
           case 'science-consultation': endpoint = '/science-dmc'; break;
           case 'about-nandani-hero':
-          case 'about-nandani-intro': endpoint = '/about-dr-nandani'; break;
+          case 'about-nandani-intro':
+          case 'about-nandani-breadcrumb': endpoint = '/about-dr-nandani'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 
@@ -497,7 +499,8 @@ export default function VisualLiveBuilder() {
                             'Science Dual Features': '/cms/science-at-dmc',
                             'Science Consultation Form': '/cms/science-at-dmc',
                             'About Dr Nandani Hero': '/cms/about-dr-nandani',
-                            'About Dr Nandani Intro': '/cms/about-dr-nandani'
+                            'About Dr Nandani Intro': '/cms/about-dr-nandani',
+                            'Dr Nandani Breadcrumb': '/cms/about-dr-nandani'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}

@@ -29,6 +29,9 @@ const SectionLabel = ({ children }) => (
 
 function Sidebar() {
   const [isHomeOpen, setIsHomeOpen] = React.useState(true);
+  const [isAboutUsOpen, setIsAboutUsOpen] = React.useState(() => 
+    window.location.pathname.startsWith("/cms/about-dr-nandani")
+  );
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       {/* Brand Header */}
@@ -107,9 +110,43 @@ function Sidebar() {
                 <NavLink to="/pages" className={getNavClass}>
                   <Layers size={16} /> Pages
                 </NavLink>
-                <NavLink to="/cms/about-dr-nandani" className={getNavClass}>
-                  <User size={16} /> About Dr Nandani
-                </NavLink>
+                
+                {/* Collapsible Dropdown for ABOUT US PAGE CMS */}
+                <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                  <button
+                    onClick={() => setIsAboutUsOpen(!isAboutUsOpen)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      padding: "0.5rem 0.75rem",
+                      borderRadius: "8px",
+                      fontSize: "0.875rem",
+                      fontWeight: 600,
+                      color: "#475569",
+                      background: "none",
+                      border: "1px solid transparent",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                      textAlign: "left"
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F1F5F9"; e.currentTarget.style.color = "#0F172A"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#475569"; }}
+                  >
+                    <span style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                      <Users size={16} /> ABOUT US PAGE CMS
+                    </span>
+                    {isAboutUsOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                  </button>
+                  {isAboutUsOpen && (
+                    <div style={{ paddingLeft: "1.25rem", display: "flex", flexDirection: "column", gap: "0.25rem", marginTop: "0.25rem" }}>
+                      <NavLink to="/cms/about-dr-nandani" className={getNavClass}>
+                        <User size={16} /> About Dr Nandani
+                      </NavLink>
+                    </div>
+                  )}
+                </div>
               </>
             )}
             {hasPermission("blog") && (

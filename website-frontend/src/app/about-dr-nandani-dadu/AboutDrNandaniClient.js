@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useBuilder } from '../../context/BuilderContext';
 import AboutDrNandaniHero from '../../components/AboutDrNandaniHero';
+import AboutDrNandaniBreadcrumb from '../../components/AboutDrNandaniBreadcrumb';
 import AboutDrNandaniIntro from '../../components/AboutDrNandaniIntro';
 
 export default function AboutDrNandaniClient({ initialData }) {
@@ -23,6 +24,7 @@ export default function AboutDrNandaniClient({ initialData }) {
       // Section mappings registered inside VisualLiveBuilder
       const sectionPrefixes = [
         'about-nandani-hero.',
+        'about-nandani-breadcrumb.',
         'about-nandani-intro.'
       ];
 
@@ -34,11 +36,17 @@ export default function AboutDrNandaniClient({ initialData }) {
         const fieldPath = key.replace(prefix, '');
         const parts = fieldPath.split('.');
         
-        let current = prefix === 'about-nandani-hero.' ? newData.hero : newData;
-        if (!current) {
-          newData.hero = {};
+        let current;
+        if (prefix === 'about-nandani-hero.') {
+          if (!newData.hero) newData.hero = {};
           current = newData.hero;
+        } else if (prefix === 'about-nandani-breadcrumb.') {
+          if (!newData.breadcrumb) newData.breadcrumb = {};
+          current = newData.breadcrumb;
+        } else {
+          current = newData;
         }
+
         for (let i = 0; i < parts.length - 1; i++) {
           const part = parts[i];
           if (!current[part]) {
@@ -67,11 +75,17 @@ export default function AboutDrNandaniClient({ initialData }) {
       setPageData(prev => {
         const newData = JSON.parse(JSON.stringify(prev));
         const parts = fieldPath.split('.');
-        let current = sectionId === 'about-nandani-hero' ? newData.hero : newData;
-        if (!current) {
-          newData.hero = {};
+        let current;
+        if (sectionId === 'about-nandani-hero') {
+          if (!newData.hero) newData.hero = {};
           current = newData.hero;
+        } else if (sectionId === 'about-nandani-breadcrumb') {
+          if (!newData.breadcrumb) newData.breadcrumb = {};
+          current = newData.breadcrumb;
+        } else {
+          current = newData;
         }
+
         for (let i = 0; i < parts.length - 1; i++) {
           if (!current[parts[i]]) {
             current[parts[i]] = isNaN(parts[i+1]) ? {} : [];
@@ -90,6 +104,7 @@ export default function AboutDrNandaniClient({ initialData }) {
   return (
     <main style={{ minHeight: '100vh', backgroundColor: pageData.hero?.backgroundColor || '#3b5998' }}>
       <AboutDrNandaniHero data={pageData.hero || {}} />
+      <AboutDrNandaniBreadcrumb data={pageData.breadcrumb || {}} />
     </main>
   );
 }
