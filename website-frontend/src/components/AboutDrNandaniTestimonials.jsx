@@ -28,7 +28,7 @@ function StarRating({ count = 5 }) {
   return (
     <div style={{ display: 'flex', gap: '4px', marginBottom: '18px' }}>
       {Array.from({ length: Math.min(Math.max(count, 1), 5) }).map((_, i) => (
-        <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1">
+        <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#3b5998" stroke="#3b5998" strokeWidth="1">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
       ))}
@@ -42,7 +42,7 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
     testimonials = defaultTestimonials,
     viewMoreText = "VIEW MORE",
     viewMoreUrl = "https://dmctrichology-mkm4.vercel.app/clients-feedback",
-    backgroundColor = "#3b5998",
+    backgroundColor = "#ffffff",
     cardBackgroundColor = "#000000",
     contentMaxWidth = "1400px",
     paddingTop = "100px",
@@ -57,7 +57,7 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
       <section
         className="dmc-testimonials-wrapper"
         style={{
-          backgroundColor: backgroundColor || "#3b5998",
+          backgroundColor: backgroundColor || "#ffffff",
           paddingTop: paddingTop || "100px",
           paddingBottom: paddingBottom || "100px",
           paddingLeft: "24px",
@@ -81,7 +81,7 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
               style={{
                 fontSize: "42px",
                 fontWeight: "400",
-                color: "#ffffff",
+                color: "#000000",
                 fontFamily: "'Marcellus', serif",
                 letterSpacing: "0.04em",
                 lineHeight: "1.2",
@@ -95,12 +95,12 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
                 {heading}
               </EditableText>
             </h2>
-            {/* Elegant gold underline accent */}
+            {/* Navy underline accent */}
             <div
               style={{
                 width: "80px",
                 height: "2px",
-                backgroundColor: "#D4AF37",
+                backgroundColor: "#3b5998",
                 margin: "0 auto"
               }}
             />
@@ -114,7 +114,7 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
                 className="dmc-testimonial-card"
                 style={{
                   backgroundColor: cardBackgroundColor || "#000000",
-                  border: "1px solid rgba(212,175,55,0.35)",
+                  border: "1px solid rgba(59,89,152,0.35)",
                   borderRadius: "0px",
                   padding: "35px",
                   boxSizing: "border-box",
@@ -124,12 +124,12 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
                   transition: "border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease"
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = "rgba(212,175,55,0.75)";
+                  e.currentTarget.style.borderColor = "rgba(59,89,152,0.85)";
                   e.currentTarget.style.transform = "translateY(-4px)";
                   e.currentTarget.style.boxShadow = "0 16px 55px rgba(0,0,0,0.45)";
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "rgba(212,175,55,0.35)";
+                  e.currentTarget.style.borderColor = "rgba(59,89,152,0.35)";
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "0 8px 40px rgba(0,0,0,0.35)";
                 }}
@@ -171,7 +171,7 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
                   style={{
                     width: "40px",
                     height: "1px",
-                    backgroundColor: "#D4AF37",
+                    backgroundColor: "#3b5998",
                     marginBottom: "18px",
                     opacity: 0.7
                   }}
@@ -256,14 +256,14 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
           background: transparent;
         }
         .dmc-testimonial-scroll::-webkit-scrollbar-thumb {
-          background: #D4AF37;
+          background: #3b5998;
           border-radius: 2px;
         }
 
         .dmc-testimonials-btn {
           display: inline-block;
           background: #3b5998;
-          border: 1px solid #D4AF37;
+          border: 1px solid #3b5998;
           color: #ffffff !important;
           padding: 16px 42px;
           font-family: 'Marcellus', serif !important;
@@ -276,8 +276,8 @@ export default function AboutDrNandaniTestimonials({ data = {} }) {
           transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
         }
         .dmc-testimonials-btn:hover {
-          background: #D4AF37 !important;
-          color: #000000 !important;
+          background: #000000 !important;
+          color: #ffffff !important;
           transform: translateY(-2px);
         }
 
