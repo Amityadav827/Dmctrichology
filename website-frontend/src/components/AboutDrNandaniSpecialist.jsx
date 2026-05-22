@@ -16,8 +16,8 @@ export default function AboutDrNandaniSpecialist({ data = {} }) {
       "RRT (ROOT RESTORE THERAPY)",
       "FUE TECHNIQUE (Follicular Hair Transplant)"
     ],
-    sectionBgColor = "#F6F1E7",
-    cardBgColor = "#FFFFFF"
+    sectionBgColor = "#FFFFFF",
+    cardBgColor = "#3b5998"
   } = data;
 
   // Helper function to render text with bold tags preserved or custom styles if inline typing occurs
@@ -31,12 +31,17 @@ export default function AboutDrNandaniSpecialist({ data = {} }) {
     return processed;
   };
 
+  const isDarkCard = cardBgColor && !['#ffffff', '#fff', 'white', '#f6f1e7'].includes(cardBgColor.toLowerCase());
+  const textColor = isDarkCard ? '#FFFFFF' : '#1A1A1A';
+  const descColor = isDarkCard ? '#FFFFFF' : '#333333';
+  const bulletColor = isDarkCard ? '#FFFFFF' : '#3b5998';
+
   return (
     <EditableSection sectionId="about-nandani-specialist" label="Dr Nandani Specialist Info">
       <div
         className="dr-nandani-specialist-section"
         style={{
-          backgroundColor: sectionBgColor || "#F6F1E7",
+          backgroundColor: sectionBgColor || "#FFFFFF",
           padding: "80px 24px",
           fontFamily: "'Playfair Display', 'Didot', 'Georgia', serif",
           display: "flex",
@@ -48,7 +53,7 @@ export default function AboutDrNandaniSpecialist({ data = {} }) {
         <div
           className="dr-nandani-specialist-card"
           style={{
-            backgroundColor: cardBgColor || "#FFFFFF",
+            backgroundColor: cardBgColor || "#3b5998",
             maxWidth: "1100px",
             width: "100%",
             borderRadius: "16px",
@@ -63,7 +68,7 @@ export default function AboutDrNandaniSpecialist({ data = {} }) {
               textAlign: "center",
               fontSize: "32px",
               fontWeight: "600",
-              color: "#1A1A1A",
+              color: textColor,
               marginBottom: "36px",
               fontFamily: "'Playfair Display', serif",
               letterSpacing: "0.02em"
@@ -79,7 +84,7 @@ export default function AboutDrNandaniSpecialist({ data = {} }) {
             style={{
               fontSize: "15px",
               lineHeight: "1.8",
-              color: "#333333",
+              color: descColor,
               marginBottom: "24px",
               fontFamily: "'Inter', sans-serif",
               textAlign: "justify",
@@ -96,7 +101,7 @@ export default function AboutDrNandaniSpecialist({ data = {} }) {
             style={{
               fontSize: "15px",
               lineHeight: "1.8",
-              color: "#333333",
+              color: descColor,
               marginBottom: "28px",
               fontFamily: "'Inter', sans-serif",
               textAlign: "justify",
@@ -113,7 +118,7 @@ export default function AboutDrNandaniSpecialist({ data = {} }) {
             style={{
               fontSize: "15px",
               fontWeight: "700",
-              color: "#1A1A1A",
+              color: textColor,
               marginBottom: "24px",
               fontFamily: "'Inter', sans-serif"
             }}
@@ -162,7 +167,7 @@ export default function AboutDrNandaniSpecialist({ data = {} }) {
                     fontSize: "14px",
                     fontWeight: "600",
                     letterSpacing: "0.03em",
-                    color: "#3b5998", // Primary brand blue for treatment labels
+                    color: bulletColor, // Primary brand blue or white for treatment labels
                     fontFamily: "'Inter', sans-serif"
                   }}
                 >

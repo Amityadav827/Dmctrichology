@@ -541,7 +541,7 @@ export default function AboutDrNandaniCMS() {
                   <div className="flex gap-3 items-center">
                     <input 
                       type="color" 
-                      value={data.specialist?.sectionBgColor || "#F6F1E7"} 
+                      value={data.specialist?.sectionBgColor || "#FFFFFF"} 
                       onChange={e => updateNestedField("specialist.sectionBgColor", e.target.value)} 
                       className="w-12 h-12 rounded-xl border border-slate-200 cursor-pointer overflow-hidden shrink-0" 
                     />
@@ -558,7 +558,7 @@ export default function AboutDrNandaniCMS() {
                   <div className="flex gap-3 items-center">
                     <input 
                       type="color" 
-                      value={data.specialist?.cardBgColor || "#FFFFFF"} 
+                      value={data.specialist?.cardBgColor || "#3b5998"} 
                       onChange={e => updateNestedField("specialist.cardBgColor", e.target.value)} 
                       className="w-12 h-12 rounded-xl border border-slate-200 cursor-pointer overflow-hidden shrink-0" 
                     />
@@ -641,7 +641,7 @@ export default function AboutDrNandaniCMS() {
                   <div className="flex gap-3 items-center">
                     <input 
                       type="color" 
-                      value={data.timeline?.sectionBgColor || "#F6F1E7"} 
+                      value={data.timeline?.sectionBgColor || "#FFFFFF"} 
                       onChange={e => updateNestedField("timeline.sectionBgColor", e.target.value)} 
                       className="w-12 h-12 rounded-xl border border-slate-200 cursor-pointer overflow-hidden shrink-0" 
                     />
@@ -759,7 +759,7 @@ export default function AboutDrNandaniCMS() {
                   <div className="flex gap-3 items-center">
                     <input 
                       type="color" 
-                      value={data.educationExperience?.sectionBgColor || "#F6F1E7"} 
+                      value={data.educationExperience?.sectionBgColor || "#FFFFFF"} 
                       onChange={e => updateNestedField("educationExperience.sectionBgColor", e.target.value)} 
                       className="w-12 h-12 rounded-xl border border-slate-200 cursor-pointer overflow-hidden shrink-0" 
                     />

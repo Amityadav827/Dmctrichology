@@ -63,13 +63,13 @@ const AboutDrNandaniSchema = new mongoose.Schema({
     description2: { type: String, default: "Being a specialist in the cosmetological and trichological sciences combined, Dr. Nandini is dedicated to thorough diagnosis, effective treatment processes, and the best DMC Golden Touch Techniques for generating amazing outcomes at the highest level of client satisfaction. So, to get the long-lasting effects opt to get treated by the best hair specialist in Delhi only at DMC Trichology." },
     highlightedText: { type: String, default: "She employs cutting-edge knowledge in Hair & Scalp Treatments with:" },
     bullets: { type: [String], default: ["MESOGROW", "ADVANCED HGP", "ADVANCED HGP 2.0", "RRT (ROOT RESTORE THERAPY)", "FUE TECHNIQUE (Follicular Hair Transplant)"] },
-    sectionBgColor: { type: String, default: "#F6F1E7" },
-    cardBgColor: { type: String, default: "#FFFFFF" }
+    sectionBgColor: { type: String, default: "#FFFFFF" },
+    cardBgColor: { type: String, default: "#3b5998" }
   },
 
   timeline: {
     heading: { type: String, default: "What Makes Dr. Nandini Dadu the Best Hair Transplant Surgeon in Delhi?" },
-    sectionBgColor: { type: String, default: "#F6F1E7" },
+    sectionBgColor: { type: String, default: "#FFFFFF" },
     steps: [{
       title: { type: String },
       description: { type: String },
@@ -80,7 +80,7 @@ const AboutDrNandaniSchema = new mongoose.Schema({
   },
 
   educationExperience: {
-    sectionBgColor: { type: String, default: "#F6F1E7" },
+    sectionBgColor: { type: String, default: "#FFFFFF" },
     educationTitle: { type: String, default: "EDUCATION" },
     experienceTitle: { type: String, default: "EXPERIENCE" },
     educationItems: [{

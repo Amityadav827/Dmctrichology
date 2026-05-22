@@ -56,12 +56,12 @@ const staticFallback = {
     description2: "Being a specialist in the cosmetological and trichological sciences combined, Dr. Nandini is dedicated to thorough diagnosis, effective treatment processes, and the best DMC Golden Touch Techniques for generating amazing outcomes at the highest level of client satisfaction. So, to get the long-lasting effects opt to get treated by the best hair specialist in Delhi only at DMC Trichology.",
     highlightedText: "She employs cutting-edge knowledge in Hair & Scalp Treatments with:",
     bullets: ["MESOGROW", "ADVANCED HGP", "ADVANCED HGP 2.0", "RRT (ROOT RESTORE THERAPY)", "FUE TECHNIQUE (Follicular Hair Transplant)"],
-    sectionBgColor: "#F6F1E7",
-    cardBgColor: "#FFFFFF"
+    sectionBgColor: "#FFFFFF",
+    cardBgColor: "#3b5998"
   },
   timeline: {
     heading: "What Makes Dr. Nandini Dadu the Best Hair Transplant Surgeon in Delhi?",
-    sectionBgColor: "#F6F1E7",
+    sectionBgColor: "#FFFFFF",
     steps: [
       {
         title: "Compassionate Approach",
@@ -94,7 +94,7 @@ const staticFallback = {
     ]
   },
   educationExperience: {
-    sectionBgColor: "#F6F1E7",
+    sectionBgColor: "#FFFFFF",
     educationTitle: "EDUCATION",
     experienceTitle: "EXPERIENCE",
     educationItems: [

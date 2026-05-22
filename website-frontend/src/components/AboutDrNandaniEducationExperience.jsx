@@ -5,7 +5,7 @@ import EditableText from './Editable/EditableText';
 
 export default function AboutDrNandaniEducationExperience({ data = {} }) {
   const {
-    sectionBgColor = "#F6F1E7",
+    sectionBgColor = "#FFFFFF",
     educationTitle = "EDUCATION",
     experienceTitle = "EXPERIENCE",
     educationItems = [
@@ -49,12 +49,18 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
     ]
   } = data;
 
+  const cardBgColor = "#3b5998";
+  const isDarkCard = true;
+  const textColor = "#FFFFFF";
+  const subtextColor = "#E5E7EB";
+  const goldColor = "#D4AF37";
+
   return (
     <EditableSection sectionId="about-nandani-education" label="Dr Nandani Edu & Exp">
       <div
         className="dr-nandani-edu-exp-section"
         style={{
-          backgroundColor: sectionBgColor || "#F6F1E7",
+          backgroundColor: sectionBgColor || "#FFFFFF",
           padding: "90px 24px",
           width: "100%",
           display: "flex",
@@ -76,9 +82,9 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
           <div 
             className="edu-exp-card"
             style={{
-              backgroundColor: "#FFFFFF",
+              backgroundColor: cardBgColor,
               borderRadius: "16px",
-              boxShadow: "0 15px 45px rgba(0, 0, 0, 0.04), 0 3px 15px rgba(0, 0, 0, 0.02)",
+              boxShadow: "0 15px 45px rgba(0, 0, 0, 0.08), 0 3px 15px rgba(0, 0, 0, 0.04)",
               padding: "56px 48px 48px 48px",
               position: "relative",
               boxSizing: "border-box",
@@ -99,7 +105,7 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.06)",
+                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
                 border: "1px solid rgba(0, 0, 0, 0.02)"
               }}
             >
@@ -114,7 +120,7 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
               style={{
                 fontSize: "20px",
                 fontWeight: "700",
-                color: "#1A1A1A",
+                color: textColor,
                 marginBottom: "36px",
                 fontFamily: "'Inter', sans-serif",
                 letterSpacing: "0.08em",
@@ -135,25 +141,25 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
                     display: "flex", 
                     alignItems: "flex-start", 
                     gap: "12px",
-                    borderBottom: idx < educationItems.length - 1 ? "1px dashed rgba(0,0,0,0.06)" : "none",
+                    borderBottom: idx < educationItems.length - 1 ? "1px dashed rgba(255,255,255,0.15)" : "none",
                     paddingBottom: idx < educationItems.length - 1 ? "20px" : "0"
                   }}
                 >
                   {/* Little Gold Ticks */}
-                  <span style={{ color: "#D4AF37", fontSize: "14px", fontWeight: "bold", marginTop: "2px" }}>✔</span>
+                  <span style={{ color: goldColor, fontSize: "14px", fontWeight: "bold", marginTop: "2px" }}>✔</span>
                   
                   <div style={{ flex: 1 }}>
-                    <p style={{ margin: "0 0 4px 0", fontSize: "14.5px", fontWeight: "700", color: "#1A1A1A", fontFamily: "'Inter', sans-serif", lineHeight: "1.4" }}>
+                    <p style={{ margin: "0 0 4px 0", fontSize: "14.5px", fontWeight: "700", color: textColor, fontFamily: "'Inter', sans-serif", lineHeight: "1.4" }}>
                       <EditableText sectionId="about-nandani-education" fieldPath={`educationExperience.educationItems.${idx}.degree`}>
                         {item.degree}
                       </EditableText>
                     </p>
-                    <p style={{ margin: "0", fontSize: "13px", color: "#666666", fontFamily: "'Inter', sans-serif", lineHeight: "1.5" }}>
+                    <p style={{ margin: "0", fontSize: "13px", color: subtextColor, fontFamily: "'Inter', sans-serif", lineHeight: "1.5" }}>
                       <EditableText sectionId="about-nandani-education" fieldPath={`educationExperience.educationItems.${idx}.institution`}>
                         {item.institution}
                       </EditableText>
                       {item.year && (
-                        <span style={{ fontWeight: "600", color: "#3b5998", marginLeft: "6px" }}>
+                        <span style={{ fontWeight: "600", color: goldColor, marginLeft: "6px" }}>
                           ({item.year})
                         </span>
                       )}
@@ -168,9 +174,9 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
           <div 
             className="edu-exp-card"
             style={{
-              backgroundColor: "#FFFFFF",
+              backgroundColor: cardBgColor,
               borderRadius: "16px",
-              boxShadow: "0 15px 45px rgba(0, 0, 0, 0.04), 0 3px 15px rgba(0, 0, 0, 0.02)",
+              boxShadow: "0 15px 45px rgba(0, 0, 0, 0.08), 0 3px 15px rgba(0, 0, 0, 0.04)",
               padding: "56px 48px 48px 48px",
               position: "relative",
               boxSizing: "border-box",
@@ -191,7 +197,7 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.06)",
+                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
                 border: "1px solid rgba(0, 0, 0, 0.02)"
               }}
             >
@@ -206,7 +212,7 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
               style={{
                 fontSize: "20px",
                 fontWeight: "700",
-                color: "#1A1A1A",
+                color: textColor,
                 marginBottom: "36px",
                 fontFamily: "'Inter', sans-serif",
                 letterSpacing: "0.08em",
@@ -227,25 +233,25 @@ export default function AboutDrNandaniEducationExperience({ data = {} }) {
                     display: "flex", 
                     alignItems: "flex-start", 
                     gap: "12px",
-                    borderBottom: idx < experienceItems.length - 1 ? "1px dashed rgba(0,0,0,0.06)" : "none",
+                    borderBottom: idx < experienceItems.length - 1 ? "1px dashed rgba(255,255,255,0.15)" : "none",
                     paddingBottom: idx < experienceItems.length - 1 ? "20px" : "0"
                   }}
                 >
                   {/* Little Gold Ticks */}
-                  <span style={{ color: "#D4AF37", fontSize: "14px", fontWeight: "bold", marginTop: "2px" }}>✔</span>
+                  <span style={{ color: goldColor, fontSize: "14px", fontWeight: "bold", marginTop: "2px" }}>✔</span>
                   
                   <div style={{ flex: 1 }}>
-                    <p style={{ margin: "0 0 4px 0", fontSize: "14.5px", fontWeight: "700", color: "#1A1A1A", fontFamily: "'Inter', sans-serif", lineHeight: "1.4" }}>
+                    <p style={{ margin: "0 0 4px 0", fontSize: "14.5px", fontWeight: "700", color: textColor, fontFamily: "'Inter', sans-serif", lineHeight: "1.4" }}>
                       <EditableText sectionId="about-nandani-education" fieldPath={`educationExperience.experienceItems.${idx}.role`}>
                         {item.role}
                       </EditableText>
                     </p>
-                    <p style={{ margin: "0", fontSize: "13px", color: "#666666", fontFamily: "'Inter', sans-serif", lineHeight: "1.5" }}>
+                    <p style={{ margin: "0", fontSize: "13px", color: subtextColor, fontFamily: "'Inter', sans-serif", lineHeight: "1.5" }}>
                       <EditableText sectionId="about-nandani-education" fieldPath={`educationExperience.experienceItems.${idx}.hospital`}>
                         {item.hospital}
                       </EditableText>
                       {item.duration && (
-                        <span style={{ fontWeight: "600", color: "#3b5998", marginLeft: "6px" }}>
+                        <span style={{ fontWeight: "600", color: goldColor, marginLeft: "6px" }}>
                           ({item.duration})
                         </span>
                       )}

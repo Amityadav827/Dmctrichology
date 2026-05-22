@@ -6,7 +6,7 @@ import EditableText from './Editable/EditableText';
 export default function AboutDrNandaniTimeline({ data = {} }) {
   const {
     heading = "What Makes Dr. Nandini Dadu the Best Hair Transplant Surgeon in Delhi?",
-    sectionBgColor = "#F6F1E7",
+    sectionBgColor = "#FFFFFF",
     steps = [
       {
         title: "Compassionate Approach",
@@ -87,7 +87,7 @@ export default function AboutDrNandaniTimeline({ data = {} }) {
       <div
         className="dr-nandani-timeline-section"
         style={{
-          backgroundColor: sectionBgColor || "#F6F1E7",
+          backgroundColor: sectionBgColor || "#FFFFFF",
           padding: "90px 24px",
           width: "100%",
           display: "flex",
