@@ -21,7 +21,7 @@ const EditableText = React.forwardRef(({ sectionId, fieldPath, children, tag: Ta
       onClick={(e) => isEditMode && e.stopPropagation()}
       {...props}
     >
-      {children}
+      {props.dangerouslySetInnerHTML ? null : children}
     </Tag>
   );
 });

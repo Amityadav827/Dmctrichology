@@ -17,7 +17,7 @@ export default function HairTransplantClinicIntro({ data = {} }) {
     headingSize = "34px",
     headingFontFamily = "Marcellus",
     bodySize = "15px",
-    bodyFontFamily = "Marcellus",
+    bodyFontFamily = "Lato",
     mobilePaddingTop = "56px",
     mobilePaddingBottom = "56px",
     mobileHeadingSize = "26px"
@@ -40,7 +40,9 @@ export default function HairTransplantClinicIntro({ data = {} }) {
   };
 
   // Robust image fallback handling
-  const imageSrc = image && image.trim() !== '' ? image : 'https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png';
+  const imageSrc = (image && typeof image === 'string' && image.trim() !== '' && image.startsWith('http')) 
+    ? image 
+    : 'https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png';
 
   return (
     <>
@@ -93,6 +95,10 @@ export default function HairTransplantClinicIntro({ data = {} }) {
                       src={imageSrc} 
                       alt="DMC Clinical Directors" 
                       className="hair-clinic-intro-img"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png';
+                      }}
                     />
                   </div>
                 </div>
