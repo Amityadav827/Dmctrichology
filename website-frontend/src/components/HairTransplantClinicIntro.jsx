@@ -11,16 +11,16 @@ export default function HairTransplantClinicIntro({ data = {} }) {
     image = "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png",
     backgroundColor = "#ffffff",
     textColor = "#374151",
-    paddingTop = "100px",
-    paddingBottom = "100px",
+    paddingTop = "80px",
+    paddingBottom = "80px",
     isVisible = true,
-    headingSize = "36px",
+    headingSize = "34px",
     headingFontFamily = "Marcellus",
-    bodySize = "15.5px",
+    bodySize = "15px",
     bodyFontFamily = "Marcellus",
-    mobilePaddingTop = "60px",
-    mobilePaddingBottom = "60px",
-    mobileHeadingSize = "28px"
+    mobilePaddingTop = "56px",
+    mobilePaddingBottom = "56px",
+    mobileHeadingSize = "26px"
   } = data;
 
   if (isVisible === false) return null;
@@ -39,14 +39,17 @@ export default function HairTransplantClinicIntro({ data = {} }) {
     return "'Marcellus', serif";
   };
 
+  // Robust image fallback handling
+  const imageSrc = image && image.trim() !== '' ? image : 'https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png';
+
   return (
     <>
       <EditableSection sectionId="hair-clinic-intro" label="Hair Transplant Clinic Editorial Welcome">
         <section className="hair-clinic-intro-section" style={sectionStyle}>
-          <div className="hair-clinic-intro-container max-w-[1200px] mx-auto relative z-10">
+          <div className="hair-clinic-intro-container max-w-[1100px] mx-auto relative z-10">
             <div className="hair-clinic-intro-grid">
               
-              {/* LEFT COLUMN: Editorial Storytelling Content */}
+              {/* LEFT COLUMN: Clean Premium Content */}
               <div className="hair-clinic-intro-content-box">
                 <div className="hair-clinic-intro-badge-wrapper">
                   <span className="hair-clinic-intro-badge">CLINICAL EXCELLENCE</span>
@@ -61,9 +64,12 @@ export default function HairTransplantClinicIntro({ data = {} }) {
                 <div className="hair-clinic-intro-divider" />
 
                 <div className="hair-clinic-intro-body" style={{ color: textColor }}>
-                  <EditableText sectionId="hair-clinic-intro" fieldPath="intro.welcomeText" tag="div" html>
-                    {welcomeText}
-                  </EditableText>
+                  <EditableText 
+                    sectionId="hair-clinic-intro" 
+                    fieldPath="intro.welcomeText" 
+                    tag="div" 
+                    dangerouslySetInnerHTML={{ __html: welcomeText }}
+                  />
                 </div>
 
                 {directorQuote && (
@@ -79,12 +85,12 @@ export default function HairTransplantClinicIntro({ data = {} }) {
                 )}
               </div>
 
-              {/* RIGHT COLUMN: Luxury Editorial Image Frame */}
+              {/* RIGHT COLUMN: Clean Framed Cover Image */}
               <div className="hair-clinic-intro-visual-box">
                 <div className="hair-clinic-intro-frame-outer">
                   <div className="hair-clinic-intro-frame-inner">
                     <img 
-                      src={image} 
+                      src={imageSrc} 
                       alt="DMC Clinical Directors" 
                       className="hair-clinic-intro-img"
                     />
@@ -114,11 +120,11 @@ export default function HairTransplantClinicIntro({ data = {} }) {
         .hair-clinic-intro-grid {
           display: grid;
           grid-template-columns: 1.15fr 0.85fr;
-          gap: 80px;
+          gap: 48px;
           align-items: center;
         }
 
-        /* Editorial Left Column */
+        /* Clean Left Column Content */
         .hair-clinic-intro-content-box {
           display: flex;
           flex-direction: column;
@@ -136,14 +142,14 @@ export default function HairTransplantClinicIntro({ data = {} }) {
         .hair-clinic-intro-badge-wrapper {
           display: flex;
           align-items: center;
-          margin-bottom: 16px;
+          margin-bottom: 12px;
         }
 
         .hair-clinic-intro-badge {
           font-family: 'Marcellus', serif !important;
           font-size: 11px !important;
           font-weight: 400 !important;
-          letter-spacing: 0.25em !important;
+          letter-spacing: 0.2em !important;
           text-transform: uppercase !important;
           color: #bf9b30 !important; /* Muted Gold */
           display: inline-block;
@@ -155,28 +161,28 @@ export default function HairTransplantClinicIntro({ data = {} }) {
           font-weight: 400 !important;
           line-height: 1.3 !important;
           color: #0b132b !important; /* Deep Navy */
-          margin: 0 0 20px 0 !important;
-          letter-spacing: 0.02em !important;
+          margin: 0 0 16px 0 !important;
+          letter-spacing: 0.01em !important;
         }
 
         .hair-clinic-intro-divider {
-          width: 48px;
+          width: 40px;
           height: 1px;
           background-color: #bf9b30;
-          margin-bottom: 32px;
+          margin-bottom: 24px;
         }
 
         .hair-clinic-intro-body {
           font-family: ${getFontFamilyCSS(bodyFontFamily)} !important;
           font-size: ${bodySize} !important;
-          line-height: 1.85 !important;
-          margin-bottom: 32px;
-          max-width: 680px;
+          line-height: 1.8 !important;
+          margin-bottom: 24px;
+          max-width: 650px;
           text-align: justify;
         }
 
         .hair-clinic-intro-body p {
-          margin-bottom: 20px !important;
+          margin-bottom: 16px !important;
         }
 
         .hair-clinic-intro-body p:last-child {
@@ -192,8 +198,8 @@ export default function HairTransplantClinicIntro({ data = {} }) {
         /* Quote box with luxury gold border */
         .hair-clinic-intro-quote-wrapper {
           border-left: 2px solid #bf9b30;
-          padding-left: 24px;
-          margin-top: 10px;
+          padding-left: 20px;
+          margin-top: 8px;
           width: 100%;
           box-sizing: border-box;
         }
@@ -206,15 +212,15 @@ export default function HairTransplantClinicIntro({ data = {} }) {
 
         .hair-clinic-intro-quote p {
           font-family: 'Marcellus', serif !important;
-          font-size: 16px !important;
+          font-size: 15px !important;
           font-style: italic !important;
           color: #0b132b !important;
-          line-height: 1.6 !important;
+          line-height: 1.55 !important;
           font-weight: 400 !important;
           letter-spacing: 0.01em;
         }
 
-        /* Right Column: Visual Frame */
+        /* Right Column: Clean Visual Image Frame */
         .hair-clinic-intro-visual-box {
           display: flex;
           justify-content: center;
@@ -227,7 +233,7 @@ export default function HairTransplantClinicIntro({ data = {} }) {
         .hair-clinic-intro-frame-outer {
           position: relative;
           width: 100%;
-          max-width: 400px;
+          max-width: 380px;
           aspect-ratio: 4/5;
         }
 
@@ -235,12 +241,12 @@ export default function HairTransplantClinicIntro({ data = {} }) {
           position: relative;
           width: 100%;
           height: 100%;
-          border-radius: 12px;
+          border-radius: 8px;
           overflow: hidden;
           z-index: 2;
-          box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
           background-color: #f8fafc;
-          border: 1px solid rgba(0, 0, 0, 0.06);
+          border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .hair-clinic-intro-img {
@@ -248,26 +254,17 @@ export default function HairTransplantClinicIntro({ data = {} }) {
           height: 100%;
           object-fit: cover;
           display: block;
-          transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .hair-clinic-intro-frame-outer:hover .hair-clinic-intro-img {
-          transform: scale(1.03);
         }
 
         /* Responsive styling */
         @media (max-width: 1024px) {
           .hair-clinic-intro-grid {
             grid-template-columns: 1fr;
-            gap: 56px;
-          }
-
-          .hair-clinic-intro-content-box {
-            align-items: flex-start;
+            gap: 40px;
           }
 
           .hair-clinic-intro-visual-box {
-            max-width: 400px;
+            max-width: 360px;
             margin: 0 auto;
           }
         }
@@ -283,7 +280,7 @@ export default function HairTransplantClinicIntro({ data = {} }) {
           }
 
           .hair-clinic-intro-quote p {
-            font-size: 15px !important;
+            font-size: 14.5px !important;
           }
         }
       `}</style>
