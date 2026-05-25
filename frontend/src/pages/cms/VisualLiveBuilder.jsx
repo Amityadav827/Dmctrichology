@@ -155,6 +155,7 @@ export default function VisualLiveBuilder() {
         { id: 'hair-clinic-hero', label: 'Hair Transplant Clinic Hero' },
         { id: 'hair-clinic-breadcrumb', label: 'Hair Transplant Clinic Breadcrumb' },
         { id: 'hair-clinic-intro', label: 'Hair Transplant Clinic Intro' },
+        { id: 'hair-clinic-why', label: 'Hair Transplant Clinic Why Choose' },
         { id: 'hair-clinic-procedures', label: 'Hair Transplant Clinic Procedures' },
         { id: 'hair-clinic-timeline', label: 'Hair Transplant Clinic Timeline' },
         { id: 'hair-clinic-patient-care', label: 'Hair Transplant Clinic Patient Care' },
@@ -294,6 +295,7 @@ export default function VisualLiveBuilder() {
           case 'hair-clinic-hero':
           case 'hair-clinic-breadcrumb':
           case 'hair-clinic-intro':
+          case 'hair-clinic-why':
           case 'hair-clinic-procedures':
           case 'hair-clinic-timeline':
           case 'hair-clinic-patient-care':

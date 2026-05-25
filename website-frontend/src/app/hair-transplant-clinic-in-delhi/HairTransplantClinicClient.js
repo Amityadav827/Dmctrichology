@@ -6,6 +6,7 @@ import { useBuilder } from '../../context/BuilderContext';
 import HairTransplantClinicHero from '../../components/HairTransplantClinicHero';
 import HairTransplantClinicBreadcrumb from '../../components/HairTransplantClinicBreadcrumb';
 import HairTransplantClinicIntro from '../../components/HairTransplantClinicIntro';
+import HairTransplantClinicWhyChoose from '../../components/HairTransplantClinicWhyChoose';
 import HairTransplantClinicProcedures from '../../components/HairTransplantClinicProcedures';
 import HairTransplantClinicTimeline from '../../components/HairTransplantClinicTimeline';
 import HairTransplantClinicPatientCare from '../../components/HairTransplantClinicPatientCare';
@@ -16,11 +17,11 @@ import HairTransplantClinicCTA from '../../components/HairTransplantClinicCTA';
 
 import './HairTransplantClinic.css';
 
-// Map sectionId prefix → pageData key
 const SECTION_MAP = {
   'hair-clinic-hero.':                 'hero',
   'hair-clinic-breadcrumb.':           'breadcrumb',
   'hair-clinic-intro.':                 'intro',
+  'hair-clinic-why.':                  'whyChoose',
   'hair-clinic-procedures.':           'procedures',
   'hair-clinic-timeline.':             'timeline',
   'hair-clinic-patient-care.':         'patientCare',
@@ -34,6 +35,7 @@ const SECTION_ID_MAP = {
   'hair-clinic-hero':                'hero',
   'hair-clinic-breadcrumb':          'breadcrumb',
   'hair-clinic-intro':                'intro',
+  'hair-clinic-why':                 'whyChoose',
   'hair-clinic-procedures':          'procedures',
   'hair-clinic-timeline':            'timeline',
   'hair-clinic-patient-care':        'patientCare',
@@ -110,6 +112,7 @@ export default function HairTransplantClinicClient({ initialData }) {
       <HairTransplantClinicHero data={pageData.hero || {}} />
       <HairTransplantClinicBreadcrumb data={pageData.breadcrumb || {}} />
       <HairTransplantClinicIntro data={pageData.intro || {}} />
+      <HairTransplantClinicWhyChoose data={pageData.whyChoose || {}} />
       <HairTransplantClinicProcedures data={pageData.procedures || {}} />
       <HairTransplantClinicTimeline data={pageData.timeline || {}} />
       <HairTransplantClinicPatientCare data={pageData.patientCare || {}} />

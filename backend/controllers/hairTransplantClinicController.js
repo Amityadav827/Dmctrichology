@@ -37,12 +37,47 @@ const fallbackData = {
     backgroundColor: '#f8f9fa'
   },
   intro: {
-    heading: 'Welcome to DMC Trichology',
-    welcomeText: '<p>At DMC Trichology, we believe that hair restoration is as much an art as it is a science. As one of Delhi’s most elite trichology clinics, we offer a dedicated suite of cutting-edge hair transplant techniques, custom-tailored to the unique physiological profile and aesthetic goals of every patient.</p><p>Under the guidance of our clinical directors, our highly trained team of surgeons utilizes state-of-the-art medical innovations to ensure high-density hair graft survival rates, absolute safety, and virtually seamless blending with your natural hairline.</p>',
+    heading: 'BEST HAIR TRANSPLANT CLINIC IN DELHI',
+    welcomeText: '<p>DMC Trichology is Delhi\'s premier flagship clinic for <strong>high-density, advanced hair restoration</strong>. Under the direct guidance of our board-certified clinical specialists, we offer customized FUE and DHI procedures tailored to your unique hairline biology.</p><p>We combine <strong>cutting-edge US-FDA approved technologies</strong> with refined artistic hairline mapping. Our surgeons meticulously calculate exact follicular spacing and density vectors, ensuring natural blending and a <strong>98%+ graft survival rate</strong> for permanent, life-changing results.</p>',
     directorQuote: 'Our mission is simple: to combine surgical precision with visual artistry to restore not just your hair, but your self-assurance.',
     image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png',
+    backgroundColor: '#ffffff',
+    textColor: '#475569',
+    paddingTop: '100px',
+    paddingBottom: '100px',
     readMoreText: '',
-    isVisible: true
+    isVisible: true,
+    headingSize: '38px',
+    headingFontFamily: 'Marcellus',
+    bodySize: '16px',
+    bodyFontFamily: 'Lato',
+    mobilePaddingTop: '60px',
+    mobilePaddingBottom: '60px',
+    mobileHeadingSize: '30px'
+  },
+  whyChoose: {
+    heading: 'WHY CHOOSE OUR HAIR CLINIC IN DELHI?',
+    description: 'At DMC Trichology, patient comfort, meticulous hygiene, and long-term result quality are our primary directives.',
+    highlightedText: 'Elite Care & Technology',
+    backgroundColor: '#0b132b',
+    gradientColor: '#1e293b',
+    titleColor: '#ffffff',
+    textColor: '#e2e8f0',
+    paddingTop: '100px',
+    paddingBottom: '100px',
+    isVisible: true,
+    headingSize: '38px',
+    headingFontFamily: 'Marcellus',
+    bodySize: '14.5px',
+    bodyFontFamily: 'Lato',
+    mobilePaddingTop: '60px',
+    mobilePaddingBottom: '60px',
+    mobileHeadingSize: '30px',
+    items: [
+      { title: 'US-FDA Approved Tech', content: 'Utilizing world-class automated follicular extraction systems and microscopic implanters for maximum survival rates.', isVisible: true },
+      { title: 'Board-Certified Surgeons', content: 'Our procedures are strictly led by highly trained and certified hair restoration experts with decades of scalp mapping expertise.', isVisible: true },
+      { title: 'Class-100 Sterile Suites', content: 'Experience absolute safety inside our state-of-the-art cleanroom surgical theatres designed to minimize any contamination risks.', isVisible: true }
+    ]
   },
   procedures: {
     heading: 'Our Elite Hair Restoration Procedures',

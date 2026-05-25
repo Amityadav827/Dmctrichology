@@ -34,12 +34,50 @@ const HairTransplantClinicSchema = new mongoose.Schema({
     backgroundColor: { type: String, default: '#f8f9fa' }
   },
   intro: {
-    heading: { type: String, default: 'Welcome to DMC Trichology' },
-    welcomeText: { type: String, default: '<p>At DMC Trichology, we believe that hair restoration is as much an art as it is a science. As one of Delhi’s most elite trichology clinics, we offer a dedicated suite of cutting-edge hair transplant techniques, custom-tailored to the unique physiological profile and aesthetic goals of every patient.</p><p>Under the guidance of our clinical directors, our highly trained team of surgeons utilizes state-of-the-art medical innovations to ensure high-density hair graft survival rates, absolute safety, and virtually seamless blending with your natural hairline.</p>' },
+    heading: { type: String, default: 'BEST HAIR TRANSPLANT CLINIC IN DELHI' },
+    welcomeText: { type: String, default: '<p>DMC Trichology is Delhi\'s premier flagship clinic for <strong>high-density, advanced hair restoration</strong>. Under the direct guidance of our board-certified clinical specialists, we offer customized FUE and DHI procedures tailored to your unique hairline biology.</p><p>We combine <strong>cutting-edge US-FDA approved technologies</strong> with refined artistic hairline mapping. Our surgeons meticulously calculate exact follicular spacing and density vectors, ensuring natural blending and a <strong>98%+ graft survival rate</strong> for permanent, life-changing results.</p>' },
     directorQuote: { type: String, default: 'Our mission is simple: to combine surgical precision with visual artistry to restore not just your hair, but your self-assurance.' },
     image: { type: String, default: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png' },
+    backgroundColor: { type: String, default: '#ffffff' },
+    textColor: { type: String, default: '#475569' },
+    paddingTop: { type: String, default: '100px' },
+    paddingBottom: { type: String, default: '100px' },
     readMoreText: { type: String, default: '' },
-    isVisible: { type: Boolean, default: true }
+    isVisible: { type: Boolean, default: true },
+    headingSize: { type: String, default: '38px' },
+    headingFontFamily: { type: String, default: 'Marcellus' },
+    bodySize: { type: String, default: '16px' },
+    bodyFontFamily: { type: String, default: 'Lato' },
+    mobilePaddingTop: { type: String, default: '60px' },
+    mobilePaddingBottom: { type: String, default: '60px' },
+    mobileHeadingSize: { type: String, default: '30px' }
+  },
+  whyChoose: {
+    heading: { type: String, default: 'WHY CHOOSE OUR HAIR CLINIC IN DELHI?' },
+    description: { type: String, default: 'At DMC Trichology, patient comfort, meticulous hygiene, and long-term result quality are our primary directives.' },
+    highlightedText: { type: String, default: 'Elite Care & Technology' },
+    backgroundColor: { type: String, default: '#0b132b' },
+    gradientColor: { type: String, default: '#1e293b' },
+    titleColor: { type: String, default: '#ffffff' },
+    textColor: { type: String, default: '#e2e8f0' },
+    paddingTop: { type: String, default: '100px' },
+    paddingBottom: { type: String, default: '100px' },
+    isVisible: { type: Boolean, default: true },
+    headingSize: { type: String, default: '38px' },
+    headingFontFamily: { type: String, default: 'Marcellus' },
+    bodySize: { type: String, default: '14.5px' },
+    bodyFontFamily: { type: String, default: 'Lato' },
+    mobilePaddingTop: { type: String, default: '60px' },
+    mobilePaddingBottom: { type: String, default: '60px' },
+    mobileHeadingSize: { type: String, default: '30px' },
+    items: {
+      type: [mongoose.Schema.Types.Mixed],
+      default: [
+        { title: 'US-FDA Approved Tech', content: 'Utilizing world-class automated follicular extraction systems and microscopic implanters for maximum survival rates.', isVisible: true },
+        { title: 'Board-Certified Surgeons', content: 'Our procedures are strictly led by highly trained and certified hair restoration experts with decades of scalp mapping expertise.', isVisible: true },
+        { title: 'Class-100 Sterile Suites', content: 'Experience absolute safety inside our state-of-the-art cleanroom surgical theatres designed to minimize any contamination risks.', isVisible: true }
+      ]
+    }
   },
   procedures: {
     heading: { type: String, default: 'Our Elite Hair Restoration Procedures' },

@@ -138,6 +138,7 @@ export default function HairTransplantClinicCMS() {
   const hero = data.hero || {};
   const breadcrumb = data.breadcrumb || {};
   const intro = data.intro || {};
+  const whyChoose = data.whyChoose || {};
   const procedures = data.procedures || {};
   const timeline = data.timeline || {};
   const patientCare = data.patientCare || {};
@@ -175,6 +176,7 @@ export default function HairTransplantClinicCMS() {
           { id: "hero", label: "Hero Slider" },
           { id: "breadcrumb", label: "Breadcrumbs" },
           { id: "intro", label: "Welcome / Intro" },
+          { id: "whyChoose", label: "Why Choose" },
           { id: "procedures", label: "Procedures" },
           { id: "timeline", label: "Journey Timeline" },
           { id: "patientCare", label: "Patient Care" },
@@ -340,7 +342,195 @@ export default function HairTransplantClinicCMS() {
             </label>
             {intro.image && <div style={s.imgPreviewBox}><img src={intro.image} alt="Intro Bkg" style={{ width: "100%", display: "block" }} /></div>}
           </div>
+
+          <div style={s.sectionDivider} />
+          <p style={{ ...s.cardTitle, marginTop: 20 }}><Settings size={14} /> Section Layout & Spacing</p>
+          <div style={s.grid2}>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Section Background Hex</label>
+              <input style={s.input} value={intro.backgroundColor || "#ffffff"} onChange={e => updateSectionField("intro", "backgroundColor", e.target.value)} />
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Body Paragraph Color</label>
+              <input style={s.input} value={intro.textColor || "#475569"} onChange={e => updateSectionField("intro", "textColor", e.target.value)} />
+            </div>
+          </div>
+          <div style={s.grid2}>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Padding Top (Spacing)</label>
+              <input style={s.input} value={intro.paddingTop || "100px"} onChange={e => updateSectionField("intro", "paddingTop", e.target.value)} />
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Padding Bottom (Spacing)</label>
+              <input style={s.input} value={intro.paddingBottom || "100px"} onChange={e => updateSectionField("intro", "paddingBottom", e.target.value)} />
+            </div>
+          </div>
+          <div style={s.grid2}>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Mobile Padding Top</label>
+              <input style={s.input} value={intro.mobilePaddingTop || "60px"} onChange={e => updateSectionField("intro", "mobilePaddingTop", e.target.value)} placeholder="e.g. 60px" />
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Mobile Padding Bottom</label>
+              <input style={s.input} value={intro.mobilePaddingBottom || "60px"} onChange={e => updateSectionField("intro", "mobilePaddingBottom", e.target.value)} placeholder="e.g. 60px" />
+            </div>
+          </div>
+
+          <p style={{ ...s.cardTitle, marginTop: 20 }}><Settings size={14} /> Section Typography Controls</p>
+          <div style={s.grid2}>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Heading Size</label>
+              <input style={s.input} value={intro.headingSize || "38px"} onChange={e => updateSectionField("intro", "headingSize", e.target.value)} placeholder="e.g. 38px" />
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Heading Font Family</label>
+              <select style={s.input} value={intro.headingFontFamily || "Marcellus"} onChange={e => updateSectionField("intro", "headingFontFamily", e.target.value)}>
+                <option value="Marcellus">Marcellus (Premium serif)</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Lato">Lato</option>
+                <option value="Inter">Inter</option>
+              </select>
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Body Text Size</label>
+              <input style={s.input} value={intro.bodySize || "16px"} onChange={e => updateSectionField("intro", "bodySize", e.target.value)} placeholder="e.g. 16px" />
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Mobile Heading Size</label>
+              <input style={s.input} value={intro.mobileHeadingSize || "30px"} onChange={e => updateSectionField("intro", "mobileHeadingSize", e.target.value)} placeholder="e.g. 30px" />
+            </div>
+          </div>
         </div>
+      )}
+
+      {/* ── WHY CHOOSE SECTION ───────────────────────────────────── */}
+      {activeSection === "whyChoose" && (
+        <>
+          <div style={s.card}>
+            <p style={s.cardTitle}><Award size={16} color="#3b5998" /> Why Choose Section Setup</p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <label style={{ fontSize: 13, fontWeight: 700, color: "#1e293b", display: "flex", gap: 6, alignItems: "center", cursor: "pointer" }}>
+                <input type="checkbox" checked={whyChoose.isVisible !== false} onChange={e => updateSectionField("whyChoose", "isVisible", e.target.checked)} /> Enable Why Choose Section
+              </label>
+            </div>
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Section Heading</label>
+                <input style={s.input} value={whyChoose.heading || ""} onChange={e => updateSectionField("whyChoose", "heading", e.target.value)} />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Eyebrow Sub-Badge Text</label>
+                <input style={s.input} value={whyChoose.highlightedText || ""} onChange={e => updateSectionField("whyChoose", "highlightedText", e.target.value)} />
+              </div>
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Introductory Lead Description</label>
+              <textarea style={s.textarea} value={whyChoose.description || ""} onChange={e => updateSectionField("whyChoose", "description", e.target.value)} rows={2} />
+            </div>
+
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Background Base Color</label>
+                <div style={s.colorRow}>
+                  <input type="color" value={whyChoose.backgroundColor || "#0b132b"} onChange={e => updateSectionField("whyChoose", "backgroundColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
+                  <input style={{ ...s.input, flex: 1 }} value={whyChoose.backgroundColor || "#0b132b"} onChange={e => updateSectionField("whyChoose", "backgroundColor", e.target.value)} />
+                </div>
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Background Gradient End Color</label>
+                <div style={s.colorRow}>
+                  <input type="color" value={whyChoose.gradientColor || "#1e293b"} onChange={e => updateSectionField("whyChoose", "gradientColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
+                  <input style={{ ...s.input, flex: 1 }} value={whyChoose.gradientColor || "#1e293b"} onChange={e => updateSectionField("whyChoose", "gradientColor", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Heading Text Color</label>
+                <input style={s.input} value={whyChoose.titleColor || "#ffffff"} onChange={e => updateSectionField("whyChoose", "titleColor", e.target.value)} />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Body Paragraph Color</label>
+                <input style={s.input} value={whyChoose.textColor || "#e2e8f0"} onChange={e => updateSectionField("whyChoose", "textColor", e.target.value)} />
+              </div>
+            </div>
+
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Padding Top (Spacing)</label>
+                <input style={s.input} value={whyChoose.paddingTop || "100px"} onChange={e => updateSectionField("whyChoose", "paddingTop", e.target.value)} />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Padding Bottom (Spacing)</label>
+                <input style={s.input} value={whyChoose.paddingBottom || "100px"} onChange={e => updateSectionField("whyChoose", "paddingBottom", e.target.value)} />
+              </div>
+            </div>
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Mobile Padding Top</label>
+                <input style={s.input} value={whyChoose.mobilePaddingTop || "60px"} onChange={e => updateSectionField("whyChoose", "mobilePaddingTop", e.target.value)} placeholder="e.g. 60px" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Mobile Padding Bottom</label>
+                <input style={s.input} value={whyChoose.mobilePaddingBottom || "60px"} onChange={e => updateSectionField("whyChoose", "mobilePaddingBottom", e.target.value)} placeholder="e.g. 60px" />
+              </div>
+            </div>
+
+            <p style={{ ...s.cardTitle, marginTop: 20 }}><Settings size={14} /> Section Typography Controls</p>
+            <div style={s.grid2}>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Heading Size</label>
+                <input style={s.input} value={whyChoose.headingSize || "38px"} onChange={e => updateSectionField("whyChoose", "headingSize", e.target.value)} placeholder="e.g. 38px" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Heading Font Family</label>
+                <select style={s.input} value={whyChoose.headingFontFamily || "Marcellus"} onChange={e => updateSectionField("whyChoose", "headingFontFamily", e.target.value)}>
+                  <option value="Marcellus">Marcellus (Premium serif)</option>
+                  <option value="Montserrat">Montserrat</option>
+                  <option value="Lato">Lato</option>
+                  <option value="Inter">Inter</option>
+                </select>
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Body Text Size</label>
+                <input style={s.input} value={whyChoose.bodySize || "14.5px"} onChange={e => updateSectionField("whyChoose", "bodySize", e.target.value)} placeholder="e.g. 14.5px" />
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.label}>Mobile Heading Size</label>
+                <input style={s.input} value={whyChoose.mobileHeadingSize || "30px"} onChange={e => updateSectionField("whyChoose", "mobileHeadingSize", e.target.value)} placeholder="e.g. 30px" />
+              </div>
+            </div>
+          </div>
+
+          <div style={s.card}>
+            <p style={s.cardTitle}><Award size={16} color="#3b5998" /> Manage Why Choose Trust items (3 Columns)</p>
+            {(whyChoose.items || []).map((item, idx) => (
+              <div key={idx} style={{ background: "#f8fafc", borderRadius: 8, padding: "16px", marginBottom: 16, border: "1px solid #e2e8f0" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#1e293b" }}>Trust Card #{idx + 1}</span>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <label style={{ fontSize: 12, color: "#475569", display: "flex", gap: 4, alignItems: "center", cursor: "pointer" }}>
+                      <input type="checkbox" checked={item.isVisible !== false} onChange={e => updateNestedField(`whyChoose.items.${idx}.isVisible`, e.target.checked)} /> Enabled
+                    </label>
+                    <button style={s.removeBtn} onClick={() => { const updated = [...(whyChoose.items || [])]; updated.splice(idx, 1); updateSectionField("whyChoose", "items", updated); }}><Trash2 size={13} /></button>
+                  </div>
+                </div>
+                <div style={s.fieldGroup}>
+                  <label style={s.label}>Card Title</label>
+                  <input style={s.input} value={item.title || ""} onChange={e => updateNestedField(`whyChoose.items.${idx}.title`, e.target.value)} />
+                </div>
+                <div style={s.fieldGroup}>
+                  <label style={s.label}>Card Detailed Description</label>
+                  <textarea style={s.textarea} value={item.content || ""} onChange={e => updateNestedField(`whyChoose.items.${idx}.content`, e.target.value)} rows={3} />
+                </div>
+              </div>
+            ))}
+            <button style={s.addBtn} onClick={() => updateSectionField("whyChoose", "items", [...(whyChoose.items || []), { title: "New Trust Pillar", content: "", isVisible: true }])}>
+              <Plus size={14} /> Add Trust Card
+            </button>
+          </div>
+        </>
       )}
 
       {/* ── PROCEDURES SECTION ──────────────────────────────────── */}
