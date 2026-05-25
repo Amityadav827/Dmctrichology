@@ -9,20 +9,20 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
     description = "At DMC Trichology, patient comfort, meticulous hygiene, and long-term result quality are our primary directives.",
     highlightedText = "Elite Care & Technology",
     backgroundColor = "#0b132b",
-    gradientColor = "#1e293b",
+    gradientColor = "#111827",
     titleColor = "#ffffff",
     textColor = "#e2e8f0",
     paddingTop = "100px",
     paddingBottom = "100px",
     isVisible = true,
     items = [],
-    headingSize = "38px",
+    headingSize = "36px",
     headingFontFamily = "Marcellus",
-    bodySize = "14.5px",
-    bodyFontFamily = "Lato",
+    bodySize = "15px",
+    bodyFontFamily = "Marcellus",
     mobilePaddingTop = "60px",
     mobilePaddingBottom = "60px",
-    mobileHeadingSize = "30px"
+    mobileHeadingSize = "28px"
   } = data;
 
   if (isVisible === false) return null;
@@ -34,7 +34,7 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
   ];
 
   const sectionStyle = {
-    background: `linear-gradient(135deg, ${backgroundColor} 0%, ${gradientColor} 100%)`,
+    background: `linear-gradient(180deg, ${backgroundColor} 0%, ${gradientColor} 100%)`,
     paddingTop: paddingTop,
     paddingBottom: paddingBottom,
   };
@@ -51,11 +51,7 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
     <>
       <EditableSection sectionId="hair-clinic-why" label="Hair Transplant Clinic Why Choose Section">
         <section className="hair-clinic-why-section" style={sectionStyle}>
-          {/* Subtle luxury background elements / soft layered glow */}
-          <div className="hair-clinic-why-blur" aria-hidden="true" />
-          <div className="hair-clinic-why-glow-top" aria-hidden="true" />
-          
-          <div className="hair-clinic-why-container max-w-[1250px] mx-auto">
+          <div className="hair-clinic-why-container max-w-[1200px] mx-auto">
             
             {/* Header block */}
             <div className="hair-clinic-why-header">
@@ -84,11 +80,9 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
             <div className="hair-clinic-why-grid">
               {resolvedItems.filter(item => item.isVisible !== false).map((item, idx) => (
                 <div className="hair-clinic-why-card" key={idx}>
-                  {/* Glowing border element */}
-                  <div className="hair-clinic-why-card-glow" />
-                  
-                  {/* Number Badge */}
+                  {/* Numeric Accent badge */}
                   <div className="hair-clinic-why-card-number">0{idx + 1}</div>
+                  <div className="hair-clinic-why-card-line" />
                   
                   <h3 className="hair-clinic-why-card-title">
                     <EditableText sectionId="hair-clinic-why" fieldPath={`whyChoose.items.${idx}.title`} tag="span">
@@ -101,10 +95,6 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
                       {item.content}
                     </EditableText>
                   </p>
-
-                  <div className="hair-clinic-why-card-footer">
-                    <span className="hair-clinic-why-card-arrow">→</span>
-                  </div>
                 </div>
               ))}
             </div>
@@ -122,32 +112,8 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
           z-index: 5;
         }
 
-        .hair-clinic-why-blur {
-          position: absolute;
-          width: 400px;
-          height: 400px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(191, 155, 48, 0.05) 0%, rgba(191, 155, 48, 0) 70%);
-          bottom: -100px;
-          right: -100px;
-          z-index: 1;
-          pointer-events: none;
-        }
-
-        .hair-clinic-why-glow-top {
-          position: absolute;
-          width: 500px;
-          height: 500px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(72, 106, 145, 0.12) 0%, rgba(72, 106, 145, 0) 70%);
-          top: -200px;
-          left: 10%;
-          z-index: 1;
-          pointer-events: none;
-        }
-
         .hair-clinic-why-container {
-          padding: 0 5%;
+          padding: 0 24px;
           box-sizing: border-box;
           position: relative;
           z-index: 2;
@@ -161,19 +127,19 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
           display: flex;
           flex-direction: column;
           align-items: center;
-          animation: hairClinicWhyFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation: hairClinicWhyFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
         @keyframes hairClinicWhyFadeUp {
-          from { opacity: 0; transform: translateY(40px); }
+          from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0); }
         }
 
         .hair-clinic-why-badge {
-          font-family: 'Lato', sans-serif !important;
-          font-size: 11.5px !important;
-          font-weight: 700 !important;
-          letter-spacing: 3.5px !important;
+          font-family: 'Marcellus', serif !important;
+          font-size: 11px !important;
+          font-weight: 400 !important;
+          letter-spacing: 0.25em !important;
           text-transform: uppercase !important;
           margin-bottom: 16px;
           display: inline-block;
@@ -183,44 +149,43 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
           font-family: ${getFontFamilyCSS(headingFontFamily)} !important;
           font-size: ${headingSize} !important;
           font-weight: 400 !important;
-          line-height: 1.25 !important;
+          line-height: 1.3 !important;
           margin: 0 0 20px 0 !important;
-          letter-spacing: 0.5px !important;
+          letter-spacing: 0.02em !important;
           text-transform: uppercase;
         }
 
         .hair-clinic-why-divider {
-          width: 60px;
-          height: 3px;
+          width: 48px;
+          height: 1px;
           background-color: #bf9b30;
           margin-bottom: 24px;
-          border-radius: 2px;
         }
 
         .hair-clinic-why-lead {
           font-family: ${getFontFamilyCSS(bodyFontFamily)} !important;
           font-size: 16px !important;
-          line-height: 1.75 !important;
+          line-height: 1.8 !important;
           font-weight: 300 !important;
           max-width: 660px;
+          text-align: center;
         }
 
-        /* 3-Column Glassmorphism Grid */
+        /* 3-Column Luxury Minimal Grid */
         .hair-clinic-why-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: 32px;
+          gap: 40px;
         }
 
         .hair-clinic-why-card {
           position: relative;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 20px;
-          padding: 40px 32px;
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-          backdrop-filter: blur(12px);
-          transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 12px;
+          padding: 48px 36px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -228,83 +193,51 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
           text-align: left;
         }
 
-        /* Glowing Border Hover effect */
-        .hair-clinic-why-card-glow {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, rgba(191, 155, 48, 0.15) 0%, rgba(191, 155, 48, 0) 100%);
-          opacity: 0;
-          transition: opacity 0.5s ease;
-          pointer-events: none;
-          z-index: 1;
-        }
-
         .hair-clinic-why-card:hover {
-          transform: translateY(-8px);
-          border-color: rgba(191, 155, 48, 0.35);
-          background: rgba(255, 255, 255, 0.06);
-          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
-        }
-
-        .hair-clinic-why-card:hover .hair-clinic-why-card-glow {
-          opacity: 1;
+          border-color: rgba(191, 155, 48, 0.3);
+          background: rgba(255, 255, 255, 0.04);
         }
 
         /* Numeric Accent badge */
         .hair-clinic-why-card-number {
           font-family: 'Marcellus', serif !important;
-          font-size: 14px !important;
-          font-weight: 700 !important;
+          font-size: 18px !important;
+          font-weight: 400 !important;
           color: #bf9b30;
-          background: rgba(191, 155, 48, 0.1);
-          padding: 4px 12px;
-          border-radius: 4px;
+          letter-spacing: 0.1em;
+          margin-bottom: 12px;
+        }
+
+        .hair-clinic-why-card-line {
+          width: 28px;
+          height: 1px;
+          background-color: rgba(191, 155, 48, 0.4);
           margin-bottom: 24px;
-          letter-spacing: 1px;
-          z-index: 2;
         }
 
         .hair-clinic-why-card-title {
           font-family: 'Marcellus', serif !important;
-          font-size: 21px !important;
+          font-size: 20px !important;
           color: #ffffff !important;
           margin-bottom: 16px !important;
           font-weight: 400 !important;
-          letter-spacing: 0.5px !important;
-          z-index: 2;
+          letter-spacing: 0.02em !important;
         }
 
         .hair-clinic-why-card-content {
           font-family: ${getFontFamilyCSS(bodyFontFamily)} !important;
           font-size: ${bodySize} !important;
-          line-height: 1.75 !important;
+          line-height: 1.8 !important;
           color: #cbd5e1 !important;
-          margin-bottom: 24px;
+          margin-bottom: 0px;
           flex: 1;
-          z-index: 2;
-        }
-
-        .hair-clinic-why-card-footer {
-          margin-top: auto;
-          z-index: 2;
-        }
-
-        .hair-clinic-why-card-arrow {
-          font-size: 18px;
-          color: #bf9b30;
-          transition: transform 0.3s ease;
-          display: inline-block;
-        }
-
-        .hair-clinic-why-card:hover .hair-clinic-why-card-arrow {
-          transform: translateX(6px);
         }
 
         /* Responsive styling */
         @media (max-width: 1024px) {
           .hair-clinic-why-grid {
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
+            gap: 28px;
           }
         }
 
@@ -319,7 +252,7 @@ export default function HairTransplantClinicWhyChoose({ data = {} }) {
           }
 
           .hair-clinic-why-card {
-            padding: 32px 24px;
+            padding: 36px 28px;
           }
         }
       `}</style>
