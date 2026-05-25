@@ -7,10 +7,12 @@ const fallbackData = {
   hero: {
     backgroundImage: '',
     doctorImage: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png',
-    mainHeading: 'PREMIUM HAIR TRANSPLANT CLINIC IN DELHI',
+    mainHeading: 'Hair Transplant Clinic In Delhi',
+    eyebrowText: 'PREMIUM HAIR RESTORATION CLINIC',
+    breadcrumbText: 'Hair Transplant Clinic In Delhi',
     doctorName: 'DMC Trichology',
     degreeText: 'Advanced Hair Restoration Sciences',
-    descriptionParagraph: 'Transform your confidence with Delhi’s most advanced, premium hair transplant procedures. Combining world-class US-FDA approved technologies with the artistic precision of board-certified clinical specialists, DMC Trichology delivers natural-looking, high-density results that last a lifetime.',
+    descriptionParagraph: 'Premium hair restoration solutions with advanced technology, expert specialists, and world-class patient care.',
     namePlaceholder: 'Name*',
     phonePlaceholder: 'Mobile Number*',
     emailPlaceholder: 'E-Mail Address*',
@@ -19,7 +21,14 @@ const fallbackData = {
     captchaPlaceholder: 'Code*',
     submitButtonText: 'Request A Call Back',
     backgroundColor: '#0b132b',
-    overlayOpacity: 0.6
+    gradientColor: '#3b5998',
+    overlayOpacity: 0.6,
+    showFloatingShapes: true,
+    paddingTop: '170px',
+    paddingBottom: '100px',
+    bannerHeight: '420px',
+    mobileTitleSize: '40px',
+    mobileDescSize: '14px'
   },
   breadcrumb: {
     parentLabel: 'Home',

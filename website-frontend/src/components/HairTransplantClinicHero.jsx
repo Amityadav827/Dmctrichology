@@ -1,151 +1,79 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import api from '../services/api';
+import React from 'react';
 import EditableSection from './Editable/EditableSection';
 import EditableText from './Editable/EditableText';
 
-const createCaptcha = () => Math.floor(1000 + Math.random() * 9000).toString();
-
 export default function HairTransplantClinicHero({ data = {} }) {
   const {
-    backgroundImage = "",
-    doctorImage = "https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png",
-    mainHeading = "PREMIUM HAIR TRANSPLANT CLINIC IN DELHI",
-    doctorName = "DMC Trichology",
-    degreeText = "Advanced Hair Restoration Sciences",
-    descriptionParagraph = "Transform your confidence with Delhi’s most advanced, premium hair transplant procedures. Combining world-class US-FDA approved technologies with the artistic precision of board-certified clinical specialists, DMC Trichology delivers natural-looking, high-density results that last a lifetime.",
-    namePlaceholder = "Name*",
-    phonePlaceholder = "Mobile Number*",
-    emailPlaceholder = "E-Mail Address*",
-    datePlaceholder = "Select Preferred Date*",
-    messagePlaceholder = "Enter Your Message Here",
-    captchaPlaceholder = "Code*",
-    submitButtonText = "Request A Call Back",
-    backgroundColor = "#0b132b",
-    overlayOpacity = 0.6
+    backgroundImage = '',
+    mainHeading = 'Hair Transplant Clinic In Delhi',
+    eyebrowText = 'PREMIUM HAIR RESTORATION CLINIC',
+    breadcrumbText = 'Hair Transplant Clinic In Delhi',
+    descriptionParagraph = 'Premium hair restoration solutions with advanced technology, expert specialists, and world-class patient care.',
+    backgroundColor = '#0b132b',
+    gradientColor = '#3b5998',
+    overlayOpacity = 0.6,
+    showFloatingShapes = true,
+    paddingTop = '170px',
+    paddingBottom = '100px',
+    bannerHeight = '420px',
+    mobileTitleSize = '40px',
+    mobileDescSize = '14px'
   } = data;
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    mobile: '',
-    appointmentDate: '',
-    message: '',
-    captchaInput: ''
-  });
-
-  const [captcha, setCaptcha] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    setCaptcha(createCaptcha());
-  }, []);
-
-  const generateCaptcha = () => {
-    setCaptcha(createCaptcha());
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    if (error) setError('');
-    if (success) setSuccess(false);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (loading) return;
-
-    setError('');
-    setSuccess(false);
-
-    if (!formData.name.trim()) {
-      setError('Please enter your name.');
-      return;
-    }
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      setError('Please enter a valid email address.');
-      return;
-    }
-    const trimmedMobile = formData.mobile.replace(/\s+/g, '');
-    if (!trimmedMobile || !/^\d{10}$/.test(trimmedMobile)) {
-      setError('Please enter a valid 10-digit mobile number.');
-      return;
-    }
-    if (!formData.appointmentDate) {
-      setError('Please select a preferred date.');
-      return;
-    }
-    if (!formData.captchaInput.trim() || formData.captchaInput.trim() !== captcha) {
-      setError('Invalid verification code.');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await api.post('/hair-transplant-clinic-in-delhi/lead', {
-        name: formData.name.trim(),
-        email: formData.email.trim().toLowerCase(),
-        mobile: trimmedMobile,
-        appointmentDate: formData.appointmentDate,
-        message: formData.message.trim(),
-        service: "Hair Transplant Clinic In Delhi Lead"
-      });
-
-      setSuccess(true);
-      setFormData({
-        name: '',
-        email: '',
-        mobile: '',
-        appointmentDate: '',
-        message: '',
-        captchaInput: ''
-      });
-      generateCaptcha();
-    } catch (err) {
-      setError(err.response?.data?.message || 'Something went wrong. Please check your network and try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const bgStyle = backgroundImage ? {
-    backgroundImage: `url(${backgroundImage})`
-  } : {};
+    backgroundImage: `url(${backgroundImage})`,
+    minHeight: bannerHeight,
+    paddingTop: paddingTop,
+    paddingBottom: paddingBottom
+  } : {
+    minHeight: bannerHeight,
+    paddingTop: paddingTop,
+    paddingBottom: paddingBottom
+  };
 
   return (
-    <EditableSection sectionId="hair-clinic-hero" label="Hair Transplant Clinic Hero">
-      <section className="hair-clinic-hero-section hair-clinic-fade-in" style={bgStyle}>
-        <div className="hair-clinic-hero-overlay" style={{ opacity: overlayOpacity }} />
+    <>
+      <EditableSection sectionId="hair-clinic-hero" label="Hair Transplant Clinic Premium Banner">
+        <section
+          className="hair-clinic-hero-banner"
+          style={bgStyle}
+        >
+          {/* Custom isolated style element for live dynamic gradients, overlay opacity, and shapes */}
+          <div
+            className="hair-clinic-hero-overlay"
+            style={{
+              opacity: overlayOpacity,
+              background: `linear-gradient(135deg, rgba(0,0,0,0.7) 0%, ${gradientColor}B3 50%, ${backgroundColor}E6 100%)`
+            }}
+          />
 
-        <div className="hair-clinic-hero-grid">
-          {/* LEFT PORTRAIT */}
-          <div className="hair-clinic-doctor-portrait-box">
-            <div className="hair-clinic-portrait-holder">
-              <img src={doctorImage} alt={`${doctorName} Profile`} />
+          {/* Floating shapes / blurred circle particles */}
+          {showFloatingShapes !== false && (
+            <div className="hair-clinic-hero-shapes" aria-hidden="true">
+              <div className="hair-clinic-shape hair-clinic-shape-1" />
+              <div className="hair-clinic-shape hair-clinic-shape-2" />
+              <div className="hair-clinic-shape hair-clinic-shape-3" />
+              <div className="hair-clinic-shape hair-clinic-shape-4" />
+              <div className="hair-clinic-shape hair-clinic-shape-5" />
             </div>
-          </div>
+          )}
 
-          {/* RIGHT EDITORIAL BLOCK & FORM */}
-          <div className="hair-clinic-hero-content">
-            <span className="hair-clinic-hero-badge">
+          {/* Centered Editorial Content */}
+          <div className="hair-clinic-hero-container">
+            <div className="hair-clinic-hero-badge-box">
+              <span className="hair-clinic-hero-badge">
+                <EditableText sectionId="hair-clinic-hero" fieldPath="eyebrowText" tag="span">
+                  {eyebrowText}
+                </EditableText>
+              </span>
+            </div>
+
+            <h1 className="hair-clinic-hero-main-title">
               <EditableText sectionId="hair-clinic-hero" fieldPath="mainHeading" tag="span">
                 {mainHeading}
               </EditableText>
-            </span>
-
-            <h1 className="hair-clinic-hero-title">
-              <EditableText sectionId="hair-clinic-hero" fieldPath="doctorName" tag="span">
-                {doctorName}
-              </EditableText>
             </h1>
-
-            <span className="hair-clinic-hero-degree">
-              <EditableText sectionId="hair-clinic-hero" fieldPath="degreeText" tag="span">
-                {degreeText}
-              </EditableText>
-            </span>
 
             <p className="hair-clinic-hero-desc">
               <EditableText sectionId="hair-clinic-hero" fieldPath="descriptionParagraph" tag="span">
@@ -153,119 +81,213 @@ export default function HairTransplantClinicHero({ data = {} }) {
               </EditableText>
             </p>
 
-            {/* Callback Request Form */}
-            <div className="hair-clinic-paper-form" id="appointment-form">
-              <h3>Request Consultation</h3>
-
-              {success && (
-                <div className="hair-clinic-alert hair-clinic-alert-success">
-                  <strong>✓ Consultation request received! Our clinic desk will contact you shortly.</strong>
-                </div>
-              )}
-
-              {error && (
-                <div className="hair-clinic-alert hair-clinic-alert-error">
-                  <strong>⚠️ {error}</strong>
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit}>
-                <div className="hair-clinic-form-grid">
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder={namePlaceholder}
-                    className="hair-clinic-input"
-                    disabled={loading}
-                    required
-                  />
-
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder={emailPlaceholder}
-                    className="hair-clinic-input"
-                    disabled={loading}
-                    required
-                  />
-
-                  <input
-                    type="tel"
-                    name="mobile"
-                    value={formData.mobile}
-                    onChange={handleChange}
-                    placeholder={phonePlaceholder}
-                    className="hair-clinic-input"
-                    disabled={loading}
-                    required
-                  />
-
-                  <input
-                    type="date"
-                    name="appointmentDate"
-                    value={formData.appointmentDate}
-                    onChange={handleChange}
-                    placeholder={datePlaceholder}
-                    className="hair-clinic-input"
-                    disabled={loading}
-                    required
-                  />
-
-                  <div className="hair-clinic-captcha-box">
-                    <div
-                      className="hair-clinic-captcha-badge"
-                      onClick={generateCaptcha}
-                      title="Click to refresh verification code"
-                    >
-                      {captcha}
-                    </div>
-
-                    <input
-                      type="text"
-                      name="captchaInput"
-                      value={formData.captchaInput}
-                      onChange={handleChange}
-                      placeholder={captchaPlaceholder}
-                      className="hair-clinic-input"
-                      disabled={loading}
-                      required
-                    />
-                  </div>
-
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder={messagePlaceholder}
-                    className="hair-clinic-textarea"
-                    disabled={loading}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="hair-clinic-submit-btn"
-                >
-                  <EditableText sectionId="hair-clinic-hero" fieldPath="submitButtonText" tag="span">
-                    {loading ? "Submitting Request..." : submitButtonText}
-                  </EditableText>
-                  
-                  <div className="hair-clinic-arrow-circle">
-                    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style={{ display: 'block' }}>
-                      <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#0b132b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                </button>
-              </form>
-            </div>
+            {/* Premium Breadcrumbs inside Banner */}
+            <nav className="hair-clinic-hero-breadcrumbs" aria-label="Breadcrumb">
+              <a href="/" className="hair-clinic-bc-home">Home</a>
+              <span className="hair-clinic-bc-sep" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M4.5 2.5L7.5 6L4.5 9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+              <span className="hair-clinic-bc-current">
+                <EditableText sectionId="hair-clinic-hero" fieldPath="breadcrumbText" tag="span">
+                  {breadcrumbText}
+                </EditableText>
+              </span>
+            </nav>
           </div>
-        </div>
-      </section>
-    </EditableSection>
+        </section>
+      </EditableSection>
+
+      <style>{`
+        .hair-clinic-hero-banner {
+          background-color: ${backgroundColor};
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          text-align: center;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          width: 100%;
+          box-sizing: border-box;
+          z-index: 10;
+          animation: hairClinicHeroFadeIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes hairClinicHeroFadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+
+        .hair-clinic-hero-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          pointer-events: none;
+          transition: all 0.3s ease;
+        }
+
+        /* Animated Floating Circle Shapes */
+        .hair-clinic-hero-shapes {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .hair-clinic-shape {
+          position: absolute;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+          filter: blur(12px);
+          animation: hairClinicShapeFloat linear infinite;
+        }
+
+        .hair-clinic-shape-1 { width: 140px; height: 140px; top: 12%; left: 6%; animation-duration: 16s; animation-delay: 0s; }
+        .hair-clinic-shape-2 { width: 90px; height: 90px; top: 62%; left: 15%; animation-duration: 20s; animation-delay: 2s; }
+        .hair-clinic-shape-3 { width: 180px; height: 180px; top: 8%; right: 8%; animation-duration: 24s; animation-delay: 1s; }
+        .hair-clinic-shape-4 { width: 80px; height: 80px; top: 72%; right: 18%; animation-duration: 18s; animation-delay: 3s; }
+        .hair-clinic-shape-5 { width: 110px; height: 110px; top: 35%; left: 48%; animation-duration: 22s; animation-delay: 0.5s; }
+
+        @keyframes hairClinicShapeFloat {
+          0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.6; }
+          33%  { transform: translateY(-25px) rotate(120deg) scale(1.05); opacity: 0.35; }
+          66%  { transform: translateY(15px) rotate(240deg) scale(0.95); opacity: 0.5; }
+          100% { transform: translateY(0) rotate(360deg) scale(1); opacity: 0.6; }
+        }
+
+        /* Centered Main Container */
+        .hair-clinic-hero-container {
+          position: relative;
+          z-index: 3;
+          max-width: 960px;
+          margin: 0 auto;
+          padding: 0 24px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          animation: hairClinicContentFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+        }
+
+        @keyframes hairClinicContentFadeIn {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glassmorphism Badge styling */
+        .hair-clinic-hero-badge-box {
+          margin-bottom: 24px;
+        }
+
+        .hair-clinic-hero-badge {
+          display: inline-block;
+          font-family: 'Lato', sans-serif !important;
+          font-size: 11.5px !important;
+          font-weight: 700 !important;
+          letter-spacing: 3.5px !important;
+          text-transform: uppercase !important;
+          color: rgba(255,255,255,0.85) !important;
+          border: 1px solid rgba(255,255,255,0.25) !important;
+          border-radius: 100px !important;
+          padding: 7px 22px !important;
+          backdrop-filter: blur(8px);
+          background: rgba(255,255,255,0.06);
+          box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+          text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Centered Luxury Typography */
+        .hair-clinic-hero-main-title {
+          font-family: 'Marcellus', serif !important;
+          font-size: 56px !important;
+          font-weight: 400 !important;
+          color: #ffffff !important;
+          margin: 0 auto 20px auto !important;
+          letter-spacing: 1.5px !important;
+          line-height: 1.2 !important;
+          text-transform: uppercase !important;
+          max-width: 820px;
+          text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .hair-clinic-hero-desc {
+          font-family: 'Lato', sans-serif !important;
+          font-size: 16.5px !important;
+          font-weight: 300 !important;
+          line-height: 1.65 !important;
+          color: rgba(255,255,255,0.85) !important;
+          margin: 0 auto 36px auto !important;
+          max-width: 680px;
+          text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+        }
+
+        /* Elegant Breadcrumbs layout */
+        .hair-clinic-hero-breadcrumbs {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          font-family: 'Marcellus', serif !important;
+          font-size: 13.5px;
+          color: rgba(255,255,255,0.7);
+        }
+
+        .hair-clinic-bc-home {
+          color: rgba(255,255,255,0.7);
+          text-decoration: none;
+          transition: color 0.25s ease;
+        }
+
+        .hair-clinic-bc-home:hover {
+          color: #ffffff;
+        }
+
+        .hair-clinic-bc-sep {
+          color: rgba(255,255,255,0.45);
+          display: flex;
+          align-items: center;
+        }
+
+        .hair-clinic-bc-current {
+          color: #ffffff;
+          font-weight: 400;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+          .hair-clinic-hero-banner {
+            padding-top: 140px !important;
+            padding-bottom: 80px !important;
+            min-height: 320px !important;
+          }
+          .hair-clinic-hero-main-title {
+            font-size: ${mobileTitleSize} !important;
+            line-height: 1.25 !important;
+          }
+          .hair-clinic-hero-desc {
+            font-size: ${mobileDescSize} !important;
+            margin-bottom: 28px !important;
+          }
+          .hair-clinic-shape-3, .hair-clinic-shape-5 {
+            display: none;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hair-clinic-hero-main-title {
+            font-size: calc(${mobileTitleSize} * 0.8) !important;
+          }
+          .hair-clinic-hero-badge {
+            font-size: 10px !important;
+            padding: 5px 16px !important;
+          }
+        }
+      `}</style>
+    </>
   );
 }

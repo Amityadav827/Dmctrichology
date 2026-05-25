@@ -197,63 +197,87 @@ export default function HairTransplantClinicCMS() {
       {/* ── HERO SECTION ────────────────────────────────────────── */}
       {activeSection === "hero" && (
         <div style={s.card}>
-          <p style={s.cardTitle}><Layout size={16} color="#3b5998" /> Hero Section Settings</p>
+          <p style={s.cardTitle}><Layout size={16} color="#3b5998" /> Centered Banner Hero Settings</p>
           <div style={s.grid2}>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Eyebrow Badge Text</label>
+              <input style={s.input} value={hero.eyebrowText || ""} onChange={e => updateSectionField("hero", "eyebrowText", e.target.value)} />
+            </div>
             <div style={s.fieldGroup}>
               <label style={s.label}>Main Heading</label>
               <input style={s.input} value={hero.mainHeading || ""} onChange={e => updateSectionField("hero", "mainHeading", e.target.value)} />
             </div>
             <div style={s.fieldGroup}>
-              <label style={s.label}>Subheading Badge</label>
-              <input style={s.input} value={hero.doctorName || ""} onChange={e => updateSectionField("hero", "doctorName", e.target.value)} />
-            </div>
-            <div style={s.fieldGroup}>
-              <label style={s.label}>Sub-Degree Text</label>
-              <input style={s.input} value={hero.degreeText || ""} onChange={e => updateSectionField("hero", "degreeText", e.target.value)} />
-            </div>
-            <div style={s.fieldGroup}>
-              <label style={s.label}>Submit Button Label</label>
-              <input style={s.input} value={hero.submitButtonText || ""} onChange={e => updateSectionField("hero", "submitButtonText", e.target.value)} />
-            </div>
-          </div>
-          <div style={s.fieldGroup}>
-            <label style={s.label}>Description Text</label>
-            <textarea style={s.textarea} value={hero.descriptionParagraph || ""} onChange={e => updateSectionField("hero", "descriptionParagraph", e.target.value)} rows={3} />
-          </div>
-
-          <div style={s.grid2}>
-            <div style={s.fieldGroup}>
-              <label style={s.label}>Background Accent Tint</label>
-              <div style={s.colorRow}>
-                <input type="color" value={hero.backgroundColor || "#0b132b"} onChange={e => updateSectionField("hero", "backgroundColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
-                <input style={{ ...s.input, flex: 1 }} value={hero.backgroundColor || "#0b132b"} onChange={e => updateSectionField("hero", "backgroundColor", e.target.value)} />
-              </div>
+              <label style={s.label}>Breadcrumb Active Text</label>
+              <input style={s.input} value={hero.breadcrumbText || ""} onChange={e => updateSectionField("hero", "breadcrumbText", e.target.value)} />
             </div>
             <div style={s.fieldGroup}>
               <label style={s.label}>Overlay Darkening Opacity (0 to 1)</label>
               <input type="number" step="0.05" min="0" max="1" style={s.input} value={hero.overlayOpacity === undefined ? 0.6 : hero.overlayOpacity} onChange={e => updateSectionField("hero", "overlayOpacity", parseFloat(e.target.value))} />
             </div>
           </div>
+          <div style={s.fieldGroup}>
+            <label style={s.label}>Supporting Paragraph Text</label>
+            <textarea style={s.textarea} value={hero.descriptionParagraph || ""} onChange={e => updateSectionField("hero", "descriptionParagraph", e.target.value)} rows={3} />
+          </div>
 
           <div style={s.grid2}>
             <div style={s.fieldGroup}>
-              <label style={s.label}>Doctor Silhouette Profile Photo</label>
-              <input style={s.input} value={hero.doctorImage || ""} onChange={e => updateSectionField("hero", "doctorImage", e.target.value)} placeholder="https://..." />
-              <label style={s.uploadLabel}>
-                <ImageIcon size={12} /> Upload Silhouetted Profile
-                <input type="file" style={{ display: "none" }} accept="image/*" onChange={e => handleImageUpload(e, "hero.doctorImage")} />
-              </label>
-              {hero.doctorImage && <div style={s.imgPreviewBox}><img src={hero.doctorImage} alt="Dr Silhouette" style={{ width: "100%", display: "block" }} /></div>}
+              <label style={s.label}>Background Base Color (Solid / Gradient End)</label>
+              <div style={s.colorRow}>
+                <input type="color" value={hero.backgroundColor || "#0b132b"} onChange={e => updateSectionField("hero", "backgroundColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
+                <input style={{ ...s.input, flex: 1 }} value={hero.backgroundColor || "#0b132b"} onChange={e => updateSectionField("hero", "backgroundColor", e.target.value)} />
+              </div>
             </div>
             <div style={s.fieldGroup}>
-              <label style={s.label}>Cinematic Background Image</label>
-              <input style={s.input} value={hero.backgroundImage || ""} onChange={e => updateSectionField("hero", "backgroundImage", e.target.value)} placeholder="https://..." />
-              <label style={s.uploadLabel}>
-                <ImageIcon size={12} /> Upload Bkg Frame
-                <input type="file" style={{ display: "none" }} accept="image/*" onChange={e => handleImageUpload(e, "hero.backgroundImage")} />
-              </label>
-              {hero.backgroundImage && <div style={s.imgPreviewBox}><img src={hero.backgroundImage} alt="Hero Bkg" style={{ width: "100%", display: "block" }} /></div>}
+              <label style={s.label}>Background Gradient Start Accent Color</label>
+              <div style={s.colorRow}>
+                <input type="color" value={hero.gradientColor || "#3b5998"} onChange={e => updateSectionField("hero", "gradientColor", e.target.value)} style={{ width: 40, height: 36, border: "1px solid #e2e8f0", borderRadius: 6, cursor: "pointer", padding: 2 }} />
+                <input style={{ ...s.input, flex: 1 }} value={hero.gradientColor || "#3b5998"} onChange={e => updateSectionField("hero", "gradientColor", e.target.value)} />
+              </div>
             </div>
+          </div>
+
+          <div style={s.grid2}>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Padding Top (Spacing)</label>
+              <input style={s.input} value={hero.paddingTop || "170px"} onChange={e => updateSectionField("hero", "paddingTop", e.target.value)} placeholder="e.g. 170px" />
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Padding Bottom (Spacing)</label>
+              <input style={s.input} value={hero.paddingBottom || "100px"} onChange={e => updateSectionField("hero", "paddingBottom", e.target.value)} placeholder="e.g. 100px" />
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Banner Standard Height</label>
+              <input style={s.input} value={hero.bannerHeight || "420px"} onChange={e => updateSectionField("hero", "bannerHeight", e.target.value)} placeholder="e.g. 420px" />
+            </div>
+            <div style={{ ...s.fieldGroup, marginTop: "24px" }}>
+              <label style={{ fontSize: 13, fontWeight: 700, color: "#1e293b", display: "flex", gap: 6, alignItems: "center", cursor: "pointer" }}>
+                <input type="checkbox" checked={hero.showFloatingShapes !== false} onChange={e => updateSectionField("hero", "showFloatingShapes", e.target.checked)} /> Enable Floating Circle Shapes
+              </label>
+            </div>
+          </div>
+
+          <p style={{ ...s.cardTitle, marginTop: "20px" }}><Layout size={16} color="#3b5998" /> Mobile Sizing Configuration</p>
+          <div style={s.grid2}>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Mobile Title Size</label>
+              <input style={s.input} value={hero.mobileTitleSize || "40px"} onChange={e => updateSectionField("hero", "mobileTitleSize", e.target.value)} placeholder="e.g. 40px" />
+            </div>
+            <div style={s.fieldGroup}>
+              <label style={s.label}>Mobile Description Size</label>
+              <input style={s.input} value={hero.mobileDescSize || "14px"} onChange={e => updateSectionField("hero", "mobileDescSize", e.target.value)} placeholder="e.g. 14px" />
+            </div>
+          </div>
+
+          <div style={s.fieldGroup}>
+            <label style={s.label}>Cinematic Background Image (Optional Overlay)</label>
+            <input style={s.input} value={hero.backgroundImage || ""} onChange={e => updateSectionField("hero", "backgroundImage", e.target.value)} placeholder="https://..." />
+            <label style={s.uploadLabel}>
+              <ImageIcon size={12} /> Upload Banner Background
+              <input type="file" style={{ display: "none" }} accept="image/*" onChange={e => handleImageUpload(e, "hero.backgroundImage")} />
+            </label>
+            {hero.backgroundImage && <div style={s.imgPreviewBox}><img src={hero.backgroundImage} alt="Hero Bkg" style={{ width: "100%", display: "block" }} /></div>}
           </div>
         </div>
       )}

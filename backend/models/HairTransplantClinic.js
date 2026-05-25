@@ -4,10 +4,12 @@ const HairTransplantClinicSchema = new mongoose.Schema({
   hero: {
     backgroundImage: { type: String, default: '' },
     doctorImage: { type: String, default: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777595561/dmc-trichology/f8w7h9n3lqj306r8rxtk.png' },
-    mainHeading: { type: String, default: 'PREMIUM HAIR TRANSPLANT CLINIC IN DELHI' },
+    mainHeading: { type: String, default: 'Hair Transplant Clinic In Delhi' },
+    eyebrowText: { type: String, default: 'PREMIUM HAIR RESTORATION CLINIC' },
+    breadcrumbText: { type: String, default: 'Hair Transplant Clinic In Delhi' },
     doctorName: { type: String, default: 'DMC Trichology' },
     degreeText: { type: String, default: 'Advanced Hair Restoration Sciences' },
-    descriptionParagraph: { type: String, default: 'Transform your confidence with Delhi’s most advanced, premium hair transplant procedures. Combining world-class US-FDA approved technologies with the artistic precision of board-certified clinical specialists, DMC Trichology delivers natural-looking, high-density results that last a lifetime.' },
+    descriptionParagraph: { type: String, default: 'Premium hair restoration solutions with advanced technology, expert specialists, and world-class patient care.' },
     namePlaceholder: { type: String, default: 'Name*' },
     phonePlaceholder: { type: String, default: 'Mobile Number*' },
     emailPlaceholder: { type: String, default: 'E-Mail Address*' },
@@ -16,7 +18,14 @@ const HairTransplantClinicSchema = new mongoose.Schema({
     captchaPlaceholder: { type: String, default: 'Code*' },
     submitButtonText: { type: String, default: 'Request A Call Back' },
     backgroundColor: { type: String, default: '#0b132b' },
-    overlayOpacity: { type: Number, default: 0.6 }
+    gradientColor: { type: String, default: '#3b5998' },
+    overlayOpacity: { type: Number, default: 0.6 },
+    showFloatingShapes: { type: Boolean, default: true },
+    paddingTop: { type: String, default: '170px' },
+    paddingBottom: { type: String, default: '100px' },
+    bannerHeight: { type: String, default: '420px' },
+    mobileTitleSize: { type: String, default: '40px' },
+    mobileDescSize: { type: String, default: '14px' }
   },
   breadcrumb: {
     parentLabel: { type: String, default: 'Home' },
