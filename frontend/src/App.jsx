@@ -60,6 +60,8 @@ import VisualLiveBuilder from "./pages/cms/VisualLiveBuilder";
 import AboutDrNandaniCMS from "./pages/cms/AboutDrNandaniCMS";
 import AboutDrNiveditaCMS from "./pages/cms/AboutDrNiveditaCMS";
 import DrNandaniLeads from "./pages/DrNandaniLeads";
+import HairTransplantClinicCMS from "./pages/cms/HairTransplantClinicCMS";
+import HairTransplantClinicLeads from "./pages/HairTransplantClinicLeads";
 import DetailsBannerCMS from "./pages/cms/DetailsBannerCMS";
 import ServiceIntroCMS from "./pages/cms/ServiceIntroCMS";
 import ProcessSliderCMS from "./pages/cms/ProcessSliderCMS";
@@ -249,6 +251,14 @@ function App() {
           element={
             <ProtectedRoute permission="cms">
               <AboutDrNiveditaCMS />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cms/hair-transplant-clinic"
+          element={
+            <ProtectedRoute permission="cms">
+              <HairTransplantClinicCMS />
             </ProtectedRoute>
           }
         />
@@ -649,6 +659,14 @@ function App() {
           element={
             <ProtectedRoute permission="users">
               <DrNandaniLeads />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="leads/hair-transplant-clinic"
+          element={
+            <ProtectedRoute permission="users">
+              <HairTransplantClinicLeads />
             </ProtectedRoute>
           }
         />

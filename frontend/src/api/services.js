@@ -686,3 +686,33 @@ export const exportDrNandaniLeadsCsv = async (params) => {
   const queryStr = params ? new URLSearchParams(params).toString() : "";
   return downloadCsv(`/about-dr-nandani/leads/export${queryStr ? `?${queryStr}` : ""}`, "dr-nandani-leads.csv");
 };
+
+// ========================
+// ✅ Hair Transplant Clinic Leads
+// ========================
+
+export const getHairTransplantLeads = async (params) => {
+  const { data } = await api.get("/hair-transplant-clinic-in-delhi/leads", { params });
+  return data;
+};
+
+export const updateHairTransplantLead = async (id, payload) => {
+  const { data } = await api.put(`/hair-transplant-clinic-in-delhi/leads/${id}`, payload);
+  return data;
+};
+
+export const deleteHairTransplantLead = async (id) => {
+  const { data } = await api.delete(`/hair-transplant-clinic-in-delhi/leads/${id}`);
+  return data;
+};
+
+export const bulkDeleteHairTransplantLeads = async (payload) => {
+  const { data } = await api.post("/hair-transplant-clinic-in-delhi/leads/bulk-delete", payload);
+  return data;
+};
+
+export const exportHairTransplantLeadsCsv = async (params) => {
+  const queryStr = params ? new URLSearchParams(params).toString() : "";
+  return downloadCsv(`/hair-transplant-clinic-in-delhi/leads/export${queryStr ? `?${queryStr}` : ""}`, "hair-transplant-clinic-leads.csv");
+};
+

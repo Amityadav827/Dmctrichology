@@ -150,6 +150,20 @@ export default function VisualLiveBuilder() {
         { id: 'about-nivedita-associations', label: 'Dr Nivedita Associations' }
       ];
     }
+    if (currentSlug === 'hair-transplant-clinic-in-delhi') {
+      return [
+        { id: 'hair-clinic-hero', label: 'Hair Transplant Clinic Hero' },
+        { id: 'hair-clinic-breadcrumb', label: 'Hair Transplant Clinic Breadcrumb' },
+        { id: 'hair-clinic-intro', label: 'Hair Transplant Clinic Intro' },
+        { id: 'hair-clinic-procedures', label: 'Hair Transplant Clinic Procedures' },
+        { id: 'hair-clinic-timeline', label: 'Hair Transplant Clinic Timeline' },
+        { id: 'hair-clinic-patient-care', label: 'Hair Transplant Clinic Patient Care' },
+        { id: 'hair-clinic-associations', label: 'Hair Transplant Clinic Associations' },
+        { id: 'hair-clinic-reviews', label: 'Hair Transplant Clinic Reviews' },
+        { id: 'hair-clinic-faq', label: 'Hair Transplant Clinic FAQ' },
+        { id: 'hair-clinic-cta', label: 'Hair Transplant Clinic CTA' }
+      ];
+    }
     return allSections;
   };
 
@@ -277,6 +291,16 @@ export default function VisualLiveBuilder() {
           case 'about-nandani-other-specialities':
           case 'about-nandani-testimonials':
           case 'about-nandani-faq': endpoint = '/about-dr-nandani'; break;
+          case 'hair-clinic-hero':
+          case 'hair-clinic-breadcrumb':
+          case 'hair-clinic-intro':
+          case 'hair-clinic-procedures':
+          case 'hair-clinic-timeline':
+          case 'hair-clinic-patient-care':
+          case 'hair-clinic-associations':
+          case 'hair-clinic-reviews':
+          case 'hair-clinic-faq':
+          case 'hair-clinic-cta': endpoint = '/hair-transplant-clinic-in-delhi'; break;
           default: endpoint = `/sections/${sectionId}`;
         }
 
@@ -548,7 +572,17 @@ export default function VisualLiveBuilder() {
                             'Dr Nivedita Featured In': '/cms/about-dr-nivedita',
                             'Dr Nivedita Patient Care': '/cms/about-dr-nivedita',
                             'Dr Nivedita Other Specialities': '/cms/about-dr-nivedita',
-                            'Dr Nivedita Associations': '/cms/about-dr-nivedita'
+                            'Dr Nivedita Associations': '/cms/about-dr-nivedita',
+                            'Hair Transplant Clinic Hero': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic Breadcrumb': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic Intro': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic Procedures': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic Timeline': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic Patient Care': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic Associations': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic Reviews': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic FAQ': '/cms/hair-transplant-clinic',
+                            'Hair Transplant Clinic CTA': '/cms/hair-transplant-clinic'
                           };
                           if(routeMap[activeSection.label]) navigate(routeMap[activeSection.label]);
                         }}

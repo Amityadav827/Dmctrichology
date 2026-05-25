@@ -1,0 +1,1062 @@
+/* Isolated Styling sheet for Hair Transplant Clinic flagships */
+
+.hair-clinic-body {
+  background-color: #ffffff;
+  color: #1e293b;
+  font-family: 'Marcellus', serif !important;
+}
+
+/* ────────────────────────────────────────────────────────
+   ANIMATIONS & TINTS
+   ──────────────────────────────────────────────────────── */
+@keyframes hairClinicFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hair-clinic-fade-in {
+  animation: hairClinicFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ────────────────────────────────────────────────────────
+   HERO STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-hero-section {
+  position: relative;
+  padding: 160px 5% 100px 5%;
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  overflow: hidden;
+  width: 100%;
+}
+
+.hair-clinic-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: #000000;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hair-clinic-hero-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 56px;
+  align-items: center;
+  max-width: 1350px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hair-clinic-doctor-portrait-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.hair-clinic-portrait-holder {
+  border: 8px solid #ffffff;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.hair-clinic-portrait-holder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hair-clinic-hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.hair-clinic-hero-badge {
+  font-family: 'Marcellus', serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+  color: #e4b753 !important; /* Premium Gold */
+  margin-bottom: 14px;
+  display: inline-block;
+}
+
+.hair-clinic-hero-title {
+  font-family: 'Marcellus', serif !important;
+  font-size: 44px !important;
+  font-weight: 400 !important;
+  color: #ffffff !important;
+  margin-bottom: 14px;
+  line-height: 1.15 !important;
+  text-transform: uppercase;
+}
+
+.hair-clinic-hero-degree {
+  display: inline-block;
+  padding: 6px 16px;
+  background-color: #e4b753;
+  color: #0b132b;
+  border-radius: 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-family: 'Lato', sans-serif !important;
+  margin-bottom: 24px;
+}
+
+.hair-clinic-hero-desc {
+  font-family: 'Marcellus', serif !important;
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+  color: #e2e8f0 !important;
+  margin-bottom: 36px;
+}
+
+.hair-clinic-paper-form {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+  color: #1e293b;
+  width: 100%;
+}
+
+.hair-clinic-paper-form h3 {
+  font-family: 'Marcellus', serif !important;
+  font-size: 22px !important;
+  color: #0b132b !important;
+  margin-bottom: 24px !important;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.hair-clinic-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.hair-clinic-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 1px solid #cbd5e1;
+  border-radius: 30px;
+  font-size: 13.5px;
+  font-family: 'Marcellus', serif !important;
+  outline: none;
+  background-color: #ffffff;
+  transition: all 0.25s ease;
+  height: 48px;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.hair-clinic-input:focus {
+  border-color: #e4b753;
+  box-shadow: 0 0 0 3px rgba(228, 183, 83, 0.2);
+}
+
+.hair-clinic-textarea {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  font-size: 13.5px;
+  font-family: 'Marcellus', serif !important;
+  outline: none;
+  background-color: #ffffff;
+  transition: all 0.25s ease;
+  min-height: 90px;
+  resize: none;
+  color: #1e293b;
+  grid-column: span 2;
+  box-sizing: border-box;
+}
+
+.hair-clinic-textarea:focus {
+  border-color: #e4b753;
+  box-shadow: 0 0 0 3px rgba(228, 183, 83, 0.2);
+}
+
+.hair-clinic-captcha-box {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.hair-clinic-captcha-badge {
+  background-color: #0b132b;
+  color: #e4b753;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 4px;
+  border-radius: 30px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  font-family: 'Marcellus', serif !important;
+  cursor: pointer;
+  border: 1px solid #e4b753;
+}
+
+.hair-clinic-alert {
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-family: 'Lato', sans-serif !important;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.hair-clinic-alert-success {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.hair-clinic-alert-error {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+.hair-clinic-submit-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 30px;
+  background-color: #0b132b;
+  color: #ffffff;
+  border: 1px solid #e4b753;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Marcellus', serif !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.25s ease;
+  height: 50px;
+}
+
+.hair-clinic-submit-btn:hover {
+  background-color: #172242;
+  box-shadow: 0 6px 20px rgba(11, 19, 43, 0.25);
+  transform: translateY(-1px);
+}
+
+.hair-clinic-submit-btn:disabled {
+  background-color: #cbd5e1;
+  color: #64748b;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.hair-clinic-arrow-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #e4b753;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+}
+
+.hair-clinic-submit-btn:hover .hair-clinic-arrow-circle {
+  transform: rotate(0deg) translateX(2px);
+}
+
+/* ────────────────────────────────────────────────────────
+   BREADCRUMBS STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-breadcrumbs-bar {
+  padding: 16px 5%;
+  font-size: 13.5px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.hair-clinic-breadcrumbs-content {
+  max-width: 1350px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  color: #64748b;
+}
+
+.hair-clinic-breadcrumbs-link {
+  color: #3b5998;
+  transition: color 0.2s ease;
+}
+
+.hair-clinic-breadcrumbs-link:hover {
+  color: #e4b753;
+  text-decoration: underline;
+}
+
+/* ────────────────────────────────────────────────────────
+   WELCOME / INTRO STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-welcome-section {
+  padding: 100px 5%;
+  background-color: #ffffff;
+}
+
+.hair-clinic-welcome-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 72px;
+  align-items: center;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.hair-clinic-welcome-content h2 {
+  font-size: 38px;
+  color: #0b132b;
+  margin-bottom: 24px;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.hair-clinic-welcome-body {
+  font-size: 15.5px;
+  line-height: 1.75;
+  color: #475569;
+  margin-bottom: 30px;
+}
+
+.hair-clinic-welcome-body p {
+  margin-bottom: 16px;
+}
+
+.hair-clinic-welcome-quote {
+  border-left: 3px solid #e4b753;
+  padding-left: 20px;
+  font-size: 17px;
+  font-style: italic;
+  color: #0b132b;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.hair-clinic-welcome-media {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.hair-clinic-welcome-image-frame {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 4/4.8;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.hair-clinic-welcome-image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ────────────────────────────────────────────────────────
+   PROCEDURES GRID STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-procedures-section {
+  padding: 100px 5%;
+  background-color: #f8fafc;
+}
+
+.hair-clinic-procedures-container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.hair-clinic-section-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 60px auto;
+}
+
+.hair-clinic-section-header h2 {
+  font-size: 38px;
+  color: #0b132b;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.hair-clinic-section-header p {
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.hair-clinic-procedures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+}
+
+.hair-clinic-procedure-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.35s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.hair-clinic-procedure-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 35px rgba(11, 19, 43, 0.1);
+  border-color: #bfdbfe;
+}
+
+.hair-clinic-procedure-card-image {
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background-color: #f1f5f9;
+}
+
+.hair-clinic-procedure-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.hair-clinic-procedure-card:hover .hair-clinic-procedure-card-image img {
+  transform: scale(1.05);
+}
+
+.hair-clinic-procedure-card-body {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hair-clinic-procedure-card-body h3 {
+  font-size: 20px;
+  color: #0b132b;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.hair-clinic-procedure-card-body p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.hair-clinic-procedure-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: #3b5998;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Lato', sans-serif !important;
+  transition: color 0.2s ease;
+}
+
+.hair-clinic-procedure-card-btn:hover {
+  color: #e4b753;
+}
+
+/* ────────────────────────────────────────────────────────
+   TIMELINE STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-timeline-section {
+  padding: 100px 5%;
+  background-color: #ffffff;
+}
+
+.hair-clinic-timeline-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.hair-clinic-timeline-wrapper {
+  position: relative;
+  margin-top: 60px;
+}
+
+.hair-clinic-timeline-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: #cbd5e1;
+  transform: translateX(-50%);
+}
+
+.hair-clinic-timeline-node {
+  position: relative;
+  margin-bottom: 60px;
+  width: 100%;
+}
+
+.hair-clinic-timeline-node::after {
+  content: '';
+  clear: both;
+  display: table;
+}
+
+.hair-clinic-timeline-marker {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  background-color: #e4b753;
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  box-shadow: 0 0 0 4px rgba(228, 183, 83, 0.25);
+  transition: background-color 0.3s ease;
+}
+
+.hair-clinic-timeline-node:hover .hair-clinic-timeline-marker {
+  background-color: #0b132b;
+}
+
+.hair-clinic-timeline-item {
+  position: relative;
+  width: 45%;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.hair-clinic-timeline-node:nth-child(odd) .hair-clinic-timeline-item {
+  float: left;
+  text-align: right;
+}
+
+.hair-clinic-timeline-node:nth-child(even) .hair-clinic-timeline-item {
+  float: right;
+  text-align: left;
+}
+
+.hair-clinic-timeline-item-year {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: #0b132b;
+  color: #e4b753;
+  font-family: 'Lato', sans-serif !important;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.hair-clinic-timeline-item h3 {
+  font-size: 18px;
+  color: #0b132b;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.hair-clinic-timeline-item p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ────────────────────────────────────────────────────────
+   PATIENT CARE STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-care-section {
+  padding: 100px 5%;
+  background-color: #f8fafc;
+}
+
+.hair-clinic-care-container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.hair-clinic-care-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+}
+
+.hair-clinic-care-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.hair-clinic-care-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: #e4b753;
+}
+
+.hair-clinic-care-card h3 {
+  font-size: 22px;
+  color: #0b132b;
+  margin-bottom: 16px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.hair-clinic-care-card h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background-color: #e4b753;
+}
+
+.hair-clinic-care-card p {
+  font-size: 14.5px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+/* ────────────────────────────────────────────────────────
+   ASSOCIATIONS / CERTIFICATIONS STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-associations-bar {
+  padding: 60px 5%;
+  background-color: #ffffff;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.hair-clinic-associations-container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.hair-clinic-associations-container h4 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #64748b;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hair-clinic-associations-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.hair-clinic-association-logo-card {
+  padding: 16px 28px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-width: 140px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  transition: all 0.3s ease;
+}
+
+.hair-clinic-association-logo-card img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.hair-clinic-association-logo-card:hover {
+  border-color: #e4b753;
+  background-color: #ffffff;
+  color: #0b132b;
+}
+
+/* ────────────────────────────────────────────────────────
+   REVIEWS / TESTIMONIALS STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-reviews-section {
+  padding: 100px 5%;
+  background-color: #ffffff;
+}
+
+.hair-clinic-reviews-container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.hair-clinic-reviews-summary-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  background-color: #0b132b;
+  color: #ffffff;
+  border-radius: 50px;
+  margin-bottom: 24px;
+  border: 1px solid #e4b753;
+  box-shadow: 0 4px 15px rgba(11, 19, 43, 0.15);
+}
+
+.hair-clinic-reviews-stars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #f59e0b; /* Amber */
+}
+
+.hair-clinic-reviews-rating {
+  font-weight: 700;
+  font-size: 15px;
+  font-family: 'Lato', sans-serif !important;
+}
+
+.hair-clinic-reviews-count {
+  font-size: 12.5px;
+  color: #cbd5e1;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hair-clinic-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.hair-clinic-review-card {
+  background-color: #f8fafc;
+  border-radius: 16px;
+  padding: 32px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hair-clinic-review-author-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.hair-clinic-review-author {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0b132b;
+}
+
+.hair-clinic-review-verified {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #16a34a; /* Green */
+  background-color: #dcfce7;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Lato', sans-serif !important;
+}
+
+.hair-clinic-review-card p {
+  font-size: 14.5px;
+  color: #475569;
+  line-height: 1.65;
+  font-style: italic;
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.hair-clinic-review-date {
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-weight: 600;
+  font-family: 'Lato', sans-serif !important;
+}
+
+/* ────────────────────────────────────────────────────────
+   FAQ STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-faq-section {
+  padding: 100px 5%;
+  background-color: #f8fafc;
+}
+
+.hair-clinic-faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hair-clinic-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hair-clinic-faq-accordion {
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s ease;
+}
+
+.hair-clinic-faq-accordion:hover {
+  border-color: #e4b753;
+}
+
+.hair-clinic-faq-header {
+  width: 100%;
+  padding: 20px 24px;
+  background: none;
+  border: none;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  font-family: 'Marcellus', serif !important;
+}
+
+.hair-clinic-faq-header h3 {
+  font-size: 16.5px;
+  color: #0b132b;
+  font-weight: 600;
+  margin: 0;
+  padding-right: 16px;
+}
+
+.hair-clinic-faq-icon {
+  font-size: 18px;
+  color: #94a3b8;
+  transition: transform 0.3s ease;
+}
+
+.hair-clinic-faq-accordion-active .hair-clinic-faq-icon {
+  transform: rotate(180deg);
+  color: #e4b753;
+}
+
+.hair-clinic-faq-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hair-clinic-faq-accordion-active .hair-clinic-faq-body {
+  max-height: 400px;
+}
+
+.hair-clinic-faq-content {
+  padding: 0 24px 24px 24px;
+  font-size: 14.5px;
+  color: #475569;
+  line-height: 1.65;
+  border-top: 1px dashed #f1f5f9;
+  padding-top: 16px;
+}
+
+/* ────────────────────────────────────────────────────────
+   CTA CONVERSION STYLE
+   ──────────────────────────────────────────────────────── */
+.hair-clinic-cta-section {
+  padding: 100px 5%;
+  background: linear-gradient(135deg, #0b132b 0%, #1a2a54 100%);
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-top: 2px solid #e4b753;
+}
+
+.hair-clinic-cta-container {
+  max-width: 750px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hair-clinic-cta-container h2 {
+  font-size: 40px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.hair-clinic-cta-container p {
+  font-size: 16.5px;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.hair-clinic-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 36px;
+  background-color: #e4b753;
+  color: #0b132b;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Lato', sans-serif !important;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(228, 183, 83, 0.25);
+}
+
+.hair-clinic-cta-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 30px rgba(228, 183, 83, 0.35);
+}
+
+.hair-clinic-cta-btn:active {
+  transform: scale(0.98);
+}
+
+/* ────────────────────────────────────────────────────────
+   RESPONSIVE DESIGN (MEDIA QUERIES)
+   ──────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hair-clinic-hero-section {
+    padding: 120px 5% 70px 5% !important;
+  }
+  
+  .hair-clinic-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  
+  .hair-clinic-hero-content {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .hair-clinic-portrait-holder {
+    max-width: 360px;
+  }
+  
+  .hair-clinic-welcome-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  
+  .hair-clinic-welcome-image-frame {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hair-clinic-hero-title {
+    font-size: 34px !important;
+  }
+  
+  .hair-clinic-welcome-content h2,
+  .hair-clinic-section-header h2,
+  .hair-clinic-cta-container h2 {
+    font-size: 30px !important;
+  }
+  
+  .hair-clinic-timeline-wrapper::before {
+    left: 20px;
+  }
+  
+  .hair-clinic-timeline-marker {
+    left: 20px;
+  }
+  
+  .hair-clinic-timeline-item {
+    width: calc(100% - 50px);
+    float: right !important;
+    text-align: left !important;
+  }
+  
+  .hair-clinic-timeline-node {
+    margin-bottom: 40px;
+  }
+  
+  .hair-clinic-form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .hair-clinic-textarea {
+    grid-column: span 1;
+  }
+}

@@ -178,6 +178,9 @@ function Sidebar() {
                       <NavLink to="/cms/about-dr-nivedita" className={getNavClass}>
                         <User size={16} /> About Dr Nivedita
                       </NavLink>
+                      <NavLink to="/cms/hair-transplant-clinic" className={getNavClass}>
+                        <User size={16} /> Hair Transplant Clinic
+                      </NavLink>
                     </div>
                   )}
                 </div>
@@ -235,6 +238,9 @@ function Sidebar() {
                 </NavLink>
                 <NavLink to="/leads/dr-nandani" className={getNavClass}>
                   <User size={16} /> Dr Nandani Leads
+                </NavLink>
+                <NavLink to="/leads/hair-transplant-clinic" className={getNavClass}>
+                  <User size={16} /> Hair Transplant Leads
                 </NavLink>
                 <NavLink to="/leads/newsletter" className={getNavClass}>
                   <Users size={16} /> Newsletter Subscribers
