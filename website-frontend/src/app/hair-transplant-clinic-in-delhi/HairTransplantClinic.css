@@ -25,114 +25,8 @@
 }
 
 /* ────────────────────────────────────────────────────────
-   HERO STYLE
+   HERO STYLE (Moved 100% scoped to HairTransplantClinicHero.jsx for 1:1 Visual Clone)
    ──────────────────────────────────────────────────────── */
-.hair-clinic-hero-section {
-  position: relative;
-  padding: 160px 5% 100px 5%;
-  background-size: cover;
-  background-position: center;
-  color: #ffffff;
-  overflow: hidden;
-  width: 100%;
-}
-
-.hair-clinic-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background-color: #000000;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.hair-clinic-hero-grid {
-  display: grid;
-  grid-template-columns: 0.95fr 1.05fr;
-  gap: 56px;
-  align-items: center;
-  max-width: 1350px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
-}
-
-.hair-clinic-doctor-portrait-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.hair-clinic-portrait-holder {
-  border: 8px solid #ffffff;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 440px;
-  aspect-ratio: 4/5;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-}
-
-.hair-clinic-portrait-holder img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.hair-clinic-hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.hair-clinic-hero-badge {
-  font-family: 'Marcellus', serif !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  letter-spacing: 3px !important;
-  text-transform: uppercase !important;
-  color: #e4b753 !important; /* Premium Gold */
-  margin-bottom: 14px;
-  display: inline-block;
-}
-
-.hair-clinic-hero-title {
-  font-family: 'Marcellus', serif !important;
-  font-size: 44px !important;
-  font-weight: 400 !important;
-  color: #ffffff !important;
-  margin-bottom: 14px;
-  line-height: 1.15 !important;
-  text-transform: uppercase;
-}
-
-.hair-clinic-hero-degree {
-  display: inline-block;
-  padding: 6px 16px;
-  background-color: #e4b753;
-  color: #0b132b;
-  border-radius: 4px;
-  font-size: 12.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'Lato', sans-serif !important;
-  margin-bottom: 24px;
-}
-
-.hair-clinic-hero-desc {
-  font-family: 'Marcellus', serif !important;
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-  color: #e2e8f0 !important;
-  margin-bottom: 36px;
-}
 
 .hair-clinic-paper-form {
   background-color: #ffffff;
@@ -994,24 +888,6 @@
    RESPONSIVE DESIGN (MEDIA QUERIES)
    ──────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .hair-clinic-hero-section {
-    padding: 120px 5% 70px 5% !important;
-  }
-  
-  .hair-clinic-hero-grid {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-  
-  .hair-clinic-hero-content {
-    align-items: center;
-    text-align: center;
-  }
-  
-  .hair-clinic-portrait-holder {
-    max-width: 360px;
-  }
-  
   .hair-clinic-welcome-grid {
     grid-template-columns: 1fr;
     gap: 48px;
@@ -1023,9 +899,6 @@
 }
 
 @media (max-width: 768px) {
-  .hair-clinic-hero-title {
-    font-size: 34px !important;
-  }
   
   .hair-clinic-welcome-content h2,
   .hair-clinic-section-header h2,

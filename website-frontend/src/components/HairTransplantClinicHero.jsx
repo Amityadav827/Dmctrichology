@@ -138,6 +138,12 @@ export default function HairTransplantClinicHero({ data = {} }) {
           position: relative;
           z-index: 3;
           animation: hairClinicContentFadeIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+          text-align: center !important;
+          width: 100% !important;
         }
 
         @keyframes hairClinicContentFadeIn {
@@ -151,11 +157,13 @@ export default function HairTransplantClinicHero({ data = {} }) {
           font-size: 60px !important;
           font-weight: 400 !important;
           color: #ffffff !important;
-          margin: 0 0 20px !important;
+          margin: 0 auto 20px auto !important;
           letter-spacing: 1px !important;
           line-height: 1.15 !important;
           text-shadow: 0 4px 24px rgba(0,0,0,0.3);
           text-transform: none !important; /* mixed case matches press media title */
+          text-align: center !important;
+          display: block !important;
         }
 
         /* Elegant Breadcrumbs layout cloned from PressMediaHero */
