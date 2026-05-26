@@ -1,14 +1,27 @@
 const ServiceCard = require("../models/ServiceCard");
-const ServiceDetail = require("../models/ServiceDetail");
+const supabase = require("../config/supabase");
 
 exports.getServices = async (req, res) => {
   try {
     const services = await ServiceCard.find().sort({ sortOrder: 1 });
     
-    // Dynamically retrieve real-time rating, reviewCount, and duration from corresponding ServiceDetail
+    // Dynamically retrieve real-time rating, reviewCount, and duration from corresponding ServiceDetail in Supabase
     const populatedServices = await Promise.all(
       services.map(async (service) => {
-        const detail = await ServiceDetail.findOne({ slug: service.slug }).lean();
+        let detail = null;
+        try {
+          const { data: rows, error } = await supabase
+            .from('service_details')
+            .select('data')
+            .eq('slug', service.slug)
+            .limit(1);
+          
+          if (!error && rows && rows.length > 0) {
+            detail = rows[0].data;
+          }
+        } catch (dbErr) {
+          console.error(`Error fetching service detail from Supabase for slug ${service.slug}:`, dbErr);
+        }
         
         // Merge values cleanly with safe backward compatibility fallbacks
         const ratingVal = detail?.banner?.rating ?? 4.8;
