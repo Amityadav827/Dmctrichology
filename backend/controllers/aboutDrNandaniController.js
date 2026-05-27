@@ -333,7 +333,9 @@ exports.getSettings = async (req, res) => {
       }
 
       const row = rows[0];
+      // Self-healing merge: fallbackData defaults are overwritten by actual saved DB fields
       const responseData = {
+        ...fallbackData,
         ...row.data,
         id: row.id,
         createdAt: row.created_at,
@@ -342,6 +344,7 @@ exports.getSettings = async (req, res) => {
 
       return res.status(200).json({ success: true, data: responseData });
     }
+
 
     // --- MongoDB legacy path ---
     console.log("🍃 [Dr. Nandani API] Routing GET settings request to MONGODB");
@@ -377,10 +380,12 @@ exports.updateSettings = async (req, res) => {
         existingData = existingRows[0].data || {};
       }
 
-      const mergedData = { ...existingData, ...updateData };
+      // Self-healing merge baseline: fallbackData + existingData + updateData
+      const mergedData = { ...fallbackData, ...existingData, ...updateData };
       delete mergedData.id;
       delete mergedData.createdAt;
       delete mergedData.updatedAt;
+
 
       const { data: savedRow, error: upsertErr } = await supabase
         .from('about_dr_nandani')
