@@ -1,4 +1,5 @@
 const Footer = require('../models/Footer');
+const { useSupabaseGlobals, getGlobalSetting, updateGlobalSetting } = require('../utils/supabaseGlobalHelper');
 
 const defaultColumns = [
   {
@@ -35,33 +36,40 @@ const defaultSocials = [
   { id: 's5', icon: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/lhgvbca5okvyge6atokb.png', url: '#' }
 ];
 
+const defaultFooterData = {
+  columns: defaultColumns,
+  socials: defaultSocials,
+  contact: {
+    heading: "CONTACT US",
+    address1: "Vasant Vihar A 2/6 Vasant Vihar, New delhi 110057, India",
+    address2: "Rajouri Garden J-12/25, First Floor, Rajouri Garden New Delhi 110027, India",
+    phone1: "+91-8527830194",
+    phone2: "+91-9810939319",
+    email: "info@dadumedicalcentre.com"
+  },
+  branding: {
+    logo: "https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png",
+    aboutText: "One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures."
+  },
+  bottomFooter: {
+    copyright: "© 2024 . All Rights Reserved.",
+    termsText: "Terms And Condition",
+    termsLink: "#",
+    privacyText: "Privacy Policy",
+    privacyLink: "#"
+  }
+};
+
 exports.getFooter = async (req, res) => {
   try {
+    if (useSupabaseGlobals()) {
+      const footer = await getGlobalSetting('footer', defaultFooterData);
+      return res.json({ success: true, data: footer });
+    }
+
     let data = await Footer.findOne();
     if (!data) {
-      data = await Footer.create({
-        columns: defaultColumns,
-        socials: defaultSocials,
-        contact: {
-          heading: "CONTACT US",
-          address1: "Vasant Vihar A 2/6 Vasant Vihar, New delhi 110057, India",
-          address2: "Rajouri Garden J-12/25, First Floor, Rajouri Garden New Delhi 110027, India",
-          phone1: "+91-8527830194",
-          phone2: "+91-9810939319",
-          email: "info@dadumedicalcentre.com"
-        },
-        branding: {
-          logo: "https://res.cloudinary.com/dseixl6px/image/upload/v1777702974/dmc-trichology/ecj7tvcjxbkqhzixfdql.png",
-          aboutText: "One of the best Skin and Hair treatment centres in India, DMC-TRICHOLOGY® provides an array of both cosmetological and trichological treatment procedures."
-        },
-        bottomFooter: {
-          copyright: "© 2024 . All Rights Reserved.",
-          termsText: "Terms And Condition",
-          termsLink: "#",
-          privacyText: "Privacy Policy",
-          privacyLink: "#"
-        }
-      });
+      data = await Footer.create(defaultFooterData);
     }
     res.json({ success: true, data });
   } catch (error) {
@@ -71,21 +79,29 @@ exports.getFooter = async (req, res) => {
 
 exports.updateFooter = async (req, res) => {
   try {
-    let data = await Footer.findOne();
-    if (!data) data = new Footer();
-
     const u = req.body;
-    if (u.enabled !== undefined) data.enabled = u.enabled;
-    if (u.columns !== undefined) data.columns = u.columns;
-    if (u.contact !== undefined) data.contact = u.contact;
-    if (u.disclaimer !== undefined) data.disclaimer = u.disclaimer;
-    if (u.newsletter !== undefined) data.newsletter = u.newsletter;
-    if (u.branding !== undefined) data.branding = u.branding;
-    if (u.socials !== undefined) data.socials = u.socials;
-    if (u.bottomFooter !== undefined) data.bottomFooter = u.bottomFooter;
 
-    await data.save();
-    res.json({ success: true, data });
+    // Update in MongoDB first (rollback backup)
+    let dataMongo = await Footer.findOne();
+    if (!dataMongo) dataMongo = new Footer();
+
+    if (u.enabled !== undefined) dataMongo.enabled = u.enabled;
+    if (u.columns !== undefined) dataMongo.columns = u.columns;
+    if (u.contact !== undefined) dataMongo.contact = u.contact;
+    if (u.disclaimer !== undefined) dataMongo.disclaimer = u.disclaimer;
+    if (u.newsletter !== undefined) dataMongo.newsletter = u.newsletter;
+    if (u.branding !== undefined) dataMongo.branding = u.branding;
+    if (u.socials !== undefined) dataMongo.socials = u.socials;
+    if (u.bottomFooter !== undefined) dataMongo.bottomFooter = u.bottomFooter;
+    await dataMongo.save();
+
+    // Update in Supabase if active
+    if (useSupabaseGlobals()) {
+      const footerSupa = await updateGlobalSetting('footer', defaultFooterData, u);
+      return res.json({ success: true, data: footerSupa });
+    }
+
+    res.json({ success: true, data: dataMongo });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
