@@ -1,6 +1,31 @@
 const AboutDrNivedita = require('../models/AboutDrNivedita');
 const AboutDrNiveditaLead = require('../models/AboutDrNiveditaLead');
 const uploadToSupabase = require('../utils/uploadToSupabase');
+const supabase = require('../config/supabase');
+
+// Feature Flag Check
+const useSupabase = () => {
+  return process.env.USE_SUPABASE_FOR_NIVEDITA === 'true';
+};
+
+// Mappings from PostgreSQL snake_case to Mongoose camelCase for Leads dashboard compatibility
+const mapLeadToMongooseFormat = (row) => {
+  if (!row) return null;
+  return {
+    _id: row.id,
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    mobile: row.mobile,
+    service: row.service,
+    appointmentDate: row.appointment_date,
+    message: row.message,
+    status: row.status,
+    notes: row.notes,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  };
+};
 
 // Standard fallback data for absolute SSR safety
 const fallbackData = {
@@ -82,7 +107,7 @@ const fallbackData = {
     leftHeading: 'EXPERTISE IN DERMATOLOGY & HAIR TREATMENT',
     leftText: '<p>Dr. Nivedita Dadu\'s cutting-edge Hair Loss Treatment techniques have made a significant difference. She is recognized as a <strong>leading dermatologist and trichologist in Delhi</strong> available at DMC Trichology.</p>',
     rightHeading: 'COMMITMENT TO PATIENT CARE',
-    rightText: '<p>Dr. Nivedita Dadu places a high value on the doctor-patient relationship, ensuring individualized care at every step of the treatment journey.</p>',
+    rightText: '<p>Dr. Nivedita Dadu places a high value on the doctor-patient relationship, ensuring springboard care at every step of the treatment journey.</p>',
     paddingBottom: '80px'
   },
   otherSpecialitiesSection: {
@@ -165,34 +190,131 @@ const fallbackData = {
 // 1. PAGE SETTINGS CMS API
 // ==========================================
 
+// Get settings
 exports.getSettings = async (req, res) => {
   try {
+    if (useSupabase()) {
+      console.log("⚡ [Dr. Nivedita API] Routing GET settings request to SUPABASE");
+      
+      const { data: rows, error } = await supabase
+        .from('about_dr_nivedita')
+        .select('id, data, created_at, updated_at')
+        .eq('id', 1)
+        .limit(1);
+
+      if (error) {
+        console.error('Supabase fetch error for Dr. Nivedita settings:', error.message);
+        return res.status(200).json({ success: true, data: fallbackData, isFallback: true });
+      }
+
+      if (!rows || rows.length === 0) {
+        console.log("⚠️ No settings record found in Supabase. Returning fallbacks.");
+        return res.status(200).json({ success: true, data: fallbackData, isFallback: true });
+      }
+
+      const row = rows[0];
+      // Self-healing merge baseline: fallbackData defaults are overwritten by actual saved DB fields
+      const responseData = {
+        ...fallbackData,
+        ...row.data,
+        id: row.id,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      };
+
+      return res.status(200).json({ success: true, data: responseData });
+    }
+
+    // --- MongoDB legacy path ---
+    console.log("🍃 [Dr. Nivedita API] Routing GET settings request to MONGODB");
     const settings = await AboutDrNivedita.findOne();
     if (!settings) {
       return res.status(200).json({ success: true, data: fallbackData, isFallback: true });
     }
     return res.status(200).json({ success: true, data: settings });
+
   } catch (error) {
     console.error('Error fetching Dr. Nivedita page settings:', error);
     return res.status(500).json({ success: false, message: 'Server error fetching settings' });
   }
 };
 
+// Update settings (upsert single document)
 exports.updateSettings = async (req, res) => {
   try {
     const updateData = req.body;
+
+    if (useSupabase()) {
+      console.log("⚡ [Dr. Nivedita API] Routing UPDATE settings request to SUPABASE");
+
+      // Deep-merge payload with pre-existing settings inside JSONB column
+      let existingData = {};
+      const { data: existingRows, error: fetchErr } = await supabase
+        .from('about_dr_nivedita')
+        .select('data')
+        .eq('id', 1)
+        .limit(1);
+
+      if (!fetchErr && existingRows && existingRows.length > 0) {
+        existingData = existingRows[0].data || {};
+      }
+
+      // Self-healing merge baseline: fallbackData + existingData + updateData
+      const mergedData = { ...fallbackData, ...existingData, ...updateData };
+      delete mergedData.id;
+      delete mergedData.createdAt;
+      delete mergedData.updatedAt;
+
+      const { data: savedRow, error: upsertErr } = await supabase
+        .from('about_dr_nivedita')
+        .upsert(
+          {
+            id: 1,
+            data: mergedData,
+            updated_at: new Date().toISOString()
+          },
+          {
+            onConflict: 'id',
+            ignoreDuplicates: false
+          }
+        )
+        .select('id, data, updated_at')
+        .single();
+
+      if (upsertErr) {
+        console.error('Supabase upsert settings error for Dr. Nivedita:', upsertErr.message);
+        return res.status(500).json({ success: false, message: 'Failed to save to Supabase', error: upsertErr.message });
+      }
+
+      const responseData = {
+        ...savedRow.data,
+        id: savedRow.id,
+        updatedAt: savedRow.updated_at
+      };
+
+      return res.status(200).json({
+        success: true,
+        data: responseData,
+        message: "Settings updated successfully on Supabase"
+      });
+    }
+
+    // --- MongoDB legacy path ---
+    console.log("🍃 [Dr. Nivedita API] Routing UPDATE settings request to MONGODB");
     const settings = await AboutDrNivedita.findOneAndUpdate(
       {},
       updateData,
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
     return res.status(200).json({ success: true, data: settings, message: 'Settings updated successfully' });
+
   } catch (error) {
     console.error('Error updating Dr. Nivedita page settings:', error);
     return res.status(500).json({ success: false, message: 'Server error updating settings' });
   }
 };
 
+// Upload media helper
 exports.uploadImage = async (req, res) => {
   try {
     if (!req.file) {
@@ -210,6 +332,7 @@ exports.uploadImage = async (req, res) => {
 // 2. ISOLATED LEADS API
 // ==========================================
 
+// Create new lead
 exports.createLead = async (req, res, next) => {
   try {
     const { name, email, mobile, service, appointmentDate, message } = req.body;
@@ -235,6 +358,56 @@ exports.createLead = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Please select a preferred appointment date.' });
     }
 
+    if (useSupabase()) {
+      console.log("⚡ [Dr. Nivedita API] Routing CREATE lead request to SUPABASE");
+
+      // Duplicate screening: screen for submissions in the last 2 minutes from same mobile
+      const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
+      const { data: duplicateRows, error: checkErr } = await supabase
+        .from('about_dr_nivedita_leads')
+        .select('id')
+        .eq('mobile', trimmedMobile)
+        .gte('created_at', twoMinutesAgo)
+        .limit(1);
+
+      if (!checkErr && duplicateRows && duplicateRows.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'You have already submitted a consultation request. Please wait a moment.'
+        });
+      }
+
+      const { data: insertedLead, error: insertErr } = await supabase
+        .from('about_dr_nivedita_leads')
+        .insert({
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          mobile: trimmedMobile,
+          service: service ? service.trim() : 'Dr. Nivedita Consultation',
+          appointment_date: new Date(appointmentDate).toISOString(),
+          message: message ? message.trim() : '',
+          status: 'new',
+          notes: ''
+        })
+        .select()
+        .single();
+
+      if (insertErr) {
+        console.error('Supabase lead insertion failure for Dr. Nivedita:', insertErr.message);
+        return res.status(500).json({ success: false, message: 'Failed to record lead in Supabase', error: insertErr.message });
+      }
+
+      const formattedResponse = mapLeadToMongooseFormat(insertedLead);
+
+      return res.status(201).json({
+        success: true,
+        data: formattedResponse,
+        message: 'Lead created successfully in Dr. Nivedita leads (Supabase)'
+      });
+    }
+
+    // --- MongoDB legacy path ---
+    console.log("🍃 [Dr. Nivedita API] Routing CREATE lead request to MONGODB");
     const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
     const existing = await AboutDrNiveditaLead.findOne({
       mobile: trimmedMobile,
@@ -270,8 +443,73 @@ exports.createLead = async (req, res, next) => {
   }
 };
 
+// Fetch Leads (Search, filter status, date range, pagination, sorts)
 exports.getLeads = async (req, res, next) => {
   try {
+    if (useSupabase()) {
+      console.log("⚡ [Dr. Nivedita API] Routing FETCH leads request to SUPABASE");
+      
+      let query = supabase
+        .from('about_dr_nivedita_leads')
+        .select('*', { count: 'exact' });
+
+      // Live search keywords (or block)
+      if (req.query.search) {
+        const searchVal = req.query.search.trim();
+        query = query.or(`name.ilike.%${searchVal}%,email.ilike.%${searchVal}%,mobile.ilike.%${searchVal}%,service.ilike.%${searchVal}%`);
+      }
+
+      // Status filter
+      if (req.query.status) {
+        query = query.eq('status', req.query.status.trim());
+      }
+
+      // Date range filter
+      if (req.query.startDate) {
+        query = query.gte('created_at', new Date(req.query.startDate).toISOString());
+      }
+      if (req.query.endDate) {
+        query = query.lte('created_at', new Date(`${req.query.endDate}T23:59:59.999Z`).toISOString());
+      }
+
+      // Sorting
+      const sortBy = req.query.sortBy || "createdAt";
+      const sortOrder = req.query.sortOrder || "desc";
+      const mappedSortBy = sortBy === 'appointmentDate' ? 'appointment_date' : (sortBy === 'createdAt' ? 'created_at' : sortBy);
+
+      query = query.order(mappedSortBy, { ascending: sortOrder === 'asc' });
+
+      // Pagination bounds
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
+
+      query = query.range(skip, skip + limit - 1);
+
+      const { data: rows, count, error } = await query;
+
+      if (error) {
+        console.error('Supabase fetch leads error for Dr. Nivedita:', error.message);
+        return res.status(500).json({ success: false, message: 'Failed to fetch leads', error: error.message });
+      }
+
+      const mongooseRows = (rows || []).map(row => mapLeadToMongooseFormat(row));
+
+      return res.status(200).json({
+        success: true,
+        count: mongooseRows.length,
+        data: mongooseRows,
+        pagination: {
+          page,
+          limit,
+          total: count,
+          totalPages: Math.ceil(count / limit)
+        }
+      });
+    }
+
+    // --- MongoDB legacy path ---
+    console.log("🍃 [Dr. Nivedita API] Routing FETCH leads request to MONGODB");
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -307,8 +545,28 @@ exports.getLeads = async (req, res, next) => {
   }
 };
 
+// Fetch single lead by id
 exports.getLeadById = async (req, res, next) => {
   try {
+    if (useSupabase()) {
+      console.log(`⚡ [Dr. Nivedita API] Fetching single lead ${req.params.id} from SUPABASE`);
+      const { data: row, error } = await supabase
+        .from('about_dr_nivedita_leads')
+        .select('*')
+        .eq('id', req.params.id)
+        .limit(1)
+        .single();
+
+      if (error) {
+        console.error('Supabase fetch lead error:', error.message);
+        return res.status(404).json({ success: false, message: "Lead not found" });
+      }
+
+      return res.status(200).json({ success: true, data: mapLeadToMongooseFormat(row) });
+    }
+
+    // --- MongoDB legacy path ---
+    console.log(`🍃 [Dr. Nivedita API] Fetching single lead ${req.params.id} from MONGODB`);
     const lead = await AboutDrNiveditaLead.findById(req.params.id);
     if (!lead) return res.status(404).json({ success: false, message: 'Lead not found' });
     return res.status(200).json({ success: true, data: lead });
@@ -318,6 +576,7 @@ exports.getLeadById = async (req, res, next) => {
   }
 };
 
+// Update lead status & notes
 exports.updateLeadStatus = async (req, res, next) => {
   try {
     const { status, notes, service } = req.body;
@@ -326,6 +585,32 @@ exports.updateLeadStatus = async (req, res, next) => {
     if (notes !== undefined) updates.notes = notes;
     if (service) updates.service = service;
 
+    if (useSupabase()) {
+      console.log(`⚡ [Dr. Nivedita API] Updating lead ${req.params.id} on SUPABASE`);
+      
+      const mappedUpdates = { ...updates };
+      
+      const { data: updatedLead, error } = await supabase
+        .from('about_dr_nivedita_leads')
+        .update(mappedUpdates)
+        .eq('id', req.params.id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Supabase update lead error:', error.message);
+        return res.status(404).json({ success: false, message: "Lead not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: mapLeadToMongooseFormat(updatedLead),
+        message: "Lead updated successfully"
+      });
+    }
+
+    // --- MongoDB legacy path ---
+    console.log(`🍃 [Dr. Nivedita API] Updating lead ${req.params.id} on MONGODB`);
     const lead = await AboutDrNiveditaLead.findByIdAndUpdate(
       req.params.id, { $set: updates }, { new: true, runValidators: true }
     );
@@ -337,8 +622,27 @@ exports.updateLeadStatus = async (req, res, next) => {
   }
 };
 
+// Delete single lead
 exports.deleteLead = async (req, res, next) => {
   try {
+    if (useSupabase()) {
+      console.log(`⚡ [Dr. Nivedita API] Deleting lead ${req.params.id} from SUPABASE`);
+      
+      const { error } = await supabase
+        .from('about_dr_nivedita_leads')
+        .delete()
+        .eq('id', req.params.id);
+
+      if (error) {
+        console.error('Supabase delete lead error:', error.message);
+        return res.status(404).json({ success: false, message: "Lead not found" });
+      }
+
+      return res.status(200).json({ success: true, message: 'Lead deleted successfully' });
+    }
+
+    // --- MongoDB legacy path ---
+    console.log(`🍃 [Dr. Nivedita API] Deleting lead ${req.params.id} from MONGODB`);
     const lead = await AboutDrNiveditaLead.findByIdAndDelete(req.params.id);
     if (!lead) return res.status(404).json({ success: false, message: 'Lead not found' });
     return res.status(200).json({ success: true, message: 'Lead deleted successfully' });
@@ -348,12 +652,32 @@ exports.deleteLead = async (req, res, next) => {
   }
 };
 
+// Bulk Delete leads
 exports.bulkDeleteLeads = async (req, res, next) => {
   try {
     const { ids } = req.body;
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       return res.status(400).json({ success: false, message: 'Please provide valid lead IDs to delete' });
     }
+
+    if (useSupabase()) {
+      console.log(`⚡ [Dr. Nivedita API] Bulk deleting ${ids.length} leads from SUPABASE`);
+
+      const { error } = await supabase
+        .from('about_dr_nivedita_leads')
+        .delete()
+        .in('id', ids);
+
+      if (error) {
+        console.error('Supabase bulk delete error for Dr. Nivedita:', error.message);
+        return res.status(500).json({ success: false, message: "Bulk delete failed", error: error.message });
+      }
+
+      return res.status(200).json({ success: true, message: 'Selected leads deleted successfully' });
+    }
+
+    // --- MongoDB legacy path ---
+    console.log(`🍃 [Dr. Nivedita API] Bulk deleting ${ids.length} leads from MONGODB`);
     await AboutDrNiveditaLead.deleteMany({ _id: { $in: ids } });
     return res.status(200).json({ success: true, message: 'Selected leads deleted successfully' });
   } catch (error) {
@@ -362,8 +686,62 @@ exports.bulkDeleteLeads = async (req, res, next) => {
   }
 };
 
+// Export to CSV format
 exports.exportCsv = async (req, res, next) => {
   try {
+    if (useSupabase()) {
+      console.log("⚡ [Dr. Nivedita API] Exporting leads to CSV from SUPABASE");
+
+      let query = supabase
+        .from('about_dr_nivedita_leads')
+        .select('*');
+
+      if (req.query.search) {
+        const searchVal = req.query.search.trim();
+        query = query.or(`name.ilike.%${searchVal}%,email.ilike.%${searchVal}%,mobile.ilike.%${searchVal}%,service.ilike.%${searchVal}%`);
+      }
+
+      if (req.query.status) {
+        query = query.eq('status', req.query.status.trim());
+      }
+
+      if (req.query.startDate) {
+        query = query.gte('created_at', new Date(req.query.startDate).toISOString());
+      }
+      if (req.query.endDate) {
+        query = query.lte('created_at', new Date(`${req.query.endDate}T23:59:59.999Z`).toISOString());
+      }
+
+      query = query.order('created_at', { ascending: false });
+
+      const { data: rows, error } = await query;
+
+      if (error) {
+        console.error('Supabase CSV export leads error for Dr. Nivedita:', error.message);
+        return res.status(500).json({ success: false, message: 'Failed to export leads', error: error.message });
+      }
+
+      let csv = 'ID,Name,Email,Mobile,Service,AppointmentDate,Status,Notes,CreatedAt\n';
+      (rows || []).forEach(row => {
+        const idStr = row.id.toString();
+        const nameStr = row.name.replace(/"/g, '""');
+        const emailStr = row.email.replace(/"/g, '""');
+        const serviceStr = (row.service || "").replace(/"/g, '""');
+        const notesStr = (row.notes || "").replace(/"/g, '""');
+        
+        const apptDateStr = row.appointment_date ? new Date(row.appointment_date).toISOString().replace(/T/, ' ').replace(/\..+/, '') : '';
+        const createdStr = row.created_at ? new Date(row.created_at).toISOString().replace(/T/, ' ').replace(/\..+/, '') : '';
+        
+        csv += `"${idStr}","${nameStr}","${emailStr}","${row.mobile}","${serviceStr}","${apptDateStr}","${row.status}","${notesStr}","${createdStr}"\n`;
+      });
+
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename=dr-nivedita-leads.csv');
+      return res.status(200).send(csv);
+    }
+
+    // --- MongoDB legacy path ---
+    console.log("🍃 [Dr. Nivedita API] Exporting leads to CSV from MONGODB");
     const queryObj = {};
     if (req.query.search) {
       const searchRegex = new RegExp(req.query.search.trim(), 'i');
