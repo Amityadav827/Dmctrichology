@@ -1,24 +1,35 @@
 const GradeSlider = require('../models/GradeSlider');
+const { getSingleton, updateSingleton } = require('../utils/supabaseSingletonHelper');
 
 const defaultGrades = [
   { grade: 'GRADE 1', displayNum: '1', area: '20 cm²', density: '40/cm²', grafts: '800', session: '1', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/s4afgaemlnxgpza6klc2.png' },
   { grade: 'GRADE 2', displayNum: '2', area: '40 cm²', density: '40/cm²', grafts: '1600', session: '1', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/txprqtwbqrckrqbbtkbm.png' },
   { grade: 'GRADE 3', displayNum: '3', area: '60 cm²', density: '40/cm²', grafts: '2400', session: '1', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/lm1wuhdnisarojusnl1c.png' },
-  { grade: 'GRADE 4', displayNum: '4', area: '80 cm²', density: '40/cm²', grafts: '3200', session: '1-2', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/fnby98gc9fgctznkbpdt.png' },
-  { grade: 'GRADE 5', displayNum: '5', area: '100 cm²', density: '40/cm²', grafts: '4000', session: '2', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/dmc-trichology/r3etpyboaedgq8gizzpc.png' }
+  { grade: 'GRADE 4', displayNum: '4', area: '80 cm²', density: '40/cm²', grafts: '3200', session: '1-2', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/fnby98gc9fgctznkbpdt.png' },
+  { grade: 'GRADE 5', displayNum: '5', area: '100 cm²', density: '40/cm²', grafts: '4000', session: '2', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777613952/r3etpyboaedgq8gizzpc.png' }
 ];
+
+const defaultData = {
+  enabled: true,
+  badgeText: 'EQUIP YOUR RECOVERY',
+  heading: 'Know Your Grade For Hair Transplant',
+  backgroundColor: '#000000',
+  grades: defaultGrades
+};
 
 exports.getGradeSlider = async (req, res) => {
   try {
+    const supabaseData = await getSingleton('grade_slider', defaultData);
+    if (supabaseData) {
+      console.log("⚡ [GradeSlider API] Returning GET request data from SUPABASE");
+      return res.json({ success: true, data: supabaseData });
+    }
+
+    // --- Legacy MongoDB Code ---
+    console.log("🍃 [GradeSlider API] Routing GET request to MONGODB");
     let data = await GradeSlider.findOne();
     if (!data) {
-      data = await GradeSlider.create({
-        enabled: true,
-        badgeText: 'EQUIP YOUR RECOVERY',
-        heading: 'Know Your Grade For Hair Transplant',
-        backgroundColor: '#000000',
-        grades: defaultGrades
-      });
+      data = await GradeSlider.create(defaultData);
     }
     res.json({ success: true, data });
   } catch (error) {
@@ -28,10 +39,25 @@ exports.getGradeSlider = async (req, res) => {
 
 exports.updateGradeSlider = async (req, res) => {
   try {
+    const u = req.body;
+    const updates = {};
+    if (u.enabled !== undefined) updates.enabled = u.enabled;
+    if (u.badgeText !== undefined) updates.badgeText = u.badgeText;
+    if (u.heading !== undefined) updates.heading = u.heading;
+    if (u.backgroundColor !== undefined) updates.backgroundColor = u.backgroundColor;
+    if (u.grades !== undefined) updates.grades = u.grades;
+
+    const supabaseData = await updateSingleton('grade_slider', defaultData, updates);
+    if (supabaseData) {
+      console.log("⚡ [GradeSlider API] Returning UPDATE request data from SUPABASE");
+      return res.json({ success: true, data: supabaseData, message: "GradeSlider updated successfully on Supabase" });
+    }
+
+    // --- Legacy MongoDB Code ---
+    console.log("🍃 [GradeSlider API] Routing UPDATE request to MONGODB");
     let data = await GradeSlider.findOne();
     if (!data) data = new GradeSlider();
 
-    const u = req.body;
     if (u.enabled !== undefined) data.enabled = u.enabled;
     if (u.badgeText !== undefined) data.badgeText = u.badgeText;
     if (u.heading !== undefined) data.heading = u.heading;

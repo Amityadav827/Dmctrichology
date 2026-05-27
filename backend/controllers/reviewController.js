@@ -1,4 +1,5 @@
 const Review = require('../models/Review');
+const { getSingleton, updateSingleton } = require('../utils/supabaseSingletonHelper');
 
 const defaultReviews = [
   { name: "Anjali Kohli", text: "The full body laser session was excellent. The therapist was highly skilled and made the experience comfortable and effective." },
@@ -21,17 +22,28 @@ const defaultVideos = [
   { name: "Influencer Dish", image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777716929/dmc-trichology/o0naqjvopw7otiwdzwsg.png", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
 ];
 
+const defaultData = {
+  enabled: true,
+  badgeText: 'REVIEWS',
+  heading: 'See the Results. Hear the Stories.',
+  googleReviewText: '7000+ Reviews on',
+  reviews: defaultReviews,
+  videos: defaultVideos
+};
+
 exports.getReviews = async (req, res) => {
   try {
+    const supabaseData = await getSingleton('reviews_videos', defaultData);
+    if (supabaseData) {
+      console.log("⚡ [Review API] Returning GET request data from SUPABASE");
+      return res.json({ success: true, data: supabaseData });
+    }
+
+    // --- Legacy MongoDB Code ---
+    console.log("🍃 [Review API] Routing GET request to MONGODB");
     let data = await Review.findOne();
     if (!data) {
-      data = await Review.create({
-        badgeText: 'REVIEWS',
-        heading: 'See the Results. Hear the Stories.',
-        googleReviewText: '7000+ Reviews on',
-        reviews: defaultReviews,
-        videos: defaultVideos
-      });
+      data = await Review.create(defaultData);
     }
     res.json({ success: true, data });
   } catch (error) {
@@ -41,10 +53,26 @@ exports.getReviews = async (req, res) => {
 
 exports.updateReviews = async (req, res) => {
   try {
+    const u = req.body;
+    const updates = {};
+    if (u.enabled !== undefined) updates.enabled = u.enabled;
+    if (u.badgeText !== undefined) updates.badgeText = u.badgeText;
+    if (u.heading !== undefined) updates.heading = u.heading;
+    if (u.googleReviewText !== undefined) updates.googleReviewText = u.googleReviewText;
+    if (u.reviews !== undefined) updates.reviews = u.reviews;
+    if (u.videos !== undefined) updates.videos = u.videos;
+
+    const supabaseData = await updateSingleton('reviews_videos', defaultData, updates);
+    if (supabaseData) {
+      console.log("⚡ [Review API] Returning UPDATE request data from SUPABASE");
+      return res.json({ success: true, data: supabaseData, message: "Reviews & Videos updated successfully on Supabase" });
+    }
+
+    // --- Legacy MongoDB Code ---
+    console.log("🍃 [Review API] Routing UPDATE request to MONGODB");
     let data = await Review.findOne();
     if (!data) data = new Review();
 
-    const u = req.body;
     if (u.enabled !== undefined) data.enabled = u.enabled;
     if (u.badgeText !== undefined) data.badgeText = u.badgeText;
     if (u.heading !== undefined) data.heading = u.heading;
