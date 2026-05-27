@@ -1,6 +1,7 @@
 const PressMedia = require('../models/PressMedia');
+const { useSupabase, getSingleton, updateSingleton } = require('../utils/supabaseSingletonHelper');
 
-// ─── Default sample data ──────────────────────────────────────────────────────
+// ─── Default data ─────────────────────────────────────────────────────────────
 const defaultAvatars = [
   { id: '1', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png' },
   { id: '2', image: 'https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png' },
@@ -44,9 +45,37 @@ const defaultMediaCards = [
   },
 ];
 
+const defaultPressMediaData = {
+  hero: {
+    title: 'Press & Media',
+    breadcrumbText: 'Press & Media',
+    bannerImage: '',
+    backgroundColor: '#3b5998',
+    overlayOpacity: 0.55,
+    bannerHeight: '420px',
+  },
+  mediaCards: defaultMediaCards,
+  enabled: true,
+  heading: 'WHAT THE PRESS AND MEDIA ARE SAYING ABOUT OUR CLINIC',
+  ratingText: '4.9 Rating',
+  patientCountText: '5000+ Satisfied Patients',
+  button: { text: 'EXPLORE MEDIA', link: '/press-media' },
+  avatars: defaultAvatars,
+  mediaLogos: defaultLogos,
+};
+
 // ─── GET /api/press-media ─────────────────────────────────────────────────────
 exports.getPressMedia = async (req, res) => {
   try {
+    // Supabase path (USE_SUPABASE_FOR_HOMEPAGE=true)
+    if (useSupabase()) {
+      const data = await getSingleton('press_media', defaultPressMediaData);
+      console.log("⚡ [PressMedia API] Returning GET from SUPABASE");
+      return res.json({ success: true, data });
+    }
+
+    // MongoDB fallback
+    console.log("🍃 [PressMedia API] Routing GET to MONGODB");
     let data = await PressMedia.findOne();
     if (!data) {
       data = await PressMedia.create({
@@ -69,26 +98,41 @@ exports.getPressMedia = async (req, res) => {
 // ─── PUT /api/press-media ─────────────────────────────────────────────────────
 exports.updatePressMedia = async (req, res) => {
   try {
-    let data = await PressMedia.findOne();
-    if (!data) data = new PressMedia();
-
     const u = req.body;
+    const updates = {};
 
-    // Legacy home-section fields
-    if (u.enabled !== undefined) data.enabled = u.enabled;
-    if (u.heading !== undefined) data.heading = u.heading;
-    if (u.ratingText !== undefined) data.ratingText = u.ratingText;
-    if (u.patientCountText !== undefined) data.patientCountText = u.patientCountText;
-    if (u.button !== undefined) data.button = u.button;
-    if (u.avatars !== undefined) data.avatars = u.avatars;
-    if (u.mediaLogos !== undefined) data.mediaLogos = u.mediaLogos;
+    if (u.enabled !== undefined) updates.enabled = u.enabled;
+    if (u.heading !== undefined) updates.heading = u.heading;
+    if (u.ratingText !== undefined) updates.ratingText = u.ratingText;
+    if (u.patientCountText !== undefined) updates.patientCountText = u.patientCountText;
+    if (u.button !== undefined) updates.button = u.button;
+    if (u.avatars !== undefined) updates.avatars = u.avatars;
+    if (u.mediaLogos !== undefined) updates.mediaLogos = u.mediaLogos;
+    if (u.hero !== undefined) updates.hero = u.hero;
+    if (u.mediaCards !== undefined) updates.mediaCards = u.mediaCards;
 
-    // New press-media page fields
-    if (u.hero !== undefined) data.hero = { ...data.hero.toObject?.() ?? data.hero, ...u.hero };
-    if (u.mediaCards !== undefined) data.mediaCards = u.mediaCards;
+    // Supabase path — dual-write: MongoDB first
+    let mongoData = await PressMedia.findOne();
+    if (!mongoData) mongoData = new PressMedia();
 
-    await data.save();
-    res.json({ success: true, data });
+    if (u.enabled !== undefined) mongoData.enabled = u.enabled;
+    if (u.heading !== undefined) mongoData.heading = u.heading;
+    if (u.ratingText !== undefined) mongoData.ratingText = u.ratingText;
+    if (u.patientCountText !== undefined) mongoData.patientCountText = u.patientCountText;
+    if (u.button !== undefined) mongoData.button = u.button;
+    if (u.avatars !== undefined) mongoData.avatars = u.avatars;
+    if (u.mediaLogos !== undefined) mongoData.mediaLogos = u.mediaLogos;
+    if (u.hero !== undefined) mongoData.hero = { ...mongoData.hero?.toObject?.() ?? mongoData.hero, ...u.hero };
+    if (u.mediaCards !== undefined) mongoData.mediaCards = u.mediaCards;
+    await mongoData.save();
+
+    if (useSupabase()) {
+      const supaData = await updateSingleton('press_media', defaultPressMediaData, updates);
+      console.log("⚡ [PressMedia API] Returning UPDATE from SUPABASE");
+      return res.json({ success: true, data: supaData });
+    }
+
+    res.json({ success: true, data: mongoData });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
