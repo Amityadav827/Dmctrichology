@@ -50,7 +50,9 @@ export default function PressMediaSection() {
   const heading = data?.heading || "What The Press And Media Are Saying About Our Clinic";
   const ratingText = data?.ratingText || "225+ Satisfied Patients";
   const patientCountText = data?.patientCountText || "5000+ Satisfied Patients";
-  const button = data?.button || { text: "Get Free Consulting", link: "/media" };
+  const button = data?.button || {};
+  const buttonText = button.text && button.text !== "Get Free Consulting" ? button.text : "Book Appointment";
+  const buttonLink = "/contact-us";
   const avatars = (data?.avatars || []).length > 0 ? data.avatars : [
     { image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png" },
     { image: "https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/qytwlafbixtw14egkncm.png" },
@@ -141,7 +143,7 @@ export default function PressMediaSection() {
                 gap: '40px',
                 minWidth: '350px'
               }}>
-                <button className="free-consult-btn" style={{
+                <a href={buttonLink} className="free-consult-btn" style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '15px',
@@ -155,10 +157,11 @@ export default function PressMediaSection() {
                   fontWeight: '500',
                   fontFamily: "'Marcellus', serif",
                   marginTop: '0px',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  textDecoration: 'none'
                 }}>
                   <EditableText sectionId="press-media-section" fieldPath="button.text" tag="span">
-                    {button.text}
+                    {buttonText}
                   </EditableText>
                   <div className="arrow-container" style={{
                     width: '45px',
@@ -172,7 +175,7 @@ export default function PressMediaSection() {
                   }}>
                      <img src="https://res.cloudinary.com/dseixl6px/image/upload/v1777530476/dmc-trichology/ngfngyyxjj86kvn5nd5n.png" alt="arrow" className="btn-arrow-icon" style={{ width: '18px', filter: 'brightness(0) invert(1)' }} />
                   </div>
-                </button>
+                </a>
 
                 {/* Logo Slider Wrapper */}
                 <div style={{ 
