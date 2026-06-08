@@ -168,7 +168,12 @@ export default function AboutDrNandaniClient({ initialData }) {
       <AboutDrNandaniHero data={pageData.hero || {}} />
       <AboutDrNandaniBreadcrumb data={pageData.breadcrumb || {}} />
       <AboutDrNandaniSpecialist data={pageData.specialist || {}} />
-      <AboutDrNandaniTimeline data={pageData.timeline || {}} />
+      <AboutDrNandaniTimeline
+        data={{
+          ...(pageData.timeline || {}),
+          sectionImage: pageData.timeline?.sectionImage || pageData.hero?.doctorImage || ""
+        }}
+      />
       <AboutDrNandaniEducationExperience data={pageData.educationExperience || {}} />
       <AboutDrNandaniCredentials data={pageData.credentialsSection || {}} />
       <AboutDrNandaniTrust data={pageData.trustSection || {}} />

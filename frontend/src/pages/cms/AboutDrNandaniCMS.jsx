@@ -628,21 +628,12 @@ export default function AboutDrNandaniCMS() {
                 <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
                   <Sliders size={18} />
                 </div>
-                Timeline Infographic Config
+                Single Landscape Image Config
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="md:col-span-2">
-                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Section Heading</label>
-                  <input 
-                    type="text" 
-                    value={data.timeline?.heading || ""} 
-                    onChange={e => updateNestedField("timeline.heading", e.target.value)} 
-                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Section Dynamic Image (Centered Below Heading)</label>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Landscape Image</label>
                   <div className="flex gap-4 items-center">
                     <input 
                       type="text" 
@@ -656,7 +647,7 @@ export default function AboutDrNandaniCMS() {
                     </label>
                   </div>
                 </div>
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Section Background Color</label>
                   <div className="flex gap-3 items-center">
                     <input 
@@ -673,73 +664,10 @@ export default function AboutDrNandaniCMS() {
                     />
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Steps Config List */}
-            <div className="space-y-6">
-              {(data.timeline?.steps || []).map((step, idx) => (
-                <div key={idx} className="bg-white rounded-[32px] border border-slate-200 shadow-sm p-10">
-                  <h4 className="text-sm font-black mb-6 text-slate-700 flex items-center gap-3">
-                    <span className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold">{idx + 1}</span>
-                    Timeline Step: {step.title || `Step ${idx+1}`}
-                  </h4>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Step Number Label</label>
-                      <input 
-                        type="text" 
-                        value={step.numberLabel || ""} 
-                        onChange={e => updateNestedField(`timeline.steps.${idx}.numberLabel`, e.target.value)} 
-                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Step Title</label>
-                      <input 
-                        type="text" 
-                        value={step.title || ""} 
-                        onChange={e => updateNestedField(`timeline.steps.${idx}.title`, e.target.value)} 
-                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Step Description</label>
-                      <input 
-                        type="text" 
-                        value={step.description || ""} 
-                        onChange={e => updateNestedField(`timeline.steps.${idx}.description`, e.target.value)} 
-                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none" 
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Color Theme (alternating gold/navy)</label>
-                      <select
-                        value={step.colorMode || "gold"}
-                        onChange={e => updateNestedField(`timeline.steps.${idx}.colorMode`, e.target.value)}
-                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none"
-                      >
-                        <option value="gold">Gold Theme</option>
-                        <option value="navy">Navy Theme</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Icon Graphic Shape</label>
-                      <select
-                        value={step.iconName || "heart"}
-                        onChange={e => updateNestedField(`timeline.steps.${idx}.iconName`, e.target.value)}
-                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-300 transition-all outline-none"
-                      >
-                        <option value="heart">Heart (Step 1 default)</option>
-                        <option value="brain">Brain (Step 2 default)</option>
-                        <option value="kit">Medical Kit (Step 3 default)</option>
-                        <option value="tech">Technology Chip (Step 4 default)</option>
-                      </select>
-                    </div>
-                  </div>
+                <div className="md:col-span-2 rounded-[24px] border border-dashed border-slate-200 bg-slate-50 px-6 py-5 text-sm font-medium text-slate-500">
+                  This section now displays only one landscape image on the frontend. Existing step content is preserved in data, but it is no longer shown on the website.
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         )}

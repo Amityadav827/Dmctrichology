@@ -6,7 +6,6 @@ import { useBuilder } from '../../context/BuilderContext';
 import AboutDrNiveditaHero from '../../components/AboutDrNiveditaHero';
 import AboutDrNiveditaBreadcrumb from '../../components/AboutDrNiveditaBreadcrumb';
 import AboutDrNiveditaSpecialist from '../../components/AboutDrNiveditaSpecialist';
-import AboutDrNiveditaMembership from '../../components/AboutDrNiveditaMembership';
 import AboutDrNiveditaEducationExperience from '../../components/AboutDrNiveditaEducationExperience';
 import AboutDrNiveditaCredentials from '../../components/AboutDrNiveditaCredentials';
 import AboutDrNiveditaFeaturedIn from '../../components/AboutDrNiveditaFeaturedIn';
@@ -108,7 +107,6 @@ export default function AboutDrNiveditaClient({ initialData }) {
       <AboutDrNiveditaHero data={pageData.hero || {}} />
       <AboutDrNiveditaBreadcrumb data={pageData.breadcrumb || {}} />
       <AboutDrNiveditaSpecialist data={pageData.specialist || {}} />
-      <AboutDrNiveditaMembership data={pageData.membership || {}} />
       <AboutDrNiveditaEducationExperience data={pageData.educationExperience || {}} />
       <AboutDrNiveditaCredentials data={pageData.credentialsSection || {}} />
       <AboutDrNiveditaFeaturedIn data={pageData.featuredInSection || {}} />
